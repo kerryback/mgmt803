@@ -1,0 +1,37 @@
+project:
+  type: website
+  output-dir: docs
+  render:
+    - index.qmd
+    - slides.qmd
+    - slides/*.qmd
+
+website:
+  title: ""
+  search: false
+  navbar:
+    search: false
+    title: MGMT 803
+    left:
+      - href: index.qmd
+        text: Home
+      - href: slides.qmd
+        text: Slides
+
+format:
+  html:
+    theme:
+      light: flatly
+      dark: superhero
+    link-external-newwindow: true
+  revealjs:
+    theme: [default, slides/revealjs-style.scss]
+    highlight-style: monokai
+    slide-number: 'c/t'
+    transition: fade
+    navigation-mode: linear
+    width: 1920
+    height: 1080
+    margin: 0.05
+    center: true
+    auto-stretch: false
