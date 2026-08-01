@@ -1,0 +1,15 @@
+# Applies to every deck in html/ so they render as reveal.js as part of the
+# website build. Kept here rather than in the project's format: block, which
+# would render every page of the site as slides too.
+format:
+  revealjs:
+    theme: [default, revealjs-style.scss]
+    highlight-style: monokai
+    slide-number: 'c/t'
+    transition: fade
+    navigation-mode: linear
+    width: 1920
+    height: 1080
+    margin: 0.05
+    center: true
+    auto-stretch: false

@@ -5,4 +5,4 @@ title: Slide Decks
 
 | # | Module | |
 |--:|--------|:-:|
-| 1 | <a href="slides/m1.html" target="_blank">TBD</a> | <a href="slides/m1.html" target="_blank">{{< fa presentation-screen >}}</a> |
+| 1 | <a href="html/m1.html" target="_blank">TBD</a> | <a href="html/m1.html" target="_blank">{{< fa presentation-screen >}}</a> |
