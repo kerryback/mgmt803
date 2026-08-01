@@ -2,11 +2,14 @@ project:
   type: website
   output-dir: docs
   render:
-    - index.qmd
+    - syllabus.qmd
     - slides.qmd
     - html/*.qmd
   resources:
+    - CNAME
     - pdf/*.pdf
+    - index.html
+    - under-construction.html
 
 website:
   title: ""
@@ -15,8 +18,10 @@ website:
     search: false
     title: MGMT 803
     left:
-      - href: index.qmd
+      - href: index.html
         text: Home
+      - href: syllabus.qmd
+        text: Syllabus
       - href: slides.qmd
         text: Slides
 
