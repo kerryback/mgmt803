@@ -55,6 +55,13 @@ body { background: var(--bg); color: var(--ink);
 .flyer .item-title { font-size: 19px; font-weight: 700; color: var(--navy); }
 .flyer .item-desc { font-size: 15.5px; color: var(--gray); line-height: 1.4; margin-top: 2px; }
 .flyer .tbd { color: var(--gray); font-weight: 400; font-style: italic; }
+.flyer .topics { margin-top: 3px; display: flex; flex-direction: column; gap: 3px; }
+.flyer .topics span { font-size: 15px; color: var(--gray); line-height: 1.35; }
+.flyer .topics b { color: var(--navy); font-weight: 700; margin-right: 6px; }
+/* Fri and Sun have one session, so their half-day label is hidden rather than
+   removed -- otherwise those chips come out a line shorter than the others.
+   Same trick pads every row to the same number of topic lines. */
+.flyer .phantom { visibility: hidden; }
 .flyer .sheet-foot { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--line);
   display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
 .flyer .sheet-foot a { text-decoration: none; color: var(--navy); font-weight: 700; font-size: 17px; }
@@ -72,7 +79,6 @@ body { background: var(--bg); color: var(--ink);
     <span class="brand">MGMT 803</span>
     <nav>
       <a href="syllabus.html">Syllabus</a>
-      <a href="slides.html">Slides</a>
     </nav>
   </header>
 
@@ -81,20 +87,18 @@ body { background: var(--bg); color: var(--ink);
       <div class="eyebrow">Rice Business &nbsp;&middot;&nbsp; Fall 2026</div>
       <h1 class="display">MGMT 803</h1>
       <div class="meta-inline">
-        <span>MGMT 803</span><span class="dot">&bull;</span>
-        <span>Six sessions</span><span class="dot">&bull;</span>
-        <span>Rice Business</span>
+        <span>Gen AI for Business</span>
       </div>
       <div class="subline">led by <b>Kerry Back</b></div>
       <div class="rule"></div>
 
       <div class="section-head"><span class="label">September</span><span class="dates">September 24&ndash;27</span></div>
-      <div class="item"><a class="chip" href="under-construction.html" title="Slides not posted yet">SEP 24<span class="chip-time">Morning</span></a><div><div class="item-title tbd">TBD</div><div class="item-desc"></div></div></div>
-      <div class="item"><a class="chip" href="under-construction.html" title="Slides not posted yet">SEP 24<span class="chip-time">Afternoon</span></a><div><div class="item-title tbd">TBD</div><div class="item-desc"></div></div></div>
-      <div class="item"><a class="chip" href="under-construction.html" title="Slides not posted yet">SEP 25<span class="chip-time">Morning</span></a><div><div class="item-title tbd">TBD</div><div class="item-desc"></div></div></div>
-      <div class="item"><a class="chip" href="under-construction.html" title="Slides not posted yet">SEP 26<span class="chip-time">Morning</span></a><div><div class="item-title tbd">TBD</div><div class="item-desc"></div></div></div>
-      <div class="item"><a class="chip" href="under-construction.html" title="Slides not posted yet">SEP 26<span class="chip-time">Afternoon</span></a><div><div class="item-title tbd">TBD</div><div class="item-desc"></div></div></div>
-      <div class="item"><a class="chip" href="under-construction.html" title="Slides not posted yet">SEP 27<span class="chip-time">Morning</span></a><div><div class="item-title tbd">TBD</div><div class="item-desc"></div></div></div>
+      <div class="item"><a class="chip" href="html/session1.html">SEP 24<span class="chip-time">Morning</span></a><div><div class="topics"><span><b>1</b>How a language model works</span><span><b>2</b>Chat, CLI, and sandbox</span><span><b>3</b>Prompting tips</span></div></div></div>
+      <div class="item"><a class="chip" href="html/session2.html">SEP 24<span class="chip-time">Afternoon</span></a><div><div class="topics"><span><b>4</b>Persistent instructions and memory</span><span><b>5</b>Connectors and plugins</span><span><b>6</b>Agent harnesses</span></div></div></div>
+      <div class="item"><a class="chip" href="html/session3.html">SEP 25<span class="chip-time phantom">Morning</span></a><div><div class="topics"><span><b>7</b>Working with data</span><span class="phantom"><b>0</b>&nbsp;</span><span class="phantom"><b>0</b>&nbsp;</span></div></div></div>
+      <div class="item"><a class="chip" href="html/session4.html">SEP 26<span class="chip-time">Morning</span></a><div><div class="topics"><span><b>8</b>Creating docs</span><span><b>9</b>Creating apps</span><span class="phantom"><b>0</b>&nbsp;</span></div></div></div>
+      <div class="item"><a class="chip" href="html/session5.html">SEP 26<span class="chip-time">Afternoon</span></a><div><div class="topics"><span><b>10</b>Retrieval augmented generation</span><span><b>11</b>Open source models</span><span class="phantom"><b>0</b>&nbsp;</span></div></div></div>
+      <div class="item"><a class="chip" href="html/session6.html">SEP 27<span class="chip-time phantom">Morning</span></a><div><div class="topics"><span><b>12</b>Creating agents</span><span><b>13</b>Managing security risks</span><span class="phantom"><b>0</b>&nbsp;</span></div></div></div>
 
       <div class="sheet-foot">
         <a href="syllabus.html">Syllabus &rarr;</a>

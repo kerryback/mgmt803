@@ -1,0 +1,396 @@
+---
+title: "Friday, September 25"
+subtitle: "7 Working with data"
+author: "Kerry Back"
+format:
+  revealjs:
+    footer: "MGMT 803 · Rice Business"
+---
+
+## This morning
+
+::: {.lead}
+One question, five spreadsheets, and a morning: which countries generated the most revenue, and how do you know.
+:::
+
+::: {.cards .cards-2}
+::: {.card}
+[Where the data is]{.card-title}
+
+What an organization actually holds, which system is the record, and why the copies disagree.
+:::
+
+::: {.card .card-blue}
+[Whether to believe it]{.card-title}
+
+The joins, columns and blanks that produce a wrong total with no error message.
+:::
+:::
+
+# 7 · Working with data
+
+The country revenue report, then the four ways the number comes out wrong.
+
+## "We should point AI at our data" {.plain-title}
+
+::: {.prompt-box}
+::: {.box-title}
+Heard in every company this year
+:::
+We should point AI at our data.
+:::
+
+::: {.cards .cards-3}
+::: {.card}
+[Which data?]{.card-title}
+:::
+::: {.card .card-blue}
+[In whose system?]{.card-title}
+:::
+::: {.card}
+[Entered by whom, and when?]{.card-title}
+:::
+:::
+
+## What the surveys say
+
+::: {.stats}
+::: {.stat}
+[897]{.stat-value}
+[applications in the average enterprise]{.stat-label}
+:::
+::: {.stat}
+[29%]{.stat-value}
+[of them connected to anything else]{.stat-label}
+:::
+::: {.stat}
+[7%]{.stat-value}
+[of leaders call their data ready for AI]{.stat-label}
+:::
+:::
+
+::: {.note}
+In the same surveys, 19% of data is called siloed or unusable, and 70% of leaders believe their most valuable insights are inside that 19%.
+:::
+
+## Where a number actually lives {.plain-title}
+
+| | Holds | Reachable by |
+|---|---|---|
+| The operational system | what is true right now | its own screens |
+| The warehouse | a nightly copy, reshaped for questions | analysts with SQL |
+| A dashboard | four questions somebody chose in 2024 | anyone |
+| An extract | one analyst's copy, as of some Tuesday | whoever they mailed it to |
+| A shared drive | the documents none of the above hold | anyone who can find it |
+
+## Four systems, four meanings of "customer"
+
+| In this system | A customer is | Identified by |
+|---|---|---|
+| Sales | an organization you might sell to | an account number |
+| Finance | an entity you invoice | a bill-to number |
+| The warehouse | an address you deliver to | a ship-to code |
+| Support | whoever opened the ticket | an email address |
+
+Four counts of customers, all correct, none equal.
+
+## Why you cannot just query the live system
+
+::: {.cards .cards-2}
+::: {.card}
+[It is built for writing]{.card-title}
+
+Thousands of tiny writes a minute, tuned for that rather than for scanning a year.
+:::
+
+::: {.card .card-blue}
+[Your report competes]{.card-title}
+
+A heavy query slows the screen somebody is typing an order into.
+:::
+
+::: {.card}
+[It knows one corner]{.card-title}
+
+Finance cannot see sales. Neither can see the warehouse.
+:::
+
+::: {.card .card-sand}
+[It holds now]{.card-title}
+
+The current address and the current price. Not last year's.
+:::
+:::
+
+## Three kinds of copy, routinely confused {.plain-title}
+
+::: {.steps}
+1. The warehouse: a governed copy, refreshed on a schedule, with definitions written down.
+2. The extract: a file somebody pulled once, for one question, and never refreshed.
+3. The export: a spreadsheet mailed to someone who now treats it as the source.
+:::
+
+::: {.note}
+Two of the three age silently. The number in the deck was right when it was pulled.
+:::
+
+## The vocabulary you need for the rest of the day
+
+| | |
+|---|---|
+| System of record | the one place a fact is authoritative |
+| Silo | a store nothing else can reach |
+| Semantics | whether two columns with one name mean one thing |
+| Lineage | where this number came from, through every hop |
+| Quality | blanks, duplicates, and values nobody validates |
+
+::: {.note}
+Every one of these shows up in the next four hours as a reason a total is wrong.
+:::
+
+## Five files, one question {.plain-title}
+
+::: {.lead}
+Northwind: a supplier of specialty foods to restaurants and delis. 500 orders, 93 customers, 77 products, 8 categories, spanning 2012 to 2023.
+:::
+
+Small enough to hold in your head, and shaped like a company a thousand times larger. What you are about to do to it is what an analyst does to the real thing.
+
+## What you are building {.plain-title}
+
+::: {.lead}
+Five spreadsheets in `~/data`: orders, order details, customers, products, categories. One question — which countries generated the most revenue, and how do you know.
+:::
+
+::: {.note .note-plum}
+Read all five parts before you start. Part D is the point of the exercise. Get there even if you have to shorten Part C.
+:::
+
+## Part A — describe it first {.plain-title}
+
+[15 minutes]{.eyebrow}
+
+Before any analysis, have it report — with the code shown:
+
+::: {.steps}
+1. Every file: row count, column names, data types.
+2. The date range of the orders, and whether each date column is a date or a string.
+3. Missing values by column, as counts rather than "a few".
+4. Which column joins to which, and whether each join is one-to-one or one-to-many.
+:::
+
+::: {.note}
+Write the join map on paper. You will need it in Part D.
+:::
+
+## Part B — revenue by country {.plain-title}
+
+[25 minutes]{.eyebrow}
+
+::: {.steps}
+1. Compute revenue per order line, then total by the customer's country.
+2. There are two columns that could be the price. Say in writing which one you used and why.
+3. Report the row count after every merge and compare it to the row count before.
+4. Rank the countries and take the top five.
+:::
+
+::: {.note}
+There is no discount column and no freight column in these files. Whatever you report is price times quantity, and the deliverable has to say so.
+:::
+
+## Part C — a deliverable {.plain-title}
+
+[20 minutes]{.eyebrow}
+
+::: {.cards .cards-2}
+::: {.card}
+[Option 1]{.card-title}
+
+An Excel workbook: the country table on one sheet, a chart, and a cell stating the revenue definition in words.
+:::
+
+::: {.card .card-blue}
+[Option 2]{.card-title}
+
+A five-slide deck: the question, the top five, the chart, the definition, and what you checked.
+:::
+:::
+
+Either one states the revenue definition on its face. A number without its definition cannot be reconciled against anyone else's.
+
+## Part D — verify it {.plain-title}
+
+[25 minutes]{.eyebrow}
+
+::: {.steps}
+1. Recompute the total by a second route — a different tool, a different order of operations, or straight from the raw files with no merges at all.
+2. Reconcile the two to the cent.
+3. If they disagree, find the cause before changing either one.
+4. List three things that could have made your number wrong, and how you ruled each one out.
+:::
+
+::: {.note}
+If the second route reproduces the first to the cent, say so on the deliverable.
+:::
+
+## Part E — if you finish {.plain-title}
+
+[remaining time]{.eyebrow}
+
+- Break revenue out by month and by category
+- Find a month that does not follow the months around it
+- Say what in the data produces it, and show the rows
+
+## When you are done {.band-bottom}
+
+Have open and ready to share:
+
+- Your number, and the definition behind it
+- Your chart
+- Your second route, and what it gave
+- The three things that could have gone wrong
+
+## What went wrong {.divider}
+
+## Four failures that raise no error
+
+::: {.cards .cards-2}
+::: {.card}
+[The wrong join]{.card-title}
+
+Rows that did not match are dropped. The total is smaller and nothing says so.
+:::
+
+::: {.card .card-blue}
+[The wrong column]{.card-title}
+
+Two files use one name for two different things, and the merge keeps both.
+:::
+
+::: {.card}
+[The unstated assumption]{.card-title}
+
+What counts as revenue, which rows are excluded, which dates are in scope.
+:::
+
+::: {.card .card-sand}
+[Invention]{.card-title}
+
+A number in prose that no line of code produced.
+:::
+:::
+
+## What is actually in these files
+
+| File | Rows | |
+|---|---:|---|
+| Orders | 500 | July 2012 to October 2023 |
+| Order details | 18,976 | 38 lines per order on average |
+| Customers | 93 | in 21 countries |
+| Products | 77 | in 8 categories |
+
+Every order line matches a product, an order, and a customer. No merge in this analysis drops a row — which is why you have to check rather than assume.
+
+## Two columns named UnitPrice
+
+::: {.lead}
+Order details carries the price charged. Products carries the list price. Merge them and you get `UnitPrice_x` and `UnitPrice_y`.
+:::
+
+| Priced at | Total revenue |
+|---|---:|
+| The price charged | $13,963,378.65 |
+| The list price | $13,966,340.55 |
+
+The two answers differ by $2,962 on $14 million. A sanity check on the magnitude passes either way, so nothing about the wrong choice looks wrong.
+
+## The rows with no country
+
+::: {.stats}
+::: {.stat}
+[2]{.stat-value}
+[customers with a blank country]{.stat-label}
+:::
+::: {.stat}
+[482]{.stat-value}
+[order lines behind them]{.stat-label}
+:::
+::: {.stat}
+[$373,609]{.stat-value}
+[revenue in those lines]{.stat-label}
+:::
+:::
+
+Grouping by country drops blank keys by default. The country table still adds up, to a total 2.7% below the real one, and no country is wrong.
+
+## One-to-many
+
+::: {.lead}
+Merge orders into order details and every order appears once per line — on average 38 times.
+:::
+
+Sum anything defined per order after that merge and you have counted it 38 times. On these files the multiplier is large enough to notice. On files where the ratio is 1.2, it is not.
+
+::: {.note}
+The check is one line: row count before the merge, row count after.
+:::
+
+## Dates
+
+- `03/04/2023` is March 4 or April 3 depending on who wrote the file
+- A date column read as text sorts `10/01` before `2/01`
+- These orders carry a time as well as a date, so a filter on equality matches nothing
+- A date read out of Excel can arrive as a serial number
+
+Ask which columns are date types and which are strings, before grouping by month.
+
+## Missing values
+
+| How it is written | What a naive count does |
+|---|---|
+| An empty cell | usually skipped |
+| `0` | included in the average |
+| `NA`, `N/A`, `-`, `unknown` | makes the whole column text |
+| A sentinel such as `-999` | included, silently |
+
+A numeric column that is text because of four `N/A` cells concatenates where you expected a sum.
+
+## Recompute another way {.band-bottom}
+
+::: {.steps}
+1. The same question by a different route through the data.
+2. The same question in a different tool — SQL against the same files, or a pivot table.
+3. The same question in a fresh conversation that has not seen the first answer.
+:::
+
+Each route drops different rows and rounds at different points. Agreement across them narrows what can still be wrong.
+
+## Make it read its own code
+
+::: {.prompt-box}
+::: {.box-title}
+Prompt
+:::
+Here is code and the answer it produced. Ignore the answer. Read the code and tell me what it actually computes — including what it drops and what it assumes.
+:::
+
+A fresh conversation reading code has nothing invested in the number already on the screen.
+
+## Find the bug {.plain-title}
+
+[Exercise 9 · 40 minutes]{.eyebrow}
+
+::: {.steps}
+1. `~/data/planted/country_report.py` produces a country table. Its total is wrong.
+2. Read it first and predict where the number goes wrong. Do not run it yet.
+3. Now run it, find the actual causes, and say how much each one moves the total.
+4. Fix them and reconcile against your own Part B number.
+:::
+
+::: {.note}
+There is more than one defect, and they move the total in different directions.
+:::
+
+## Tomorrow {.band-bottom}
+
+Today the answer was a number you checked. Tomorrow it becomes a document somebody else opens, and then an application they use without you.

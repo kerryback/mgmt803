@@ -3,7 +3,6 @@ project:
   output-dir: docs
   render:
     - syllabus.qmd
-    - slides.qmd
     - html/*.qmd
   resources:
     - CNAME
@@ -14,16 +13,6 @@ project:
 website:
   title: ""
   search: false
-  navbar:
-    search: false
-    title: MGMT 803
-    left:
-      - href: index.html
-        text: Home
-      - href: syllabus.qmd
-        text: Syllabus
-      - href: slides.qmd
-        text: Slides
 
 format:
   html:

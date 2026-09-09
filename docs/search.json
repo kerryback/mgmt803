@@ -1,23 +1,1332 @@
 [
   {
-    "objectID": "slides.html",
-    "href": "slides.html",
-    "title": "Slide Decks",
-    "section": "",
-    "text": "#\nModule\n\n\n\n\n\n1\nTBD"
+    "objectID": "html/session6.html#this-morning",
+    "href": "html/session6.html#this-morning",
+    "title": "Sunday, September 27",
+    "section": "This morning",
+    "text": "This morning\n\n\nCreating agents\nThe API underneath everything, and an agent with a tool list you chose.\n\n\nManaging security risks\nBelieving it, sending data out, letting it act — and what you take back to work."
+  },
+  {
+    "objectID": "html/session6.html#a-chatbot-produces-text",
+    "href": "html/session6.html#a-chatbot-produces-text",
+    "title": "Sunday, September 27",
+    "section": "A chatbot produces text",
+    "text": "A chatbot produces text\n\nIt receives text and returns text. That is the entire capability.\n\n\nEverything it “knows” arrived as text in the request\nEverything it “does” leaves as text in the response\nNo files, no network, no memory between conversations\n\nA chatbot that appears to remember you is being handed the earlier conversation again on every turn."
+  },
+  {
+    "objectID": "html/session6.html#an-agent-is-a-chatbot-with-tools",
+    "href": "html/session6.html#an-agent-is-a-chatbot-with-tools",
+    "title": "Sunday, September 27",
+    "section": "An agent is a chatbot with tools",
+    "text": "An agent is a chatbot with tools\n\n\nYou send a request. The harness also sends a list of tools and what each one does.\nThe model answers with text, or with a request to use a tool.\nThe harness runs the tool and puts the result back into the conversation.\nRepeat until the model answers with text and no tool call.\n\n\nThe loop in step 4 is the whole mechanism. Nothing else is added."
+  },
+  {
+    "objectID": "html/session6.html#what-the-model-is-actually-sent",
+    "href": "html/session6.html#what-the-model-is-actually-sent",
+    "title": "Sunday, September 27",
+    "section": "What the model is actually sent",
+    "text": "What the model is actually sent\nEvery turn, the harness assembles one block of text:\n\n\nFixed each turn\nThe system prompt. The tool definitions. Any instruction files the harness decided to include.\n\n\nGrowing each turn\nYour messages, the model’s replies, and the full output of every tool that has run so far.\n\n\n\nA tool result is text in the conversation, which is why a document the agent read can change what it does next."
+  },
+  {
+    "objectID": "html/session6.html#the-api",
+    "href": "html/session6.html#the-api",
+    "title": "Sunday, September 27",
+    "section": "The API",
+    "text": "The API"
+  },
+  {
+    "objectID": "html/session6.html#a-fourth-door",
+    "href": "html/session6.html#a-fourth-door",
+    "title": "Sunday, September 27",
+    "section": "A fourth door",
+    "text": "A fourth door\n\n\n\nDoor\nWho is at the keyboard\nWhat it is for\n\n\n\n\nChat in a browser\nyou\none question\n\n\nClaude Code\nyou\nwork on a machine\n\n\nA connector\nyou, inside another tool\nreaching your data\n\n\nThe API\na program\nthe same operation, many times\n\n\n\n\nThe first three all assume a person is present. The fourth is the one that does not."
+  },
+  {
+    "objectID": "html/session6.html#why-call-it-directly",
+    "href": "html/session6.html#why-call-it-directly",
+    "title": "Sunday, September 27",
+    "section": "Why call it directly",
+    "text": "Why call it directly\n\n\nRepetition\nThe same judgment applied to five thousand rows. Nobody is going to paste them one at a time.\n\n\nSoftware\nThe model becomes a component inside something else, with your instructions fixed and the user’s input as the variable.\n\n\nControl\nYou pick the model, the temperature, and the system prompt, and they do not change under you.\n\n\nCost\nYou pay per token rather than per seat, which is cheaper for bursts and dearer for constant use."
+  },
+  {
+    "objectID": "html/session6.html#the-request",
+    "href": "html/session6.html#the-request",
+    "title": "Sunday, September 27",
+    "section": "The request",
+    "text": "The request\nimport anthropic\n\nclient = anthropic.Anthropic()          # reads ANTHROPIC_API_KEY\n\nresp = client.messages.create(\n    model=\"claude-sonnet-5\",\n    max_tokens=500,\n    system=\"You classify customer complaints. Answer with one word.\",\n    messages=[{\"role\": \"user\", \"content\": \"The unit arrived cracked.\"}],\n)\n\nprint(resp.content[0].text)\nEverything in that call is something you chose: the model, the ceiling on output, the instructions, and the input."
+  },
+  {
+    "objectID": "html/session6.html#the-key",
+    "href": "html/session6.html#the-key",
+    "title": "Sunday, September 27",
+    "section": "The key",
+    "text": "The key\n\n\nCreate a key in the console. It is shown once.\nPut it in an environment variable, not in the code.\nNever commit it. A key in a public repository is found in minutes.\nSet a spending limit on the key before you use it in a loop.\n\n\n\nStep 4 is the one people skip. A loop over a large file with a bug in the exit condition spends real money."
+  },
+  {
+    "objectID": "html/session6.html#what-you-are-charged-for",
+    "href": "html/session6.html#what-you-are-charged-for",
+    "title": "Sunday, September 27",
+    "section": "What you are charged for",
+    "text": "What you are charged for\n\nInput tokens and output tokens, priced separately, per million.\n\n\n\n\n\n\n\n\nInput\neverything you send — instructions, tool definitions, the whole conversation so far\n\n\nOutput\nonly what comes back\n\n\n\nA conversation costs more each turn because the entire history is sent again every time. In an agent loop, every tool result joins that history."
+  },
+  {
+    "objectID": "html/session6.html#first-calls",
+    "href": "html/session6.html#first-calls",
+    "title": "Sunday, September 27",
+    "section": "First calls",
+    "text": "First calls\nExercise 18 · 30 minutes\n\n\nPut your key in the environment and make one call that returns a sentence.\nChange the system prompt and make the same call. Note what moved.\nRun the same request three times at temperature 1, then three times at 0.\nNow loop it: classify 200 rows of a CSV, one call per row, and write the results to a new column.\nReport what it cost.\n\n\n\nRecord the cost of step 4 per row. Fifty thousand rows is that number times two hundred and fifty."
+  },
+  {
+    "objectID": "html/session6.html#the-loop",
+    "href": "html/session6.html#the-loop",
+    "title": "Sunday, September 27",
+    "section": "The loop",
+    "text": "The loop"
+  },
+  {
+    "objectID": "html/session6.html#what-an-agent-is-exactly",
+    "href": "html/session6.html#what-an-agent-is-exactly",
+    "title": "Sunday, September 27",
+    "section": "What an agent is, exactly",
+    "text": "What an agent is, exactly\n\n\nA model\nWhich one, and at what temperature.\n\n\nA system prompt\nWhat it is for, and what it refuses.\n\n\nA tool list\nEverything it can do. Nothing else is possible.\n\n\nA permission mode\nWhich actions stop for approval.\n\n\nA place to run\nA machine, a directory, a network.\n\n\nA loop\nCall, execute, feed the result back, repeat.\n\n\nThere is no seventh ingredient."
+  },
+  {
+    "objectID": "html/session6.html#three-kinds-of-tools",
+    "href": "html/session6.html#three-kinds-of-tools",
+    "title": "Sunday, September 27",
+    "section": "Three kinds of tools",
+    "text": "Three kinds of tools\n\n\n\n\nWhere the code is\nExample\n\n\n\n\nBuilt in\nin the harness\nread a file, run a command, fetch a page\n\n\nYours\na function you wrote\nlook up a customer in your system\n\n\nSomeone else’s\nan MCP server\nthe Northwind database, EIA, FRED\n\n\n\nAll three arrive at the model the same way: a name, a description, and a parameter schema."
+  },
+  {
+    "objectID": "html/session6.html#a-tool-you-write",
+    "href": "html/session6.html#a-tool-you-write",
+    "title": "Sunday, September 27",
+    "section": "A tool you write",
+    "text": "A tool you write\n@tool(\"order_total\",\n      \"Total revenue for one order. Takes an order id.\",\n      {\"order_id\": int})\nasync def order_total(args):\n    df = pd.read_excel(\"northwind_orderdetails.xlsx\")\n    rows = df[df.OrderID == args[\"order_id\"]]\n    total = (rows.UnitPrice * rows.Quantity).sum()\n    return {\"content\": [{\"type\": \"text\", \"text\": f\"${total:,.2f}\"}]}\nThe description is the interface. The model never sees the code."
+  },
+  {
+    "objectID": "html/session6.html#build-one",
+    "href": "html/session6.html#build-one",
+    "title": "Sunday, September 27",
+    "section": "Build one",
+    "text": "Build one\nExercise 19 · 75 minutes · three stages\n\n\nA chatbot with no tools at all. Ask it how many files are in the directory it is running in. Read the answer carefully.\nGive it one built-in tool — reading files — and ask again.\nWrite a tool of your own over data you brought or the order spreadsheets. Give it a system prompt that says what it is for.\n\n\n\nIn stage 1 the model has no way to see the directory. Keep its answer — you compare it against stage 2."
+  },
+  {
+    "objectID": "html/session6.html#what-stage-1-shows",
+    "href": "html/session6.html#what-stage-1-shows",
+    "title": "Sunday, September 27",
+    "section": "What stage 1 shows",
+    "text": "What stage 1 shows\n\nAsked a question about a filesystem it cannot reach, a model with no tools still answers.\n\n\nIt produces a plausible number\nIt produces plausible filenames\nNothing in the output is marked as unavailable\n\nThe same model with a file-reading tool answers correctly. What changed is not the model. It is that something connected the question to the directory."
+  },
+  {
+    "objectID": "html/session6.html#choosing-what-it-can-do",
+    "href": "html/session6.html#choosing-what-it-can-do",
+    "title": "Sunday, September 27",
+    "section": "Choosing what it can do",
+    "text": "Choosing what it can do"
+  },
+  {
+    "objectID": "html/session6.html#narrow-beats-capable",
+    "href": "html/session6.html#narrow-beats-capable",
+    "title": "Sunday, September 27",
+    "section": "Narrow beats capable",
+    "text": "Narrow beats capable\n\nWhat you leave out of the tool list is not a limitation. It is the security model.\n\n\n\n\n\nA general agent\nA narrow agent\n\n\n\n\nTool list\neverything\nthree tools\n\n\nRuns as\nyou\na service account\n\n\nReaches\nyour whole machine\none dataset\n\n\nRight for\nyour own work\nanything you hand to someone else\n\n\n\n\nBuy for yourself; build for other people."
+  },
+  {
+    "objectID": "html/session6.html#an-agent-whose-tool-is-an-agent",
+    "href": "html/session6.html#an-agent-whose-tool-is-an-agent",
+    "title": "Sunday, September 27",
+    "section": "An agent whose tool is an agent",
+    "text": "An agent whose tool is an agent\n\n\nAn orchestrator receives the question and holds no data of its own.\nIt calls a research agent that can read the public web and nothing private.\nIt calls a data agent that can read your database and cannot reach the internet.\nIt assembles the answer from what both returned.\n\n\nThe two workers never share a context. Neither one holds private data and an outbound channel at the same time — which is the point of the arrangement, and the subject of the rest of this morning."
+  },
+  {
+    "objectID": "html/session6.html#talk-it-out-of-its-job",
+    "href": "html/session6.html#talk-it-out-of-its-job",
+    "title": "Sunday, September 27",
+    "section": "Talk it out of its job",
+    "text": "Talk it out of its job\nExercise 20 · 25 minutes\n\n\nTake the narrow agent you just built.\nAsk it something outside its purpose. See whether the system prompt holds.\nNow ask persuasively — a plausible reason, an appeal to an exception, an instruction that claims to come from you.\nNote which refusals came from the prompt and which came from a tool that does not exist.\n\n\n\nKeep what you found. Some of it is the first item after the break."
+  },
+  {
+    "objectID": "html/session6.html#screen-shares",
+    "href": "html/session6.html#screen-shares",
+    "title": "Sunday, September 27",
+    "section": "Screen shares",
+    "text": "Screen shares\n\nWhat your agent is for, in one sentence\nIts tool list, read out loud\nThe one thing you could talk it into # 13 · Managing security risks\n\nBelieving it, sending it out, and letting it act."
+  },
+  {
+    "objectID": "html/session6.html#three-risks",
+    "href": "html/session6.html#three-risks",
+    "title": "Sunday, September 27",
+    "section": "Three risks",
+    "text": "Three risks\n\n\nBelieving it\nA wrong number, delivered fluently. Friday morning was this one.\n\n\nSending data out\nYour material reaching a third party. A contract problem.\n\n\nLetting it act\nAn agent doing something on your behalf that you did not ask for. An engineering problem.\n\n\nMost corporate AI policy addresses the second one only."
+  },
+  {
+    "objectID": "html/session6.html#sending-data-out",
+    "href": "html/session6.html#sending-data-out",
+    "title": "Sunday, September 27",
+    "section": "Sending data out",
+    "text": "Sending data out"
+  },
+  {
+    "objectID": "html/session6.html#what-a-contract-gives-you",
+    "href": "html/session6.html#what-a-contract-gives-you",
+    "title": "Sunday, September 27",
+    "section": "What a contract gives you",
+    "text": "What a contract gives you\n\n\n\n\n\n\n\n\n\nWhat it adds\nEnough for\n\n\n\n\nOpt out of training\na setting, revocable, data still retained briefly\npersonal, non-sensitive work\n\n\nA signed DPA\nliability, breach notice, audit rights, a subprocessor list\nclient data, regulated data\n\n\nA DPA plus a BAA\nthe same, covering protected health information\nanything under HIPAA\n\n\nAn enterprise agreement\nSLAs, support, SSO, capacity\nscale and operations\n\n\n\n\nThe last row buys operations. The privacy terms are the same as the row above it."
+  },
+  {
+    "objectID": "html/session6.html#what-the-regulation-actually-requires",
+    "href": "html/session6.html#what-the-regulation-actually-requires",
+    "title": "Sunday, September 27",
+    "section": "What the regulation actually requires",
+    "text": "What the regulation actually requires\n\n\nHIPAA\nSatisfactory assurances “must be documented through a written contract” meeting §164.504(e).\nA BAA is required, not advisable. 45 CFR 164.502(e).\n\nSEC Reg S-P\nWritten policies “reasonably designed to require oversight, including through due diligence and monitoring, of service providers.”\n17 CFR 248.30."
+  },
+  {
+    "objectID": "html/session6.html#run-it-where-the-data-already-is",
+    "href": "html/session6.html#run-it-where-the-data-already-is",
+    "title": "Sunday, September 27",
+    "section": "Run it where the data already is",
+    "text": "Run it where the data already is\n\n\n\n\nAWS\nGoogle Cloud\nAzure\n\n\n\n\nClaude\nBedrock\nVertex AI\nFoundry\n\n\nGPT\nBedrock\n\nAzure AI Foundry\n\n\nGemini\n\nnative\n\n\n\n\nIf the data already sits in one of those, the model can run inside the same perimeter. No new vendor, no new trust boundary, and the DPA you already signed still applies."
+  },
+  {
+    "objectID": "html/session6.html#when-the-contract-is-not-enough",
+    "href": "html/session6.html#when-the-contract-is-not-enough",
+    "title": "Sunday, September 27",
+    "section": "When the contract is not enough",
+    "text": "When the contract is not enough\n\n\nSend less — a schema and a few synthetic rows rather than the table.\nAnonymize — strip the names, the account numbers, the identifiers.\nRun a smaller model on your own hardware, so nothing leaves at all.\n\n\n\nA DPA is a promise backed by liability. These three are physical facts about where the data went."
+  },
+  {
+    "objectID": "html/session6.html#letting-it-act",
+    "href": "html/session6.html#letting-it-act",
+    "title": "Sunday, September 27",
+    "section": "Letting it act",
+    "text": "Letting it act"
+  },
+  {
+    "objectID": "html/session6.html#prompt-injection",
+    "href": "html/session6.html#prompt-injection",
+    "title": "Sunday, September 27",
+    "section": "Prompt injection",
+    "text": "Prompt injection\n\nThe model cannot tell an instruction from a piece of content. Both arrive as text in the same conversation.\n\nText placed where the agent will read it — an email, a document, a web page, a spreadsheet cell — is read in the same way as text you typed. An attacker needs no credentials, only a way to get words in front of the model.\n\nOWASP has ranked this first among risks to LLM applications since 2025."
+  },
+  {
+    "objectID": "html/session6.html#echoleak",
+    "href": "html/session6.html#echoleak",
+    "title": "Sunday, September 27",
+    "section": "EchoLeak",
+    "text": "EchoLeak\nCVE-2025-32711 · Microsoft 365 Copilot · June 2025\n\n\nAn attacker mails the victim a message containing instructions invisible to a human reader.\nThe victim asks Copilot to summarize their email. Copilot reads the hidden instructions.\nFollowing them, Copilot places confidential data inside a URL in its response.\nThe victim’s browser fetches that URL automatically.\nThe attacker reads the data out of their own server log.\n\n\nZero clicks by the victim beyond the summary request."
+  },
+  {
+    "objectID": "html/session6.html#three-legs",
+    "href": "html/session6.html#three-legs",
+    "title": "Sunday, September 27",
+    "section": "Three legs",
+    "text": "Three legs\n\n\nPrivate data\nSomething worth taking: client records, financials, an inbox.\n\n\nUntrusted content\nText an outsider can control: a web page, an email, an uploaded file.\n\n\nAn outbound channel\nAny way for text to leave: fetching a URL, sending mail, writing somewhere shared.\n\n\nAll three in one agent is the condition. Remove any one and the attack has nowhere to go."
+  },
+  {
+    "objectID": "html/session6.html#the-question-to-ask-about-any-deployment",
+    "href": "html/session6.html#the-question-to-ask-about-any-deployment",
+    "title": "Sunday, September 27",
+    "section": "The question to ask about any deployment",
+    "text": "The question to ask about any deployment\n\n\nThe check\n\nDoes this agent hold private data, read content an outsider can influence, and have a way to send text out — at the same time?\n\nIt is answerable from an architecture diagram, without knowing anything about how the model works."
+  },
+  {
+    "objectID": "html/session6.html#red-team-a-classmates-agent",
+    "href": "html/session6.html#red-team-a-classmates-agent",
+    "title": "Sunday, September 27",
+    "section": "Red-team a classmate’s agent",
+    "text": "Red-team a classmate’s agent\nExercise 21 · 45 minutes\n\n\nSwap agents with someone. You get their code and their tool list.\nDiagram it: what private data can it reach, what untrusted text does it read, how could text leave.\nPlant an injection in something it will read — a file, a row, a page it fetches.\nTry to make it act on the injection. Record what worked and what it refused.\nGive the author two changes: one to the prompt, one to the tool list. Say which one you would actually rely on.\n\n\n\nUse synthetic data. Nothing in this exercise touches anything real."
+  },
+  {
+    "objectID": "html/session6.html#making-it-impossible-rather-than-unlikely",
+    "href": "html/session6.html#making-it-impossible-rather-than-unlikely",
+    "title": "Sunday, September 27",
+    "section": "Making it impossible rather than unlikely",
+    "text": "Making it impossible rather than unlikely"
+  },
+  {
+    "objectID": "html/session6.html#two-ways-to-stop-the-same-thing",
+    "href": "html/session6.html#two-ways-to-stop-the-same-thing",
+    "title": "Sunday, September 27",
+    "section": "Two ways to stop the same thing",
+    "text": "Two ways to stop the same thing\n\n\nGovernance\nEvery call is inspected as it is made and allowed or refused.\nWorks on the calls you anticipated. Judgment happens at run time, every time.\n\nIsolation\nThe route does not exist.\nWorks on calls nobody anticipated. Nothing is judged, because nothing is possible.\n\n\nReal systems use both. The order matters: isolate first, then govern what remains."
+  },
+  {
+    "objectID": "html/session6.html#the-split",
+    "href": "html/session6.html#the-split",
+    "title": "Sunday, September 27",
+    "section": "The split",
+    "text": "The split\n\n\nThe agent that reads untrusted content gets no private data and no credentials.\nThe agent that holds private data has no route to the internet.\nAn orchestrator calls both as tools and never exposes one to the other’s context.\n\n\nNeither worker ever holds all three legs. That property is a fact about the network and the tool lists, not a rule either agent has been asked to follow."
+  },
+  {
+    "objectID": "html/session6.html#your-container-as-an-example",
+    "href": "html/session6.html#your-container-as-an-example",
+    "title": "Sunday, September 27",
+    "section": "Your container, as an example",
+    "text": "Your container, as an example\n\n\n\nFilesystem\nits own — no other student’s files exist inside it\n\n\nProcesses\nits own — you cannot see anyone else’s\n\n\nNetwork\nits own namespace, and it cannot reach a peer container\n\n\nThe gate\nyour terminal sits behind your own login\n\n\n\nYou spent four days inside a working example of the pattern."
+  },
+  {
+    "objectID": "html/session6.html#monday",
+    "href": "html/session6.html#monday",
+    "title": "Sunday, September 27",
+    "section": "Monday",
+    "text": "Monday"
+  },
+  {
+    "objectID": "html/session6.html#write-the-plan",
+    "href": "html/session6.html#write-the-plan",
+    "title": "Sunday, September 27",
+    "section": "Write the plan",
+    "text": "Write the plan\nExercise 22 · 40 minutes\nOne page, covering:\n\n\nThe workflow. Who does it now, how often, and how long it takes.\nWhat you would build — a skill, an app, or an agent — and who uses it.\nThe data it touches, and where that data lives today.\nThe tool list, written out. What it can do and what it deliberately cannot.\nThe three-leg check, answered.\nWhat it costs to run, and what has to be true for it to be worth that."
+  },
+  {
+    "objectID": "html/session6.html#pitches",
+    "href": "html/session6.html#pitches",
+    "title": "Sunday, September 27",
+    "section": "Pitches",
+    "text": "Pitches\n35 minutes\nThree minutes each. The room responds as the people who would have to approve it, fund it, or use it.\nFor each plan, someone in the room names:\n\nThe step that will not survive contact with the real workflow\nThe one item on the tool list they would remove"
+  },
+  {
+    "objectID": "html/session6.html#what-you-have",
+    "href": "html/session6.html#what-you-have",
+    "title": "Sunday, September 27",
+    "section": "What you have",
+    "text": "What you have\n\n\nA habit\nDescribe the data, require the code, check the counts, reconcile a second way.\n\n\nA file\nA skill, published, that a colleague can install in two commands.\n\n\nA question\nPrivate data, untrusted content, an outbound channel — asked of anything before it is switched on."
+  },
+  {
+    "objectID": "html/session4.html#this-morning",
+    "href": "html/session4.html#this-morning",
+    "title": "Saturday, September 26 · Morning",
+    "section": "This morning",
+    "text": "This morning\n\nYesterday ended with a number you could defend. This morning it becomes something somebody else can open.\n\n\n\nCreating docs\nExcel, Word and PowerPoint out of the machine — including into the template your firm already uses.\n\n\nCreating apps\nHow software actually works, then build one, then put it on the internet."
+  },
+  {
+    "objectID": "html/session4.html#office-files-are-archives",
+    "href": "html/session4.html#office-files-are-archives",
+    "title": "Saturday, September 26 · Morning",
+    "section": "Office files are archives",
+    "text": "Office files are archives\n\nA .docx, .xlsx or .pptx is a ZIP file containing XML.\n\nUnzip one and the document’s structure, styles and data are readable as text. That is why an agent can edit an existing file in place — keeping its template, its headers and its formatting — instead of rebuilding it.\n\nSo “edit the deck the firm already uses” opens the existing file, while “build me a deck like ours” starts from nothing."
+  },
+  {
+    "objectID": "html/session4.html#excel-that-is-a-model-not-a-table",
+    "href": "html/session4.html#excel-that-is-a-model-not-a-table",
+    "title": "Saturday, September 26 · Morning",
+    "section": "Excel that is a model, not a table",
+    "text": "Excel that is a model, not a table\n\n\nA table\nValues pasted into cells. Change an assumption and the analysis is rerun somewhere else, by you.\n\nA model\nInputs in labelled cells, formulas referencing them, a chart bound to the range. Change an assumption in the sheet and everything moves.\n\nAsk for formulas rather than values, and name the input cells."
+  },
+  {
+    "objectID": "html/session4.html#what-the-recipient-opens",
+    "href": "html/session4.html#what-the-recipient-opens",
+    "title": "Saturday, September 26 · Morning",
+    "section": "What the recipient opens",
+    "text": "What the recipient opens\n\n\n\n\n\n\n\n\nRecipient\nFormat\nWhat it has to carry\n\n\n\n\nAn analyst who will extend it\n.xlsx with formulas\ninputs, formulas, the definition\n\n\nA manager approving something\n.pptx or one page\nthe number, the chart, the caveat\n\n\nA job that runs every week\n.csv plus a script\nreproducibility, not formatting\n\n\nThe record\n.docx or PDF\nthe method, in sentences"
+  },
+  {
+    "objectID": "html/session4.html#the-deck-already-has-a-house-style",
+    "href": "html/session4.html#the-deck-already-has-a-house-style",
+    "title": "Saturday, September 26 · Morning",
+    "section": "The deck already has a house style",
+    "text": "The deck already has a house style\n\nAsking for “a deck in our style” produces something that looks approximately right and is wrong in every detail a partner will notice.\n\nA .pptx template is not a picture of a design. It is a file holding named slide layouts, a theme with the firm’s exact colours and fonts, and placeholder positions measured to the point.\n\nOpen one with unzip -l. The layouts are in ppt/slideLayouts/, the palette and typefaces in ppt/theme/theme1.xml."
+  },
+  {
+    "objectID": "html/session4.html#fill-the-template-do-not-imitate-it",
+    "href": "html/session4.html#fill-the-template-do-not-imitate-it",
+    "title": "Saturday, September 26 · Morning",
+    "section": "Fill the template, do not imitate it",
+    "text": "Fill the template, do not imitate it\n\n\nGenerating a deck\nThe model invents a layout. Colours are close. The logo is missing, the footer is wrong, and the title sits four points off.\n\nFilling a template\nThe file is opened, a named layout is chosen, and text goes into the placeholders that layout defines. Everything else is inherited.\n\nSame request, two implementations. The second is the one you can send to a client."
+  },
+  {
+    "objectID": "html/session4.html#a-skill-that-knows-your-template",
+    "href": "html/session4.html#a-skill-that-knows-your-template",
+    "title": "Saturday, September 26 · Morning",
+    "section": "A skill that knows your template",
+    "text": "A skill that knows your template\n\n\nPut the .pptx in the skill’s folder. The template is an asset, not a description.\nList the layouts by name, and say in prose what each one is for.\nSay which placeholder takes what — title, body, source line, page number.\nState the rules a human would know: how many bullets before a slide splits, where the source line goes, what never gets edited.\n\n\n\n\nPrompt\n\nRead template.pptx. List every slide layout by name and index, and for each one the placeholders it defines with their type and position. Write that into SKILL.md as a table, then write the instructions for filling it."
+  },
+  {
+    "objectID": "html/session4.html#turn-your-own-template-into-a-skill",
+    "href": "html/session4.html#turn-your-own-template-into-a-skill",
+    "title": "Saturday, September 26 · Morning",
+    "section": "Turn your own template into a skill",
+    "text": "Turn your own template into a skill\nExercise 10 · 40 minutes\n\n\nUpload a deck your firm actually uses. Any recent one will do.\nHave the layouts and placeholders enumerated, and check the list against what you see in PowerPoint.\nWrite the skill, with the file in its folder.\nBuild a three-slide deck from yesterday’s country analysis using it.\nOpen the result next to a real deck and find what is off.\n\n\n\nStep 5 finds the thing the template cannot carry — usually a rule that lives in somebody’s head rather than in the file."
+  },
+  {
+    "objectID": "html/session4.html#build-the-deliverable",
+    "href": "html/session4.html#build-the-deliverable",
+    "title": "Saturday, September 26 · Morning",
+    "section": "Build the deliverable",
+    "text": "Build the deliverable\nExercise 11 · 30 minutes\n\n\nTake your corrected country analysis.\nProduce it in the format the person who would receive it actually opens.\nPut the revenue definition and the row counts on the face of it.\nOpen the file in the file browser and look at it the way they would.\n\n\n\nIf you built a workbook, change one input cell and check that the chart moves."
+  },
+  {
+    "objectID": "html/session4.html#when-a-skill-is-not-enough",
+    "href": "html/session4.html#when-a-skill-is-not-enough",
+    "title": "Saturday, September 26 · Morning",
+    "section": "When a skill is not enough",
+    "text": "When a skill is not enough\n\n\nA skill\nFor someone who has the agent, the files, and a reason to be at a command line.\n\nAn app\nFor someone with a browser and a question. No install, no terminal, no account.\n\nSame job, different audience. Which one you build follows from who is going to run it."
+  },
+  {
+    "objectID": "html/session4.html#frontend-and-backend",
+    "href": "html/session4.html#frontend-and-backend",
+    "title": "Saturday, September 26 · Morning",
+    "section": "Frontend and backend",
+    "text": "Frontend and backend\n\n\nFrontend\nThe browser. HTML, CSS and JavaScript — it draws the page and collects the clicks.\n\nBackend\nA program on a server that listens continuously for requests. Yours will be Python.\n\n\nYou open a URL. The browser sends a GET request. The server sends back HTML, CSS and JavaScript. The browser interprets that and shows you a page.\n\n\nRight-click any web page and choose View Page Source. That is the frontend code, exactly as the backend handed it over."
+  },
+  {
+    "objectID": "html/session4.html#then-you-click-something",
+    "href": "html/session4.html#then-you-click-something",
+    "title": "Saturday, September 26 · Morning",
+    "section": "Then you click something",
+    "text": "Then you click something\n\nA POST request carries data the other way — a form, a country you typed. The server does what it was written to do and replies."
+  },
+  {
+    "objectID": "html/session4.html#running-locally",
+    "href": "html/session4.html#running-locally",
+    "title": "Saturday, September 26 · Morning",
+    "section": "Running locally",
+    "text": "Running locally\n\n\nlocalhost\n127.0.0.1 is the loopback address. The browser asks the machine it is already running on, and the request never reaches a network.\n\n\nPorts\nOne machine runs many programs listening at once. The port number tells the operating system which of them gets the request.\n\n\nYou write the app as a .py file. FastAPI writes one; uvicorn runs it and starts it listening on a port."
+  },
+  {
+    "objectID": "html/session4.html#three-shapes",
+    "href": "html/session4.html#three-shapes",
+    "title": "Saturday, September 26 · Morning",
+    "section": "Three shapes",
+    "text": "Three shapes\n\n\nOne page, no server\nEverything runs in the browser. A single HTML file you can mail to someone.\n\n\nA small server\nPython behind the page. Needed when there is a database, a key, or a file to write.\n\n\nA server that calls a model\nThe page collects a question; the server sends it to the model with your key, not the user’s."
+  },
+  {
+    "objectID": "html/session4.html#one-page-no-server",
+    "href": "html/session4.html#one-page-no-server",
+    "title": "Saturday, September 26 · Morning",
+    "section": "One page, no server",
+    "text": "One page, no server\nExercise 12 · 25 minutes\n\n\nBuild a single HTML file that does one useful calculation from your own work.\nOpen it in the browser from the file browser. No server involved.\nMail it to yourself and open it on your phone.\n\n\n\nThis is the shape most business tools should be and almost never are. Nothing to deploy, nothing to break, nothing to pay for."
+  },
+  {
+    "objectID": "html/session4.html#a-page-with-python-behind-it",
+    "href": "html/session4.html#a-page-with-python-behind-it",
+    "title": "Saturday, September 26 · Morning",
+    "section": "A page with Python behind it",
+    "text": "A page with Python behind it\nExercise 13 · 40 minutes\n\n\nTake the country analysis. Put a dropdown of countries on a page.\nHave the server read the spreadsheets, compute the answer for the country chosen, and return it.\nServe it on port 8000 and open it at your own address on the lab server.\nWatch the terminal while you click. Every request appears there.\n\n\n\nStep 4 is where GET and POST stop being abstract."
+  },
+  {
+    "objectID": "html/session4.html#hand-it-to-your-neighbour",
+    "href": "html/session4.html#hand-it-to-your-neighbour",
+    "title": "Saturday, September 26 · Morning",
+    "section": "Hand it to your neighbour",
+    "text": "Hand it to your neighbour\nExercise 14 · 25 minutes\n\n\nGive your address to the person next to you and say nothing else.\nWatch them use it. Write down every place they hesitate.\nFix the one that cost them the most time.\nSwap back and check the fix on their machine, not yours."
+  },
+  {
+    "objectID": "html/session4.html#deploying-an-app",
+    "href": "html/session4.html#deploying-an-app",
+    "title": "Saturday, September 26 · Morning",
+    "section": "Deploying an app",
+    "text": "Deploying an app"
+  },
+  {
+    "objectID": "html/session4.html#platform-as-a-service",
+    "href": "html/session4.html#platform-as-a-service",
+    "title": "Saturday, September 26 · Morning",
+    "section": "Platform as a service",
+    "text": "Platform as a service\n\nYou hand a host your repository. It builds the app, runs it, and puts it behind a public URL. There is no server for you to administer.\n\nRailway, Render, Koyeb and Heroku all do this. We use Koyeb, which has a free tier.\n\n\nCreate a free account at koyeb.com.\nIn the control panel, create an API access token. Koyeb shows it once, so copy it then.\nAdd it to your .env file in the container."
+  },
+  {
+    "objectID": "html/session4.html#what-has-to-travel",
+    "href": "html/session4.html#what-has-to-travel",
+    "title": "Saturday, September 26 · Morning",
+    "section": "What has to travel",
+    "text": "What has to travel\n\n\nPrompt\n\nMy goal is to push this app to GitHub as a new public repo and then create a Koyeb service connected to it. Walk me through it one step at a time.\n\n\nThe host builds only what is in the repository. Data files you told git to ignore never arrive, and the app fails on a machine you cannot see. Nothing from .env belongs in a public repo — secrets go in Koyeb’s environment settings instead."
+  },
+  {
+    "objectID": "html/session4.html#put-it-on-the-internet",
+    "href": "html/session4.html#put-it-on-the-internet",
+    "title": "Saturday, September 26 · Morning",
+    "section": "Put it on the internet",
+    "text": "Put it on the internet\nExercise 15 · 45 minutes\n\n\nPush the app from Exercise 13 to a public GitHub repository.\nCreate the Koyeb service and watch the build log.\nWhen it fails, read the log before asking. It is almost always a missing file or a missing key.\nOpen the public URL on your phone, off the lab wifi.\nSend the URL to two people in the room.\n\n\n\nA custom domain is optional and takes ten minutes: buy one, create an API token at the registrar, and have the DNS record written for you."
+  },
+  {
+    "objectID": "html/session4.html#what-you-just-learned-about-deployment",
+    "href": "html/session4.html#what-you-just-learned-about-deployment",
+    "title": "Saturday, September 26 · Morning",
+    "section": "What you just learned about deployment",
+    "text": "What you just learned about deployment\n\nWhat runs on your machine does not run anywhere else until you make it\nThe repository is the unit of deployment, and it is not the same as your folder\nSecrets live in the host’s settings, never in the code\nThe build log says what went wrong, in order, every time"
+  },
+  {
+    "objectID": "html/session4.html#this-afternoon",
+    "href": "html/session4.html#this-afternoon",
+    "title": "Saturday, September 26 · Morning",
+    "section": "This afternoon",
+    "text": "This afternoon\nThe app you just deployed answers from what you wrote into it. This afternoon it answers from your own documents instead."
+  },
+  {
+    "objectID": "html/session2.html#this-afternoon",
+    "href": "html/session2.html#this-afternoon",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "This afternoon",
+    "text": "This afternoon\n\n\nPersistent instructions\nStanding rules the agent reads every turn, and tasks written down once.\n\n\nConnectors and plugins\nTools on somebody else’s server, and folders of skills other people published.\n\n\nAgent harnesses\nClaude Code is one program around the model. What the others decided differently.\n\n\nFour hands-on blocks. By six you will have written a skill, connected to data you do not hold, and installed plugins other people wrote."
+  },
+  {
+    "objectID": "html/session2.html#the-repeated-instruction",
+    "href": "html/session2.html#the-repeated-instruction",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "The repeated instruction",
+    "text": "The repeated instruction\n\nThis morning you typed the same four things into every prompt: describe the data first, show the code, report row counts, reconcile a second way.\n\nEach of those is a standing instruction about how you want work done. Typing them into each prompt makes them optional, and one of them gets left out at four in the afternoon."
+  },
+  {
+    "objectID": "html/session2.html#everything-arrives-as-one-block-of-text",
+    "href": "html/session2.html#everything-arrives-as-one-block-of-text",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "Everything arrives as one block of text",
+    "text": "Everything arrives as one block of text\nEach turn, the harness assembles the request from parts you can control:\n\n\n\nPart\nSet by\nWhen it is sent\n\n\n\n\nSystem prompt\nthe tool\nevery turn\n\n\nTool definitions\nthe tool and your config\nevery turn\n\n\nCLAUDE.md\nyou\nevery turn\n\n\nSkill descriptions\nyou\nevery turn, one line each\n\n\nA skill’s body\nyou\nonly when that skill is used\n\n\nThe conversation\nyou and the tools\ngrowing, every turn"
+  },
+  {
+    "objectID": "html/session2.html#the-cost-of-always",
+    "href": "html/session2.html#the-cost-of-always",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "The cost of always",
+    "text": "The cost of always\n\nA file read on every turn is paid for on every turn — in money, in latency, and in the model’s attention.\n\n\n\nCLAUDE.md\nShort and always present. Standing rules that apply to everything you do in that folder.\n\n\nA skill\nOne line always present — its description. The body arrives only when the description matches what you asked for.\n\n\nA CLAUDE.md that runs to three thousand words is paid for on every turn, including the turns none of it applies to."
+  },
+  {
+    "objectID": "html/session2.html#what-belongs-in-each",
+    "href": "html/session2.html#what-belongs-in-each",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "What belongs in each",
+    "text": "What belongs in each\n\n\nStanding rules\n\nHow you want numbers handled\nWhat the folders hold\nConventions everything here follows\nAnything you have corrected twice\n\n\n\nNot standing rules\n\nSteps for one particular task\nAnything longer than a page\nBackground that can be looked up\nA tool you use once a month"
+  },
+  {
+    "objectID": "html/session2.html#write-your-standing-rules",
+    "href": "html/session2.html#write-your-standing-rules",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "Write your standing rules",
+    "text": "Write your standing rules\nExercise 5 · 30 minutes\n\n\nCreate ~/CLAUDE.md in your container.\nWrite the four rules from this morning in your own words, and two more of your own.\nStart a new conversation and give it a task that would break one of the rules.\nChange a rule and watch the behavior change.\n\n\n\nAsk it to name the rules it is following. If it cannot, the file is not being read."
+  },
+  {
+    "objectID": "html/session2.html#skills",
+    "href": "html/session2.html#skills",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "Skills",
+    "text": "Skills"
+  },
+  {
+    "objectID": "html/session2.html#a-skill-is-a-folder",
+    "href": "html/session2.html#a-skill-is-a-folder",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "A skill is a folder",
+    "text": "A skill is a folder\ncountry-report/\n  SKILL.md          the instructions\n  references/       longer material, read only when needed\n  scripts/          code the skill runs rather than regenerates\nSKILL.md opens with two lines of metadata and then plain prose:\n---\nname: country-report\ndescription: Build the monthly revenue-by-country report from the\n  order spreadsheets. Use when asked for the country report, the\n  monthly revenue rollup, or revenue by market.\n---"
+  },
+  {
+    "objectID": "html/session2.html#the-description-is-the-trigger",
+    "href": "html/session2.html#the-description-is-the-trigger",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "The description is the trigger",
+    "text": "The description is the trigger\n\n\nDoes not fire\n“Helps with reporting.”\n\nFires\n“Build the monthly revenue-by-country report from the order spreadsheets. Use when asked for the country report, the monthly revenue rollup, or revenue by market.”\n\nThe description is the only part of a skill always in front of the model, and it decides whether the rest is ever read. Write the words the person asking would use."
+  },
+  {
+    "objectID": "html/session2.html#what-goes-in-the-body",
+    "href": "html/session2.html#what-goes-in-the-body",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "What goes in the body",
+    "text": "What goes in the body\n\n\nWhat the task produces, stated first.\nWhere the inputs are, by path.\nThe steps in order, including the checks.\nWhat to do when something is missing.\nWhat the output looks like when it is right.\n\n\n\nProse, not pseudocode. The reader is a model that already knows Python and does not know your files."
+  },
+  {
+    "objectID": "html/session2.html#scripts-beat-instructions",
+    "href": "html/session2.html#scripts-beat-instructions",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "Scripts beat instructions",
+    "text": "Scripts beat instructions\n\n\nInstructions\nThe code is written fresh each time. Same intent, a different implementation, different bugs.\n\nA script\nThe code is written once and tested. The skill says when to run it and what the arguments mean."
+  },
+  {
+    "objectID": "html/session2.html#three-ways-to-invoke",
+    "href": "html/session2.html#three-ways-to-invoke",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "Three ways to invoke",
+    "text": "Three ways to invoke\n\n\n\n\n\n\n\n\n\nHow\nWhen\n\n\n\n\nSlash command\n/country-report\nyou know exactly what you want\n\n\nBy name\n“use the country report skill”\nyou are half sure\n\n\nAutomatically\n“build me the March rollup”\nthe description matched\n\n\n\nThe third only happens if the description was written for it."
+  },
+  {
+    "objectID": "html/session2.html#already-in-your-container",
+    "href": "html/session2.html#already-in-your-container",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "Already in your container",
+    "text": "Already in your container\n\n\n\nSkill\nWhat it does\n\n\n\n\nxlsx\nbuilds and edits Excel workbooks, with formulas and charts\n\n\ndocx\nthe same for Word, including templates\n\n\npptx\nthe same for PowerPoint, including an existing deck\n\n\nfinance-data\npulls prices, fundamentals and macro series\n\n\nweb-app\nscaffolds an app you can serve on port 8000\n\n\nskill-creator\nwrites and tests a new skill\n\n\n\nOpen one. It is the same kind of file you are about to write."
+  },
+  {
+    "objectID": "html/session2.html#write-a-skill",
+    "href": "html/session2.html#write-a-skill",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "Write a skill",
+    "text": "Write a skill\nExercise 6 · 50 minutes\n\n\nPick something you do at work more than once a month, with inputs and a shape.\nRun /skill-creator and work through it, answering in your own vocabulary.\nPut a real input file in the container and run the skill on it.\nIn a fresh conversation, ask for the task in the words a colleague would use.\nFix the description until it fires.\n\n\n\nStep 4 is the test. A skill that fires only when you name it has not been described yet."
+  },
+  {
+    "objectID": "html/session2.html#the-problem-a-standard-solves",
+    "href": "html/session2.html#the-problem-a-standard-solves",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "The problem a standard solves",
+    "text": "The problem a standard solves\n\nEvery tool wants to reach every data source. Without a standard, that is one integration per pair.\n\n\n\nN × M integrations without a protocol\n\n\nN + M with one\n\n\nA server written for nothing in particular is reachable from every client that speaks the protocol."
+  },
+  {
+    "objectID": "html/session2.html#what-a-connector-actually-sends",
+    "href": "html/session2.html#what-a-connector-actually-sends",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "What a connector actually sends",
+    "text": "What a connector actually sends\n\n\nThe client connects to the server and asks what it offers.\nThe server returns a list of tools: each with a name, a description in English, and the parameters it takes.\nThat list goes into the model’s context alongside its built-in tools.\nThe model asks for one by name. The client calls the server and puts the result back in the conversation.\n\n\n\nThe model does not know a connector from a built-in tool. Both are entries in the same list."
+  },
+  {
+    "objectID": "html/session2.html#a-tool-definition",
+    "href": "html/session2.html#a-tool-definition",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "A tool definition",
+    "text": "A tool definition\n{\n  \"name\": \"run_sql\",\n  \"description\": \"Run a read-only SQL query against the Northwind\n                  database and return the rows. SELECT only.\",\n  \"input_schema\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"query\": {\"type\": \"string\", \"description\": \"A SELECT statement\"}\n    },\n    \"required\": [\"query\"]\n  }\n}\nThe description is what the model reads to decide whether to use it. A badly described tool is an unused tool."
+  },
+  {
+    "objectID": "html/session2.html#where-the-call-is-made-from",
+    "href": "html/session2.html#where-the-call-is-made-from",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "Where the call is made from",
+    "text": "Where the call is made from\n\nIn Claude Cowork, and in most setups a firm will hand you, the machine the agent’s shell runs on has no route to the internet. The connector works anyway.\n\n\n\nAt the shell\ncurl https://api.stlouisfed.org/...\nRefused. Everything leaving that machine passes a proxy that allows a short list of addresses, and that is not one of them.\n\nThrough the connector\nfred_get_observations(\"UNRATE\")\nRows come back. Same machine, same second, same model.\n\n\nBecause your machine never places the call. The client end sits outside it, calls FRED itself, and hands the rows back into the conversation. Your key goes with it and is never on the machine to steal."
+  },
+  {
+    "objectID": "html/session2.html#a-narrower-door-not-a-hole",
+    "href": "html/session2.html#a-narrower-door-not-a-hole",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "A narrower door, not a hole",
+    "text": "A narrower door, not a hole\n\n\nOpen the network instead\nAllow the machine to reach stlouisfed.org and it can send anything to any address there, in any form it likes.\n\nLeave it shut, add a connector\nIt can call run_sql with a SELECT. That is the entire new capability.\n\nThe connector is the smaller of the two. That is why the network stays off and the connector goes on, and not the other way around.\n\nIt costs something. The connector reaches out from outside the sandbox holding your credentials, so a sentence in a file it reads can ask for that call. Cutting the machine off from the network did not cut off the connector. Sunday morning."
+  },
+  {
+    "objectID": "html/session2.html#servers-you-can-connect-today",
+    "href": "html/session2.html#servers-you-can-connect-today",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "Servers you can connect today",
+    "text": "Servers you can connect today\n\n\n\nServer\nAddress\nSign-in\n\n\n\n\nNorthwind orders\nnorthwind-mcp.rice-business.org/mcp\nnone\n\n\nEnergy data (EIA)\neia.rice-business.org/mcp\nnone\n\n\nEconomic data (FRED)\nfred.kerryback.com/mcp\nnone\n\n\n\nSame three servers, reachable from Claude Code in your container and from Claude Desktop on your laptop. Neither was written for either one."
+  },
+  {
+    "objectID": "html/session2.html#connect-one",
+    "href": "html/session2.html#connect-one",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "Connect one",
+    "text": "Connect one\nExercise 7 · 40 minutes\n\n\nConnect the Northwind server, and then one of the two data services.\nAsk what tools each one offers, and read the descriptions.\nAsk the Northwind server which countries generated the most revenue, and have it show the SQL.\nAsk something that needs the connector and a file in your container at the same time.\nTry to make the database server do something other than read.\n\n\n\nKeep that number. Tomorrow you compute it yourself from spreadsheets and reconcile the two."
+  },
+  {
+    "objectID": "html/session2.html#where-the-limit-lives",
+    "href": "html/session2.html#where-the-limit-lives",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "Where the limit lives",
+    "text": "Where the limit lives"
+  },
+  {
+    "objectID": "html/session2.html#read-only-enforced-four-ways",
+    "href": "html/session2.html#read-only-enforced-four-ways",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "Read-only, enforced four ways",
+    "text": "Read-only, enforced four ways\n\n\n\nWhere\nWhat refuses\n\n\n\n\nThe database\na role without write permission\n\n\nThe application\na whitelist of allowed operations\n\n\nThe connector\nrun_sql rejecting anything that is not a SELECT\n\n\nThe tool list\nno write tool exists to call\n\n\n\nThe model is not consulted at any of them. That is the property that makes them worth having."
+  },
+  {
+    "objectID": "html/session2.html#instructions-are-not-a-limit",
+    "href": "html/session2.html#instructions-are-not-a-limit",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "Instructions are not a limit",
+    "text": "Instructions are not a limit\n\n\nA rule in a prompt\n“Never modify the database.”\nText in a conversation, competing with other text in the same conversation.\n\nA tool that does not exist\nThere is nothing to call.\nNo wording reaches it, because nothing is being persuaded.\n\n\nEverything you can talk it out of was a request, not a constraint."
+  },
+  {
+    "objectID": "html/session2.html#mail-and-calendar",
+    "href": "html/session2.html#mail-and-calendar",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "Mail and calendar",
+    "text": "Mail and calendar\n\nThe same shape applied to an inbox: an agent that reads everything and sends nothing.\n\n\n\nIt reads\nThreads, calendar entries, attachments. Enough to tell you what is waiting and what it is about.\n\n\nIt drafts\nReplies, parked where you can read them.\n\n\nIt does not send\nNo send tool, no delete tool. Sending stays a thing you do."
+  },
+  {
+    "objectID": "html/session2.html#why-that-split-is-the-whole-design",
+    "href": "html/session2.html#why-that-split-is-the-whole-design",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "Why that split is the whole design",
+    "text": "Why that split is the whole design\nAn agent reading your mail is holding two things at once: your private correspondence, and text written by people outside your organization.\nGive it an outbound channel and those two facts combine into a third. We come back to this on Sunday, in detail."
+  },
+  {
+    "objectID": "html/session2.html#installing-plugins",
+    "href": "html/session2.html#installing-plugins",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "Installing plugins",
+    "text": "Installing plugins"
+  },
+  {
+    "objectID": "html/session2.html#what-you-install",
+    "href": "html/session2.html#what-you-install",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "What you install",
+    "text": "What you install\n\nA plugin is a folder somebody else published. Installing it adds their work to your Claude in one step.\n\n\n\nWhat it can carry\nSkills, slash commands, subagents, hooks, and MCP servers.\n\n\nWhat you get\nEvery file and script in it, without being told which ones to copy where."
+  },
+  {
+    "objectID": "html/session2.html#two-commands",
+    "href": "html/session2.html#two-commands",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "Two commands",
+    "text": "Two commands\n/plugin marketplace add kerryback/skills\n/plugin install finance-data@kerryback\nThe first points Claude at a public repository holding an index of plugins. The second installs one of them. /plugin on its own lists what you have."
+  },
+  {
+    "objectID": "html/session2.html#a-marketplace-you-can-use-today",
+    "href": "html/session2.html#a-marketplace-you-can-use-today",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "A marketplace you can use today",
+    "text": "A marketplace you can use today\nkerryback/skills holds fifteen. Seven worth your time:\n\n\n\n\n\n\n\nfinance-data\nprices, fundamentals, SEC filings and macro series, as CSV\n\n\nelegant-pdf\nbranded flyers, programs and reports as print-quality PDF\n\n\ncritique\nparallel reviewers on work Claude produced, and what to do\n\n\nhuman-write\nprose that does not read as machine-generated\n\n\nshoji2\nQuarto slide decks in the theme these slides use\n\n\nvoiceover\na narrated MP4 and transcript from a deck\n\n\nsmithers\na read-only desk over your mail and calendar"
+  },
+  {
+    "objectID": "html/session2.html#read-it-before-you-install",
+    "href": "html/session2.html#read-it-before-you-install",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "Read it before you install",
+    "text": "Read it before you install\n\nAn installed plugin runs with your permissions, on your machine, against your files.\n\n\n\nOpen the repository and read the SKILL.md of anything you are about to install.\nCheck what it runs: a script, a command, an MCP server reaching outside.\nInstall into a container first when you are not sure.\n\n\n\nSame question as Sunday morning’s, asked earlier: what can it reach, and what can leave."
+  },
+  {
+    "objectID": "html/session2.html#install-and-try",
+    "href": "html/session2.html#install-and-try",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "Install and try",
+    "text": "Install and try\nExercise 8 · 40 minutes\n\n\nAdd the kerryback/skills marketplace and list what is in it.\nInstall two plugins that look useful for your own work.\nRun one of them on your own data or your own document.\nOpen its SKILL.md and read how it does what it does.\nSay what you would change, and what you would have written differently.\n\n\n\nYou wrote one of these earlier. Step 4 is reading somebody else’s."
+  },
+  {
+    "objectID": "html/session2.html#four-rungs",
+    "href": "html/session2.html#four-rungs",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "Four rungs",
+    "text": "Four rungs\n\n\n\n\nWhere it lives\nWho has it\n\n\n\n\nA prompt\nin your head\nyou, when you remember\n\n\nCLAUDE.md\none folder\nanyone working in that folder\n\n\nA skill\na file\nyou, everywhere, when it matches\n\n\nA plugin\na repository someone published\nanyone who installs it\n\n\n\nThe same instruction each time, moved somewhere that outlasts the conversation."
+  },
+  {
+    "objectID": "html/session2.html#same-model-different-program",
+    "href": "html/session2.html#same-model-different-program",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "Same model, different program",
+    "text": "Same model, different program\nThe model is a string in a config file. Everything you experience as “the tool” is the program wrapped around it: what it sends each turn, which tools it offers, how it asks permission, and where it runs."
+  },
+  {
+    "objectID": "html/session2.html#the-harness-is-the-other-five",
+    "href": "html/session2.html#the-harness-is-the-other-five",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "The harness is the other five",
+    "text": "The harness is the other five\n\nYou pick the model. Everything else on that list is supplied by the program around it.\n\nBuying a harness — Claude Code, or one of the open ones — is buying somebody’s answers to those five questions. The answers are not the same, and this year they stopped being the same in ways that show up in the output."
+  },
+  {
+    "objectID": "html/session2.html#what-actually-differs",
+    "href": "html/session2.html#what-actually-differs",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "What actually differs",
+    "text": "What actually differs\n\n\n\n\n\n\n\n\nThe question it answers\n\n\n\n\nModel coupling\none vendor’s models, or any provider you can point it at\n\n\nContext\nwhat gets sent each turn, and what happens when the window fills\n\n\nTool surface\nfour tools, or forty\n\n\nPermissions\nhow it stops — approval rules, an OS sandbox, or a container\n\n\nExtension\nplugins, MCP servers, skills, instruction files\n\n\nWhere it lives\na terminal, an editor, a web page, or a library you import\n\n\n\n\nEvery one of these is a design choice somebody made and wrote down. None of them is the model."
+  },
+  {
+    "objectID": "html/session2.html#the-open-field",
+    "href": "html/session2.html#the-open-field",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "The open field",
+    "text": "The open field\n\n\n\n\n\n\n\n\nClaude Code\nAnthropic models only\nthe reference implementation\n\n\nCodex\nOpenAI models only\nRust; OS-level sandbox by default\n\n\nOpenCode\n75+ providers\nthe mature open alternative; per-agent permissions\n\n\nDeepSeek Harness\nany provider\neverything is a plugin, including the loop\n\n\nPi\nany provider\nfour tools and a very short prompt\n\n\nGoose · OpenHands\nany provider\nneutral governance; container-first\n\n\nGemini CLI · Qwen Code\ntheir own models\nvendor CLIs on the same pattern\n\n\n\nEverything but Claude Code is open source, MIT or Apache — you can read the loop. Two of those still only talk to their maker’s models."
+  },
+  {
+    "objectID": "html/session2.html#thick-or-thin",
+    "href": "html/session2.html#thick-or-thin",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "Thick or thin",
+    "text": "Thick or thin\n\n\nClaude Code\nForty-plus tools. A layered system prompt with a cached boundary. Four fallback strategies when the context fills. Subagents that fork and run in the background.\nThe harness does a great deal on your behalf, and you did not write any of it.\n\nPi\nFour tools — read, write, edit, run a command. A system prompt under a thousand tokens. No subagents, no plan mode, no MCP.\nAnything else, the agent writes for itself as an extension while you watch.\n\n\nDatabricks benchmarked both and found the thin one matched or beat the thick one at a fraction of the cost, because it sent roughly three times less context per turn."
+  },
+  {
+    "objectID": "html/session2.html#the-permission-model",
+    "href": "html/session2.html#the-permission-model",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "The permission model",
+    "text": "The permission model\n\n\n\nHarness\nHow it stops you\n\n\n\n\nClaude Code\nrules you configure, checked before each call\n\n\nCodex\nthe operating system — Seatbelt on macOS, Landlock on Linux\n\n\nOpenHands\na Docker container the agent cannot leave\n\n\nCline\na human clicking approve, every time\n\n\nOpenCode\nper-agent tool permissions, granted once and remembered\n\n\n\n\nThe distinction from this morning, in a different form: a mode that asks you, versus a boundary that makes the call impossible. Two of these five are the second kind."
+  },
+  {
+    "objectID": "html/session2.html#why-any-of-this-is-on-the-slide",
+    "href": "html/session2.html#why-any-of-this-is-on-the-slide",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "Why any of this is on the slide",
+    "text": "Why any of this is on the slide\n\nA benchmark number is a model and a harness together. Change the harness and the number moves.\n\n\n\nThe same model scores differently under two harnesses on the same benchmark.\nPapers report the model and omit the harness.\nRemoving most of an agent’s tools has been shown to raise its score, not lower it.\nSo a leaderboard tells you less than it appears to.\n\n\nWhen somebody tells you a model can or cannot do something, the useful question is what it was wearing at the time."
+  },
+  {
+    "objectID": "html/session2.html#tomorrow",
+    "href": "html/session2.html#tomorrow",
+    "title": "Thursday, September 24 · Afternoon",
+    "section": "Tomorrow",
+    "text": "Tomorrow\nEverything today has been about setting the agent up. Tomorrow you point it at data and find out whether you can trust what comes back."
   },
   {
     "objectID": "syllabus.html",
     "href": "syllabus.html",
-    "title": "",
+    "title": "MGMT 803: Gen AI for Business",
     "section": "",
-    "text": "Kerry Back (kerryback@gmail.com) J. Howard Creekmore Professor of Finance and Professor of Economics\n\n\n\n\nThu, Sep 24 — 8:00 AM – 6:00 PM\nFri, Sep 25 — 8:00 AM – 12:30 PM\nSat, Sep 26 — 8:00 AM – 6:00 PM\nSun, Sep 27 — 8:00 AM – 12:30 PM\n\n\n\n\nTBD\n\n\n\n\nTBD\n\n\n\n\nTBD\n\n\n\nThe Rice University honor code applies to all work in this course.\n\n\n\nAny student with a documented disability requiring accommodations in this course is encouraged to contact me outside of class. All discussions will remain confidential. Any adjustments or accommodations regarding assignments or the final exam must be made in advance. Students with disabilities should also contact Disability Support Services in the Allen Center."
+    "text": "Instructor\nKerry Back\nJ. Howard Creekmore Professor of Finance and Professor of Economics\nkerryback@gmail.com\n\n\nMeeting Times and Locations\n\n\n\n\n\n\n\n\nDay\nTimes\nRoom\n\n\n\n\nThursday, September 24\n8:00 AM – 6:00 PM\nMcNair Hall 316\n\n\nFriday, September 25\n8:00 AM – 12:30 PM\nMcNair Hall 316\n\n\nSaturday, September 26\n8:00 AM – 6:00 PM\nMcNair Hall 317\n\n\nSunday, September 27\n8:00 AM – 12:30 PM\nMcNair Hall 317\n\n\n\n\n\nCourse Description\nGenerative AI moved into ordinary business work faster than any recent technology. McKinsey’s global survey found the share of organizations regularly using generative AI in at least one business function rose from roughly a third in 2023 to about two-thirds a year later, and higher still since. The Census Bureau’s Business Trends and Outlook Survey, which asks the narrower question of whether a firm used AI to produce a good or service in the past two weeks, shows the rate roughly doubling over the same period, with adoption concentrated in information and professional services. The gap between those two numbers is itself informative: many people are using these tools, and far fewer organizations have built anything durable around them.\nBusiness uses fall into a few broad categories. There is individual productivity — the drafting, summarizing, analysis, and coding that one person does faster with a model beside them. There is internal deployment — putting a model to work on the firm’s own documents and systems, in workflows that several people depend on. There are customer-facing applications, where the model talks to people outside the firm. And there is the reshaping of the product itself, where AI is what is being sold rather than what makes it. The categories differ less in the technology than in what goes wrong: a bad answer you catch yourself is a nuisance, a bad answer inside a workflow is a process failure, and a bad answer in front of a customer is a liability.\nThis course covers the first two. We start with individual productivity, because the judgment you need there — knowing what the model is doing, what it is good at, how it fails, and how to check it — is the same judgment every larger deployment rests on. We then move to work that outlives the session you did it in: writing a repeated task down so others can run it, connecting a model to data it was never trained on, generating the document or application someone else opens, and assembling an agent with a deliberately chosen list of things it can do. The course closes on the questions a firm has to answer before switching any of this on — where the data goes, what an outside document can talk the system into doing, and what it costs to run.\nThe course is hands-on throughout. You work in your own container on the course lab server, and you show what you built to the room.\n\n\nLearning Objectives\nBy the end of the course, you should be able to:\n\nWork fluently with generative AI in your own tasks — choosing the right tool for the job, directing it well, and verifying what it gives back, with a working understanding of how these models produce their answers and where that mechanism fails.\nTurn ad hoc use into something durable — a documented procedure, a connection to your own data, a deliverable someone else opens, or an agent with a defined job — that a colleague can run without you.\nEvaluate a proposed deployment on the terms a firm actually decides on: which model and where it runs, what data it touches, what it is permitted to do, and what it costs relative to what it saves.\nRecognize and contain the risks that come with letting a model act — confidentiality, prompt injection, and the exfiltration of data through the system’s own channels — and say what would have to be true for a deployment to be safe rather than merely lucky.\n\n\n\nTopic Schedule\n\n\n\n\n\n\n\n\n\nWhen\nTopics\n\n\n\n\n1\nThu, Sep 24\n8:00 AM – 12:30 PM\n1 How a language model works\n2 Chat, CLI, and sandbox\n3 Prompting tips\n\n\n2\nThu, Sep 24\n1:30 – 6:00 PM\n4 Persistent instructions and memory\n5 Connectors and plugins\n6 Agent harnesses\n\n\n3\nFri, Sep 25\n8:00 AM – 12:30 PM\n7 Working with data\n\n\n4\nSat, Sep 26\n8:00 AM – 12:30 PM\n8 Creating docs\n9 Creating apps\n\n\n5\nSat, Sep 26\n1:30 – 6:00 PM\n10 Retrieval augmented generation\n11 Open source models\n\n\n6\nSun, Sep 27\n8:00 AM – 12:30 PM\n12 Creating agents\n13 Managing security risks\n\n\n\n\n\nGrading\nGrades will be based on in-class exercises, screen shares, and class participation.\n\n\nHonor Code\nThe Rice University honor code applies to all work in this course.\n\n\nDisability Accommodations\nAny student with a documented disability requiring accommodations in this course is encouraged to contact me outside of class. All discussions will remain confidential. Any adjustments or accommodations regarding assignments or the final exam must be made in advance. Students with disabilities should also contact Disability Support Services in the Allen Center."
   },
   {
-    "objectID": "syllabus.html#mgmt-803-fall-2026",
-    "href": "syllabus.html#mgmt-803-fall-2026",
-    "title": "",
-    "section": "",
-    "text": "Kerry Back (kerryback@gmail.com) J. Howard Creekmore Professor of Finance and Professor of Economics\n\n\n\n\nThu, Sep 24 — 8:00 AM – 6:00 PM\nFri, Sep 25 — 8:00 AM – 12:30 PM\nSat, Sep 26 — 8:00 AM – 6:00 PM\nSun, Sep 27 — 8:00 AM – 12:30 PM\n\n\n\n\nTBD\n\n\n\n\nTBD\n\n\n\n\nTBD\n\n\n\nThe Rice University honor code applies to all work in this course.\n\n\n\nAny student with a documented disability requiring accommodations in this course is encouraged to contact me outside of class. All discussions will remain confidential. Any adjustments or accommodations regarding assignments or the final exam must be made in advance. Students with disabilities should also contact Disability Support Services in the Allen Center."
+    "objectID": "html/session1.html#four-days",
+    "href": "html/session1.html#four-days",
+    "title": "Thursday, September 24 · Morning",
+    "section": "Four days",
+    "text": "Four days\n\n\n\n\nWhen\nTopics\n\n\n\n\n1\nThu 8:00\nHow a model works · chat, CLI, sandbox · prompting\n\n\n2\nThu 1:30\nInstructions · connectors and plugins · harnesses\n\n\n3\nFri 8:00\nWorking with data\n\n\n4\nSat 8:00\nCreating docs · creating apps\n\n\n5\nSat 1:30\nRetrieval augmented generation · open source models\n\n\n6\nSun 8:00\nCreating agents · managing security risks\n\n\n\n\nEvery session has hands-on blocks in your own container. Bring a laptop and stay on wifi for four days."
+  },
+  {
+    "objectID": "html/session1.html#this-morning",
+    "href": "html/session1.html#this-morning",
+    "title": "Thursday, September 24 · Morning",
+    "section": "This morning",
+    "text": "This morning\n\n\nHow the model works\nTokens, vectors, one prediction at a time, and what training added on top.\n\n\nChat, CLI, and sandbox\nThe same model reached from a chat window, a command line, and a machine you were given.\n\n\nPrompting tips\nPlanning, requiring code for numbers, and checking what comes back."
+  },
+  {
+    "objectID": "html/session1.html#tokenization",
+    "href": "html/session1.html#tokenization",
+    "title": "Thursday, September 24 · Morning",
+    "section": "Tokenization",
+    "text": "Tokenization\nText is cut into pieces from a fixed vocabulary before the model sees any of it.\n\"The cat sat on the mat\"  -&gt;  [\"The\", \" cat\", \" sat\", \" on\", \" the\", \" mat\"]\n\n\"Unbelievable\"            -&gt;  [\"Un\", \"believ\", \"able\"]\nCommon words stay whole; rare and long words break into pieces. A typical vocabulary runs to about 100,000 tokens.\n\nNumbers break on the same rules, which have nothing to do with arithmetic. 13,963,378.65 reaches the model as a handful of unrelated pieces."
+  },
+  {
+    "objectID": "html/session1.html#the-whole-task",
+    "href": "html/session1.html#the-whole-task",
+    "title": "Thursday, September 24 · Morning",
+    "section": "The whole task",
+    "text": "The whole task\n\nGiven the tokens so far, predict the token that comes next. That is the entire operation.\n\nEverything a model appears to do — answering, summarizing, writing code, refusing — is that one prediction, repeated.\n\nThe input can currently run to about a million tokens, roughly two-thirds of the Harry Potter saga. That context window has grown a thousandfold since GPT-3 in 2020."
+  },
+  {
+    "objectID": "html/session1.html#vectors",
+    "href": "html/session1.html#vectors",
+    "title": "Thursday, September 24 · Morning",
+    "section": "Vectors",
+    "text": "Vectors\nThe model does not work with tokens. It works with numbers.\n\n\nEach token is a list\n“king” becomes 4,096 numbers. “queen” becomes 4,096 numbers that are close to them.\nTokens used in similar contexts end up near each other.\n\n\nThe space is mostly empty\nThere are far more possible vectors than there are tokens, so most points in the space name nothing.\nThe prediction can land between tokens."
+  },
+  {
+    "objectID": "html/session1.html#a-neural-network-is-a-function",
+    "href": "html/session1.html#a-neural-network-is-a-function",
+    "title": "Thursday, September 24 · Morning",
+    "section": "A neural network is a function",
+    "text": "A neural network is a function\n\n\nThe idea\n\\(y = 4x\\) is a function. The 4 is a parameter.\nChange it to 3 and you have the same structure with different behavior.\n\nThe scale\nSame idea with hundreds of billions of parameters, arranged as a transformer — the architecture published by Google researchers in 2017."
+  },
+  {
+    "objectID": "html/session1.html#training",
+    "href": "html/session1.html#training",
+    "title": "Thursday, September 24 · Morning",
+    "section": "Training",
+    "text": "Training\n\n\nWhat is learned\nThe vector for every token, and every parameter in the network.\nBoth are adjusted together to reduce prediction error on the training text.\n\n\nWhat it takes\nTrillions of words. Thousands of GPUs for weeks or months. Tens to hundreds of millions of dollars for one run.\n\n\n\nNothing is looked up or stored as fact. The arrangement captures how words are used, which is why it recalls common things reliably and rare things unreliably."
+  },
+  {
+    "objectID": "html/session1.html#the-pipeline",
+    "href": "html/session1.html#the-pipeline",
+    "title": "Thursday, September 24 · Morning",
+    "section": "The pipeline",
+    "text": "The pipeline\n\n\nTokenize the input.\nLook up the vector for each token.\nFeed the vectors into the network.\nThe network produces one output vector.\nFind which token vectors are closest to it.\nEmit a token, append it to the input, and start again at step 1."
+  },
+  {
+    "objectID": "html/session1.html#temperature",
+    "href": "html/session1.html#temperature",
+    "title": "Thursday, September 24 · Morning",
+    "section": "Temperature",
+    "text": "Temperature\nThe network does not output one token. It outputs a probability for every token in the vocabulary. Temperature controls how that distribution is sampled.\n\n\n\nSetting\nBehavior\n\n\n\n\nNear 0\nThe highest-probability token every time. Repeatable.\n\n\nNear 1\nSampled from the distribution. Different each run.\n\n\nHigher\nLow-probability tokens get picked. Text degrades.\n\n\n\n\nIn a chatbot, including Claude Desktop, temperature is fixed near 1 and you cannot change it. Through the API you can."
+  },
+  {
+    "objectID": "html/session1.html#from-prediction-to-conversation",
+    "href": "html/session1.html#from-prediction-to-conversation",
+    "title": "Thursday, September 24 · Morning",
+    "section": "From prediction to conversation",
+    "text": "From prediction to conversation\nA model trained only to predict the next token continues your text. It does not answer a question.\n\n\nRole tokens. The text is wrapped in markers: &lt;|user|&gt; your question &lt;|assistant|&gt;.\nInstruction tuning. The model is further trained on examples where what follows &lt;|assistant|&gt; is a useful reply.\nReinforcement learning from human feedback. Raters score replies, and the model is trained toward what raters preferred.\n\n\nThe mechanism did not change. What changed is which continuation is the likely one."
+  },
+  {
+    "objectID": "html/session1.html#reasoning-models",
+    "href": "html/session1.html#reasoning-models",
+    "title": "Thursday, September 24 · Morning",
+    "section": "Reasoning models",
+    "text": "Reasoning models\nThe same trick applied again: train the model to write out its working before it answers.\n\n\nHow it was trained\nReinforcement learning on problems whose answers can be checked — mathematics, code, puzzles — rewarding the chains of tokens that arrived at a correct answer.\n\n\nWhy it helps\nThe model holds no state between tokens. The intermediate tokens are the only place a partial result can live, so writing them out is the computation.\n\n\n\nThe thinking you see may be a summary of a much longer chain, and you are charged for the whole chain as output tokens."
+  },
+  {
+    "objectID": "html/session1.html#what-thinking-longer-buys",
+    "href": "html/session1.html#what-thinking-longer-buys",
+    "title": "Thursday, September 24 · Morning",
+    "section": "What thinking longer buys",
+    "text": "What thinking longer buys\n\n\nMoves\nProblems that decompose: multi-step arithmetic, code that has to satisfy several constraints, planning a sequence of actions.\n\nDoes not move\nRecall of a fact it never learned, questions of taste, and anything where the first token was already right.\n\nMore tokens at answer time, rather than a larger model, is the dial. You pay for it in latency and in output tokens."
+  },
+  {
+    "objectID": "html/session1.html#what-that-explains",
+    "href": "html/session1.html#what-that-explains",
+    "title": "Thursday, September 24 · Morning",
+    "section": "What that explains",
+    "text": "What that explains\n\n\nFluent and wrong\nPlausible text is exactly what the objective rewards. Correct text is a side effect of plausible text usually being correct.\n\n\nConfident either way\nNothing in the mechanism distinguishes a recalled fact from a well-formed guess.\n\n\nArithmetic\nPredicting the digits of a sum is a different operation from adding. Code does the second."
+  },
+  {
+    "objectID": "html/session1.html#ask-the-same-thing-three-ways",
+    "href": "html/session1.html#ask-the-same-thing-three-ways",
+    "title": "Thursday, September 24 · Morning",
+    "section": "Ask the same thing three ways",
+    "text": "Ask the same thing three ways\n\n“Here are four spreadsheets of orders. Which countries generated the most revenue?”\n\n\n\n\n\n\n\n\nDoor\nWhat happens\n\n\n\n\nChat in a browser\nYou upload the files. It answers in the window.\n\n\nClaude Code on your laptop\nIt opens the files where they sit, writes code, saves a chart next to them.\n\n\nClaude Code in a container\nThe same, on a machine that is not yours, holding nothing but what you put there."
+  },
+  {
+    "objectID": "html/session1.html#same-model-different-harness",
+    "href": "html/session1.html#same-model-different-harness",
+    "title": "Thursday, September 24 · Morning",
+    "section": "Same model, different harness",
+    "text": "Same model, different harness\n\n\nThe model\nIdentical in all three. Same weights, same training, same tendencies.\nIt has no memory of you, no filesystem, and no way to run anything.\n\nThe harness\nThe program around the model: what tools it offers, what it puts in front of the model each turn, and what it does with the answer.\nEverything that differs between the three doors is here."
+  },
+  {
+    "objectID": "html/session1.html#sign-in",
+    "href": "html/session1.html#sign-in",
+    "title": "Thursday, September 24 · Morning",
+    "section": "Sign in",
+    "text": "Sign in\nExercise 1 · 20 minutes\n\n\nGo to lab803.kerryback.com and sign in with the username and password you were mailed.\nOpen the tab labelled Claude. You are at a command line inside a container that belongs only to you.\nType ls and then pwd. Note where you are.\nAsk it, in English: what files are in this folder, and what can you reach on this machine?\nRead the answer against what you saw in step 3.\n\n\n\nThree tabs: a Claude terminal, a plain terminal, and a file browser. Port 8000 is yours for anything you serve."
+  },
+  {
+    "objectID": "html/session1.html#which-tools-each-door-offers",
+    "href": "html/session1.html#which-tools-each-door-offers",
+    "title": "Thursday, September 24 · Morning",
+    "section": "Which tools each door offers",
+    "text": "Which tools each door offers\n\n\n\n\n\n\n\n\n\nChat in a browser\nClaude Code\n\n\n\n\nWrite and run code\nyes, in a sandbox\nyes, on the machine\n\n\nRead your files\nwhat you upload\nanything it has permission to open\n\n\nSearch and fetch the web\nyes\nyes\n\n\nRun shell commands\nno\nyes\n\n\nInstall software\nno\nyes\n\n\nUse your credentials\nno\nwhatever is on that machine"
+  },
+  {
+    "objectID": "html/session1.html#permissions",
+    "href": "html/session1.html#permissions",
+    "title": "Thursday, September 24 · Morning",
+    "section": "Permissions",
+    "text": "Permissions\n\n\nAsk\nEvery action that changes something stops for approval. The default.\n\n\nAccept edits\nFile edits go through; commands still stop.\n\n\nBypass\nNothing stops. Reasonable in a container that holds nothing you would miss.\n\n\nThe permission mode and the tool list are two different limits. One asks you each time; the other decides what is possible at all."
+  },
+  {
+    "objectID": "html/session1.html#what-this-door-reaches",
+    "href": "html/session1.html#what-this-door-reaches",
+    "title": "Thursday, September 24 · Morning",
+    "section": "What this door reaches",
+    "text": "What this door reaches\nExercise 2 · 25 minutes\n\n\nAsk it to count how many files are in the container and how large they are altogether.\nAsk it to install a Python package it does not have, then use it.\nAsk a question it can only answer by running something — the size of the largest file, the number of lines in the longest one.\n\n\nWatch what appears between your question and the answer: the command it chose, the output it got back, and what it did with output it did not expect.\n\nWrite down the first command that failed and what it did next."
+  },
+  {
+    "objectID": "html/session1.html#why-a-machine-of-its-own",
+    "href": "html/session1.html#why-a-machine-of-its-own",
+    "title": "Thursday, September 24 · Morning",
+    "section": "Why a machine of its own",
+    "text": "Why a machine of its own"
+  },
+  {
+    "objectID": "html/session1.html#it-runs-as-you",
+    "href": "html/session1.html#it-runs-as-you",
+    "title": "Thursday, September 24 · Morning",
+    "section": "It runs as you",
+    "text": "It runs as you\n\nAn agent on your laptop has your filesystem, your network, your VPN, your saved logins, and your keys.\n\nThat is what makes it useful for your own work, and it is the reason the same setup is hard to hand to anyone else. There is no boundary between the task you asked for and everything else you can reach."
+  },
+  {
+    "objectID": "html/session1.html#what-a-container-changes",
+    "href": "html/session1.html#what-a-container-changes",
+    "title": "Thursday, September 24 · Morning",
+    "section": "What a container changes",
+    "text": "What a container changes\n\n\nYour laptop\nEverything you have access to.\nA mistake reaches the real thing.\n\nYour container\nOne home directory, the software installed for this course, and outbound internet.\nA mistake reaches what you copied in.\n\n\nSame agent, same model, same permission modes. The difference is the size of what it can touch."
+  },
+  {
+    "objectID": "html/session1.html#your-container",
+    "href": "html/session1.html#your-container",
+    "title": "Thursday, September 24 · Morning",
+    "section": "Your container",
+    "text": "Your container\n\n\n\n\n\n\n\nIsolation\nIts own filesystem, processes, users, and network namespace\n\n\nBetween students\nYour container cannot reach any other student’s\n\n\nSign-in\nYour terminal and files sit behind your own login\n\n\nInstalled\nPython, git, Node, and a set of skills we will use later in the week\n\n\nYours\n~/ and port 8000"
+  },
+  {
+    "objectID": "html/session1.html#first-data-question",
+    "href": "html/session1.html#first-data-question",
+    "title": "Thursday, September 24 · Morning",
+    "section": "First data question",
+    "text": "First data question\nExercise 3 · 30 minutes\n\n\nIn ~/data you have several spreadsheets of orders, customers, and products.\nAsk for the schema first: what tables, what columns, how many rows, what date range.\nThen ask one question that needs more than one file to answer.\nHave it save a chart as a PNG and open it in the file browser.\n\n\n\nFour or five of you will show what you got at the end of the block. Have the chart open and be ready to say which files the number came from."
+  },
+  {
+    "objectID": "html/session1.html#plan-before-executing",
+    "href": "html/session1.html#plan-before-executing",
+    "title": "Thursday, September 24 · Morning",
+    "section": "Plan before executing",
+    "text": "Plan before executing\nAsk for the approach before any work happens, and read it.\n\n\nPrompt\n\nBefore you change anything: tell me how you would do this, what files you would touch, and what could go wrong. Do not start yet.\n\nA plan can be corrected in a sentence. An execution has to be undone in every file it touched."
+  },
+  {
+    "objectID": "html/session1.html#numbers-need-code",
+    "href": "html/session1.html#numbers-need-code",
+    "title": "Thursday, September 24 · Morning",
+    "section": "Numbers need code",
+    "text": "Numbers need code\n\nIf a number appears in prose and no code produced it, it was predicted.\n\n\n\nPrompt\n\nCompute this in Python and show me the code and the output. Do not report a number you did not compute.\n\nThe same rule applies to counts, percentages, dates, and anything summed across rows."
+  },
+  {
+    "objectID": "html/session1.html#verify-claims",
+    "href": "html/session1.html#verify-claims",
+    "title": "Thursday, September 24 · Morning",
+    "section": "Verify claims",
+    "text": "Verify claims\n\n\nAsk what would falsify it\n“What would have to be true for this to be wrong, and how would I check?”\n\n\nMake it show its source\nThe file, the row count, the line of code. A citation you can open beats a summary you cannot."
+  },
+  {
+    "objectID": "html/session1.html#generatorcritic",
+    "href": "html/session1.html#generatorcritic",
+    "title": "Thursday, September 24 · Morning",
+    "section": "Generator–critic",
+    "text": "Generator–critic\n\n\nGet the first answer.\nStart a fresh conversation and give it the answer without the reasoning that produced it.\nAsk it to find what is wrong with it.\nTake the objections back to the first conversation.\n\n\nThe second conversation has no stake in the first answer, which is the point of separating them."
+  },
+  {
+    "objectID": "html/session1.html#what-not-to-do",
+    "href": "html/session1.html#what-not-to-do",
+    "title": "Thursday, September 24 · Morning",
+    "section": "What not to do",
+    "text": "What not to do\n\nAccept a number in prose that no code produced\nLet it decide the method when you know the method\nAsk a question so broad that any answer looks like an answer\nApprove a plan you did not read\nAssume a second run gives the same result"
+  },
+  {
+    "objectID": "html/session1.html#planning-and-a-critic",
+    "href": "html/session1.html#planning-and-a-critic",
+    "title": "Thursday, September 24 · Morning",
+    "section": "Planning and a critic",
+    "text": "Planning and a critic\nExercise 4 · 30 minutes\n\n\nTake the question from Exercise 3 and ask for a plan first. Read it before approving.\nRun it. Require code for every number.\nOpen a second terminal, paste the result with none of the working, and ask what is wrong with it.\nBring the objections back and see which survive.\n\n\n\nWrite down one objection the critic raised that you would not have thought of."
+  },
+  {
+    "objectID": "html/session1.html#this-afternoon",
+    "href": "html/session1.html#this-afternoon",
+    "title": "Thursday, September 24 · Morning",
+    "section": "This afternoon",
+    "text": "This afternoon\n\nEverything this morning was you typing into a fresh conversation. This afternoon is how to stop retyping it, and how to give the agent tools that are not on this machine."
+  },
+  {
+    "objectID": "html/session3.html#this-morning",
+    "href": "html/session3.html#this-morning",
+    "title": "Friday, September 25",
+    "section": "This morning",
+    "text": "This morning\n\nOne question, five spreadsheets, and a morning: which countries generated the most revenue, and how do you know.\n\n\n\nWhere the data is\nWhat an organization actually holds, which system is the record, and why the copies disagree.\n\n\nWhether to believe it\nThe joins, columns and blanks that produce a wrong total with no error message."
+  },
+  {
+    "objectID": "html/session3.html#we-should-point-ai-at-our-data",
+    "href": "html/session3.html#we-should-point-ai-at-our-data",
+    "title": "Friday, September 25",
+    "section": "“We should point AI at our data”",
+    "text": "“We should point AI at our data”\n\n\nHeard in every company this year\n\nWe should point AI at our data.\n\n\n\nWhich data?\n\n\nIn whose system?\n\n\nEntered by whom, and when?"
+  },
+  {
+    "objectID": "html/session3.html#what-the-surveys-say",
+    "href": "html/session3.html#what-the-surveys-say",
+    "title": "Friday, September 25",
+    "section": "What the surveys say",
+    "text": "What the surveys say\n\n\n897 applications in the average enterprise\n\n\n29% of them connected to anything else\n\n\n7% of leaders call their data ready for AI\n\n\n\nIn the same surveys, 19% of data is called siloed or unusable, and 70% of leaders believe their most valuable insights are inside that 19%."
+  },
+  {
+    "objectID": "html/session3.html#where-a-number-actually-lives",
+    "href": "html/session3.html#where-a-number-actually-lives",
+    "title": "Friday, September 25",
+    "section": "Where a number actually lives",
+    "text": "Where a number actually lives\n\n\n\n\n\n\n\n\n\nHolds\nReachable by\n\n\n\n\nThe operational system\nwhat is true right now\nits own screens\n\n\nThe warehouse\na nightly copy, reshaped for questions\nanalysts with SQL\n\n\nA dashboard\nfour questions somebody chose in 2024\nanyone\n\n\nAn extract\none analyst’s copy, as of some Tuesday\nwhoever they mailed it to\n\n\nA shared drive\nthe documents none of the above hold\nanyone who can find it"
+  },
+  {
+    "objectID": "html/session3.html#four-systems-four-meanings-of-customer",
+    "href": "html/session3.html#four-systems-four-meanings-of-customer",
+    "title": "Friday, September 25",
+    "section": "Four systems, four meanings of “customer”",
+    "text": "Four systems, four meanings of “customer”\n\n\n\nIn this system\nA customer is\nIdentified by\n\n\n\n\nSales\nan organization you might sell to\nan account number\n\n\nFinance\nan entity you invoice\na bill-to number\n\n\nThe warehouse\nan address you deliver to\na ship-to code\n\n\nSupport\nwhoever opened the ticket\nan email address\n\n\n\nFour counts of customers, all correct, none equal."
+  },
+  {
+    "objectID": "html/session3.html#why-you-cannot-just-query-the-live-system",
+    "href": "html/session3.html#why-you-cannot-just-query-the-live-system",
+    "title": "Friday, September 25",
+    "section": "Why you cannot just query the live system",
+    "text": "Why you cannot just query the live system\n\n\nIt is built for writing\nThousands of tiny writes a minute, tuned for that rather than for scanning a year.\n\n\nYour report competes\nA heavy query slows the screen somebody is typing an order into.\n\n\nIt knows one corner\nFinance cannot see sales. Neither can see the warehouse.\n\n\nIt holds now\nThe current address and the current price. Not last year’s."
+  },
+  {
+    "objectID": "html/session3.html#three-kinds-of-copy-routinely-confused",
+    "href": "html/session3.html#three-kinds-of-copy-routinely-confused",
+    "title": "Friday, September 25",
+    "section": "Three kinds of copy, routinely confused",
+    "text": "Three kinds of copy, routinely confused\n\n\nThe warehouse: a governed copy, refreshed on a schedule, with definitions written down.\nThe extract: a file somebody pulled once, for one question, and never refreshed.\nThe export: a spreadsheet mailed to someone who now treats it as the source.\n\n\n\nTwo of the three age silently. The number in the deck was right when it was pulled."
+  },
+  {
+    "objectID": "html/session3.html#the-vocabulary-you-need-for-the-rest-of-the-day",
+    "href": "html/session3.html#the-vocabulary-you-need-for-the-rest-of-the-day",
+    "title": "Friday, September 25",
+    "section": "The vocabulary you need for the rest of the day",
+    "text": "The vocabulary you need for the rest of the day\n\n\n\nSystem of record\nthe one place a fact is authoritative\n\n\nSilo\na store nothing else can reach\n\n\nSemantics\nwhether two columns with one name mean one thing\n\n\nLineage\nwhere this number came from, through every hop\n\n\nQuality\nblanks, duplicates, and values nobody validates\n\n\n\n\nEvery one of these shows up in the next four hours as a reason a total is wrong."
+  },
+  {
+    "objectID": "html/session3.html#five-files-one-question",
+    "href": "html/session3.html#five-files-one-question",
+    "title": "Friday, September 25",
+    "section": "Five files, one question",
+    "text": "Five files, one question\n\nNorthwind: a supplier of specialty foods to restaurants and delis. 500 orders, 93 customers, 77 products, 8 categories, spanning 2012 to 2023.\n\nSmall enough to hold in your head, and shaped like a company a thousand times larger. What you are about to do to it is what an analyst does to the real thing."
+  },
+  {
+    "objectID": "html/session3.html#what-you-are-building",
+    "href": "html/session3.html#what-you-are-building",
+    "title": "Friday, September 25",
+    "section": "What you are building",
+    "text": "What you are building\n\nFive spreadsheets in ~/data: orders, order details, customers, products, categories. One question — which countries generated the most revenue, and how do you know.\n\n\nRead all five parts before you start. Part D is the point of the exercise. Get there even if you have to shorten Part C."
+  },
+  {
+    "objectID": "html/session3.html#part-a-describe-it-first",
+    "href": "html/session3.html#part-a-describe-it-first",
+    "title": "Friday, September 25",
+    "section": "Part A — describe it first",
+    "text": "Part A — describe it first\n15 minutes\nBefore any analysis, have it report — with the code shown:\n\n\nEvery file: row count, column names, data types.\nThe date range of the orders, and whether each date column is a date or a string.\nMissing values by column, as counts rather than “a few”.\nWhich column joins to which, and whether each join is one-to-one or one-to-many.\n\n\n\nWrite the join map on paper. You will need it in Part D."
+  },
+  {
+    "objectID": "html/session3.html#part-b-revenue-by-country",
+    "href": "html/session3.html#part-b-revenue-by-country",
+    "title": "Friday, September 25",
+    "section": "Part B — revenue by country",
+    "text": "Part B — revenue by country\n25 minutes\n\n\nCompute revenue per order line, then total by the customer’s country.\nThere are two columns that could be the price. Say in writing which one you used and why.\nReport the row count after every merge and compare it to the row count before.\nRank the countries and take the top five.\n\n\n\nThere is no discount column and no freight column in these files. Whatever you report is price times quantity, and the deliverable has to say so."
+  },
+  {
+    "objectID": "html/session3.html#part-c-a-deliverable",
+    "href": "html/session3.html#part-c-a-deliverable",
+    "title": "Friday, September 25",
+    "section": "Part C — a deliverable",
+    "text": "Part C — a deliverable\n20 minutes\n\n\nOption 1\nAn Excel workbook: the country table on one sheet, a chart, and a cell stating the revenue definition in words.\n\n\nOption 2\nA five-slide deck: the question, the top five, the chart, the definition, and what you checked.\n\n\nEither one states the revenue definition on its face. A number without its definition cannot be reconciled against anyone else’s."
+  },
+  {
+    "objectID": "html/session3.html#part-d-verify-it",
+    "href": "html/session3.html#part-d-verify-it",
+    "title": "Friday, September 25",
+    "section": "Part D — verify it",
+    "text": "Part D — verify it\n25 minutes\n\n\nRecompute the total by a second route — a different tool, a different order of operations, or straight from the raw files with no merges at all.\nReconcile the two to the cent.\nIf they disagree, find the cause before changing either one.\nList three things that could have made your number wrong, and how you ruled each one out.\n\n\n\nIf the second route reproduces the first to the cent, say so on the deliverable."
+  },
+  {
+    "objectID": "html/session3.html#part-e-if-you-finish",
+    "href": "html/session3.html#part-e-if-you-finish",
+    "title": "Friday, September 25",
+    "section": "Part E — if you finish",
+    "text": "Part E — if you finish\nremaining time\n\nBreak revenue out by month and by category\nFind a month that does not follow the months around it\nSay what in the data produces it, and show the rows"
+  },
+  {
+    "objectID": "html/session3.html#when-you-are-done",
+    "href": "html/session3.html#when-you-are-done",
+    "title": "Friday, September 25",
+    "section": "When you are done",
+    "text": "When you are done\nHave open and ready to share:\n\nYour number, and the definition behind it\nYour chart\nYour second route, and what it gave\nThe three things that could have gone wrong"
+  },
+  {
+    "objectID": "html/session3.html#what-went-wrong",
+    "href": "html/session3.html#what-went-wrong",
+    "title": "Friday, September 25",
+    "section": "What went wrong",
+    "text": "What went wrong"
+  },
+  {
+    "objectID": "html/session3.html#four-failures-that-raise-no-error",
+    "href": "html/session3.html#four-failures-that-raise-no-error",
+    "title": "Friday, September 25",
+    "section": "Four failures that raise no error",
+    "text": "Four failures that raise no error\n\n\nThe wrong join\nRows that did not match are dropped. The total is smaller and nothing says so.\n\n\nThe wrong column\nTwo files use one name for two different things, and the merge keeps both.\n\n\nThe unstated assumption\nWhat counts as revenue, which rows are excluded, which dates are in scope.\n\n\nInvention\nA number in prose that no line of code produced."
+  },
+  {
+    "objectID": "html/session3.html#what-is-actually-in-these-files",
+    "href": "html/session3.html#what-is-actually-in-these-files",
+    "title": "Friday, September 25",
+    "section": "What is actually in these files",
+    "text": "What is actually in these files\n\n\n\nFile\nRows\n\n\n\n\n\nOrders\n500\nJuly 2012 to October 2023\n\n\nOrder details\n18,976\n38 lines per order on average\n\n\nCustomers\n93\nin 21 countries\n\n\nProducts\n77\nin 8 categories\n\n\n\nEvery order line matches a product, an order, and a customer. No merge in this analysis drops a row — which is why you have to check rather than assume."
+  },
+  {
+    "objectID": "html/session3.html#two-columns-named-unitprice",
+    "href": "html/session3.html#two-columns-named-unitprice",
+    "title": "Friday, September 25",
+    "section": "Two columns named UnitPrice",
+    "text": "Two columns named UnitPrice\n\nOrder details carries the price charged. Products carries the list price. Merge them and you get UnitPrice_x and UnitPrice_y.\n\n\n\n\nPriced at\nTotal revenue\n\n\n\n\nThe price charged\n$13,963,378.65\n\n\nThe list price\n$13,966,340.55\n\n\n\nThe two answers differ by $2,962 on $14 million. A sanity check on the magnitude passes either way, so nothing about the wrong choice looks wrong."
+  },
+  {
+    "objectID": "html/session3.html#the-rows-with-no-country",
+    "href": "html/session3.html#the-rows-with-no-country",
+    "title": "Friday, September 25",
+    "section": "The rows with no country",
+    "text": "The rows with no country\n\n\n2 customers with a blank country\n\n\n482 order lines behind them\n\n\n$373,609 revenue in those lines\n\n\nGrouping by country drops blank keys by default. The country table still adds up, to a total 2.7% below the real one, and no country is wrong."
+  },
+  {
+    "objectID": "html/session3.html#one-to-many",
+    "href": "html/session3.html#one-to-many",
+    "title": "Friday, September 25",
+    "section": "One-to-many",
+    "text": "One-to-many\n\nMerge orders into order details and every order appears once per line — on average 38 times.\n\nSum anything defined per order after that merge and you have counted it 38 times. On these files the multiplier is large enough to notice. On files where the ratio is 1.2, it is not.\n\nThe check is one line: row count before the merge, row count after."
+  },
+  {
+    "objectID": "html/session3.html#dates",
+    "href": "html/session3.html#dates",
+    "title": "Friday, September 25",
+    "section": "Dates",
+    "text": "Dates\n\n03/04/2023 is March 4 or April 3 depending on who wrote the file\nA date column read as text sorts 10/01 before 2/01\nThese orders carry a time as well as a date, so a filter on equality matches nothing\nA date read out of Excel can arrive as a serial number\n\nAsk which columns are date types and which are strings, before grouping by month."
+  },
+  {
+    "objectID": "html/session3.html#missing-values",
+    "href": "html/session3.html#missing-values",
+    "title": "Friday, September 25",
+    "section": "Missing values",
+    "text": "Missing values\n\n\n\nHow it is written\nWhat a naive count does\n\n\n\n\nAn empty cell\nusually skipped\n\n\n0\nincluded in the average\n\n\nNA, N/A, -, unknown\nmakes the whole column text\n\n\nA sentinel such as -999\nincluded, silently\n\n\n\nA numeric column that is text because of four N/A cells concatenates where you expected a sum."
+  },
+  {
+    "objectID": "html/session3.html#recompute-another-way",
+    "href": "html/session3.html#recompute-another-way",
+    "title": "Friday, September 25",
+    "section": "Recompute another way",
+    "text": "Recompute another way\n\n\nThe same question by a different route through the data.\nThe same question in a different tool — SQL against the same files, or a pivot table.\nThe same question in a fresh conversation that has not seen the first answer.\n\n\nEach route drops different rows and rounds at different points. Agreement across them narrows what can still be wrong."
+  },
+  {
+    "objectID": "html/session3.html#make-it-read-its-own-code",
+    "href": "html/session3.html#make-it-read-its-own-code",
+    "title": "Friday, September 25",
+    "section": "Make it read its own code",
+    "text": "Make it read its own code\n\n\nPrompt\n\nHere is code and the answer it produced. Ignore the answer. Read the code and tell me what it actually computes — including what it drops and what it assumes.\n\nA fresh conversation reading code has nothing invested in the number already on the screen."
+  },
+  {
+    "objectID": "html/session3.html#find-the-bug",
+    "href": "html/session3.html#find-the-bug",
+    "title": "Friday, September 25",
+    "section": "Find the bug",
+    "text": "Find the bug\nExercise 9 · 40 minutes\n\n\n~/data/planted/country_report.py produces a country table. Its total is wrong.\nRead it first and predict where the number goes wrong. Do not run it yet.\nNow run it, find the actual causes, and say how much each one moves the total.\nFix them and reconcile against your own Part B number.\n\n\n\nThere is more than one defect, and they move the total in different directions."
+  },
+  {
+    "objectID": "html/session3.html#tomorrow",
+    "href": "html/session3.html#tomorrow",
+    "title": "Friday, September 25",
+    "section": "Tomorrow",
+    "text": "Tomorrow\nToday the answer was a number you checked. Tomorrow it becomes a document somebody else opens, and then an application they use without you."
+  },
+  {
+    "objectID": "html/session5.html#this-afternoon",
+    "href": "html/session5.html#this-afternoon",
+    "title": "Saturday, September 26 · Afternoon",
+    "section": "This afternoon",
+    "text": "This afternoon\n\n\nRetrieval augmented generation\nAnswering from your own documents, with a citation you can open.\n\n\nOpen source models\nWhat you can download and run yourself, and how far behind it is."
+  },
+  {
+    "objectID": "html/session5.html#the-other-eighty-per-cent",
+    "href": "html/session5.html#the-other-eighty-per-cent",
+    "title": "Saturday, September 26 · Afternoon",
+    "section": "The other eighty per cent",
+    "text": "The other eighty per cent\n\n\nYesterday\nRows, columns, joins. Five spreadsheets and a total you could reconcile.\n\nEverything else a firm holds\nContracts, mail, board papers, policies, reports, decks, notes.\n\n\n65% of data leaders call their structured data ready for AI. 39% say the same of the unstructured kind, which is most of the volume."
+  },
+  {
+    "objectID": "html/session5.html#why-not-just-paste-it-in",
+    "href": "html/session5.html#why-not-just-paste-it-in",
+    "title": "Saturday, September 26 · Afternoon",
+    "section": "Why not just paste it in",
+    "text": "Why not just paste it in\n\n\nIt was not trained on yours\nYour contracts were not on the public web. Nothing in the weights knows them.\n\n\nThe window is finite\nA million tokens is large and your document store is larger.\n\n\nYou pay for every turn\nInput is billed each turn. Pasting the corpus into every question bills the corpus every question."
+  },
+  {
+    "objectID": "html/session5.html#four-steps",
+    "href": "html/session5.html#four-steps",
+    "title": "Saturday, September 26 · Afternoon",
+    "section": "Four steps",
+    "text": "Four steps\n\n\nChunk. Split the documents into passages of a few hundred words.\nEmbed. Turn each passage into a vector, the same way tokens became vectors on Thursday.\nRetrieve. Embed the question and find the handful of passages closest to it.\nPaste. Put those passages in the prompt, with the question.\n\n\n\nThe model never reads your corpus. It reads an excerpt that a similarity search chose."
+  },
+  {
+    "objectID": "html/session5.html#a-passage-becomes-384-numbers",
+    "href": "html/session5.html#a-passage-becomes-384-numbers",
+    "title": "Saturday, September 26 · Afternoon",
+    "section": "A passage becomes 384 numbers",
+    "text": "A passage becomes 384 numbers\n\nAn embedding model reads a passage and returns a fixed-length list of numbers — 384, or 768, or 1,536, depending on the model.\n\nPassages about the same thing land near each other, whatever words they used. “Revenue fell in the third quarter” sits close to “Q3 sales were down”, and a keyword search for “revenue” finds only the first.\n\nThis is why retrieval works on a question phrased in the reader’s words rather than the author’s."
+  },
+  {
+    "objectID": "html/session5.html#chunking-is-the-design-decision",
+    "href": "html/session5.html#chunking-is-the-design-decision",
+    "title": "Saturday, September 26 · Afternoon",
+    "section": "Chunking is the design decision",
+    "text": "Chunking is the design decision\n\n\n\n\n\n\n\nChoice\nWhat it costs\n\n\n\n\nChunks too small\nthe passage arrives without the sentence that made it mean something\n\n\nChunks too large\nthe relevant line is buried in a page of irrelevance you paid for\n\n\nSplit mid-table\nnumbers arrive with no column headings\n\n\nNo overlap\nan answer spanning a boundary is never retrieved whole\n\n\n\nSplit on the document’s own structure — sections, clauses, slides — before falling back on a word count."
+  },
+  {
+    "objectID": "html/session5.html#two-ways-to-have-one",
+    "href": "html/session5.html#two-ways-to-have-one",
+    "title": "Saturday, September 26 · Afternoon",
+    "section": "Two ways to have one",
+    "text": "Two ways to have one\n\n\nA hosted tool\nUpload the folder, ask questions. Somebody else chose the chunking, the embedder and the number of passages retrieved.\n\nA pipeline you own\nYour chunking rules, your embedder, your store, and the retrieved text visible before it reaches the model.\n\nStart hosted. Build your own when the answers are wrong and you need to see which passages came back."
+  },
+  {
+    "objectID": "html/session5.html#build-one-over-your-own-documents",
+    "href": "html/session5.html#build-one-over-your-own-documents",
+    "title": "Saturday, September 26 · Afternoon",
+    "section": "Build one over your own documents",
+    "text": "Build one over your own documents\nExercise 16 · 60 minutes\n\n\nPut twenty or more of your own documents in a folder — reports, policies, decks, anything real but not confidential.\nHave them chunked and embedded into a local store, and have the chunking rule stated in writing.\nAdd a search tool to an agent, so it retrieves before it answers.\nAsk five questions you already know the answers to.\nMake it print the passages it retrieved, not just the answer.\n\n\n\nStep 5 is the whole exercise. An answer you cannot trace is the thing RAG was supposed to fix."
+  },
+  {
+    "objectID": "html/session5.html#make-it-cite-then-check-the-citation",
+    "href": "html/session5.html#make-it-cite-then-check-the-citation",
+    "title": "Saturday, September 26 · Afternoon",
+    "section": "Make it cite, then check the citation",
+    "text": "Make it cite, then check the citation\n\nA citation is only worth having if somebody opens it.\n\n\n\nAsk a question whose answer is in exactly one document.\nAsk one whose answer is spread over three.\nAsk one whose answer is in none of them, and see whether it says so.\n\n\n\nThe third is the one that fails. A retriever always returns its closest matches, whether or not any of them are relevant."
+  },
+  {
+    "objectID": "html/session5.html#permissions-do-not-survive-chunking",
+    "href": "html/session5.html#permissions-do-not-survive-chunking",
+    "title": "Saturday, September 26 · Afternoon",
+    "section": "Permissions do not survive chunking",
+    "text": "Permissions do not survive chunking\n\n\nThe document\nSat in a folder with an access list. Three people could open it.\n\nThe chunk in the store\nIs a row in a database with a vector next to it. Usually carries no access list at all.\n\nIndex everything and the retriever will hand a new analyst a paragraph from a file they could never have opened."
+  },
+  {
+    "objectID": "html/session5.html#retrieved-text-is-untrusted-text",
+    "href": "html/session5.html#retrieved-text-is-untrusted-text",
+    "title": "Saturday, September 26 · Afternoon",
+    "section": "Retrieved text is untrusted text",
+    "text": "Retrieved text is untrusted text\n\nA poisoned document in the index is a prompt injection with a delivery mechanism.\n\nAnything that reaches the model reaches it as text, and text from a retrieved passage arrives in the same stream as your question. Whoever can put a document into the index can put instructions in front of the model.\n\nWhich is the Sunday morning question again: who can write to the corpus, and what can the agent do once it has read one."
+  },
+  {
+    "objectID": "html/session5.html#when-it-is-the-wrong-tool",
+    "href": "html/session5.html#when-it-is-the-wrong-tool",
+    "title": "Saturday, September 26 · Afternoon",
+    "section": "When it is the wrong tool",
+    "text": "When it is the wrong tool\n\n\nFew enough to paste\nTwenty pages fit in the window. Retrieval adds a failure mode and buys nothing.\n\n\nThe answer is a number\nTotals, counts and rankings come from a query against the data, not a similarity search over prose.\n\n\nThe corpus changes hourly\nEvery change means re-embedding. A live query beats a stale index."
+  },
+  {
+    "objectID": "html/session5.html#break-your-own",
+    "href": "html/session5.html#break-your-own",
+    "title": "Saturday, September 26 · Afternoon",
+    "section": "Break your own",
+    "text": "Break your own\nExercise 17 · 40 minutes\n\n\nAdd a document to your index that contradicts another one. Ask the question both answer.\nAdd one containing an instruction addressed to the agent. Ask an unrelated question.\nAsk something answered only by a table you chunked in the middle.\nWrite down which of the three your setup handled, and what you would change."
+  },
+  {
+    "objectID": "html/session5.html#screen-shares",
+    "href": "html/session5.html#screen-shares",
+    "title": "Saturday, September 26 · Afternoon",
+    "section": "Screen shares",
+    "text": "Screen shares\n\nWhat you indexed, and how you chunked it\nOne question it answered well, with the passage it used\nThe one that broke it"
+  },
+  {
+    "objectID": "html/session5.html#what-gpqa-diamond-measures",
+    "href": "html/session5.html#what-gpqa-diamond-measures",
+    "title": "Saturday, September 26 · Afternoon",
+    "section": "What GPQA Diamond measures",
+    "text": "What GPQA Diamond measures\n\nFour-way multiple-choice questions in biology, physics and chemistry, written by people who hold or are working toward a PhD in the field they wrote for.\n\n\n\n25% guessing\n\n\n34% skilled non-experts, 30+ minutes of open web search\n\n\n74% PhDs answering inside their own field\n\n\n\nDiamond is the hardest 198 of the 448 questions: both expert annotators answered correctly and most non-experts did not. Rein et al., 2023."
+  },
+  {
+    "objectID": "html/session5.html#how-far-behind-is-it",
+    "href": "html/session5.html#how-far-behind-is-it",
+    "title": "Saturday, September 26 · Afternoon",
+    "section": "How far behind is it?",
+    "text": "How far behind is it?\n\n\nEach line is that tier’s best score so far; gray dots are every other model. Source: Epoch AI, 8 Sep 2026."
+  },
+  {
+    "objectID": "html/session5.html#what-terminal-bench-measures",
+    "href": "html/session5.html#what-terminal-bench-measures",
+    "title": "Saturday, September 26 · Afternoon",
+    "section": "What Terminal-Bench measures",
+    "text": "What Terminal-Bench measures\n\nAn agent is given a container, a plain-English objective, and a terminal. It has to actually do the job: compile the code, train the model, configure the server, find the bug.\n\n\n\n7 task domains: software, ML, science, operations, security, hardware, media\n\n\n4 parts to a task: instruction, container, test suite, reference solution\n\n\n0 or 1 per task — the tests pass or they do not\n\n\n\nBuilt by the Laude Institute with Stanford researchers. No human baseline is published. The version charted here dates from mid-2025; a harder v4.0 has since cut the frontier to about 60%."
+  },
+  {
+    "objectID": "html/session5.html#the-same-three-tiers-on-agentic-work",
+    "href": "html/session5.html#the-same-three-tiers-on-agentic-work",
+    "title": "Saturday, September 26 · Afternoon",
+    "section": "The same three tiers, on agentic work",
+    "text": "The same three tiers, on agentic work\n\n\nEpoch’s mirror of Terminal-Bench; its closed-model coverage runs to April 2026."
+  },
+  {
+    "objectID": "html/session5.html#where-each-tier-stands-today",
+    "href": "html/session5.html#where-each-tier-stands-today",
+    "title": "Saturday, September 26 · Afternoon",
+    "section": "Where each tier stands today",
+    "text": "Where each tier stands today"
+  },
+  {
+    "objectID": "html/session5.html#two-numbers-two-different-answers",
+    "href": "html/session5.html#two-numbers-two-different-answers",
+    "title": "Saturday, September 26 · Afternoon",
+    "section": "Two numbers, two different answers",
+    "text": "Two numbers, two different answers\n\n\nThe months\nThree to five months, on both benchmarks. A model small enough for one consumer GPU is nine to ten months back, on both.\n\nThe scores\nOn graduate science questions the open gap is 3 points. On agentic terminal work it is 33, and the small model solves 23% against the frontier’s 85%.\n\nGPQA Diamond is near its ceiling, which compresses the gap: five months of lag is worth three points because there is nowhere left to go. Terminal-Bench is not near any ceiling, and there the same few months is most of the task."
+  },
+  {
+    "objectID": "html/session5.html#what-that-means-for-a-choice",
+    "href": "html/session5.html#what-that-means-for-a-choice",
+    "title": "Saturday, September 26 · Afternoon",
+    "section": "What that means for a choice",
+    "text": "What that means for a choice\n\n\nAnswer from knowledge\nA 27B open model scores 86% on GPQA Diamond against the frontier’s 96%, on hardware you own.\n\n\nReason over your documents\nA large open model is a few months behind and self-hostable. Test it on your own task before taking the ranking.\n\n\nRun a multi-step agent\nOn Terminal-Bench the best open model solves 52% and the best small one 23%, against the frontier’s 85%."
+  },
+  {
+    "objectID": "html/session5.html#not-every-job-needs-the-largest-model",
+    "href": "html/session5.html#not-every-job-needs-the-largest-model",
+    "title": "Saturday, September 26 · Afternoon",
+    "section": "Not every job needs the largest model",
+    "text": "Not every job needs the largest model\n\n\n\n\n\n\n\n\n\nWhere it runs\nWhat it suits\n\n\n\n\nA frontier model\nthe provider’s API\njudgment, long context, code\n\n\nA mid-size model\nthe same API, less per token\nclassification, extraction, routing\n\n\nA small open model\nyour own hardware\nhigh volume, or data that cannot leave\n\n\nA fine-tuned small model\nyour own hardware\none narrow task, done constantly\n\n\n\nOn a single question the price difference is negligible. On a million classifications it is the budget."
+  },
+  {
+    "objectID": "html/session5.html#distillation-in-one-paragraph",
+    "href": "html/session5.html#distillation-in-one-paragraph",
+    "title": "Saturday, September 26 · Afternoon",
+    "section": "Distillation, in one paragraph",
+    "text": "Distillation, in one paragraph\n\nRun the frontier model on a few thousand examples of your task. Keep the inputs and its outputs. Train a small model on those pairs.\n\nThe small model does not become generally capable. It becomes capable at the one task you sampled, at a fraction of the cost per call, on hardware you control."
+  },
+  {
+    "objectID": "html/session5.html#tomorrow",
+    "href": "html/session5.html#tomorrow",
+    "title": "Saturday, September 26 · Afternoon",
+    "section": "Tomorrow",
+    "text": "Tomorrow\nEverything so far has run inside a tool somebody else built. Tomorrow you go under it, and then ask what it would take to let one loose on real data."
   }
 ]

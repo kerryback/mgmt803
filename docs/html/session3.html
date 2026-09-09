@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.38">
+
+  <meta name="author" content="Kerry Back">
+  <title>Friday, September 25</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-ad9d6da6267b2ca2af52a465c31666ff.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Friday, September 25</h1>
+  <p class="subtitle">7 Working with data</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Kerry Back 
+</div>
+</div>
+</div>
+
+</section>
+<section id="this-morning" class="slide level2">
+<h2>This morning</h2>
+<div class="lead">
+<p>One question, five spreadsheets, and a morning: which countries generated the most revenue, and how do you know.</p>
+</div>
+<div class="cards cards-2">
+<div class="card">
+<p><span class="card-title">Where the data is</span></p>
+<p>What an organization actually holds, which system is the record, and why the copies disagree.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">Whether to believe it</span></p>
+<p>The joins, columns and blanks that produce a wrong total with no error message.</p>
+</div>
+</div>
+</section>
+<section>
+<section id="working-with-data" class="title-slide slide level1 center">
+<h1>7 · Working with data</h1>
+<p>The country revenue report, then the four ways the number comes out wrong.</p>
+</section>
+<section id="we-should-point-ai-at-our-data" class="slide level2 plain-title">
+<h2>“We should point AI at our data”</h2>
+<div class="prompt-box">
+<div class="box-title">
+<p>Heard in every company this year</p>
+</div>
+<p>We should point AI at our data.</p>
+</div>
+<div class="cards cards-3">
+<div class="card">
+<p><span class="card-title">Which data?</span></p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">In whose system?</span></p>
+</div>
+<div class="card">
+<p><span class="card-title">Entered by whom, and when?</span></p>
+</div>
+</div>
+</section>
+<section id="what-the-surveys-say" class="slide level2">
+<h2>What the surveys say</h2>
+<div class="stats">
+<div class="stat">
+<p><span class="stat-value">897</span> <span class="stat-label">applications in the average enterprise</span></p>
+</div>
+<div class="stat">
+<p><span class="stat-value">29%</span> <span class="stat-label">of them connected to anything else</span></p>
+</div>
+<div class="stat">
+<p><span class="stat-value">7%</span> <span class="stat-label">of leaders call their data ready for AI</span></p>
+</div>
+</div>
+<div class="note">
+<p>In the same surveys, 19% of data is called siloed or unusable, and 70% of leaders believe their most valuable insights are inside that 19%.</p>
+</div>
+</section>
+<section id="where-a-number-actually-lives" class="slide level2 plain-title">
+<h2>Where a number actually lives</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Holds</th>
+<th>Reachable by</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>The operational system</td>
+<td>what is true right now</td>
+<td>its own screens</td>
+</tr>
+<tr class="even">
+<td>The warehouse</td>
+<td>a nightly copy, reshaped for questions</td>
+<td>analysts with SQL</td>
+</tr>
+<tr class="odd">
+<td>A dashboard</td>
+<td>four questions somebody chose in 2024</td>
+<td>anyone</td>
+</tr>
+<tr class="even">
+<td>An extract</td>
+<td>one analyst’s copy, as of some Tuesday</td>
+<td>whoever they mailed it to</td>
+</tr>
+<tr class="odd">
+<td>A shared drive</td>
+<td>the documents none of the above hold</td>
+<td>anyone who can find it</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="four-systems-four-meanings-of-customer" class="slide level2">
+<h2>Four systems, four meanings of “customer”</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>In this system</th>
+<th>A customer is</th>
+<th>Identified by</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sales</td>
+<td>an organization you might sell to</td>
+<td>an account number</td>
+</tr>
+<tr class="even">
+<td>Finance</td>
+<td>an entity you invoice</td>
+<td>a bill-to number</td>
+</tr>
+<tr class="odd">
+<td>The warehouse</td>
+<td>an address you deliver to</td>
+<td>a ship-to code</td>
+</tr>
+<tr class="even">
+<td>Support</td>
+<td>whoever opened the ticket</td>
+<td>an email address</td>
+</tr>
+</tbody>
+</table>
+<p>Four counts of customers, all correct, none equal.</p>
+</section>
+<section id="why-you-cannot-just-query-the-live-system" class="slide level2">
+<h2>Why you cannot just query the live system</h2>
+<div class="cards cards-2">
+<div class="card">
+<p><span class="card-title">It is built for writing</span></p>
+<p>Thousands of tiny writes a minute, tuned for that rather than for scanning a year.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">Your report competes</span></p>
+<p>A heavy query slows the screen somebody is typing an order into.</p>
+</div>
+<div class="card">
+<p><span class="card-title">It knows one corner</span></p>
+<p>Finance cannot see sales. Neither can see the warehouse.</p>
+</div>
+<div class="card card-sand">
+<p><span class="card-title">It holds now</span></p>
+<p>The current address and the current price. Not last year’s.</p>
+</div>
+</div>
+</section>
+<section id="three-kinds-of-copy-routinely-confused" class="slide level2 plain-title">
+<h2>Three kinds of copy, routinely confused</h2>
+<div class="steps">
+<ol type="1">
+<li>The warehouse: a governed copy, refreshed on a schedule, with definitions written down.</li>
+<li>The extract: a file somebody pulled once, for one question, and never refreshed.</li>
+<li>The export: a spreadsheet mailed to someone who now treats it as the source.</li>
+</ol>
+</div>
+<div class="note">
+<p>Two of the three age silently. The number in the deck was right when it was pulled.</p>
+</div>
+</section>
+<section id="the-vocabulary-you-need-for-the-rest-of-the-day" class="slide level2">
+<h2>The vocabulary you need for the rest of the day</h2>
+<table class="caption-top">
+<tbody>
+<tr class="odd">
+<td>System of record</td>
+<td>the one place a fact is authoritative</td>
+</tr>
+<tr class="even">
+<td>Silo</td>
+<td>a store nothing else can reach</td>
+</tr>
+<tr class="odd">
+<td>Semantics</td>
+<td>whether two columns with one name mean one thing</td>
+</tr>
+<tr class="even">
+<td>Lineage</td>
+<td>where this number came from, through every hop</td>
+</tr>
+<tr class="odd">
+<td>Quality</td>
+<td>blanks, duplicates, and values nobody validates</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<p>Every one of these shows up in the next four hours as a reason a total is wrong.</p>
+</div>
+</section>
+<section id="five-files-one-question" class="slide level2 plain-title">
+<h2>Five files, one question</h2>
+<div class="lead">
+<p>Northwind: a supplier of specialty foods to restaurants and delis. 500 orders, 93 customers, 77 products, 8 categories, spanning 2012 to 2023.</p>
+</div>
+<p>Small enough to hold in your head, and shaped like a company a thousand times larger. What you are about to do to it is what an analyst does to the real thing.</p>
+</section>
+<section id="what-you-are-building" class="slide level2 plain-title">
+<h2>What you are building</h2>
+<div class="lead">
+<p>Five spreadsheets in <code>~/data</code>: orders, order details, customers, products, categories. One question — which countries generated the most revenue, and how do you know.</p>
+</div>
+<div class="note note-plum">
+<p>Read all five parts before you start. Part D is the point of the exercise. Get there even if you have to shorten Part C.</p>
+</div>
+</section>
+<section id="part-a-describe-it-first" class="slide level2 plain-title">
+<h2>Part A — describe it first</h2>
+<p><span class="eyebrow">15 minutes</span></p>
+<p>Before any analysis, have it report — with the code shown:</p>
+<div class="steps">
+<ol type="1">
+<li>Every file: row count, column names, data types.</li>
+<li>The date range of the orders, and whether each date column is a date or a string.</li>
+<li>Missing values by column, as counts rather than “a few”.</li>
+<li>Which column joins to which, and whether each join is one-to-one or one-to-many.</li>
+</ol>
+</div>
+<div class="note">
+<p>Write the join map on paper. You will need it in Part D.</p>
+</div>
+</section>
+<section id="part-b-revenue-by-country" class="slide level2 plain-title">
+<h2>Part B — revenue by country</h2>
+<p><span class="eyebrow">25 minutes</span></p>
+<div class="steps">
+<ol type="1">
+<li>Compute revenue per order line, then total by the customer’s country.</li>
+<li>There are two columns that could be the price. Say in writing which one you used and why.</li>
+<li>Report the row count after every merge and compare it to the row count before.</li>
+<li>Rank the countries and take the top five.</li>
+</ol>
+</div>
+<div class="note">
+<p>There is no discount column and no freight column in these files. Whatever you report is price times quantity, and the deliverable has to say so.</p>
+</div>
+</section>
+<section id="part-c-a-deliverable" class="slide level2 plain-title">
+<h2>Part C — a deliverable</h2>
+<p><span class="eyebrow">20 minutes</span></p>
+<div class="cards cards-2">
+<div class="card">
+<p><span class="card-title">Option 1</span></p>
+<p>An Excel workbook: the country table on one sheet, a chart, and a cell stating the revenue definition in words.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">Option 2</span></p>
+<p>A five-slide deck: the question, the top five, the chart, the definition, and what you checked.</p>
+</div>
+</div>
+<p>Either one states the revenue definition on its face. A number without its definition cannot be reconciled against anyone else’s.</p>
+</section>
+<section id="part-d-verify-it" class="slide level2 plain-title">
+<h2>Part D — verify it</h2>
+<p><span class="eyebrow">25 minutes</span></p>
+<div class="steps">
+<ol type="1">
+<li>Recompute the total by a second route — a different tool, a different order of operations, or straight from the raw files with no merges at all.</li>
+<li>Reconcile the two to the cent.</li>
+<li>If they disagree, find the cause before changing either one.</li>
+<li>List three things that could have made your number wrong, and how you ruled each one out.</li>
+</ol>
+</div>
+<div class="note">
+<p>If the second route reproduces the first to the cent, say so on the deliverable.</p>
+</div>
+</section>
+<section id="part-e-if-you-finish" class="slide level2 plain-title">
+<h2>Part E — if you finish</h2>
+<p><span class="eyebrow">remaining time</span></p>
+<ul>
+<li>Break revenue out by month and by category</li>
+<li>Find a month that does not follow the months around it</li>
+<li>Say what in the data produces it, and show the rows</li>
+</ul>
+</section>
+<section id="when-you-are-done" class="slide level2 band-bottom">
+<h2>When you are done</h2>
+<p>Have open and ready to share:</p>
+<ul>
+<li>Your number, and the definition behind it</li>
+<li>Your chart</li>
+<li>Your second route, and what it gave</li>
+<li>The three things that could have gone wrong</li>
+</ul>
+</section>
+<section id="what-went-wrong" class="slide level2 divider">
+<h2>What went wrong</h2>
+</section>
+<section id="four-failures-that-raise-no-error" class="slide level2">
+<h2>Four failures that raise no error</h2>
+<div class="cards cards-2">
+<div class="card">
+<p><span class="card-title">The wrong join</span></p>
+<p>Rows that did not match are dropped. The total is smaller and nothing says so.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">The wrong column</span></p>
+<p>Two files use one name for two different things, and the merge keeps both.</p>
+</div>
+<div class="card">
+<p><span class="card-title">The unstated assumption</span></p>
+<p>What counts as revenue, which rows are excluded, which dates are in scope.</p>
+</div>
+<div class="card card-sand">
+<p><span class="card-title">Invention</span></p>
+<p>A number in prose that no line of code produced.</p>
+</div>
+</div>
+</section>
+<section id="what-is-actually-in-these-files" class="slide level2">
+<h2>What is actually in these files</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>File</th>
+<th style="text-align: right;">Rows</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Orders</td>
+<td style="text-align: right;">500</td>
+<td>July 2012 to October 2023</td>
+</tr>
+<tr class="even">
+<td>Order details</td>
+<td style="text-align: right;">18,976</td>
+<td>38 lines per order on average</td>
+</tr>
+<tr class="odd">
+<td>Customers</td>
+<td style="text-align: right;">93</td>
+<td>in 21 countries</td>
+</tr>
+<tr class="even">
+<td>Products</td>
+<td style="text-align: right;">77</td>
+<td>in 8 categories</td>
+</tr>
+</tbody>
+</table>
+<p>Every order line matches a product, an order, and a customer. No merge in this analysis drops a row — which is why you have to check rather than assume.</p>
+</section>
+<section id="two-columns-named-unitprice" class="slide level2">
+<h2>Two columns named UnitPrice</h2>
+<div class="lead">
+<p>Order details carries the price charged. Products carries the list price. Merge them and you get <code>UnitPrice_x</code> and <code>UnitPrice_y</code>.</p>
+</div>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Priced at</th>
+<th style="text-align: right;">Total revenue</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>The price charged</td>
+<td style="text-align: right;">$13,963,378.65</td>
+</tr>
+<tr class="even">
+<td>The list price</td>
+<td style="text-align: right;">$13,966,340.55</td>
+</tr>
+</tbody>
+</table>
+<p>The two answers differ by $2,962 on $14 million. A sanity check on the magnitude passes either way, so nothing about the wrong choice looks wrong.</p>
+</section>
+<section id="the-rows-with-no-country" class="slide level2">
+<h2>The rows with no country</h2>
+<div class="stats">
+<div class="stat">
+<p><span class="stat-value">2</span> <span class="stat-label">customers with a blank country</span></p>
+</div>
+<div class="stat">
+<p><span class="stat-value">482</span> <span class="stat-label">order lines behind them</span></p>
+</div>
+<div class="stat">
+<p><span class="stat-value">$373,609</span> <span class="stat-label">revenue in those lines</span></p>
+</div>
+</div>
+<p>Grouping by country drops blank keys by default. The country table still adds up, to a total 2.7% below the real one, and no country is wrong.</p>
+</section>
+<section id="one-to-many" class="slide level2">
+<h2>One-to-many</h2>
+<div class="lead">
+<p>Merge orders into order details and every order appears once per line — on average 38 times.</p>
+</div>
+<p>Sum anything defined per order after that merge and you have counted it 38 times. On these files the multiplier is large enough to notice. On files where the ratio is 1.2, it is not.</p>
+<div class="note">
+<p>The check is one line: row count before the merge, row count after.</p>
+</div>
+</section>
+<section id="dates" class="slide level2">
+<h2>Dates</h2>
+<ul>
+<li><code>03/04/2023</code> is March 4 or April 3 depending on who wrote the file</li>
+<li>A date column read as text sorts <code>10/01</code> before <code>2/01</code></li>
+<li>These orders carry a time as well as a date, so a filter on equality matches nothing</li>
+<li>A date read out of Excel can arrive as a serial number</li>
+</ul>
+<p>Ask which columns are date types and which are strings, before grouping by month.</p>
+</section>
+<section id="missing-values" class="slide level2">
+<h2>Missing values</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>How it is written</th>
+<th>What a naive count does</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>An empty cell</td>
+<td>usually skipped</td>
+</tr>
+<tr class="even">
+<td><code>0</code></td>
+<td>included in the average</td>
+</tr>
+<tr class="odd">
+<td><code>NA</code>, <code>N/A</code>, <code>-</code>, <code>unknown</code></td>
+<td>makes the whole column text</td>
+</tr>
+<tr class="even">
+<td>A sentinel such as <code>-999</code></td>
+<td>included, silently</td>
+</tr>
+</tbody>
+</table>
+<p>A numeric column that is text because of four <code>N/A</code> cells concatenates where you expected a sum.</p>
+</section>
+<section id="recompute-another-way" class="slide level2 band-bottom">
+<h2>Recompute another way</h2>
+<div class="steps">
+<ol type="1">
+<li>The same question by a different route through the data.</li>
+<li>The same question in a different tool — SQL against the same files, or a pivot table.</li>
+<li>The same question in a fresh conversation that has not seen the first answer.</li>
+</ol>
+</div>
+<p>Each route drops different rows and rounds at different points. Agreement across them narrows what can still be wrong.</p>
+</section>
+<section id="make-it-read-its-own-code" class="slide level2">
+<h2>Make it read its own code</h2>
+<div class="prompt-box">
+<div class="box-title">
+<p>Prompt</p>
+</div>
+<p>Here is code and the answer it produced. Ignore the answer. Read the code and tell me what it actually computes — including what it drops and what it assumes.</p>
+</div>
+<p>A fresh conversation reading code has nothing invested in the number already on the screen.</p>
+</section>
+<section id="find-the-bug" class="slide level2 plain-title">
+<h2>Find the bug</h2>
+<p><span class="eyebrow">Exercise 9 · 40 minutes</span></p>
+<div class="steps">
+<ol type="1">
+<li><code>~/data/planted/country_report.py</code> produces a country table. Its total is wrong.</li>
+<li>Read it first and predict where the number goes wrong. Do not run it yet.</li>
+<li>Now run it, find the actual causes, and say how much each one moves the total.</li>
+<li>Fix them and reconcile against your own Part B number.</li>
+</ol>
+</div>
+<div class="note">
+<p>There is more than one defect, and they move the total in different directions.</p>
+</div>
+</section>
+<section id="tomorrow" class="slide level2 band-bottom">
+<h2>Tomorrow</h2>
+<p>Today the answer was a number you checked. Tomorrow it becomes a document somebody else opens, and then an application they use without you.</p>
+
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+<p>MGMT 803 · Rice Business</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0,
+
+        maxScale: 5,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
