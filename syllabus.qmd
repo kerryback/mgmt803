@@ -76,9 +76,6 @@ By the end of the course, you should be able to:
 3. Evaluate a proposed deployment on the terms a firm actually decides on: which model and
    where it runs, what data it touches, what it is permitted to do, and what it costs
    relative to what it saves.
-4. Recognize and contain the risks that come with letting a model act — confidentiality,
-   prompt injection, and the exfiltration of data through the system's own channels — and
-   say what would have to be true for a deployment to be safe rather than merely lucky.
 
 ### Topic Schedule
 
