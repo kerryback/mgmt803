@@ -9,8 +9,8 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.9.38">
 
-  <meta name="author" content="Kerry Back">
-  <title>Saturday, September 26 · Afternoon</title>
+  <meta name="author" content="Kerry Back J. Howard Creekmore Professor of Finance">
+  <title>How a Language Model Works</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -32,7 +32,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-ad9d6da6267b2ca2af52a465c31666ff.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-963326a71a77be66e1a2dc2e7f4f8a8d.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -130,373 +130,193 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Saturday, September 26 · Afternoon</h1>
-  <p class="subtitle">10 Retrieval augmented generation · 11 Open source models</p>
+  <h1 class="title">How a Language Model Works</h1>
+  <p class="subtitle">Reference deck · MGMT 803</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Kerry Back 
+Kerry Back<br>J. Howard Creekmore Professor of Finance 
 </div>
 </div>
 </div>
 
 </section>
-<section id="this-afternoon" class="slide level2">
-<h2>This afternoon</h2>
+<section id="why-this-deck-exists" class="slide level2 plain-title">
+<h2>Why this deck exists</h2>
+<div class="lead">
+<p>Enough of the mechanism to explain what these models are good at and where they fail.</p>
+</div>
+<p>Nothing here is needed to use the tools. It is here because every failure you meet over the four days has a cause on one of these slides, and it is easier to recognize a failure you have already seen the shape of.</p>
+</section>
+<section id="tokenization" class="slide level2">
+<h2>Tokenization</h2>
+<p>Text is cut into pieces from a fixed vocabulary before the model sees any of it.</p>
+<pre><code>"The cat sat on the mat"  -&gt;  ["The", " cat", " sat", " on", " the", " mat"]
+
+"Unbelievable"            -&gt;  ["Un", "believ", "able"]</code></pre>
+<p>Common words stay whole; rare and long words break into pieces. A typical vocabulary runs to about 100,000 tokens.</p>
+<div class="note">
+<p>Numbers break on the same rules, which have nothing to do with arithmetic. <code>13,963,378.65</code> reaches the model as a handful of unrelated pieces.</p>
+</div>
+</section>
+<section id="the-whole-task" class="slide level2 plain-title">
+<h2>The whole task</h2>
+<div class="lead">
+<p>Given the tokens so far, predict the token that comes next. That is the entire operation.</p>
+</div>
+<p>Everything a model appears to do — answering, summarizing, writing code, refusing — is that one prediction, repeated.</p>
+<div class="note">
+<p>The input can currently run to about a million tokens, roughly two-thirds of the Harry Potter saga.</p>
+</div>
+</section>
+<section id="vectors" class="slide level2">
+<h2>Vectors</h2>
+<p>The model does not work with tokens. It works with numbers.</p>
 <div class="cards cards-2">
 <div class="card">
-<p><span class="card-title">Retrieval augmented generation</span></p>
-<p>Answering from your own documents, with a citation you can open.</p>
+<p><span class="card-title">Each token is a list</span></p>
+<p>“king” becomes 4,096 numbers. “queen” becomes 4,096 numbers that are close to them.</p>
+<p>Tokens used in similar contexts end up near each other.</p>
 </div>
 <div class="card card-blue">
-<p><span class="card-title">Open source models</span></p>
-<p>What you can download and run yourself, and how far behind it is.</p>
+<p><span class="card-title">The space is mostly empty</span></p>
+<p>There are far more possible vectors than there are tokens, so most points in the space name nothing.</p>
+<p>The prediction can land between tokens.</p>
 </div>
 </div>
 </section>
-<section>
-<section id="retrieval-augmented-generation" class="title-slide slide level1 center">
-<h1>10 · Retrieval augmented generation</h1>
-<p>Answering from your own documents, with a citation you can open.</p>
-</section>
-<section id="the-other-eighty-per-cent" class="slide level2 compare">
-<h2>The other eighty per cent</h2>
+<section id="a-neural-network-is-a-function" class="slide level2 compare">
+<h2>A neural network is a function</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><span class="eyebrow">Yesterday</span></p>
-<p>Rows, columns, joins. Five spreadsheets and a total you could reconcile.</p>
+<p><span class="eyebrow">The idea</span></p>
+<p><span class="math inline">\(y = 4x\)</span> is a function. The 4 is a parameter.</p>
+<p>Change it to 3 and you have the same structure with different behavior.</p>
 </div><div class="column" style="width:50%;">
-<p><span class="eyebrow">Everything else a firm holds</span></p>
-<p>Contracts, mail, board papers, policies, reports, decks, notes.</p>
+<p><span class="eyebrow">The scale</span></p>
+<p>Same idea with hundreds of billions of parameters, arranged as a transformer — the architecture published by Google researchers in 2017.</p>
 </div></div>
-<div class="note">
-<p>65% of data leaders call their structured data ready for AI. 39% say the same of the unstructured kind, which is most of the volume.</p>
-</div>
 </section>
-<section id="why-not-just-paste-it-in" class="slide level2">
-<h2>Why not just paste it in</h2>
-<div class="cards cards-3">
+<section id="training" class="slide level2">
+<h2>Training</h2>
+<div class="cards cards-2">
 <div class="card">
-<p><span class="card-title">It was not trained on yours</span></p>
-<p>Your contracts were not on the public web. Nothing in the weights knows them.</p>
+<p><span class="card-title">What is learned</span></p>
+<p>The vector for every token, and every parameter in the network.</p>
+<p>Both are adjusted together to reduce prediction error on the training text.</p>
 </div>
 <div class="card card-blue">
-<p><span class="card-title">The window is finite</span></p>
-<p>A million tokens is large and your document store is larger.</p>
+<p><span class="card-title">What it takes</span></p>
+<p>Trillions of words. Thousands of GPUs for weeks or months. Tens to hundreds of millions of dollars for one run.</p>
 </div>
-<div class="card">
-<p><span class="card-title">You pay for every turn</span></p>
-<p>Input is billed each turn. Pasting the corpus into every question bills the corpus every question.</p>
 </div>
+<div class="note">
+<p>Nothing is looked up or stored as fact. The arrangement captures how words are used, which is why it recalls common things reliably and rare things unreliably.</p>
 </div>
 </section>
-<section id="four-steps" class="slide level2 plain-title">
-<h2>Four steps</h2>
+<section id="the-pipeline" class="slide level2 plain-title">
+<h2>The pipeline</h2>
 <div class="steps">
 <ol type="1">
-<li>Chunk. Split the documents into passages of a few hundred words.</li>
-<li>Embed. Turn each passage into a vector, the same way tokens became vectors on Thursday.</li>
-<li>Retrieve. Embed the question and find the handful of passages closest to it.</li>
-<li>Paste. Put those passages in the prompt, with the question.</li>
+<li>Tokenize the input.</li>
+<li>Look up the vector for each token.</li>
+<li>Feed the vectors into the network.</li>
+<li>The network produces one output vector.</li>
+<li>Find which token vectors are closest to it.</li>
+<li>Emit a token, append it to the input, and start again at step 1.</li>
 </ol>
 </div>
-<div class="note note-plum">
-<p>The model never reads your corpus. It reads an excerpt that a similarity search chose.</p>
-</div>
 </section>
-<section id="a-passage-becomes-384-numbers" class="slide level2">
-<h2>A passage becomes 384 numbers</h2>
-<div class="lead">
-<p>An embedding model reads a passage and returns a fixed-length list of numbers — 384, or 768, or 1,536, depending on the model.</p>
-</div>
-<p>Passages about the same thing land near each other, whatever words they used. “Revenue fell in the third quarter” sits close to “Q3 sales were down”, and a keyword search for “revenue” finds only the first.</p>
-<div class="note">
-<p>This is why retrieval works on a question phrased in the reader’s words rather than the author’s.</p>
-</div>
-</section>
-<section id="chunking-is-the-design-decision" class="slide level2 plain-title">
-<h2>Chunking is the design decision</h2>
+<section id="temperature" class="slide level2">
+<h2>Temperature</h2>
+<p>The network does not output one token. It outputs a probability for every token in the vocabulary. Temperature controls how that distribution is sampled.</p>
 <table class="caption-top">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
 <thead>
 <tr class="header">
-<th>Choice</th>
-<th>What it costs</th>
+<th>Setting</th>
+<th>Behavior</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Chunks too small</td>
-<td>the passage arrives without the sentence that made it mean something</td>
+<td>Near 0</td>
+<td>The highest-probability token every time. Repeatable.</td>
 </tr>
 <tr class="even">
-<td>Chunks too large</td>
-<td>the relevant line is buried in a page of irrelevance you paid for</td>
+<td>Near 1</td>
+<td>Sampled from the distribution. Different each run.</td>
 </tr>
 <tr class="odd">
-<td>Split mid-table</td>
-<td>numbers arrive with no column headings</td>
-</tr>
-<tr class="even">
-<td>No overlap</td>
-<td>an answer spanning a boundary is never retrieved whole</td>
+<td>Higher</td>
+<td>Low-probability tokens get picked. Text degrades.</td>
 </tr>
 </tbody>
 </table>
-<p>Split on the document’s own structure — sections, clauses, slides — before falling back on a word count.</p>
+<div class="note">
+<p>In a chatbot, including Claude Desktop, temperature is fixed near 1 and you cannot change it. Through the API you can.</p>
+</div>
 </section>
-<section id="two-ways-to-have-one" class="slide level2 compare">
-<h2>Two ways to have one</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span class="eyebrow">A hosted tool</span></p>
-<p>Upload the folder, ask questions. Somebody else chose the chunking, the embedder and the number of passages retrieved.</p>
-</div><div class="column" style="width:50%;">
-<p><span class="eyebrow">A pipeline you own</span></p>
-<p>Your chunking rules, your embedder, your store, and the retrieved text visible before it reaches the model.</p>
-</div></div>
-<p>Start hosted. Build your own when the answers are wrong and you need to see which passages came back.</p>
-</section>
-<section id="build-one-over-your-own-documents" class="slide level2 plain-title">
-<h2>Build one over your own documents</h2>
-<p><span class="eyebrow">Exercise 16 · 60 minutes</span></p>
+<section id="from-prediction-to-conversation" class="slide level2">
+<h2>From prediction to conversation</h2>
+<p>A model trained only to predict the next token continues your text. It does not answer a question.</p>
 <div class="steps">
 <ol type="1">
-<li>Put twenty or more of your own documents in a folder — reports, policies, decks, anything real but not confidential.</li>
-<li>Have them chunked and embedded into a local store, and have the chunking rule stated in writing.</li>
-<li>Add a search tool to an agent, so it retrieves before it answers.</li>
-<li>Ask five questions you already know the answers to.</li>
-<li>Make it print the passages it retrieved, not just the answer.</li>
+<li>Role tokens. The text is wrapped in markers: <code>&lt;|user|&gt;</code> your question <code>&lt;|assistant|&gt;</code>.</li>
+<li>Instruction tuning. The model is further trained on examples where what follows <code>&lt;|assistant|&gt;</code> is a useful reply.</li>
+<li>Reinforcement learning from human feedback. Raters score replies, and the model is trained toward what raters preferred.</li>
 </ol>
 </div>
-<div class="note">
-<p>Step 5 is the whole exercise. An answer you cannot trace is the thing RAG was supposed to fix.</p>
-</div>
+<p>The mechanism did not change. What changed is which continuation is the likely one.</p>
 </section>
-<section id="make-it-cite-then-check-the-citation" class="slide level2">
-<h2>Make it cite, then check the citation</h2>
-<div class="lead">
-<p>A citation is only worth having if somebody opens it.</p>
-</div>
-<div class="steps">
-<ol type="1">
-<li>Ask a question whose answer is in exactly one document.</li>
-<li>Ask one whose answer is spread over three.</li>
-<li>Ask one whose answer is in none of them, and see whether it says so.</li>
-</ol>
-</div>
-<div class="note">
-<p>The third is the one that fails. A retriever always returns its closest matches, whether or not any of them are relevant.</p>
-</div>
-</section>
-<section id="permissions-do-not-survive-chunking" class="slide level2 compare">
-<h2>Permissions do not survive chunking</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span class="eyebrow">The document</span></p>
-<p>Sat in a folder with an access list. Three people could open it.</p>
-</div><div class="column" style="width:50%;">
-<p><span class="eyebrow">The chunk in the store</span></p>
-<p>Is a row in a database with a vector next to it. Usually carries no access list at all.</p>
-</div></div>
-<p>Index everything and the retriever will hand a new analyst a paragraph from a file they could never have opened.</p>
-</section>
-<section id="retrieved-text-is-untrusted-text" class="slide level2 plain-title">
-<h2>Retrieved text is untrusted text</h2>
-<div class="note note-plum">
-<p>A poisoned document in the index is a prompt injection with a delivery mechanism.</p>
-</div>
-<p>Anything that reaches the model reaches it as text, and text from a retrieved passage arrives in the same stream as your question. Whoever can put a document into the index can put instructions in front of the model.</p>
-<div class="note">
-<p>Which is the Sunday morning question again: who can write to the corpus, and what can the agent do once it has read one.</p>
-</div>
-</section>
-<section id="when-it-is-the-wrong-tool" class="slide level2">
-<h2>When it is the wrong tool</h2>
-<div class="cards cards-3">
+<section id="reasoning-models" class="slide level2">
+<h2>Reasoning models</h2>
+<p>The same trick applied again: train the model to write out its working before it answers.</p>
+<div class="cards cards-2">
 <div class="card">
-<p><span class="card-title">Few enough to paste</span></p>
-<p>Twenty pages fit in the window. Retrieval adds a failure mode and buys nothing.</p>
+<p><span class="card-title">How it was trained</span></p>
+<p>Reinforcement learning on problems whose answers can be checked — mathematics, code, puzzles — rewarding the chains of tokens that arrived at a correct answer.</p>
 </div>
 <div class="card card-blue">
-<p><span class="card-title">The answer is a number</span></p>
-<p>Totals, counts and rankings come from a query against the data, not a similarity search over prose.</p>
-</div>
-<div class="card">
-<p><span class="card-title">The corpus changes hourly</span></p>
-<p>Every change means re-embedding. A live query beats a stale index.</p>
-</div>
-</div>
-</section>
-<section id="break-your-own" class="slide level2 plain-title">
-<h2>Break your own</h2>
-<p><span class="eyebrow">Exercise 17 · 40 minutes</span></p>
-<div class="steps">
-<ol type="1">
-<li>Add a document to your index that contradicts another one. Ask the question both answer.</li>
-<li>Add one containing an instruction addressed to the agent. Ask an unrelated question.</li>
-<li>Ask something answered only by a table you chunked in the middle.</li>
-<li>Write down which of the three your setup handled, and what you would change.</li>
-</ol>
-</div>
-</section>
-<section id="screen-shares" class="slide level2 band-bottom">
-<h2>Screen shares</h2>
-<ul>
-<li>What you indexed, and how you chunked it</li>
-<li>One question it answered well, with the passage it used</li>
-<li>The one that broke it</li>
-</ul>
-</section></section>
-<section>
-<section id="open-source-models" class="title-slide slide level1 center">
-<h1>11 · Open source models</h1>
-
-</section>
-<section id="what-gpqa-diamond-measures" class="slide level2 plain-title">
-<h2>What GPQA Diamond measures</h2>
-<div class="lead">
-<p>Four-way multiple-choice questions in biology, physics and chemistry, written by people who hold or are working toward a PhD in the field they wrote for.</p>
-</div>
-<div class="stats">
-<div class="stat">
-<p><span class="stat-value">25%</span> <span class="stat-label">guessing</span></p>
-</div>
-<div class="stat">
-<p><span class="stat-value">34%</span> <span class="stat-label">skilled non-experts, 30+ minutes of open web search</span></p>
-</div>
-<div class="stat">
-<p><span class="stat-value">74%</span> <span class="stat-label">PhDs answering inside their own field</span></p>
+<p><span class="card-title">Why it helps</span></p>
+<p>The model holds no state between tokens. The intermediate tokens are the only place a partial result can live, so writing them out is the computation.</p>
 </div>
 </div>
 <div class="note">
-<p>Diamond is the hardest 198 of the 448 questions: both expert annotators answered correctly and most non-experts did not. Rein et al., 2023.</p>
+<p>The thinking you see may be a summary of a much longer chain, and you are charged for the whole chain as output tokens.</p>
 </div>
 </section>
-<section id="how-far-behind-is-it" class="slide level2 plain-title">
-<h2>How far behind is it?</h2>
-<p><img data-src="images/lag-gpqa.png" style="width:76.0%"></p>
-<div class="note">
-<p>Each line is that tier’s best score so far; gray dots are every other model. Source: Epoch AI, 8 Sep 2026.</p>
-</div>
-</section>
-<section id="what-terminal-bench-measures" class="slide level2 plain-title">
-<h2>What Terminal-Bench measures</h2>
-<div class="lead">
-<p>An agent is given a container, a plain-English objective, and a terminal. It has to actually do the job: compile the code, train the model, configure the server, find the bug.</p>
-</div>
-<div class="stats">
-<div class="stat">
-<p><span class="stat-value">7</span> <span class="stat-label">task domains: software, ML, science, operations, security, hardware, media</span></p>
-</div>
-<div class="stat">
-<p><span class="stat-value">4</span> <span class="stat-label">parts to a task: instruction, container, test suite, reference solution</span></p>
-</div>
-<div class="stat">
-<p><span class="stat-value">0 or 1</span> <span class="stat-label">per task — the tests pass or they do not</span></p>
-</div>
-</div>
-<div class="note">
-<p>Built by the Laude Institute with Stanford researchers. No human baseline is published. The version charted here dates from mid-2025; a harder v4.0 has since cut the frontier to about 60%.</p>
-</div>
-</section>
-<section id="the-same-three-tiers-on-agentic-work" class="slide level2 plain-title">
-<h2>The same three tiers, on agentic work</h2>
-<p><img data-src="images/lag-tbench.png" style="width:80.0%"></p>
-<div class="note">
-<p>Epoch’s mirror of Terminal-Bench; its closed-model coverage runs to April 2026.</p>
-</div>
-</section>
-<section id="where-each-tier-stands-today" class="slide level2 plain-title">
-<h2>Where each tier stands today</h2>
-<p><img data-src="images/lag-gap.png" style="width:99.0%"></p>
-</section>
-<section id="two-numbers-two-different-answers" class="slide level2 compare">
-<h2>Two numbers, two different answers</h2>
+<section id="what-thinking-longer-buys" class="slide level2 compare band-bottom">
+<h2>What thinking longer buys</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><span class="eyebrow">The months</span></p>
-<p>Three to five months, on both benchmarks. A model small enough for one consumer GPU is nine to ten months back, on both.</p>
+<p><span class="eyebrow">Moves</span></p>
+<p>Problems that decompose: multi-step arithmetic, code that has to satisfy several constraints, planning a sequence of actions.</p>
 </div><div class="column" style="width:50%;">
-<p><span class="eyebrow">The scores</span></p>
-<p>On graduate science questions the open gap is 3 points. On agentic terminal work it is 33, and the small model solves 23% against the frontier’s 85%.</p>
+<p><span class="eyebrow">Does not move</span></p>
+<p>Recall of a fact it never learned, questions of taste, and anything where the first token was already right.</p>
 </div></div>
-<p>GPQA Diamond is near its ceiling, which compresses the gap: five months of lag is worth three points because there is nowhere left to go. Terminal-Bench is not near any ceiling, and there the same few months is most of the task.</p>
+<p>More tokens at answer time, rather than a larger model, is the dial. You pay for it in latency and in output tokens.</p>
 </section>
-<section id="what-that-means-for-a-choice" class="slide level2 band-bottom">
-<h2>What that means for a choice</h2>
+<section id="what-that-explains" class="slide level2">
+<h2>What that explains</h2>
 <div class="cards cards-3">
 <div class="card">
-<p><span class="card-title">Answer from knowledge</span></p>
-<p>A 27B open model scores 86% on GPQA Diamond against the frontier’s 96%, on hardware you own.</p>
+<p><span class="card-title">Fluent and wrong</span></p>
+<p>Plausible text is exactly what the objective rewards. Correct text is a side effect of plausible text usually being correct.</p>
 </div>
 <div class="card card-blue">
-<p><span class="card-title">Reason over your documents</span></p>
-<p>A large open model is a few months behind and self-hostable. Test it on your own task before taking the ranking.</p>
+<p><span class="card-title">Confident either way</span></p>
+<p>Nothing in the mechanism distinguishes a recalled fact from a well-formed guess.</p>
 </div>
-<div class="card card-sand">
-<p><span class="card-title">Run a multi-step agent</span></p>
-<p>On Terminal-Bench the best open model solves 52% and the best small one 23%, against the frontier’s 85%.</p>
+<div class="card">
+<p><span class="card-title">Arithmetic</span></p>
+<p>Predicting the digits of a sum is a different operation from adding. Code does the second.</p>
 </div>
 </div>
-</section>
-<section id="not-every-job-needs-the-largest-model" class="slide level2">
-<h2>Not every job needs the largest model</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th>Where it runs</th>
-<th>What it suits</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>A frontier model</td>
-<td>the provider’s API</td>
-<td>judgment, long context, code</td>
-</tr>
-<tr class="even">
-<td>A mid-size model</td>
-<td>the same API, less per token</td>
-<td>classification, extraction, routing</td>
-</tr>
-<tr class="odd">
-<td>A small open model</td>
-<td>your own hardware</td>
-<td>high volume, or data that cannot leave</td>
-</tr>
-<tr class="even">
-<td>A fine-tuned small model</td>
-<td>your own hardware</td>
-<td>one narrow task, done constantly</td>
-</tr>
-</tbody>
-</table>
-<p>On a single question the price difference is negligible. On a million classifications it is the budget.</p>
-</section>
-<section id="distillation-in-one-paragraph" class="slide level2">
-<h2>Distillation, in one paragraph</h2>
-<div class="lead">
-<p>Run the frontier model on a few thousand examples of your task. Keep the inputs and its outputs. Train a small model on those pairs.</p>
-</div>
-<p>The small model does not become generally capable. It becomes capable at the one task you sampled, at a fraction of the cost per call, on hardware you control.</p>
-</section>
-<section id="tomorrow" class="slide level2 band-bottom">
-<h2>Tomorrow</h2>
-<p>Everything so far has run inside a tool somebody else built. Tomorrow you go under it, and then ask what it would take to let one loose on real data.</p>
 
 
-</section></section>
+</section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">

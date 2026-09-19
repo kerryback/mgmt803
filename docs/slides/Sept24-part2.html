@@ -9,8 +9,8 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.9.38">
 
-  <meta name="author" content="Kerry Back">
-  <title>Thursday, September 24 · Afternoon</title>
+  <meta name="author" content="Kerry Back J. Howard Creekmore Professor of Finance">
+  <title>MGMT 803, MBA@Rice, 2026</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -98,7 +98,7 @@
     code span.vs { color: #032f62; } /* VerbatimString */
     code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-ad9d6da6267b2ca2af52a465c31666ff.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-963326a71a77be66e1a2dc2e7f4f8a8d.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -196,13 +196,13 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Thursday, September 24 · Afternoon</h1>
-  <p class="subtitle">4 Persistent instructions and memory · 5 Connectors and plugins · 6 Agent harnesses</p>
+  <h1 class="title">MGMT 803, MBA@Rice, 2026</h1>
+  <p class="subtitle">Thursday, September 24, Afternoon</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Kerry Back 
+Kerry Back<br>J. Howard Creekmore Professor of Finance 
 </div>
 </div>
 </div>
@@ -213,7 +213,7 @@ Kerry Back
 <div class="cards cards-3">
 <div class="card">
 <p><span class="card-title">Persistent instructions</span></p>
-<p>Standing rules the agent reads every turn, and tasks written down once.</p>
+<p>The instructions already there before yours, the standing rules you add, and tasks written down once.</p>
 </div>
 <div class="card card-blue">
 <p><span class="card-title">Connectors and plugins</span></p>
@@ -224,19 +224,110 @@ Kerry Back
 <p>Claude Code is one program around the model. What the others decided differently.</p>
 </div>
 </div>
-<p>Four hands-on blocks. By six you will have written a skill, connected to data you do not hold, and installed plugins other people wrote.</p>
+<p>Four hands-on blocks, about two and a quarter hours: a <code>CLAUDE.md</code>, a skill, the Northwind database, and the EIA database.</p>
 </section>
 <section>
 <section id="persistent-instructions-and-memory" class="title-slide slide level1 center">
-<h1>4 · Persistent instructions and memory</h1>
-
+<h1>9 · Persistent instructions and memory</h1>
+<p>Instructions that are there before you type: somebody else’s first, then yours.</p>
+</section>
+<section id="somebody-already-wrote-instructions" class="slide level2 plain-title">
+<h2>Somebody already wrote instructions</h2>
+<div class="lead">
+<p>Every conversation you had this morning already contained a block of text you did not write and never saw.</p>
+</div>
+<p>The system prompt. It sits ahead of your first message and is sent again on every turn, telling the model what it is, what it may do, and how to answer.</p>
+</section>
+<section id="what-is-in-one" class="slide level2">
+<h2>What is in one</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Identity</td>
+<td>what it is, who made it, what today’s date is</td>
+</tr>
+<tr class="even">
+<td>Format</td>
+<td>when to use markdown, how long an answer should run, when to use a list</td>
+</tr>
+<tr class="odd">
+<td>Tools</td>
+<td>when to search the web, when to write code, when to make an artifact</td>
+</tr>
+<tr class="even">
+<td>Refusals</td>
+<td>what it declines, and how</td>
+</tr>
+<tr class="odd">
+<td>Character</td>
+<td>what to do when it is uncertain, how much to hedge</td>
+</tr>
+</tbody>
+</table>
+<p>Thousands of words, revised often, and paid for on every turn.</p>
+</section>
+<section id="read-the-real-one" class="slide level2 plain-title">
+<h2>Read the real one</h2>
+<p>Anthropic publishes the system prompts for the Claude apps, dated and by model:</p>
+<div class="lead">
+<p><a href="https://platform.claude.com/docs/en/release-notes/system-prompts/overview">platform.claude.com/docs/en/release-notes/system-prompts</a></p>
+</div>
+<div class="note">
+<p>Worth reading. Behavior you took for the model is often an instruction on that page.</p>
+</div>
+</section>
+<section id="it-does-not-come-with-the-api" class="slide level2 plain-title">
+<h2>It does not come with the API</h2>
+<div class="lead">
+<p>Call the Messages endpoint the way you did this morning and none of that is there.</p>
+</div>
+<p>The <code>system</code> field is empty unless you fill it. Same weights, same training, no instructions — which is why a question can get one answer in the chat window and a different one from a script.</p>
+<div class="note">
+<p>The scaffolding is in the app, not in the weights.</p>
+</div>
+</section>
+<section id="who-writes-it-where" class="slide level2">
+<h2>Who writes it, where</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Where you are</th>
+<th>Who wrote the system prompt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>claude.ai, Claude Desktop</td>
+<td>Anthropic, and published</td>
+</tr>
+<tr class="even">
+<td>Claude Code</td>
+<td>Anthropic, not published</td>
+</tr>
+<tr class="odd">
+<td>OpenRouter, or any raw API call</td>
+<td>you, or nobody</td>
+</tr>
+<tr class="even">
+<td>An agent you build</td>
+<td>you, entirely</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<p>Further down the list, more of the behavior is yours to specify, and absent if you do not. Sunday you write one.</p>
+</div>
 </section>
 <section id="the-repeated-instruction" class="slide level2">
 <h2>The repeated instruction</h2>
 <div class="lead">
 <p>This morning you typed the same four things into every prompt: describe the data first, show the code, report row counts, reconcile a second way.</p>
 </div>
-<p>Each of those is a standing instruction about how you want work done. Typing them into each prompt makes them optional, and one of them gets left out at four in the afternoon.</p>
+<p>Each of those is a standing instruction about how you want work done. Typing them into each prompt makes them optional, and eventually one gets left out.</p>
 </section>
 <section id="everything-arrives-as-one-block-of-text" class="slide level2">
 <h2>Everything arrives as one block of text</h2>
@@ -325,7 +416,7 @@ Kerry Back
 </section>
 <section id="write-your-standing-rules" class="slide level2 plain-title">
 <h2>Write your standing rules</h2>
-<p><span class="eyebrow">Exercise 5 · 30 minutes</span></p>
+<p><span class="eyebrow">Exercise</span></p>
 <div class="steps">
 <ol type="1">
 <li>Create <code>~/CLAUDE.md</code> in your container.</li>
@@ -468,10 +559,10 @@ Kerry Back
 </section>
 <section id="write-a-skill" class="slide level2 plain-title">
 <h2>Write a skill</h2>
-<p><span class="eyebrow">Exercise 6 · 50 minutes</span></p>
+<p><span class="eyebrow">Exercise</span></p>
 <div class="steps">
 <ol type="1">
-<li>Pick something you do at work more than once a month, with inputs and a shape.</li>
+<li>Pick something you do at work more than once a month, with inputs and a shape. If nothing comes in two minutes, use Thursday’s revenue-by-country report.</li>
 <li>Run <code>/skill-creator</code> and work through it, answering in your own vocabulary.</li>
 <li>Put a real input file in the container and run the skill on it.</li>
 <li>In a fresh conversation, ask for the task in the words a colleague would use.</li>
@@ -479,12 +570,12 @@ Kerry Back
 </ol>
 </div>
 <div class="note">
-<p>Step 4 is the test. A skill that fires only when you name it has not been described yet.</p>
+<p>A skill that fires only when you name it needs a better description.</p>
 </div>
 </section></section>
 <section>
 <section id="connectors-and-plugins" class="title-slide slide level1 center">
-<h1>5 · Connectors and plugins</h1>
+<h1>10 · Connectors and plugins</h1>
 
 </section>
 <section id="the-problem-a-standard-solves" class="slide level2">
@@ -502,8 +593,8 @@ Kerry Back
 </div>
 <p>A server written for nothing in particular is reachable from every client that speaks the protocol.</p>
 </section>
-<section id="what-a-connector-actually-sends" class="slide level2">
-<h2>What a connector actually sends</h2>
+<section id="what-a-connector-sends" class="slide level2">
+<h2>What a connector sends</h2>
 <div class="steps">
 <ol type="1">
 <li>The client connects to the server and asks what it offers.</li>
@@ -530,7 +621,7 @@ Kerry Back
 <span id="cb3-10"><a></a>    <span class="dt">"required"</span><span class="fu">:</span> <span class="ot">[</span><span class="st">"query"</span><span class="ot">]</span></span>
 <span id="cb3-11"><a></a>  <span class="fu">}</span></span>
 <span id="cb3-12"><a></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The description is what the model reads to decide whether to use it. A badly described tool is an unused tool.</p>
+<p>The description is what the model reads to decide whether to use it.</p>
 </section>
 <section id="where-the-call-is-made-from" class="slide level2">
 <h2>Where the call is made from</h2>
@@ -561,7 +652,7 @@ Kerry Back
 <p><span class="eyebrow">Leave it shut, add a connector</span></p>
 <p>It can call <code>run_sql</code> with a <code>SELECT</code>. That is the entire new capability.</p>
 </div></div>
-<p>The connector is the smaller of the two. That is why the network stays off and the connector goes on, and not the other way around.</p>
+<p>The connector is the smaller of the two. That is why the network stays off and the connector goes on.</p>
 <div class="note">
 <p>It costs something. The connector reaches out from outside the sandbox holding your credentials, so a sentence in a file it reads can ask for that call. Cutting the machine off from the network did not cut off the connector. Sunday morning.</p>
 </div>
@@ -596,20 +687,75 @@ Kerry Back
 </table>
 <p>Same three servers, reachable from Claude Code in your container and from Claude Desktop on your laptop. Neither was written for either one.</p>
 </section>
-<section id="connect-one" class="slide level2 plain-title">
-<h2>Connect one</h2>
-<p><span class="eyebrow">Exercise 7 · 40 minutes</span></p>
+<section id="the-northwind-server" class="slide level2 plain-title">
+<h2>The Northwind server</h2>
+<p><span class="eyebrow">Exercise</span></p>
 <div class="steps">
 <ol type="1">
-<li>Connect the Northwind server, and then one of the two data services.</li>
-<li>Ask what tools each one offers, and read the descriptions.</li>
-<li>Ask the Northwind server which countries generated the most revenue, and have it show the SQL.</li>
-<li>Ask something that needs the connector and a file in your container at the same time.</li>
-<li>Try to make the database server do something other than read.</li>
+<li>Connect the Northwind server and ask what tools it offers. Read the descriptions.</li>
+<li>Ask which countries generated the most revenue, and have it show you the SQL it ran.</li>
+<li>Put that beside the number you computed from the spreadsheets on Thursday morning.</li>
+<li>Explain any difference. One of the two is answering a slightly different question.</li>
+<li>Try to make it change something in the database.</li>
 </ol>
 </div>
 <div class="note">
-<p>Keep that number. Tomorrow you compute it yourself from spreadsheets and reconcile the two.</p>
+<p>The two numbers usually differ. Freight, discounts, cancelled orders, and shipped versus ordered date are the usual causes.</p>
+</div>
+</section>
+<section id="what-discovery-looks-like" class="slide level2 plain-title">
+<h2>What discovery looks like</h2>
+<p>The EIA server does not hand the model a list of datasets. It hands it a way to find one.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><code>eia_search_routes</code></td>
+<td>fuzzy search — “electricity prices by state”</td>
+</tr>
+<tr class="even">
+<td><code>eia_browse_routes</code></td>
+<td>walk the taxonomy; fourteen categories at the root</td>
+</tr>
+<tr class="odd">
+<td><code>eia_describe_route</code></td>
+<td>what filters exist, what columns, what units</td>
+</tr>
+<tr class="even">
+<td><code>eia_query_route</code></td>
+<td>the rows, with the filters applied</td>
+</tr>
+<tr class="odd">
+<td><code>eia_dataframe_describe</code></td>
+<td>what has been pulled so far, and its schema</td>
+</tr>
+<tr class="even">
+<td><code>eia_dataframe_query</code></td>
+<td>SQL across those, joins included</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<p>Six tools rather than one per dataset. The model reads the descriptions and works out the order, which takes about four turns.</p>
+</div>
+</section>
+<section id="the-eia-server" class="slide level2 plain-title">
+<h2>The EIA server</h2>
+<p><span class="eyebrow">Exercise</span></p>
+<div class="steps">
+<ol type="1">
+<li>Connect the EIA server and ask what tools it offers. Read them before using any.</li>
+<li>Have it browse the taxonomy from the root and pick the category closest to your industry.</li>
+<li>Ask a question you do not already know the answer to. Make it name the route it used, the filters it applied, and the units.</li>
+<li>Ask a second question that needs two of those series in one answer.</li>
+<li>Ask for something the server has no tool for, and watch what it does instead.</li>
+</ol>
+</div>
+<div class="note">
+<p>Energy arrives in thousand megawatthours, million cubic feet, and thousand barrels a day. A right number with the wrong unit is wrong by a factor of a thousand, and nothing in the reply will say so.</p>
 </div>
 </section>
 <section id="where-the-limit-lives" class="slide level2 divider">
@@ -643,7 +789,7 @@ Kerry Back
 </tr>
 </tbody>
 </table>
-<p>The model is not consulted at any of them. That is the property that makes them worth having.</p>
+<p>The model is not consulted at any of them.</p>
 </section>
 <section id="instructions-are-not-a-limit" class="slide level2">
 <h2>Instructions are not a limit</h2>
@@ -657,9 +803,6 @@ Kerry Back
 <p>There is nothing to call.</p>
 <p>No wording reaches it, because nothing is being persuaded.</p>
 </div></div>
-<div class="note">
-<p>Everything you can talk it out of was a request, not a constraint.</p>
-</div>
 </section>
 <section id="mail-and-calendar" class="slide level2">
 <h2>Mail and calendar</h2>
@@ -681,10 +824,10 @@ Kerry Back
 </div>
 </div>
 </section>
-<section id="why-that-split-is-the-whole-design" class="slide level2">
-<h2>Why that split is the whole design</h2>
+<section id="two-things-at-once" class="slide level2">
+<h2>Two things at once</h2>
 <p>An agent reading your mail is holding two things at once: your private correspondence, and text written by people outside your organization.</p>
-<p>Give it an outbound channel and those two facts combine into a third. We come back to this on Sunday, in detail.</p>
+<p>Give it an outbound channel and text written by outsiders can direct what leaves. Sunday, in detail.</p>
 </section>
 <section id="installing-plugins" class="slide level2 divider">
 <h2>Installing plugins</h2>
@@ -713,7 +856,7 @@ Kerry Back
 </section>
 <section id="a-marketplace-you-can-use-today" class="slide level2 plain-title">
 <h2>A marketplace you can use today</h2>
-<p><code>kerryback/skills</code> holds fifteen. Seven worth your time:</p>
+<p><code>kerryback/skills</code> holds fifteen. Seven of them:</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 25%">
@@ -769,18 +912,16 @@ Kerry Back
 </section>
 <section id="install-and-try" class="slide level2 plain-title">
 <h2>Install and try</h2>
-<p><span class="eyebrow">Exercise 8 · 40 minutes</span></p>
+<p><span class="eyebrow">Demonstration · 10 minutes</span></p>
 <div class="steps">
 <ol type="1">
 <li>Add the <code>kerryback/skills</code> marketplace and list what is in it.</li>
-<li>Install two plugins that look useful for your own work.</li>
-<li>Run one of them on your own data or your own document.</li>
+<li>Install one and run it.</li>
 <li>Open its <code>SKILL.md</code> and read how it does what it does.</li>
-<li>Say what you would change, and what you would have written differently.</li>
 </ol>
 </div>
 <div class="note">
-<p>You wrote one of these earlier. Step 4 is reading somebody else’s.</p>
+<p>Install what you want tonight. The marketplace stays in your container all week.</p>
 </div>
 </section>
 <section id="four-rungs" class="slide level2 band-bottom">
@@ -820,9 +961,9 @@ Kerry Back
 </section></section>
 <section>
 <section id="agent-harnesses" class="title-slide slide level1 center">
-<h1>6 · Agent harnesses</h1>
+<h1>11 · Agent harnesses</h1>
 <div class="lead">
-<p>You have spent a day inside Claude Code. It is one answer to a design problem, and there are others — increasingly not from the model’s maker.</p>
+<p>Claude Code is one answer to a design problem. There are others, increasingly not from the model’s maker.</p>
 </div>
 </section>
 <section id="same-model-different-program" class="slide level2 plain-title">
@@ -834,10 +975,10 @@ Kerry Back
 <div class="lead">
 <p>You pick the model. Everything else on that list is supplied by the program around it.</p>
 </div>
-<p>Buying a harness — Claude Code, or one of the open ones — is buying somebody’s answers to those five questions. The answers are not the same, and this year they stopped being the same in ways that show up in the output.</p>
+<p>Buying a harness — Claude Code, or one of the open ones — is buying somebody’s answers to those questions. The answers differ, and the differences show up in the output.</p>
 </section>
-<section id="what-actually-differs" class="slide level2">
-<h2>What actually differs</h2>
+<section id="what-differs" class="slide level2">
+<h2>What differs</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 22%">
@@ -920,9 +1061,9 @@ Kerry Back
 <td>neutral governance; container-first</td>
 </tr>
 <tr class="odd">
-<td>Gemini CLI · Qwen Code</td>
-<td>their own models</td>
-<td>vendor CLIs on the same pattern</td>
+<td>Qwen Code</td>
+<td>Alibaba’s models</td>
+<td>a vendor CLI on the same pattern</td>
 </tr>
 </tbody>
 </table>
@@ -934,11 +1075,11 @@ Kerry Back
 <div class="column" style="width:50%;">
 <p><span class="eyebrow">Claude Code</span></p>
 <p>Forty-plus tools. A layered system prompt with a cached boundary. Four fallback strategies when the context fills. Subagents that fork and run in the background.</p>
-<p>The harness does a great deal on your behalf, and you did not write any of it.</p>
+<p>The harness does a great deal on your behalf.</p>
 </div><div class="column" style="width:50%;">
 <p><span class="eyebrow">Pi</span></p>
 <p>Four tools — read, write, edit, run a command. A system prompt under a thousand tokens. No subagents, no plan mode, no MCP.</p>
-<p>Anything else, the agent writes for itself as an extension while you watch.</p>
+<p>Anything else, the agent writes for itself as an extension.</p>
 </div></div>
 <div class="note">
 <p>Databricks benchmarked both and found the thin one matched or beat the thick one at a fraction of the cost, because it sent roughly three times less context per turn.</p>
@@ -980,8 +1121,8 @@ Kerry Back
 <p>The distinction from this morning, in a different form: a mode that asks you, versus a boundary that makes the call impossible. Two of these five are the second kind.</p>
 </div>
 </section>
-<section id="why-any-of-this-is-on-the-slide" class="slide level2">
-<h2>Why any of this is on the slide</h2>
+<section id="benchmarks-and-harnesses" class="slide level2">
+<h2>Benchmarks and harnesses</h2>
 <div class="lead">
 <p>A benchmark number is a model and a harness together. Change the harness and the number moves.</p>
 </div>
@@ -990,14 +1131,14 @@ Kerry Back
 <li>The same model scores differently under two harnesses on the same benchmark.</li>
 <li>Papers report the model and omit the harness.</li>
 <li>Removing most of an agent’s tools has been shown to raise its score, not lower it.</li>
-<li>So a leaderboard tells you less than it appears to.</li>
+<li>So a leaderboard ranks model-and-harness pairs, not models.</li>
 </ol>
 </div>
-<p>When somebody tells you a model can or cannot do something, the useful question is what it was wearing at the time.</p>
+<p>When somebody says a model can or cannot do something, ask which harness it was running in.</p>
 </section>
 <section id="tomorrow" class="slide level2 band-bottom">
 <h2>Tomorrow</h2>
-<p>Everything today has been about setting the agent up. Tomorrow you point it at data and find out whether you can trust what comes back.</p>
+<p>Everything today has been about setting the agent up. Tomorrow you point it at data and check what comes back.</p>
 
 
 </section></section>

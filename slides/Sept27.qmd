@@ -1,7 +1,7 @@
 ---
-title: "Sunday, September 27"
-subtitle: "12 Creating agents · 13 Managing security risks"
-author: "Kerry Back"
+title: "MGMT 803, MBA@Rice, 2026"
+subtitle: "Sunday, September 27, Morning"
+author: "Kerry Back<br>J. Howard Creekmore Professor of Finance"
 format:
   revealjs:
     footer: "MGMT 803 · Rice Business"
@@ -19,11 +19,11 @@ The API underneath everything, and an agent with a tool list you chose.
 ::: {.card .card-blue}
 [Managing security risks]{.card-title}
 
-Believing it, sending data out, letting it act — and what you take back to work.
+Believing it, sending data out, letting it act, and a one-page plan.
 :::
 :::
 
-# 12 · Creating agents
+# 17 · Creating agents
 
 ## A chatbot produces text
 
@@ -46,9 +46,7 @@ A chatbot that appears to remember you is being handed the earlier conversation 
 4. Repeat until the model answers with text and no tool call.
 :::
 
-The loop in step 4 is the whole mechanism. Nothing else is added.
-
-## What the model is actually sent
+## What the model is sent
 
 Every turn, the harness assembles one block of text:
 
@@ -56,7 +54,7 @@ Every turn, the harness assembles one block of text:
 ::: {.card}
 [Fixed each turn]{.card-title}
 
-The system prompt. The tool definitions. Any instruction files the harness decided to include.
+The system prompt. The tool definitions. Any instruction files the harness is coded to include.
 :::
 
 ::: {.card .card-blue}
@@ -72,9 +70,9 @@ A tool result is text in the conversation, which is why a document the agent rea
 
 ## The API {.divider}
 
-## A fourth door
+## A fourth interface
 
-| Door | Who is at the keyboard | What it is for |
+| Interface | Who is at the keyboard | What it is for |
 |---|---|---|
 | Chat in a browser | you | one question |
 | Claude Code | you | work on a machine |
@@ -82,7 +80,7 @@ A tool result is text in the conversation, which is why a document the agent rea
 | The API | a program | the same operation, many times |
 
 ::: {.note}
-The first three all assume a person is present. The fourth is the one that does not.
+The first three assume a person is present. The API does not.
 :::
 
 ## Why call it directly
@@ -91,7 +89,7 @@ The first three all assume a person is present. The fourth is the one that does 
 ::: {.card}
 [Repetition]{.card-title}
 
-The same judgment applied to five thousand rows. Nobody is going to paste them one at a time.
+The same judgment applied to five thousand rows.
 :::
 
 ::: {.card .card-blue}
@@ -142,7 +140,7 @@ Everything in that call is something you chose: the model, the ceiling on output
 :::
 
 ::: {.note}
-Step 4 is the one people skip. A loop over a large file with a bug in the exit condition spends real money.
+A loop over a large file with a bug in the exit condition spends real money.
 :::
 
 ## What you are charged for
@@ -160,7 +158,7 @@ A conversation costs more each turn because the entire history is sent again eve
 
 ## First calls {.plain-title}
 
-[Exercise 18 · 30 minutes]{.eyebrow}
+[Exercise]{.eyebrow}
 
 ::: {.steps}
 1. Put your key in the environment and make one call that returns a sentence.
@@ -216,8 +214,6 @@ Call, execute, feed the result back, repeat.
 :::
 :::
 
-There is no seventh ingredient.
-
 ## Three kinds of tools
 
 | | Where the code is | Example |
@@ -245,7 +241,7 @@ The description is the interface. The model never sees the code.
 
 ## Build one {.plain-title}
 
-[Exercise 19 · 75 minutes · three stages]{.eyebrow}
+[Exercise · three stages]{.eyebrow}
 
 ::: {.steps}
 1. A chatbot with no tools at all. Ask it how many files are in the directory it is running in. Read the answer carefully.
@@ -267,15 +263,11 @@ Asked a question about a filesystem it cannot reach, a model with no tools still
 - It produces plausible filenames
 - Nothing in the output is marked as unavailable
 
-The same model with a file-reading tool answers correctly. What changed is not the model. It is that something connected the question to the directory.
+The same model with a file-reading tool answers correctly. What changed is the tool list.
 
 ## Choosing what it can do {.divider}
 
-## Narrow beats capable
-
-::: {.lead}
-What you leave out of the tool list is not a limitation. It is the security model.
-:::
+## A general agent and a narrow agent
 
 | | A general agent | A narrow agent |
 |---|---|---|
@@ -283,10 +275,6 @@ What you leave out of the tool list is not a limitation. It is the security mode
 | Runs as | you | a service account |
 | Reaches | your whole machine | one dataset |
 | Right for | your own work | anything you hand to someone else |
-
-::: {.note}
-Buy for yourself; build for other people.
-:::
 
 ## An agent whose tool is an agent
 
@@ -297,11 +285,11 @@ Buy for yourself; build for other people.
 4. It assembles the answer from what both returned.
 :::
 
-The two workers never share a context. Neither one holds private data and an outbound channel at the same time — which is the point of the arrangement, and the subject of the rest of this morning.
+The two workers never share a context, so neither holds private data and an outbound channel at the same time.
 
 ## Talk it out of its job {.plain-title}
 
-[Exercise 20 · 25 minutes]{.eyebrow}
+[Exercise]{.eyebrow}
 
 ::: {.steps}
 1. Take the narrow agent you just built.
@@ -311,7 +299,7 @@ The two workers never share a context. Neither one holds private data and an out
 :::
 
 ::: {.note}
-Keep what you found. Some of it is the first item after the break.
+Keep what you found. It is the first item after the break.
 :::
 
 ## Screen shares {.band-bottom}
@@ -319,7 +307,8 @@ Keep what you found. Some of it is the first item after the break.
 - What your agent is for, in one sentence
 - Its tool list, read out loud
 - The one thing you could talk it into
-# 13 · Managing security risks
+
+# 18 · Managing security risks
 
 Believing it, sending it out, and letting it act.
 
@@ -454,7 +443,7 @@ Any way for text to leave: fetching a URL, sending mail, writing somewhere share
 :::
 :::
 
-All three in one agent is the condition. Remove any one and the attack has nowhere to go.
+All three in one agent is the condition. Remove any one and the attack does not work.
 
 ## The question to ask about any deployment
 
@@ -467,9 +456,37 @@ Does this agent hold private data, read content an outsider can influence, and h
 
 It is answerable from an architecture diagram, without knowing anything about how the model works.
 
+## Blast radius of an Excel add-in
+
+The Claude for Excel add-in from Thursday, checked against the three legs.
+
+::: {.cards .cards-3}
+::: {.card}
+[Private data]{.card-title}
+
+The open workbook. With "work across files" on, also the open deck, the open Word document, and the open Outlook email.
+:::
+
+::: {.card .card-blue}
+[Untrusted content]{.card-title}
+
+A downloaded template, a vendor file, a data import, or an email from outside.
+:::
+
+::: {.card .card-sand}
+[An outbound channel]{.card-title}
+
+Writing into the open document or email, and any connector you have enabled.
+:::
+:::
+
+::: {.note}
+"Work across files" is on by default for Pro and Max plans and off by default for Team and Enterprise. Anthropic's testing found the add-in could be manipulated into extracting sensitive information, modifying data, or taking destructive actions.
+:::
+
 ## Red-team a classmate's agent {.plain-title}
 
-[Exercise 21 · 45 minutes]{.eyebrow}
+[Exercise]{.eyebrow}
 
 ::: {.steps}
 1. Swap agents with someone. You get their code and their tool list.
@@ -483,7 +500,7 @@ It is answerable from an architecture diagram, without knowing anything about ho
 Use synthetic data. Nothing in this exercise touches anything real.
 :::
 
-## Making it impossible rather than unlikely {.divider}
+## Isolation and governance {.divider}
 
 ## Two ways to stop the same thing {.compare}
 
@@ -501,7 +518,7 @@ Works on the calls you anticipated. Judgment happens at run time, every time.
 
 The route does not exist.
 
-Works on calls nobody anticipated. Nothing is judged, because nothing is possible.
+Works on calls nobody anticipated. There is nothing to judge at run time.
 :::
 ::::
 
@@ -528,13 +545,13 @@ Neither worker ever holds all three legs. That property is a fact about the netw
 | Network | its own namespace, and it cannot reach a peer container |
 | The gate | your terminal sits behind your own login |
 
-You spent four days inside a working example of the pattern.
+Your container is an instance of that pattern.
 
 ## Monday {.divider}
 
 ## Write the plan {.plain-title}
 
-[Exercise 22 · 40 minutes]{.eyebrow}
+[Exercise]{.eyebrow}
 
 One page, covering:
 
@@ -549,16 +566,15 @@ One page, covering:
 
 ## Pitches {.band-bottom}
 
-[35 minutes]{.eyebrow}
 
 Three minutes each. The room responds as the people who would have to approve it, fund it, or use it.
 
 For each plan, someone in the room names:
 
-- The step that will not survive contact with the real workflow
+- The step most likely to fail in the real workflow
 - The one item on the tool list they would remove
 
-## What you have
+## A habit, a file, a question
 
 ::: {.cards .cards-3}
 ::: {.card}

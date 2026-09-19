@@ -2,3 +2,5 @@
 **/*.quarto_ipynb
 .playwright-mcp/
 MGMT803.csv
+Screenshot 2026-09-18*.png
+.DS_Store

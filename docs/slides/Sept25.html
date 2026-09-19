@@ -9,8 +9,8 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.9.38">
 
-  <meta name="author" content="Kerry Back">
-  <title>Friday, September 25</title>
+  <meta name="author" content="Kerry Back J. Howard Creekmore Professor of Finance">
+  <title>MGMT 803, MBA@Rice, 2026</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -32,7 +32,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-ad9d6da6267b2ca2af52a465c31666ff.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-963326a71a77be66e1a2dc2e7f4f8a8d.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -130,13 +130,13 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Friday, September 25</h1>
-  <p class="subtitle">7 Working with data</p>
+  <h1 class="title">MGMT 803, MBA@Rice, 2026</h1>
+  <p class="subtitle">Friday, September 25, Morning</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Kerry Back 
+Kerry Back<br>J. Howard Creekmore Professor of Finance 
 </div>
 </div>
 </div>
@@ -145,7 +145,7 @@ Kerry Back
 <section id="this-morning" class="slide level2">
 <h2>This morning</h2>
 <div class="lead">
-<p>One question, five spreadsheets, and a morning: which countries generated the most revenue, and how do you know.</p>
+<p>Five spreadsheets and one question: which countries generated the most revenue, and how do you know.</p>
 </div>
 <div class="cards cards-2">
 <div class="card">
@@ -160,7 +160,7 @@ Kerry Back
 </section>
 <section>
 <section id="working-with-data" class="title-slide slide level1 center">
-<h1>7 · Working with data</h1>
+<h1>12 · Working with data</h1>
 <p>The country revenue report, then the four ways the number comes out wrong.</p>
 </section>
 <section id="we-should-point-ai-at-our-data" class="slide level2 plain-title">
@@ -228,12 +228,12 @@ Kerry Back
 </tr>
 <tr class="odd">
 <td>A dashboard</td>
-<td>four questions somebody chose in 2024</td>
+<td>a fixed set of questions chosen when it was built</td>
 <td>anyone</td>
 </tr>
 <tr class="even">
 <td>An extract</td>
-<td>one analyst’s copy, as of some Tuesday</td>
+<td>one analyst’s copy, as of when it was pulled</td>
 <td>whoever they mailed it to</td>
 </tr>
 <tr class="odd">
@@ -277,7 +277,7 @@ Kerry Back
 </tr>
 </tbody>
 </table>
-<p>Four counts of customers, all correct, none equal.</p>
+<p>The four counts differ.</p>
 </section>
 <section id="why-you-cannot-just-query-the-live-system" class="slide level2">
 <h2>Why you cannot just query the live system</h2>
@@ -310,7 +310,7 @@ Kerry Back
 </ol>
 </div>
 <div class="note">
-<p>Two of the three age silently. The number in the deck was right when it was pulled.</p>
+<p>The extract and the export are never refreshed.</p>
 </div>
 </section>
 <section id="the-vocabulary-you-need-for-the-rest-of-the-day" class="slide level2">
@@ -339,16 +339,13 @@ Kerry Back
 </tr>
 </tbody>
 </table>
-<div class="note">
-<p>Every one of these shows up in the next four hours as a reason a total is wrong.</p>
-</div>
 </section>
 <section id="five-files-one-question" class="slide level2 plain-title">
 <h2>Five files, one question</h2>
 <div class="lead">
 <p>Northwind: a supplier of specialty foods to restaurants and delis. 500 orders, 93 customers, 77 products, 8 categories, spanning 2012 to 2023.</p>
 </div>
-<p>Small enough to hold in your head, and shaped like a company a thousand times larger. What you are about to do to it is what an analyst does to the real thing.</p>
+<p>Small enough to read in full.</p>
 </section>
 <section id="what-you-are-building" class="slide level2 plain-title">
 <h2>What you are building</h2>
@@ -356,12 +353,11 @@ Kerry Back
 <p>Five spreadsheets in <code>~/data</code>: orders, order details, customers, products, categories. One question — which countries generated the most revenue, and how do you know.</p>
 </div>
 <div class="note note-plum">
-<p>Read all five parts before you start. Part D is the point of the exercise. Get there even if you have to shorten Part C.</p>
+<p>Read all five parts before you start. Reach Part D even if you have to shorten Part C.</p>
 </div>
 </section>
 <section id="part-a-describe-it-first" class="slide level2 plain-title">
 <h2>Part A — describe it first</h2>
-<p><span class="eyebrow">15 minutes</span></p>
 <p>Before any analysis, have it report — with the code shown:</p>
 <div class="steps">
 <ol type="1">
@@ -377,7 +373,6 @@ Kerry Back
 </section>
 <section id="part-b-revenue-by-country" class="slide level2 plain-title">
 <h2>Part B — revenue by country</h2>
-<p><span class="eyebrow">25 minutes</span></p>
 <div class="steps">
 <ol type="1">
 <li>Compute revenue per order line, then total by the customer’s country.</li>
@@ -392,7 +387,6 @@ Kerry Back
 </section>
 <section id="part-c-a-deliverable" class="slide level2 plain-title">
 <h2>Part C — a deliverable</h2>
-<p><span class="eyebrow">20 minutes</span></p>
 <div class="cards cards-2">
 <div class="card">
 <p><span class="card-title">Option 1</span></p>
@@ -403,11 +397,10 @@ Kerry Back
 <p>A five-slide deck: the question, the top five, the chart, the definition, and what you checked.</p>
 </div>
 </div>
-<p>Either one states the revenue definition on its face. A number without its definition cannot be reconciled against anyone else’s.</p>
+<p>Either one states the revenue definition on its face.</p>
 </section>
 <section id="part-d-verify-it" class="slide level2 plain-title">
 <h2>Part D — verify it</h2>
-<p><span class="eyebrow">25 minutes</span></p>
 <div class="steps">
 <ol type="1">
 <li>Recompute the total by a second route — a different tool, a different order of operations, or straight from the raw files with no merges at all.</li>
@@ -496,7 +489,7 @@ Kerry Back
 </tr>
 </tbody>
 </table>
-<p>Every order line matches a product, an order, and a customer. No merge in this analysis drops a row — which is why you have to check rather than assume.</p>
+<p>Every order line matches a product, an order, and a customer. No merge in this analysis drops a row.</p>
 </section>
 <section id="two-columns-named-unitprice" class="slide level2">
 <h2>Two columns named UnitPrice</h2>
@@ -521,7 +514,7 @@ Kerry Back
 </tr>
 </tbody>
 </table>
-<p>The two answers differ by $2,962 on $14 million. A sanity check on the magnitude passes either way, so nothing about the wrong choice looks wrong.</p>
+<p>The two answers differ by $2,962 on $14 million. A sanity check on the magnitude passes either way.</p>
 </section>
 <section id="the-rows-with-no-country" class="slide level2">
 <h2>The rows with no country</h2>
@@ -607,11 +600,11 @@ Kerry Back
 </div>
 <p>Here is code and the answer it produced. Ignore the answer. Read the code and tell me what it actually computes — including what it drops and what it assumes.</p>
 </div>
-<p>A fresh conversation reading code has nothing invested in the number already on the screen.</p>
+<p>A fresh conversation has not seen the answer, so it cannot work backward from it.</p>
 </section>
 <section id="find-the-bug" class="slide level2 plain-title">
 <h2>Find the bug</h2>
-<p><span class="eyebrow">Exercise 9 · 40 minutes</span></p>
+<p><span class="eyebrow">Exercise</span></p>
 <div class="steps">
 <ol type="1">
 <li><code>~/data/planted/country_report.py</code> produces a country table. Its total is wrong.</li>
@@ -626,7 +619,7 @@ Kerry Back
 </section>
 <section id="tomorrow" class="slide level2 band-bottom">
 <h2>Tomorrow</h2>
-<p>Today the answer was a number you checked. Tomorrow it becomes a document somebody else opens, and then an application they use without you.</p>
+<p>Today the output was a number. Tomorrow it is a document, and then an application.</p>
 
 
 </section></section>

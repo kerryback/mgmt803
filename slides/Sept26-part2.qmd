@@ -1,7 +1,7 @@
 ---
-title: "Saturday, September 26 · Afternoon"
-subtitle: "10 Retrieval augmented generation · 11 Open source models"
-author: "Kerry Back"
+title: "MGMT 803, MBA@Rice, 2026"
+subtitle: "Saturday, September 26, Afternoon"
+author: "Kerry Back<br>J. Howard Creekmore Professor of Finance"
 format:
   revealjs:
     footer: "MGMT 803 · Rice Business"
@@ -23,11 +23,11 @@ What you can download and run yourself, and how far behind it is.
 :::
 :::
 
-# 10 · Retrieval augmented generation
+# 15 · Retrieval augmented generation
 
 Answering from your own documents, with a citation you can open.
 
-## The other eighty per cent {.compare}
+## Structured and unstructured {.compare}
 
 :::: {.columns}
 ::: {.column width="50%"}
@@ -90,16 +90,12 @@ An embedding model reads a passage and returns a fixed-length list of numbers �
 
 Passages about the same thing land near each other, whatever words they used. "Revenue fell in the third quarter" sits close to "Q3 sales were down", and a keyword search for "revenue" finds only the first.
 
-::: {.note}
-This is why retrieval works on a question phrased in the reader's words rather than the author's.
-:::
-
-## Chunking is the design decision {.plain-title}
+## Chunking choices {.plain-title}
 
 | Choice | What it costs |
 |---|---|
 | Chunks too small | the passage arrives without the sentence that made it mean something |
-| Chunks too large | the relevant line is buried in a page of irrelevance you paid for |
+| Chunks too large | the relevant line arrives inside a page of text you paid for |
 | Split mid-table | numbers arrive with no column headings |
 | No overlap | an answer spanning a boundary is never retrieved whole |
 
@@ -125,7 +121,7 @@ Start hosted. Build your own when the answers are wrong and you need to see whic
 
 ## Build one over your own documents {.plain-title}
 
-[Exercise 16 · 60 minutes]{.eyebrow}
+[Exercise]{.eyebrow}
 
 ::: {.steps}
 1. Put twenty or more of your own documents in a folder — reports, policies, decks, anything real but not confidential.
@@ -136,13 +132,13 @@ Start hosted. Build your own when the answers are wrong and you need to see whic
 :::
 
 ::: {.note}
-Step 5 is the whole exercise. An answer you cannot trace is the thing RAG was supposed to fix.
+An answer you cannot trace back to a passage is not verifiable.
 :::
 
 ## Make it cite, then check the citation
 
 ::: {.lead}
-A citation is only worth having if somebody opens it.
+Open each passage it cites and check that the answer is in it.
 :::
 
 ::: {.steps}
@@ -152,10 +148,10 @@ A citation is only worth having if somebody opens it.
 :::
 
 ::: {.note}
-The third is the one that fails. A retriever always returns its closest matches, whether or not any of them are relevant.
+A retriever always returns its closest matches, whether or not any of them are relevant.
 :::
 
-## Permissions do not survive chunking {.compare}
+## Permissions and chunking {.compare}
 
 :::: {.columns}
 ::: {.column width="50%"}
@@ -171,18 +167,14 @@ Is a row in a database with a vector next to it. Usually carries no access list 
 :::
 ::::
 
-Index everything and the retriever will hand a new analyst a paragraph from a file they could never have opened.
+Index everything and the retriever will return a passage from a file the person asking could never have opened.
 
 ## Retrieved text is untrusted text {.plain-title}
-
-::: {.note .note-plum}
-A poisoned document in the index is a prompt injection with a delivery mechanism.
-:::
 
 Anything that reaches the model reaches it as text, and text from a retrieved passage arrives in the same stream as your question. Whoever can put a document into the index can put instructions in front of the model.
 
 ::: {.note}
-Which is the Sunday morning question again: who can write to the corpus, and what can the agent do once it has read one.
+The Sunday morning question: who can write to the corpus, and what can the agent do once it has read one.
 :::
 
 ## When it is the wrong tool
@@ -203,13 +195,13 @@ Totals, counts and rankings come from a query against the data, not a similarity
 ::: {.card}
 [The corpus changes hourly]{.card-title}
 
-Every change means re-embedding. A live query beats a stale index.
+Every change means re-embedding, and the index is out of date between rebuilds.
 :::
 :::
 
 ## Break your own {.plain-title}
 
-[Exercise 17 · 40 minutes]{.eyebrow}
+[Exercise]{.eyebrow}
 
 ::: {.steps}
 1. Add a document to your index that contradicts another one. Ask the question both answer.
@@ -224,7 +216,7 @@ Every change means re-embedding. A live query beats a stale index.
 - One question it answered well, with the passage it used
 - The one that broke it
 
-# 11 · Open source models
+# 16 · Open source models
 
 ## What GPQA Diamond measures {.plain-title}
 
@@ -262,7 +254,7 @@ Each line is that tier's best score so far; gray dots are every other model. Sou
 ## What Terminal-Bench measures {.plain-title}
 
 ::: {.lead}
-An agent is given a container, a plain-English objective, and a terminal. It has to actually do the job: compile the code, train the model, configure the server, find the bug.
+An agent is given a container, a plain-English objective, and a terminal. It has to do the job: compile the code, train the model, configure the server, find the bug.
 :::
 
 ::: {.stats}
@@ -345,7 +337,7 @@ On Terminal-Bench the best open model solves 52% and the best small one 23%, aga
 | A small open model | your own hardware | high volume, or data that cannot leave |
 | A fine-tuned small model | your own hardware | one narrow task, done constantly |
 
-On a single question the price difference is negligible. On a million classifications it is the budget.
+The price difference is negligible on a single question and decides the budget at a million classifications.
 
 ## Distillation, in one paragraph
 
@@ -357,4 +349,4 @@ The small model does not become generally capable. It becomes capable at the one
 
 ## Tomorrow {.band-bottom}
 
-Everything so far has run inside a tool somebody else built. Tomorrow you go under it, and then ask what it would take to let one loose on real data.
+The API underneath the tools, an agent with a tool list you chose, and managing security risks.

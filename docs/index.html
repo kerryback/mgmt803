@@ -66,6 +66,49 @@ body { background: var(--bg); color: var(--ink);
   display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
 .flyer .sheet-foot a { text-decoration: none; color: var(--navy); font-weight: 700; font-size: 17px; }
 .flyer .sheet-foot a:hover { text-decoration: underline; }
+
+/* ---- Schedule table ---------------------------------------------------- */
+.flyer table.schedule { width: 100%; border-collapse: collapse; margin-top: 6px; }
+.flyer table.schedule th { text-align: left; font-size: 13px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--gold); font-weight: 700;
+  padding: 0 10px 8px 0; border-bottom: 2px solid var(--line); }
+.flyer table.schedule th.slides-col, .flyer table.schedule td.slides-col { text-align: right; padding-right: 0; }
+.flyer table.schedule td { padding: 11px 10px 11px 0; border-bottom: 1px solid var(--line);
+  font-size: 16px; color: var(--gray); vertical-align: top; }
+.flyer table.schedule td.num { color: var(--navy); font-weight: 700; width: 28px; }
+.flyer table.schedule td.when { color: var(--ink); white-space: nowrap; width: 200px; }
+.flyer table.schedule td.slides-col { white-space: nowrap; width: 90px; }
+.flyer table.schedule a { color: var(--navy); font-weight: 700; text-decoration: none; }
+.flyer table.schedule a:hover { text-decoration: underline; }
+
+/* "Slides" links straight to the HTML deck, and hovering it offers the choice
+   of HTML or PDF. Touch devices have no hover, so a tap just follows the link
+   to the HTML deck, which is the sensible default. */
+.flyer .has-menu { position: relative; display: inline-block; }
+/* No overflow:hidden here -- it would clip the ::before bridge below, which is
+   what lets the pointer cross the gap. Hiding is delayed so a brief slip off
+   the menu does not close it before it can be clicked. */
+.flyer .has-menu .submenu {
+  position: absolute; top: calc(100% + 6px); right: 0; z-index: 20;
+  background: var(--bg); border: 1px solid var(--line); border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.12s 0.4s, visibility 0s 0.52s;
+}
+/* Spans the gap, with slack either side for an imprecise pointer. */
+.flyer .has-menu .submenu::before {
+  content: ""; position: absolute; top: -10px; left: -12px;
+  width: calc(100% + 24px); height: 10px;
+}
+.flyer .has-menu:hover .submenu, .flyer .has-menu:focus-within .submenu {
+  opacity: 1; visibility: visible; transition: opacity 0.12s 0s, visibility 0s 0s;
+}
+.flyer .has-menu .submenu a { display: block; padding: 6px 18px; font-size: 14px; text-align: center; }
+.flyer .has-menu .submenu a + a { border-top: 1px solid var(--line); }
+.flyer .has-menu .submenu a:hover, .flyer .has-menu .submenu a:focus { text-decoration: underline; }
+/* Nothing posted for that session yet. */
+.flyer table.schedule a.pending { color: var(--gray); font-weight: 600; }
+
 @media (max-width: 600px) {
   .flyer .display { font-size: 33px; }
   .flyer .chip { flex-basis: 116px; font-size: 12px; }
@@ -93,12 +136,20 @@ body { background: var(--bg); color: var(--ink);
       <div class="rule"></div>
 
       <div class="section-head"><span class="label">September</span><span class="dates">September 24&ndash;27</span></div>
-      <div class="item"><a class="chip" href="html/session1.html">SEP 24<span class="chip-time">Morning</span></a><div><div class="topics"><span><b>1</b>How a language model works</span><span><b>2</b>Chat, CLI, and sandbox</span><span><b>3</b>Prompting tips</span></div></div></div>
-      <div class="item"><a class="chip" href="html/session2.html">SEP 24<span class="chip-time">Afternoon</span></a><div><div class="topics"><span><b>4</b>Persistent instructions and memory</span><span><b>5</b>Connectors and plugins</span><span><b>6</b>Agent harnesses</span></div></div></div>
-      <div class="item"><a class="chip" href="html/session3.html">SEP 25<span class="chip-time phantom">Morning</span></a><div><div class="topics"><span><b>7</b>Working with data</span><span class="phantom"><b>0</b>&nbsp;</span><span class="phantom"><b>0</b>&nbsp;</span></div></div></div>
-      <div class="item"><a class="chip" href="html/session4.html">SEP 26<span class="chip-time">Morning</span></a><div><div class="topics"><span><b>8</b>Creating docs</span><span><b>9</b>Creating apps</span><span class="phantom"><b>0</b>&nbsp;</span></div></div></div>
-      <div class="item"><a class="chip" href="html/session5.html">SEP 26<span class="chip-time">Afternoon</span></a><div><div class="topics"><span><b>10</b>Retrieval augmented generation</span><span><b>11</b>Open source models</span><span class="phantom"><b>0</b>&nbsp;</span></div></div></div>
-      <div class="item"><a class="chip" href="html/session6.html">SEP 27<span class="chip-time phantom">Morning</span></a><div><div class="topics"><span><b>12</b>Creating agents</span><span><b>13</b>Managing security risks</span><span class="phantom"><b>0</b>&nbsp;</span></div></div></div>
+      <table class="schedule">
+        <tr><th></th><th>When</th><th>Topics</th><th class="slides-col">Slides</th></tr>
+        <tr><td class="num">1</td><td class="when">Thursday morning</td><td>How LLMs work &middot; models &middot; computer use &middot; how agents work &middot; doing work with AI &middot; prompting</td><td class="slides-col"><span class="has-menu"><a href="slides/Sept24-part1.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="slides/Sept24-part1.html" target="_blank" rel="noopener">HTML</a><a href="pdf/Sept24-part1.pdf" target="_blank" rel="noopener">PDF</a></span></span></td></tr>
+        <tr><td class="num">2</td><td class="when">Thursday afternoon</td><td>AGENTS.md, SKILL.md &middot; connectors and plugins &middot; harnesses</td><td class="slides-col"><a class="pending" href="under-construction.html">Slides</a></td></tr>
+        <tr><td class="num">3</td><td class="when">Friday morning</td><td>Working with data</td><td class="slides-col"><a class="pending" href="under-construction.html">Slides</a></td></tr>
+        <tr><td class="num">4</td><td class="when">Saturday morning</td><td>Creating docs &middot; creating apps</td><td class="slides-col"><a class="pending" href="under-construction.html">Slides</a></td></tr>
+        <tr><td class="num">5</td><td class="when">Saturday afternoon</td><td>Retrieval augmented generation &middot; open source models</td><td class="slides-col"><a class="pending" href="under-construction.html">Slides</a></td></tr>
+        <tr><td class="num">6</td><td class="when">Sunday morning</td><td>Creating agents &middot; managing security risks</td><td class="slides-col"><a class="pending" href="under-construction.html">Slides</a></td></tr>
+      </table>
+
+      <div class="section-head"><span class="label">Reference</span><span class="dates">As time allows</span></div>
+      <table class="schedule">
+        <tr><td class="num"></td><td class="when">Reference deck</td><td>How a language model works</td><td class="slides-col"><a href="slides/model.html" target="_blank" rel="noopener">Slides</a></td></tr>
+      </table>
 
       <div class="sheet-foot">
         <a href="syllabus.html">Syllabus &rarr;</a>

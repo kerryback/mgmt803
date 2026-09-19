@@ -1,0 +1,205 @@
+---
+title: "How a Language Model Works"
+subtitle: "Reference deck · MGMT 803"
+author: "Kerry Back<br>J. Howard Creekmore Professor of Finance"
+format:
+  revealjs:
+    footer: "MGMT 803 · Rice Business"
+---
+
+## Why this deck exists {.plain-title}
+
+::: {.lead}
+Enough of the mechanism to explain what these models are good at and where they fail.
+:::
+
+Nothing here is needed to use the tools. It is here because every failure you meet over the four days has a cause on one of these slides, and it is easier to recognize a failure you have already seen the shape of.
+
+## Tokenization
+
+Text is cut into pieces from a fixed vocabulary before the model sees any of it.
+
+```
+"The cat sat on the mat"  ->  ["The", " cat", " sat", " on", " the", " mat"]
+
+"Unbelievable"            ->  ["Un", "believ", "able"]
+```
+
+Common words stay whole; rare and long words break into pieces. A typical vocabulary runs to about 100,000 tokens.
+
+::: {.note}
+Numbers break on the same rules, which have nothing to do with arithmetic. `13,963,378.65` reaches the model as a handful of unrelated pieces.
+:::
+
+## The whole task {.plain-title}
+
+::: {.lead}
+Given the tokens so far, predict the token that comes next. That is the entire operation.
+:::
+
+Everything a model appears to do — answering, summarizing, writing code, refusing — is that one prediction, repeated.
+
+::: {.note}
+The input can currently run to about a million tokens, roughly two-thirds of the Harry Potter saga.
+:::
+
+## Vectors
+
+The model does not work with tokens. It works with numbers.
+
+::: {.cards .cards-2}
+::: {.card}
+[Each token is a list]{.card-title}
+
+"king" becomes 4,096 numbers. "queen" becomes 4,096 numbers that are close to them.
+
+Tokens used in similar contexts end up near each other.
+:::
+
+::: {.card .card-blue}
+[The space is mostly empty]{.card-title}
+
+There are far more possible vectors than there are tokens, so most points in the space name nothing.
+
+The prediction can land between tokens.
+:::
+:::
+
+## A neural network is a function {.compare}
+
+:::: {.columns}
+::: {.column width="50%"}
+[The idea]{.eyebrow}
+
+$y = 4x$ is a function. The 4 is a parameter.
+
+Change it to 3 and you have the same structure with different behavior.
+:::
+
+::: {.column width="50%"}
+[The scale]{.eyebrow}
+
+Same idea with hundreds of billions of parameters, arranged as a transformer — the architecture published by Google researchers in 2017.
+:::
+::::
+
+## Training
+
+::: {.cards .cards-2}
+::: {.card}
+[What is learned]{.card-title}
+
+The vector for every token, and every parameter in the network.
+
+Both are adjusted together to reduce prediction error on the training text.
+:::
+
+::: {.card .card-blue}
+[What it takes]{.card-title}
+
+Trillions of words. Thousands of GPUs for weeks or months. Tens to hundreds of millions of dollars for one run.
+:::
+:::
+
+::: {.note}
+Nothing is looked up or stored as fact. The arrangement captures how words are used, which is why it recalls common things reliably and rare things unreliably.
+:::
+
+## The pipeline {.plain-title}
+
+::: {.steps}
+1. Tokenize the input.
+2. Look up the vector for each token.
+3. Feed the vectors into the network.
+4. The network produces one output vector.
+5. Find which token vectors are closest to it.
+6. Emit a token, append it to the input, and start again at step 1.
+:::
+
+## Temperature
+
+The network does not output one token. It outputs a probability for every token in the vocabulary. Temperature controls how that distribution is sampled.
+
+| Setting | Behavior |
+|---|---|
+| Near 0 | The highest-probability token every time. Repeatable. |
+| Near 1 | Sampled from the distribution. Different each run. |
+| Higher | Low-probability tokens get picked. Text degrades. |
+
+::: {.note}
+In a chatbot, including Claude Desktop, temperature is fixed near 1 and you cannot change it. Through the API you can.
+:::
+
+## From prediction to conversation
+
+A model trained only to predict the next token continues your text. It does not answer a question.
+
+::: {.steps}
+1. Role tokens. The text is wrapped in markers: `<|user|>` your question `<|assistant|>`.
+2. Instruction tuning. The model is further trained on examples where what follows `<|assistant|>` is a useful reply.
+3. Reinforcement learning from human feedback. Raters score replies, and the model is trained toward what raters preferred.
+:::
+
+The mechanism did not change. What changed is which continuation is the likely one.
+
+## Reasoning models
+
+The same trick applied again: train the model to write out its working before it answers.
+
+::: {.cards .cards-2}
+::: {.card}
+[How it was trained]{.card-title}
+
+Reinforcement learning on problems whose answers can be checked — mathematics, code, puzzles — rewarding the chains of tokens that arrived at a correct answer.
+:::
+
+::: {.card .card-blue}
+[Why it helps]{.card-title}
+
+The model holds no state between tokens. The intermediate tokens are the only place a partial result can live, so writing them out is the computation.
+:::
+:::
+
+::: {.note}
+The thinking you see may be a summary of a much longer chain, and you are charged for the whole chain as output tokens.
+:::
+
+## What thinking longer buys {.compare .band-bottom}
+
+:::: {.columns}
+::: {.column width="50%"}
+[Moves]{.eyebrow}
+
+Problems that decompose: multi-step arithmetic, code that has to satisfy several constraints, planning a sequence of actions.
+:::
+
+::: {.column width="50%"}
+[Does not move]{.eyebrow}
+
+Recall of a fact it never learned, questions of taste, and anything where the first token was already right.
+:::
+::::
+
+More tokens at answer time, rather than a larger model, is the dial. You pay for it in latency and in output tokens.
+
+## What that explains
+
+::: {.cards .cards-3}
+::: {.card}
+[Fluent and wrong]{.card-title}
+
+Plausible text is exactly what the objective rewards. Correct text is a side effect of plausible text usually being correct.
+:::
+
+::: {.card .card-blue}
+[Confident either way]{.card-title}
+
+Nothing in the mechanism distinguishes a recalled fact from a well-formed guess.
+:::
+
+::: {.card}
+[Arithmetic]{.card-title}
+
+Predicting the digits of a sum is a different operation from adding. Code does the second.
+:::
+:::

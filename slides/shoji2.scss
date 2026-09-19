@@ -992,3 +992,10 @@ $col-gap: 20px;
   color: $plum;
   height: 4px;
 }
+
+// A highlighter mark for a word in running text: [word]{.hl}
+.reveal .hl {
+  background: rgba($sand, 0.6);
+  padding: 0 0.15em;
+  border-radius: 2px;
+}

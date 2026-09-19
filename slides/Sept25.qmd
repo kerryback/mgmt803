@@ -1,7 +1,7 @@
 ---
-title: "Friday, September 25"
-subtitle: "7 Working with data"
-author: "Kerry Back"
+title: "MGMT 803, MBA@Rice, 2026"
+subtitle: "Friday, September 25, Morning"
+author: "Kerry Back<br>J. Howard Creekmore Professor of Finance"
 format:
   revealjs:
     footer: "MGMT 803 · Rice Business"
@@ -10,7 +10,7 @@ format:
 ## This morning
 
 ::: {.lead}
-One question, five spreadsheets, and a morning: which countries generated the most revenue, and how do you know.
+Five spreadsheets and one question: which countries generated the most revenue, and how do you know.
 :::
 
 ::: {.cards .cards-2}
@@ -27,7 +27,7 @@ The joins, columns and blanks that produce a wrong total with no error message.
 :::
 :::
 
-# 7 · Working with data
+# 12 · Working with data
 
 The country revenue report, then the four ways the number comes out wrong.
 
@@ -79,8 +79,8 @@ In the same surveys, 19% of data is called siloed or unusable, and 70% of leader
 |---|---|---|
 | The operational system | what is true right now | its own screens |
 | The warehouse | a nightly copy, reshaped for questions | analysts with SQL |
-| A dashboard | four questions somebody chose in 2024 | anyone |
-| An extract | one analyst's copy, as of some Tuesday | whoever they mailed it to |
+| A dashboard | a fixed set of questions chosen when it was built | anyone |
+| An extract | one analyst's copy, as of when it was pulled | whoever they mailed it to |
 | A shared drive | the documents none of the above hold | anyone who can find it |
 
 ## Four systems, four meanings of "customer"
@@ -92,7 +92,7 @@ In the same surveys, 19% of data is called siloed or unusable, and 70% of leader
 | The warehouse | an address you deliver to | a ship-to code |
 | Support | whoever opened the ticket | an email address |
 
-Four counts of customers, all correct, none equal.
+The four counts differ.
 
 ## Why you cannot just query the live system
 
@@ -131,7 +131,7 @@ The current address and the current price. Not last year's.
 :::
 
 ::: {.note}
-Two of the three age silently. The number in the deck was right when it was pulled.
+The extract and the export are never refreshed.
 :::
 
 ## The vocabulary you need for the rest of the day
@@ -144,17 +144,13 @@ Two of the three age silently. The number in the deck was right when it was pull
 | Lineage | where this number came from, through every hop |
 | Quality | blanks, duplicates, and values nobody validates |
 
-::: {.note}
-Every one of these shows up in the next four hours as a reason a total is wrong.
-:::
-
 ## Five files, one question {.plain-title}
 
 ::: {.lead}
 Northwind: a supplier of specialty foods to restaurants and delis. 500 orders, 93 customers, 77 products, 8 categories, spanning 2012 to 2023.
 :::
 
-Small enough to hold in your head, and shaped like a company a thousand times larger. What you are about to do to it is what an analyst does to the real thing.
+Small enough to read in full.
 
 ## What you are building {.plain-title}
 
@@ -163,12 +159,11 @@ Five spreadsheets in `~/data`: orders, order details, customers, products, categ
 :::
 
 ::: {.note .note-plum}
-Read all five parts before you start. Part D is the point of the exercise. Get there even if you have to shorten Part C.
+Read all five parts before you start. Reach Part D even if you have to shorten Part C.
 :::
 
 ## Part A — describe it first {.plain-title}
 
-[15 minutes]{.eyebrow}
 
 Before any analysis, have it report — with the code shown:
 
@@ -185,7 +180,6 @@ Write the join map on paper. You will need it in Part D.
 
 ## Part B — revenue by country {.plain-title}
 
-[25 minutes]{.eyebrow}
 
 ::: {.steps}
 1. Compute revenue per order line, then total by the customer's country.
@@ -200,7 +194,6 @@ There is no discount column and no freight column in these files. Whatever you r
 
 ## Part C — a deliverable {.plain-title}
 
-[20 minutes]{.eyebrow}
 
 ::: {.cards .cards-2}
 ::: {.card}
@@ -216,11 +209,10 @@ A five-slide deck: the question, the top five, the chart, the definition, and wh
 :::
 :::
 
-Either one states the revenue definition on its face. A number without its definition cannot be reconciled against anyone else's.
+Either one states the revenue definition on its face.
 
 ## Part D — verify it {.plain-title}
 
-[25 minutes]{.eyebrow}
 
 ::: {.steps}
 1. Recompute the total by a second route — a different tool, a different order of operations, or straight from the raw files with no merges at all.
@@ -289,7 +281,7 @@ A number in prose that no line of code produced.
 | Customers | 93 | in 21 countries |
 | Products | 77 | in 8 categories |
 
-Every order line matches a product, an order, and a customer. No merge in this analysis drops a row — which is why you have to check rather than assume.
+Every order line matches a product, an order, and a customer. No merge in this analysis drops a row.
 
 ## Two columns named UnitPrice
 
@@ -302,7 +294,7 @@ Order details carries the price charged. Products carries the list price. Merge 
 | The price charged | $13,963,378.65 |
 | The list price | $13,966,340.55 |
 
-The two answers differ by $2,962 on $14 million. A sanity check on the magnitude passes either way, so nothing about the wrong choice looks wrong.
+The two answers differ by $2,962 on $14 million. A sanity check on the magnitude passes either way.
 
 ## The rows with no country
 
@@ -374,11 +366,11 @@ Prompt
 Here is code and the answer it produced. Ignore the answer. Read the code and tell me what it actually computes — including what it drops and what it assumes.
 :::
 
-A fresh conversation reading code has nothing invested in the number already on the screen.
+A fresh conversation has not seen the answer, so it cannot work backward from it.
 
 ## Find the bug {.plain-title}
 
-[Exercise 9 · 40 minutes]{.eyebrow}
+[Exercise]{.eyebrow}
 
 ::: {.steps}
 1. `~/data/planted/country_report.py` produces a country table. Its total is wrong.
@@ -393,4 +385,4 @@ There is more than one defect, and they move the total in different directions.
 
 ## Tomorrow {.band-bottom}
 
-Today the answer was a number you checked. Tomorrow it becomes a document somebody else opens, and then an application they use without you.
+Today the output was a number. Tomorrow it is a document, and then an application.

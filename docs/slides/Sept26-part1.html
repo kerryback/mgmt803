@@ -9,8 +9,8 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.9.38">
 
-  <meta name="author" content="Kerry Back">
-  <title>Thursday, September 24 · Morning</title>
+  <meta name="author" content="Kerry Back J. Howard Creekmore Professor of Finance">
+  <title>MGMT 803, MBA@Rice, 2026</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -32,7 +32,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-ad9d6da6267b2ca2af52a465c31666ff.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-963326a71a77be66e1a2dc2e7f4f8a8d.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -130,557 +130,344 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Thursday, September 24 · Morning</h1>
-  <p class="subtitle">1 How a language model works · 2 Chat, CLI, and sandbox · 3 Prompting tips</p>
+  <h1 class="title">MGMT 803, MBA@Rice, 2026</h1>
+  <p class="subtitle">Saturday, September 26, Morning</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Kerry Back 
+Kerry Back<br>J. Howard Creekmore Professor of Finance 
 </div>
 </div>
 </div>
 
-</section>
-<section id="four-days" class="slide level2">
-<h2>Four days</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th></th>
-<th>When</th>
-<th>Topics</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td>Thu 8:00</td>
-<td>How a model works · chat, CLI, sandbox · prompting</td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td>Thu 1:30</td>
-<td>Instructions · connectors and plugins · harnesses</td>
-</tr>
-<tr class="odd">
-<td>3</td>
-<td>Fri 8:00</td>
-<td>Working with data</td>
-</tr>
-<tr class="even">
-<td>4</td>
-<td>Sat 8:00</td>
-<td>Creating docs · creating apps</td>
-</tr>
-<tr class="odd">
-<td>5</td>
-<td>Sat 1:30</td>
-<td>Retrieval augmented generation · open source models</td>
-</tr>
-<tr class="even">
-<td>6</td>
-<td>Sun 8:00</td>
-<td>Creating agents · managing security risks</td>
-</tr>
-</tbody>
-</table>
-<div class="note">
-<p>Every session has hands-on blocks in your own container. Bring a laptop and stay on wifi for four days.</p>
-</div>
 </section>
 <section id="this-morning" class="slide level2">
 <h2>This morning</h2>
-<div class="cards cards-3">
+<div class="lead">
+<p>Yesterday’s output was a number. This morning it becomes a file or an app somebody else opens.</p>
+</div>
+<div class="cards cards-2">
 <div class="card">
-<p><span class="card-title">How the model works</span></p>
-<p>Tokens, vectors, one prediction at a time, and what training added on top.</p>
+<p><span class="card-title">Creating docs</span></p>
+<p>Excel, Word and PowerPoint out of the machine — including into the template your firm already uses.</p>
 </div>
 <div class="card card-blue">
-<p><span class="card-title">Chat, CLI, and sandbox</span></p>
-<p>The same model reached from a chat window, a command line, and a machine you were given.</p>
-</div>
-<div class="card">
-<p><span class="card-title">Prompting tips</span></p>
-<p>Planning, requiring code for numbers, and checking what comes back.</p>
+<p><span class="card-title">Creating apps</span></p>
+<p>How a web app works, then build one and deploy it.</p>
 </div>
 </div>
 </section>
 <section>
-<section id="how-a-language-model-works" class="title-slide slide level1 center">
-<h1>1 · How a language model works</h1>
-<p>Enough of the mechanism to explain what it is good at and where it fails.</p>
-</section>
-<section id="tokenization" class="slide level2">
-<h2>Tokenization</h2>
-<p>Text is cut into pieces from a fixed vocabulary before the model sees any of it.</p>
-<pre><code>"The cat sat on the mat"  -&gt;  ["The", " cat", " sat", " on", " the", " mat"]
-
-"Unbelievable"            -&gt;  ["Un", "believ", "able"]</code></pre>
-<p>Common words stay whole; rare and long words break into pieces. A typical vocabulary runs to about 100,000 tokens.</p>
-<div class="note">
-<p>Numbers break on the same rules, which have nothing to do with arithmetic. <code>13,963,378.65</code> reaches the model as a handful of unrelated pieces.</p>
-</div>
-</section>
-<section id="the-whole-task" class="slide level2 plain-title">
-<h2>The whole task</h2>
-<div class="lead">
-<p>Given the tokens so far, predict the token that comes next. That is the entire operation.</p>
-</div>
-<p>Everything a model appears to do — answering, summarizing, writing code, refusing — is that one prediction, repeated.</p>
-<div class="note">
-<p>The input can currently run to about a million tokens, roughly two-thirds of the Harry Potter saga. That context window has grown a thousandfold since GPT-3 in 2020.</p>
-</div>
-</section>
-<section id="vectors" class="slide level2">
-<h2>Vectors</h2>
-<p>The model does not work with tokens. It works with numbers.</p>
-<div class="cards cards-2">
-<div class="card">
-<p><span class="card-title">Each token is a list</span></p>
-<p>“king” becomes 4,096 numbers. “queen” becomes 4,096 numbers that are close to them.</p>
-<p>Tokens used in similar contexts end up near each other.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">The space is mostly empty</span></p>
-<p>There are far more possible vectors than there are tokens, so most points in the space name nothing.</p>
-<p>The prediction can land between tokens.</p>
-</div>
-</div>
-</section>
-<section id="a-neural-network-is-a-function" class="slide level2 compare">
-<h2>A neural network is a function</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span class="eyebrow">The idea</span></p>
-<p><span class="math inline">\(y = 4x\)</span> is a function. The 4 is a parameter.</p>
-<p>Change it to 3 and you have the same structure with different behavior.</p>
-</div><div class="column" style="width:50%;">
-<p><span class="eyebrow">The scale</span></p>
-<p>Same idea with hundreds of billions of parameters, arranged as a transformer — the architecture published by Google researchers in 2017.</p>
-</div></div>
-</section>
-<section id="training" class="slide level2">
-<h2>Training</h2>
-<div class="cards cards-2">
-<div class="card">
-<p><span class="card-title">What is learned</span></p>
-<p>The vector for every token, and every parameter in the network.</p>
-<p>Both are adjusted together to reduce prediction error on the training text.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">What it takes</span></p>
-<p>Trillions of words. Thousands of GPUs for weeks or months. Tens to hundreds of millions of dollars for one run.</p>
-</div>
-</div>
-<div class="note">
-<p>Nothing is looked up or stored as fact. The arrangement captures how words are used, which is why it recalls common things reliably and rare things unreliably.</p>
-</div>
-</section>
-<section id="the-pipeline" class="slide level2 plain-title">
-<h2>The pipeline</h2>
-<div class="steps">
-<ol type="1">
-<li>Tokenize the input.</li>
-<li>Look up the vector for each token.</li>
-<li>Feed the vectors into the network.</li>
-<li>The network produces one output vector.</li>
-<li>Find which token vectors are closest to it.</li>
-<li>Emit a token, append it to the input, and start again at step 1.</li>
-</ol>
-</div>
-</section>
-<section id="temperature" class="slide level2">
-<h2>Temperature</h2>
-<p>The network does not output one token. It outputs a probability for every token in the vocabulary. Temperature controls how that distribution is sampled.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Setting</th>
-<th>Behavior</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Near 0</td>
-<td>The highest-probability token every time. Repeatable.</td>
-</tr>
-<tr class="even">
-<td>Near 1</td>
-<td>Sampled from the distribution. Different each run.</td>
-</tr>
-<tr class="odd">
-<td>Higher</td>
-<td>Low-probability tokens get picked. Text degrades.</td>
-</tr>
-</tbody>
-</table>
-<div class="note">
-<p>In a chatbot, including Claude Desktop, temperature is fixed near 1 and you cannot change it. Through the API you can.</p>
-</div>
-</section>
-<section id="from-prediction-to-conversation" class="slide level2">
-<h2>From prediction to conversation</h2>
-<p>A model trained only to predict the next token continues your text. It does not answer a question.</p>
-<div class="steps">
-<ol type="1">
-<li>Role tokens. The text is wrapped in markers: <code>&lt;|user|&gt;</code> your question <code>&lt;|assistant|&gt;</code>.</li>
-<li>Instruction tuning. The model is further trained on examples where what follows <code>&lt;|assistant|&gt;</code> is a useful reply.</li>
-<li>Reinforcement learning from human feedback. Raters score replies, and the model is trained toward what raters preferred.</li>
-</ol>
-</div>
-<p>The mechanism did not change. What changed is which continuation is the likely one.</p>
-</section>
-<section id="reasoning-models" class="slide level2">
-<h2>Reasoning models</h2>
-<p>The same trick applied again: train the model to write out its working before it answers.</p>
-<div class="cards cards-2">
-<div class="card">
-<p><span class="card-title">How it was trained</span></p>
-<p>Reinforcement learning on problems whose answers can be checked — mathematics, code, puzzles — rewarding the chains of tokens that arrived at a correct answer.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">Why it helps</span></p>
-<p>The model holds no state between tokens. The intermediate tokens are the only place a partial result can live, so writing them out is the computation.</p>
-</div>
-</div>
-<div class="note">
-<p>The thinking you see may be a summary of a much longer chain, and you are charged for the whole chain as output tokens.</p>
-</div>
-</section>
-<section id="what-thinking-longer-buys" class="slide level2 compare band-bottom">
-<h2>What thinking longer buys</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span class="eyebrow">Moves</span></p>
-<p>Problems that decompose: multi-step arithmetic, code that has to satisfy several constraints, planning a sequence of actions.</p>
-</div><div class="column" style="width:50%;">
-<p><span class="eyebrow">Does not move</span></p>
-<p>Recall of a fact it never learned, questions of taste, and anything where the first token was already right.</p>
-</div></div>
-<p>More tokens at answer time, rather than a larger model, is the dial. You pay for it in latency and in output tokens.</p>
-</section>
-<section id="what-that-explains" class="slide level2">
-<h2>What that explains</h2>
-<div class="cards cards-3">
-<div class="card">
-<p><span class="card-title">Fluent and wrong</span></p>
-<p>Plausible text is exactly what the objective rewards. Correct text is a side effect of plausible text usually being correct.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">Confident either way</span></p>
-<p>Nothing in the mechanism distinguishes a recalled fact from a well-formed guess.</p>
-</div>
-<div class="card">
-<p><span class="card-title">Arithmetic</span></p>
-<p>Predicting the digits of a sum is a different operation from adding. Code does the second.</p>
-</div>
-</div>
-</section></section>
-<section>
-<section id="chat-cli-and-sandbox" class="title-slide slide level1 center">
-<h1>2 · Chat, CLI, and sandbox</h1>
-<p>The model is the same behind all three. What changes is what it can reach.</p>
-</section>
-<section id="ask-the-same-thing-three-ways" class="slide level2 plain-title">
-<h2>Ask the same thing three ways</h2>
-<div class="lead">
-<p>“Here are four spreadsheets of orders. Which countries generated the most revenue?”</p>
-</div>
-<table class="caption-top">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Door</th>
-<th>What happens</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Chat in a browser</td>
-<td>You upload the files. It answers in the window.</td>
-</tr>
-<tr class="even">
-<td>Claude Code on your laptop</td>
-<td>It opens the files where they sit, writes code, saves a chart next to them.</td>
-</tr>
-<tr class="odd">
-<td>Claude Code in a container</td>
-<td>The same, on a machine that is not yours, holding nothing but what you put there.</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="same-model-different-harness" class="slide level2">
-<h2>Same model, different harness</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span class="eyebrow">The model</span></p>
-<p>Identical in all three. Same weights, same training, same tendencies.</p>
-<p>It has no memory of you, no filesystem, and no way to run anything.</p>
-</div><div class="column" style="width:50%;">
-<p><span class="eyebrow">The harness</span></p>
-<p>The program around the model: what tools it offers, what it puts in front of the model each turn, and what it does with the answer.</p>
-<p>Everything that differs between the three doors is here.</p>
-</div></div>
-</section>
-<section id="sign-in" class="slide level2 plain-title">
-<h2>Sign in</h2>
-<p><span class="eyebrow">Exercise 1 · 20 minutes</span></p>
-<div class="steps">
-<ol type="1">
-<li>Go to <code>lab803.kerryback.com</code> and sign in with the username and password you were mailed.</li>
-<li>Open the tab labelled Claude. You are at a command line inside a container that belongs only to you.</li>
-<li>Type <code>ls</code> and then <code>pwd</code>. Note where you are.</li>
-<li>Ask it, in English: <em>what files are in this folder, and what can you reach on this machine?</em></li>
-<li>Read the answer against what you saw in step 3.</li>
-</ol>
-</div>
-<div class="note">
-<p>Three tabs: a Claude terminal, a plain terminal, and a file browser. Port 8000 is yours for anything you serve.</p>
-</div>
-</section>
-<section id="which-tools-each-door-offers" class="slide level2">
-<h2>Which tools each door offers</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th>Chat in a browser</th>
-<th>Claude Code</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Write and run code</td>
-<td>yes, in a sandbox</td>
-<td>yes, on the machine</td>
-</tr>
-<tr class="even">
-<td>Read your files</td>
-<td>what you upload</td>
-<td>anything it has permission to open</td>
-</tr>
-<tr class="odd">
-<td>Search and fetch the web</td>
-<td>yes</td>
-<td>yes</td>
-</tr>
-<tr class="even">
-<td>Run shell commands</td>
-<td>no</td>
-<td>yes</td>
-</tr>
-<tr class="odd">
-<td>Install software</td>
-<td>no</td>
-<td>yes</td>
-</tr>
-<tr class="even">
-<td>Use your credentials</td>
-<td>no</td>
-<td>whatever is on that machine</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="permissions" class="slide level2">
-<h2>Permissions</h2>
-<div class="cards cards-3">
-<div class="card">
-<p><span class="card-title">Ask</span></p>
-<p>Every action that changes something stops for approval. The default.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">Accept edits</span></p>
-<p>File edits go through; commands still stop.</p>
-</div>
-<div class="card card-sand">
-<p><span class="card-title">Bypass</span></p>
-<p>Nothing stops. Reasonable in a container that holds nothing you would miss.</p>
-</div>
-</div>
-<p>The permission mode and the tool list are two different limits. One asks you each time; the other decides what is possible at all.</p>
-</section>
-<section id="what-this-door-reaches" class="slide level2 plain-title">
-<h2>What this door reaches</h2>
-<p><span class="eyebrow">Exercise 2 · 25 minutes</span></p>
-<div class="steps">
-<ol type="1">
-<li>Ask it to count how many files are in the container and how large they are altogether.</li>
-<li>Ask it to install a Python package it does not have, then use it.</li>
-<li>Ask a question it can only answer by running something — the size of the largest file, the number of lines in the longest one.</li>
-</ol>
-</div>
-<p>Watch what appears between your question and the answer: the command it chose, the output it got back, and what it did with output it did not expect.</p>
-<div class="note">
-<p>Write down the first command that failed and what it did next.</p>
-</div>
-</section>
-<section id="why-a-machine-of-its-own" class="slide level2 divider">
-<h2>Why a machine of its own</h2>
-</section>
-<section id="it-runs-as-you" class="slide level2">
-<h2>It runs as you</h2>
-<div class="lead">
-<p>An agent on your laptop has your filesystem, your network, your VPN, your saved logins, and your keys.</p>
-</div>
-<p>That is what makes it useful for your own work, and it is the reason the same setup is hard to hand to anyone else. There is no boundary between the task you asked for and everything else you can reach.</p>
-</section>
-<section id="what-a-container-changes" class="slide level2">
-<h2>What a container changes</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span class="eyebrow">Your laptop</span></p>
-<p>Everything you have access to.</p>
-<p>A mistake reaches the real thing.</p>
-</div><div class="column" style="width:50%;">
-<p><span class="eyebrow">Your container</span></p>
-<p>One home directory, the software installed for this course, and outbound internet.</p>
-<p>A mistake reaches what you copied in.</p>
-</div></div>
-<div class="note">
-<p>Same agent, same model, same permission modes. The difference is the size of what it can touch.</p>
-</div>
-</section>
-<section id="your-container" class="slide level2">
-<h2>Your container</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<tbody>
-<tr class="odd">
-<td>Isolation</td>
-<td>Its own filesystem, processes, users, and network namespace</td>
-</tr>
-<tr class="even">
-<td>Between students</td>
-<td>Your container cannot reach any other student’s</td>
-</tr>
-<tr class="odd">
-<td>Sign-in</td>
-<td>Your terminal and files sit behind your own login</td>
-</tr>
-<tr class="even">
-<td>Installed</td>
-<td>Python, git, Node, and a set of skills we will use later in the week</td>
-</tr>
-<tr class="odd">
-<td>Yours</td>
-<td><code>~/</code> and port 8000</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="first-data-question" class="slide level2 plain-title">
-<h2>First data question</h2>
-<p><span class="eyebrow">Exercise 3 · 30 minutes</span></p>
-<div class="steps">
-<ol type="1">
-<li>In <code>~/data</code> you have several spreadsheets of orders, customers, and products.</li>
-<li>Ask for the schema first: what tables, what columns, how many rows, what date range.</li>
-<li>Then ask one question that needs more than one file to answer.</li>
-<li>Have it save a chart as a PNG and open it in the file browser.</li>
-</ol>
-</div>
-<div class="note">
-<p>Four or five of you will show what you got at the end of the block. Have the chart open and be ready to say which files the number came from.</p>
-</div>
-</section></section>
-<section>
-<section id="prompting-tips" class="title-slide slide level1 center">
-<h1>3 · Prompting tips</h1>
+<section id="creating-docs" class="title-slide slide level1 center">
+<h1>13 · Creating docs</h1>
 
 </section>
-<section id="plan-before-executing" class="slide level2">
-<h2>Plan before executing</h2>
-<p>Ask for the approach before any work happens, and read it.</p>
-<div class="prompt-box">
-<div class="box-title">
-<p>Prompt</p>
-</div>
-<p>Before you change anything: tell me how you would do this, what files you would touch, and what could go wrong. Do not start yet.</p>
-</div>
-<p>A plan can be corrected in a sentence. An execution has to be undone in every file it touched.</p>
-</section>
-<section id="numbers-need-code" class="slide level2">
-<h2>Numbers need code</h2>
+<section id="office-files-are-archives" class="slide level2">
+<h2>Office files are archives</h2>
 <div class="lead">
-<p>If a number appears in prose and no code produced it, it was predicted.</p>
+<p>A <code>.docx</code>, <code>.xlsx</code> or <code>.pptx</code> is a ZIP file containing XML.</p>
+</div>
+<p>Unzip one and the document’s structure, styles and data are readable as text. That is why an agent can edit an existing file in place — keeping its template, its headers and its formatting — instead of rebuilding it.</p>
+<div class="note">
+<p>So “edit the deck the firm already uses” opens the existing file, while “build me a deck like ours” starts from nothing.</p>
+</div>
+</section>
+<section id="excel-that-is-a-model-not-a-table" class="slide level2 compare">
+<h2>Excel that is a model, not a table</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="eyebrow">A table</span></p>
+<p>Values pasted into cells. Change an assumption and the analysis is rerun somewhere else, by you.</p>
+</div><div class="column" style="width:50%;">
+<p><span class="eyebrow">A model</span></p>
+<p>Inputs in labelled cells, formulas referencing them, a chart bound to the range. Change an assumption in the sheet and everything moves.</p>
+</div></div>
+<p>Ask for formulas rather than values, and name the input cells.</p>
+</section>
+<section id="what-the-recipient-opens" class="slide level2">
+<h2>What the recipient opens</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Recipient</th>
+<th>Format</th>
+<th>What it has to carry</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>An analyst who will extend it</td>
+<td><code>.xlsx</code> with formulas</td>
+<td>inputs, formulas, the definition</td>
+</tr>
+<tr class="even">
+<td>A manager approving something</td>
+<td><code>.pptx</code> or one page</td>
+<td>the number, the chart, the caveat</td>
+</tr>
+<tr class="odd">
+<td>A job that runs every week</td>
+<td><code>.csv</code> plus a script</td>
+<td>reproducibility, not formatting</td>
+</tr>
+<tr class="even">
+<td>The record</td>
+<td><code>.docx</code> or PDF</td>
+<td>the method, in sentences</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="the-deck-already-has-a-house-style" class="slide level2 plain-title">
+<h2>The deck already has a house style</h2>
+<div class="lead">
+<p>Asking for “a deck in our style” produces an imitation of the design rather than the firm’s file.</p>
+</div>
+<p>A <code>.pptx</code> template is not a picture of a design. It is a file holding named slide layouts, a theme with the firm’s exact colours and fonts, and placeholder positions measured to the point.</p>
+<div class="note">
+<p>Open one with <code>unzip -l</code>. The layouts are in <code>ppt/slideLayouts/</code>, the palette and typefaces in <code>ppt/theme/theme1.xml</code>.</p>
+</div>
+</section>
+<section id="fill-the-template-do-not-imitate-it" class="slide level2 compare">
+<h2>Fill the template, do not imitate it</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="eyebrow">Generating a deck</span></p>
+<p>The model invents a layout. Colours are close. The logo is missing, the footer is wrong, and the title is out of position.</p>
+</div><div class="column" style="width:50%;">
+<p><span class="eyebrow">Filling a template</span></p>
+<p>The file is opened, a named layout is chosen, and text goes into the placeholders that layout defines. Everything else is inherited.</p>
+</div></div>
+<p>Same request, two implementations.</p>
+</section>
+<section id="a-skill-that-knows-your-template" class="slide level2 plain-title">
+<h2>A skill that knows your template</h2>
+<div class="steps">
+<ol type="1">
+<li>Put the <code>.pptx</code> in the skill’s folder.</li>
+<li>List the layouts by name, and say in prose what each one is for.</li>
+<li>Say which placeholder takes what — title, body, source line, page number.</li>
+<li>State the rules a human would know: how many bullets before a slide splits, where the source line goes, what never gets edited.</li>
+</ol>
 </div>
 <div class="prompt-box">
 <div class="box-title">
 <p>Prompt</p>
 </div>
-<p>Compute this in Python and show me the code and the output. Do not report a number you did not compute.</p>
-</div>
-<p>The same rule applies to counts, percentages, dates, and anything summed across rows.</p>
-</section>
-<section id="verify-claims" class="slide level2">
-<h2>Verify claims</h2>
-<div class="cards cards-2">
-<div class="card">
-<p><span class="card-title">Ask what would falsify it</span></p>
-<p>“What would have to be true for this to be wrong, and how would I check?”</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">Make it show its source</span></p>
-<p>The file, the row count, the line of code. A citation you can open beats a summary you cannot.</p>
-</div>
+<p>Read <code>template.pptx</code>. List every slide layout by name and index, and for each one the placeholders it defines with their type and position. Write that into SKILL.md as a table, then write the instructions for filling it.</p>
 </div>
 </section>
-<section id="generatorcritic" class="slide level2">
-<h2>Generator–critic</h2>
+<section id="turn-your-own-template-into-a-skill" class="slide level2 plain-title">
+<h2>Turn your own template into a skill</h2>
+<p><span class="eyebrow">Exercise</span></p>
 <div class="steps">
 <ol type="1">
-<li>Get the first answer.</li>
-<li>Start a fresh conversation and give it the answer without the reasoning that produced it.</li>
-<li>Ask it to find what is wrong with it.</li>
-<li>Take the objections back to the first conversation.</li>
+<li>Upload a deck your firm actually uses. Any recent one will do.</li>
+<li>Have the layouts and placeholders enumerated, and check the list against what you see in PowerPoint.</li>
+<li>Write the skill, with the file in its folder.</li>
+<li>Build a three-slide deck from yesterday’s country analysis using it.</li>
+<li>Open the result next to a real deck and find what is off.</li>
 </ol>
 </div>
-<p>The second conversation has no stake in the first answer, which is the point of separating them.</p>
+<div class="note">
+<p>Some of the firm’s conventions are not in the template file at all.</p>
+</div>
 </section>
-<section id="what-not-to-do" class="slide level2 band-bottom">
-<h2>What not to do</h2>
+<section id="build-the-deliverable" class="slide level2 plain-title">
+<h2>Build the deliverable</h2>
+<p><span class="eyebrow">Exercise</span></p>
+<div class="steps">
+<ol type="1">
+<li>Take your corrected country analysis.</li>
+<li>Produce it in the format the person who would receive it actually opens.</li>
+<li>Put the revenue definition and the row counts on the face of it.</li>
+<li>Open the file in the file browser and look at it the way they would.</li>
+</ol>
+</div>
+<div class="note">
+<p>If you built a workbook, change one input cell and check that the chart moves.</p>
+</div>
+</section></section>
+<section>
+<section id="creating-apps" class="title-slide slide level1 center">
+<h1>14 · Creating apps</h1>
+<p>Explain how it works, build three, then put one on the internet.</p>
+</section>
+<section id="when-a-skill-is-not-enough" class="slide level2 compare">
+<h2>When a skill is not enough</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="eyebrow">A skill</span></p>
+<p>For someone who has the agent, the files, and a reason to be at a command line.</p>
+</div><div class="column" style="width:50%;">
+<p><span class="eyebrow">An app</span></p>
+<p>For someone with a browser and a question. No install, no terminal, no account.</p>
+</div></div>
+<p>Same job, different audience.</p>
+</section>
+<section id="frontend-and-backend" class="slide level2 compare">
+<h2>Frontend and backend</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="eyebrow">Frontend</span></p>
+<p>The browser. HTML, CSS and JavaScript — it draws the page and collects the clicks.</p>
+</div><div class="column" style="width:50%;">
+<p><span class="eyebrow">Backend</span></p>
+<p>A program on a server that listens continuously for requests. Yours will be Python.</p>
+</div></div>
+<div class="lead">
+<p>You open a URL. The browser sends a GET request. The server sends back HTML, CSS and JavaScript. The browser interprets that and shows you a page.</p>
+</div>
+<div class="note">
+<p>Right-click any web page and choose View Page Source. That is the frontend code, exactly as the backend handed it over.</p>
+</div>
+</section>
+<section id="then-you-click-something" class="slide level2 plain-title">
+<h2>Then you click something</h2>
+<div class="lead">
+<p>A POST request carries data the other way — a form, a country you typed. The server does what it was written to do and replies.</p>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/request-cycle.svg" class="quarto-figure quarto-figure-center" style="width:82.0%"></p>
+</figure>
+</div>
+</section>
+<section id="running-locally" class="slide level2 band-bottom">
+<h2>Running locally</h2>
+<div class="cards cards-2">
+<div class="card">
+<p><span class="card-title">localhost</span></p>
+<p><code>127.0.0.1</code> is the loopback address. The browser asks the machine it is already running on, and the request never reaches a network.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">Ports</span></p>
+<p>One machine runs many programs listening at once. The port number tells the operating system which of them gets the request.</p>
+</div>
+</div>
+<p>The app is a <code>.py</code> file that imports FastAPI. uvicorn runs that file and starts it listening on a port.</p>
+</section>
+<section id="three-shapes" class="slide level2">
+<h2>Three shapes</h2>
+<div class="cards cards-3">
+<div class="card">
+<p><span class="card-title">One page, no server</span></p>
+<p>Everything runs in the browser. A single HTML file you can mail to someone.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">A small server</span></p>
+<p>Python behind the page. Needed when there is a database, a key, or a file to write.</p>
+</div>
+<div class="card">
+<p><span class="card-title">A server that calls a model</span></p>
+<p>The page collects a question; the server sends it to the model with your key, not the user’s.</p>
+</div>
+</div>
+</section>
+<section id="one-page-no-server" class="slide level2 plain-title">
+<h2>One page, no server</h2>
+<p><span class="eyebrow">Exercise</span></p>
+<div class="steps">
+<ol type="1">
+<li>Build a single HTML file that does one useful calculation from your own work.</li>
+<li>Open it in the browser from the file browser. No server involved.</li>
+<li>Mail it to yourself and open it on your phone.</li>
+</ol>
+</div>
+<div class="note">
+<p>Nothing to deploy, nothing to pay for, and it works with no network.</p>
+</div>
+</section>
+<section id="a-page-with-python-behind-it" class="slide level2 plain-title">
+<h2>A page with Python behind it</h2>
+<p><span class="eyebrow">Exercise</span></p>
+<div class="steps">
+<ol type="1">
+<li>Take the country analysis. Put a dropdown of countries on a page.</li>
+<li>Have the server read the spreadsheets, compute the answer for the country chosen, and return it.</li>
+<li>Serve it on port 8000 and open it at your own address on the lab server.</li>
+<li>Watch the terminal while you click. Every request appears there.</li>
+</ol>
+</div>
+<div class="note">
+<p>The terminal prints one line per request: the method, the path, and the status code.</p>
+</div>
+</section>
+<section id="hand-it-to-your-neighbour" class="slide level2 plain-title">
+<h2>Hand it to your neighbour</h2>
+<p><span class="eyebrow">Exercise</span></p>
+<div class="steps">
+<ol type="1">
+<li>Give your address to the person next to you and say nothing else.</li>
+<li>Watch them use it. Write down every place they hesitate.</li>
+<li>Fix the one that cost them the most time.</li>
+<li>Swap back and check the fix on their machine, not yours.</li>
+</ol>
+</div>
+</section>
+<section id="deploying-an-app" class="slide level2 divider">
+<h2>Deploying an app</h2>
+</section>
+<section id="platform-as-a-service" class="slide level2">
+<h2>Platform as a service</h2>
+<div class="lead">
+<p>You hand a host your repository. It builds the app, runs it, and puts it behind a public URL. There is no server for you to administer.</p>
+</div>
+<p>Railway, Render, Koyeb and Heroku all do this. We use Koyeb, which has a free tier.</p>
+<div class="steps">
+<ol type="1">
+<li>Create a free account at <code>koyeb.com</code>.</li>
+<li>In the control panel, create an API access token. Koyeb shows it once, so copy it then.</li>
+<li>Add it to the <code>~/.env</code> file you made on Thursday, the same way.</li>
+</ol>
+</div>
+</section>
+<section id="what-has-to-travel" class="slide level2 plain-title">
+<h2>What has to travel</h2>
+<div class="prompt-box">
+<div class="box-title">
+<p>Prompt</p>
+</div>
+<p>My goal is to push this app to GitHub as a new public repo and then create a Koyeb service connected to it. Walk me through it one step at a time.</p>
+</div>
+<div class="note note-plum">
+<p>The host builds only what is in the repository. Data files you told git to ignore never arrive, and the app fails on the host. Nothing from <code>.env</code> belongs in a public repo — secrets go in Koyeb’s environment settings instead.</p>
+</div>
+</section>
+<section id="put-it-on-the-internet" class="slide level2 plain-title">
+<h2>Put it on the internet</h2>
+<p><span class="eyebrow">Exercise</span></p>
+<div class="steps">
+<ol type="1">
+<li>Push the app from “A page with Python behind it” to a public GitHub repository.</li>
+<li>Create the Koyeb service and watch the build log.</li>
+<li>When it fails, read the log before asking. It is almost always a missing file or a missing key.</li>
+<li>Open the public URL on your phone, off the lab wifi.</li>
+<li>Send the URL to two people in the room.</li>
+</ol>
+</div>
+<div class="note">
+<p>A custom domain is optional and takes ten minutes: buy one, create an API token at the registrar, and have the DNS record written for you.</p>
+</div>
+</section>
+<section id="deployment-in-four-lines" class="slide level2 band-bottom">
+<h2>Deployment, in four lines</h2>
 <ul>
-<li>Accept a number in prose that no code produced</li>
-<li>Let it decide the method when you know the method</li>
-<li>Ask a question so broad that any answer looks like an answer</li>
-<li>Approve a plan you did not read</li>
-<li>Assume a second run gives the same result</li>
+<li>What runs on your machine does not run anywhere else until you make it</li>
+<li>The repository is the unit of deployment, and it is not the same as your folder</li>
+<li>Secrets live in the host’s settings, never in the code</li>
+<li>The build log says what went wrong, in order, every time</li>
 </ul>
 </section>
-<section id="planning-and-a-critic" class="slide level2 plain-title">
-<h2>Planning and a critic</h2>
-<p><span class="eyebrow">Exercise 4 · 30 minutes</span></p>
-<div class="steps">
-<ol type="1">
-<li>Take the question from Exercise 3 and ask for a plan first. Read it before approving.</li>
-<li>Run it. Require code for every number.</li>
-<li>Open a second terminal, paste the result with none of the working, and ask what is wrong with it.</li>
-<li>Bring the objections back and see which survive.</li>
-</ol>
-</div>
-<div class="note">
-<p>Write down one objection the critic raised that you would not have thought of.</p>
-</div>
-</section>
-<section id="this-afternoon" class="slide level2 plain-title">
+<section id="this-afternoon" class="slide level2 band-bottom">
 <h2>This afternoon</h2>
-<div class="lead">
-<p>Everything this morning was you typing into a fresh conversation. This afternoon is how to stop retyping it, and how to give the agent tools that are not on this machine.</p>
-</div>
+<p>The app you just deployed answers from what you wrote into it. This afternoon it answers from your own documents instead.</p>
 
 
 </section></section>

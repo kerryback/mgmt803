@@ -1,5 +1,5 @@
-# Applies to every deck in html/, so they render as reveal.js as part of the
-# website build (the root _quarto.yml renders html/*.qmd into docs/html/).
+# Applies to every deck in slides/, so they render as reveal.js as part of the
+# website build (the root _quarto.yml renders slides/*.qmd into docs/slides/).
 #
 # Every deck here uses the shoji2 theme. width/height/margin/max-scale are the
 # canvas shoji2 is designed against: 1280x720 with no reveal margin. All four

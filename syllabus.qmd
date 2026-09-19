@@ -31,12 +31,15 @@ J. Howard Creekmore Professor of Finance and Professor of Economics\
 ### Course Description
 
 Generative AI moved into ordinary business work faster than any recent technology.
-McKinsey's global survey found the share of organizations regularly using generative AI in
-at least one business function rose from roughly a third in 2023 to about two-thirds a year
-later, and higher still since. The Census Bureau's Business Trends and Outlook Survey,
-which asks the narrower question of whether a firm used AI to produce a good or service in
-the past two weeks, shows the rate roughly doubling over the same period, with adoption
-concentrated in information and professional services. The gap between those two numbers is
+[McKinsey's global survey](https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai)
+found the share of organizations regularly using generative AI in at least one business
+function rose from roughly a third in 2023 to about two-thirds in early 2024, and to 71
+percent by 2025. The Census Bureau's [Business Trends and Outlook
+Survey](https://www.census.gov/programs-surveys/btos.html), which asks the narrower
+question of whether a firm used AI to produce a good or service in the past two weeks, put
+the national rate at 19.8 percent in May 2026, up from roughly 5 percent in late 2023 and
+about twice as high in information (39.7 percent) and in finance and insurance (33.9
+percent). The gap between those two numbers is
 itself informative: many people are using these tools, and far fewer organizations have
 built anything durable around them.
 
@@ -82,25 +85,30 @@ By the end of the course, you should be able to:
 +----+------------------------+------------------------------------------+
 |    | When                   | Topics                                   |
 +====+========================+==========================================+
-| 1  | Thu, Sep 24\           | 1 How a language model works\            |
-|    | 8:00 AM – 12:30 PM     | 2 Chat, CLI, and sandbox\                |
-|    |                        | 3 Prompting tips                         |
+| 1  | Thu, Sep 24\           | 1 How language models work\              |
+|    | 8:00 AM – 12:30 PM     | 2 Models and performance\                |
+|    |                        | 3 Computer use\                          |
+|    |                        | 4 How agents work\                       |
+|    |                        | 5 AI coding\                             |
+|    |                        | 6 APIs\                                  |
+|    |                        | 7 Chat, CLI, and sandbox\                |
+|    |                        | 8 Prompting tips                         |
 +----+------------------------+------------------------------------------+
-| 2  | Thu, Sep 24\           | 4 Persistent instructions and memory\    |
-|    | 1:30 – 6:00 PM         | 5 Connectors and plugins\                |
-|    |                        | 6 Agent harnesses                        |
+| 2  | Thu, Sep 24\           | 9 Persistent instructions and memory\    |
+|    | 1:30 – 6:00 PM         | 10 Connectors and plugins\               |
+|    |                        | 11 Agent harnesses                       |
 +----+------------------------+------------------------------------------+
-| 3  | Fri, Sep 25\           | 7 Working with data                      |
+| 3  | Fri, Sep 25\           | 12 Working with data                     |
 |    | 8:00 AM – 12:30 PM     |                                          |
 +----+------------------------+------------------------------------------+
-| 4  | Sat, Sep 26\           | 8 Creating docs\                         |
-|    | 8:00 AM – 12:30 PM     | 9 Creating apps                          |
+| 4  | Sat, Sep 26\           | 13 Creating docs\                        |
+|    | 8:00 AM – 12:30 PM     | 14 Creating apps                         |
 +----+------------------------+------------------------------------------+
-| 5  | Sat, Sep 26\           | 10 Retrieval augmented generation\       |
-|    | 1:30 – 6:00 PM         | 11 Open source models                    |
+| 5  | Sat, Sep 26\           | 15 Retrieval augmented generation\       |
+|    | 1:30 – 6:00 PM         | 16 Open source models                    |
 +----+------------------------+------------------------------------------+
-| 6  | Sun, Sep 27\           | 12 Creating agents\                      |
-|    | 8:00 AM – 12:30 PM     | 13 Managing security risks               |
+| 6  | Sun, Sep 27\           | 17 Creating agents\                      |
+|    | 8:00 AM – 12:30 PM     | 18 Managing security risks               |
 +----+------------------------+------------------------------------------+
 
 ### Grading

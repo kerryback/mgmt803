@@ -3,10 +3,14 @@ project:
   output-dir: docs
   render:
     - syllabus.qmd
-    - html/*.qmd
+    - slides/*.qmd
+    - "!slides/Sept24-part1-cut.qmd"
   resources:
     - CNAME
     - pdf/*.pdf
+    - files/Sept24-part1/*.csv
+    - files/Sept24-part1/*.zip
+    - files/Sept24-part1/*.md
     - index.html
     - under-construction.html
 

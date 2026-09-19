@@ -9,8 +9,8 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.9.38">
 
-  <meta name="author" content="Kerry Back">
-  <title>Saturday, September 26 · Morning</title>
+  <meta name="author" content="Kerry Back J. Howard Creekmore Professor of Finance">
+  <title>MGMT 803, MBA@Rice, 2026</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -32,7 +32,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-ad9d6da6267b2ca2af52a465c31666ff.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-963326a71a77be66e1a2dc2e7f4f8a8d.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -130,63 +130,316 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Saturday, September 26 · Morning</h1>
-  <p class="subtitle">8 Creating docs · 9 Creating apps</p>
+  <h1 class="title">MGMT 803, MBA@Rice, 2026</h1>
+  <p class="subtitle">Saturday, September 26, Afternoon</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Kerry Back 
+Kerry Back<br>J. Howard Creekmore Professor of Finance 
 </div>
 </div>
 </div>
 
 </section>
-<section id="this-morning" class="slide level2">
-<h2>This morning</h2>
-<div class="lead">
-<p>Yesterday ended with a number you could defend. This morning it becomes something somebody else can open.</p>
-</div>
+<section id="this-afternoon" class="slide level2">
+<h2>This afternoon</h2>
 <div class="cards cards-2">
 <div class="card">
-<p><span class="card-title">Creating docs</span></p>
-<p>Excel, Word and PowerPoint out of the machine — including into the template your firm already uses.</p>
+<p><span class="card-title">Retrieval augmented generation</span></p>
+<p>Answering from your own documents, with a citation you can open.</p>
 </div>
 <div class="card card-blue">
-<p><span class="card-title">Creating apps</span></p>
-<p>How software actually works, then build one, then put it on the internet.</p>
+<p><span class="card-title">Open source models</span></p>
+<p>What you can download and run yourself, and how far behind it is.</p>
 </div>
 </div>
 </section>
 <section>
-<section id="creating-docs" class="title-slide slide level1 center">
-<h1>8 · Creating docs</h1>
-
+<section id="retrieval-augmented-generation" class="title-slide slide level1 center">
+<h1>15 · Retrieval augmented generation</h1>
+<p>Answering from your own documents, with a citation you can open.</p>
 </section>
-<section id="office-files-are-archives" class="slide level2">
-<h2>Office files are archives</h2>
-<div class="lead">
-<p>A <code>.docx</code>, <code>.xlsx</code> or <code>.pptx</code> is a ZIP file containing XML.</p>
-</div>
-<p>Unzip one and the document’s structure, styles and data are readable as text. That is why an agent can edit an existing file in place — keeping its template, its headers and its formatting — instead of rebuilding it.</p>
-<div class="note">
-<p>So “edit the deck the firm already uses” opens the existing file, while “build me a deck like ours” starts from nothing.</p>
-</div>
-</section>
-<section id="excel-that-is-a-model-not-a-table" class="slide level2 compare">
-<h2>Excel that is a model, not a table</h2>
+<section id="structured-and-unstructured" class="slide level2 compare">
+<h2>Structured and unstructured</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><span class="eyebrow">A table</span></p>
-<p>Values pasted into cells. Change an assumption and the analysis is rerun somewhere else, by you.</p>
+<p><span class="eyebrow">Yesterday</span></p>
+<p>Rows, columns, joins. Five spreadsheets and a total you could reconcile.</p>
 </div><div class="column" style="width:50%;">
-<p><span class="eyebrow">A model</span></p>
-<p>Inputs in labelled cells, formulas referencing them, a chart bound to the range. Change an assumption in the sheet and everything moves.</p>
+<p><span class="eyebrow">Everything else a firm holds</span></p>
+<p>Contracts, mail, board papers, policies, reports, decks, notes.</p>
 </div></div>
-<p>Ask for formulas rather than values, and name the input cells.</p>
+<div class="note">
+<p>65% of data leaders call their structured data ready for AI. 39% say the same of the unstructured kind, which is most of the volume.</p>
+</div>
 </section>
-<section id="what-the-recipient-opens" class="slide level2">
-<h2>What the recipient opens</h2>
+<section id="why-not-just-paste-it-in" class="slide level2">
+<h2>Why not just paste it in</h2>
+<div class="cards cards-3">
+<div class="card">
+<p><span class="card-title">It was not trained on yours</span></p>
+<p>Your contracts were not on the public web. Nothing in the weights knows them.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">The window is finite</span></p>
+<p>A million tokens is large and your document store is larger.</p>
+</div>
+<div class="card">
+<p><span class="card-title">You pay for every turn</span></p>
+<p>Input is billed each turn. Pasting the corpus into every question bills the corpus every question.</p>
+</div>
+</div>
+</section>
+<section id="four-steps" class="slide level2 plain-title">
+<h2>Four steps</h2>
+<div class="steps">
+<ol type="1">
+<li>Chunk. Split the documents into passages of a few hundred words.</li>
+<li>Embed. Turn each passage into a vector, the same way tokens became vectors on Thursday.</li>
+<li>Retrieve. Embed the question and find the handful of passages closest to it.</li>
+<li>Paste. Put those passages in the prompt, with the question.</li>
+</ol>
+</div>
+<div class="note note-plum">
+<p>The model never reads your corpus. It reads an excerpt that a similarity search chose.</p>
+</div>
+</section>
+<section id="a-passage-becomes-384-numbers" class="slide level2">
+<h2>A passage becomes 384 numbers</h2>
+<div class="lead">
+<p>An embedding model reads a passage and returns a fixed-length list of numbers — 384, or 768, or 1,536, depending on the model.</p>
+</div>
+<p>Passages about the same thing land near each other, whatever words they used. “Revenue fell in the third quarter” sits close to “Q3 sales were down”, and a keyword search for “revenue” finds only the first.</p>
+</section>
+<section id="chunking-choices" class="slide level2 plain-title">
+<h2>Chunking choices</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Choice</th>
+<th>What it costs</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Chunks too small</td>
+<td>the passage arrives without the sentence that made it mean something</td>
+</tr>
+<tr class="even">
+<td>Chunks too large</td>
+<td>the relevant line arrives inside a page of text you paid for</td>
+</tr>
+<tr class="odd">
+<td>Split mid-table</td>
+<td>numbers arrive with no column headings</td>
+</tr>
+<tr class="even">
+<td>No overlap</td>
+<td>an answer spanning a boundary is never retrieved whole</td>
+</tr>
+</tbody>
+</table>
+<p>Split on the document’s own structure — sections, clauses, slides — before falling back on a word count.</p>
+</section>
+<section id="two-ways-to-have-one" class="slide level2 compare">
+<h2>Two ways to have one</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="eyebrow">A hosted tool</span></p>
+<p>Upload the folder, ask questions. Somebody else chose the chunking, the embedder and the number of passages retrieved.</p>
+</div><div class="column" style="width:50%;">
+<p><span class="eyebrow">A pipeline you own</span></p>
+<p>Your chunking rules, your embedder, your store, and the retrieved text visible before it reaches the model.</p>
+</div></div>
+<p>Start hosted. Build your own when the answers are wrong and you need to see which passages came back.</p>
+</section>
+<section id="build-one-over-your-own-documents" class="slide level2 plain-title">
+<h2>Build one over your own documents</h2>
+<p><span class="eyebrow">Exercise</span></p>
+<div class="steps">
+<ol type="1">
+<li>Put twenty or more of your own documents in a folder — reports, policies, decks, anything real but not confidential.</li>
+<li>Have them chunked and embedded into a local store, and have the chunking rule stated in writing.</li>
+<li>Add a search tool to an agent, so it retrieves before it answers.</li>
+<li>Ask five questions you already know the answers to.</li>
+<li>Make it print the passages it retrieved, not just the answer.</li>
+</ol>
+</div>
+<div class="note">
+<p>An answer you cannot trace back to a passage is not verifiable.</p>
+</div>
+</section>
+<section id="make-it-cite-then-check-the-citation" class="slide level2">
+<h2>Make it cite, then check the citation</h2>
+<div class="lead">
+<p>Open each passage it cites and check that the answer is in it.</p>
+</div>
+<div class="steps">
+<ol type="1">
+<li>Ask a question whose answer is in exactly one document.</li>
+<li>Ask one whose answer is spread over three.</li>
+<li>Ask one whose answer is in none of them, and see whether it says so.</li>
+</ol>
+</div>
+<div class="note">
+<p>A retriever always returns its closest matches, whether or not any of them are relevant.</p>
+</div>
+</section>
+<section id="permissions-and-chunking" class="slide level2 compare">
+<h2>Permissions and chunking</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="eyebrow">The document</span></p>
+<p>Sat in a folder with an access list. Three people could open it.</p>
+</div><div class="column" style="width:50%;">
+<p><span class="eyebrow">The chunk in the store</span></p>
+<p>Is a row in a database with a vector next to it. Usually carries no access list at all.</p>
+</div></div>
+<p>Index everything and the retriever will return a passage from a file the person asking could never have opened.</p>
+</section>
+<section id="retrieved-text-is-untrusted-text" class="slide level2 plain-title">
+<h2>Retrieved text is untrusted text</h2>
+<p>Anything that reaches the model reaches it as text, and text from a retrieved passage arrives in the same stream as your question. Whoever can put a document into the index can put instructions in front of the model.</p>
+<div class="note">
+<p>The Sunday morning question: who can write to the corpus, and what can the agent do once it has read one.</p>
+</div>
+</section>
+<section id="when-it-is-the-wrong-tool" class="slide level2">
+<h2>When it is the wrong tool</h2>
+<div class="cards cards-3">
+<div class="card">
+<p><span class="card-title">Few enough to paste</span></p>
+<p>Twenty pages fit in the window. Retrieval adds a failure mode and buys nothing.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">The answer is a number</span></p>
+<p>Totals, counts and rankings come from a query against the data, not a similarity search over prose.</p>
+</div>
+<div class="card">
+<p><span class="card-title">The corpus changes hourly</span></p>
+<p>Every change means re-embedding, and the index is out of date between rebuilds.</p>
+</div>
+</div>
+</section>
+<section id="break-your-own" class="slide level2 plain-title">
+<h2>Break your own</h2>
+<p><span class="eyebrow">Exercise</span></p>
+<div class="steps">
+<ol type="1">
+<li>Add a document to your index that contradicts another one. Ask the question both answer.</li>
+<li>Add one containing an instruction addressed to the agent. Ask an unrelated question.</li>
+<li>Ask something answered only by a table you chunked in the middle.</li>
+<li>Write down which of the three your setup handled, and what you would change.</li>
+</ol>
+</div>
+</section>
+<section id="screen-shares" class="slide level2 band-bottom">
+<h2>Screen shares</h2>
+<ul>
+<li>What you indexed, and how you chunked it</li>
+<li>One question it answered well, with the passage it used</li>
+<li>The one that broke it</li>
+</ul>
+</section></section>
+<section>
+<section id="open-source-models" class="title-slide slide level1 center">
+<h1>16 · Open source models</h1>
+
+</section>
+<section id="what-gpqa-diamond-measures" class="slide level2 plain-title">
+<h2>What GPQA Diamond measures</h2>
+<div class="lead">
+<p>Four-way multiple-choice questions in biology, physics and chemistry, written by people who hold or are working toward a PhD in the field they wrote for.</p>
+</div>
+<div class="stats">
+<div class="stat">
+<p><span class="stat-value">25%</span> <span class="stat-label">guessing</span></p>
+</div>
+<div class="stat">
+<p><span class="stat-value">34%</span> <span class="stat-label">skilled non-experts, 30+ minutes of open web search</span></p>
+</div>
+<div class="stat">
+<p><span class="stat-value">74%</span> <span class="stat-label">PhDs answering inside their own field</span></p>
+</div>
+</div>
+<div class="note">
+<p>Diamond is the hardest 198 of the 448 questions: both expert annotators answered correctly and most non-experts did not. Rein et al., 2023.</p>
+</div>
+</section>
+<section id="how-far-behind-is-it" class="slide level2 plain-title">
+<h2>How far behind is it?</h2>
+<p><img data-src="images/lag-gpqa.png" style="width:76.0%"></p>
+<div class="note">
+<p>Each line is that tier’s best score so far; gray dots are every other model. Source: Epoch AI, 8 Sep 2026.</p>
+</div>
+</section>
+<section id="what-terminal-bench-measures" class="slide level2 plain-title">
+<h2>What Terminal-Bench measures</h2>
+<div class="lead">
+<p>An agent is given a container, a plain-English objective, and a terminal. It has to do the job: compile the code, train the model, configure the server, find the bug.</p>
+</div>
+<div class="stats">
+<div class="stat">
+<p><span class="stat-value">7</span> <span class="stat-label">task domains: software, ML, science, operations, security, hardware, media</span></p>
+</div>
+<div class="stat">
+<p><span class="stat-value">4</span> <span class="stat-label">parts to a task: instruction, container, test suite, reference solution</span></p>
+</div>
+<div class="stat">
+<p><span class="stat-value">0 or 1</span> <span class="stat-label">per task — the tests pass or they do not</span></p>
+</div>
+</div>
+<div class="note">
+<p>Built by the Laude Institute with Stanford researchers. No human baseline is published. The version charted here dates from mid-2025; a harder v4.0 has since cut the frontier to about 60%.</p>
+</div>
+</section>
+<section id="the-same-three-tiers-on-agentic-work" class="slide level2 plain-title">
+<h2>The same three tiers, on agentic work</h2>
+<p><img data-src="images/lag-tbench.png" style="width:80.0%"></p>
+<div class="note">
+<p>Epoch’s mirror of Terminal-Bench; its closed-model coverage runs to April 2026.</p>
+</div>
+</section>
+<section id="where-each-tier-stands-today" class="slide level2 plain-title">
+<h2>Where each tier stands today</h2>
+<p><img data-src="images/lag-gap.png" style="width:99.0%"></p>
+</section>
+<section id="two-numbers-two-different-answers" class="slide level2 compare">
+<h2>Two numbers, two different answers</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="eyebrow">The months</span></p>
+<p>Three to five months, on both benchmarks. A model small enough for one consumer GPU is nine to ten months back, on both.</p>
+</div><div class="column" style="width:50%;">
+<p><span class="eyebrow">The scores</span></p>
+<p>On graduate science questions the open gap is 3 points. On agentic terminal work it is 33, and the small model solves 23% against the frontier’s 85%.</p>
+</div></div>
+<p>GPQA Diamond is near its ceiling, which compresses the gap: five months of lag is worth three points because there is nowhere left to go. Terminal-Bench is not near any ceiling, and there the same few months is most of the task.</p>
+</section>
+<section id="what-that-means-for-a-choice" class="slide level2 band-bottom">
+<h2>What that means for a choice</h2>
+<div class="cards cards-3">
+<div class="card">
+<p><span class="card-title">Answer from knowledge</span></p>
+<p>A 27B open model scores 86% on GPQA Diamond against the frontier’s 96%, on hardware you own.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">Reason over your documents</span></p>
+<p>A large open model is a few months behind and self-hostable. Test it on your own task before taking the ranking.</p>
+</div>
+<div class="card card-sand">
+<p><span class="card-title">Run a multi-step agent</span></p>
+<p>On Terminal-Bench the best open model solves 52% and the best small one 23%, against the frontier’s 85%.</p>
+</div>
+</div>
+</section>
+<section id="not-every-job-needs-the-largest-model" class="slide level2">
+<h2>Not every job needs the largest model</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
@@ -195,279 +448,46 @@ Kerry Back
 </colgroup>
 <thead>
 <tr class="header">
-<th>Recipient</th>
-<th>Format</th>
-<th>What it has to carry</th>
+<th></th>
+<th>Where it runs</th>
+<th>What it suits</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>An analyst who will extend it</td>
-<td><code>.xlsx</code> with formulas</td>
-<td>inputs, formulas, the definition</td>
+<td>A frontier model</td>
+<td>the provider’s API</td>
+<td>judgment, long context, code</td>
 </tr>
 <tr class="even">
-<td>A manager approving something</td>
-<td><code>.pptx</code> or one page</td>
-<td>the number, the chart, the caveat</td>
+<td>A mid-size model</td>
+<td>the same API, less per token</td>
+<td>classification, extraction, routing</td>
 </tr>
 <tr class="odd">
-<td>A job that runs every week</td>
-<td><code>.csv</code> plus a script</td>
-<td>reproducibility, not formatting</td>
+<td>A small open model</td>
+<td>your own hardware</td>
+<td>high volume, or data that cannot leave</td>
 </tr>
 <tr class="even">
-<td>The record</td>
-<td><code>.docx</code> or PDF</td>
-<td>the method, in sentences</td>
+<td>A fine-tuned small model</td>
+<td>your own hardware</td>
+<td>one narrow task, done constantly</td>
 </tr>
 </tbody>
 </table>
+<p>The price difference is negligible on a single question and decides the budget at a million classifications.</p>
 </section>
-<section id="the-deck-already-has-a-house-style" class="slide level2 plain-title">
-<h2>The deck already has a house style</h2>
+<section id="distillation-in-one-paragraph" class="slide level2">
+<h2>Distillation, in one paragraph</h2>
 <div class="lead">
-<p>Asking for “a deck in our style” produces something that looks approximately right and is wrong in every detail a partner will notice.</p>
+<p>Run the frontier model on a few thousand examples of your task. Keep the inputs and its outputs. Train a small model on those pairs.</p>
 </div>
-<p>A <code>.pptx</code> template is not a picture of a design. It is a file holding named slide layouts, a theme with the firm’s exact colours and fonts, and placeholder positions measured to the point.</p>
-<div class="note">
-<p>Open one with <code>unzip -l</code>. The layouts are in <code>ppt/slideLayouts/</code>, the palette and typefaces in <code>ppt/theme/theme1.xml</code>.</p>
-</div>
+<p>The small model does not become generally capable. It becomes capable at the one task you sampled, at a fraction of the cost per call, on hardware you control.</p>
 </section>
-<section id="fill-the-template-do-not-imitate-it" class="slide level2 compare">
-<h2>Fill the template, do not imitate it</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span class="eyebrow">Generating a deck</span></p>
-<p>The model invents a layout. Colours are close. The logo is missing, the footer is wrong, and the title sits four points off.</p>
-</div><div class="column" style="width:50%;">
-<p><span class="eyebrow">Filling a template</span></p>
-<p>The file is opened, a named layout is chosen, and text goes into the placeholders that layout defines. Everything else is inherited.</p>
-</div></div>
-<p>Same request, two implementations. The second is the one you can send to a client.</p>
-</section>
-<section id="a-skill-that-knows-your-template" class="slide level2 plain-title">
-<h2>A skill that knows your template</h2>
-<div class="steps">
-<ol type="1">
-<li>Put the <code>.pptx</code> in the skill’s folder. The template is an asset, not a description.</li>
-<li>List the layouts by name, and say in prose what each one is for.</li>
-<li>Say which placeholder takes what — title, body, source line, page number.</li>
-<li>State the rules a human would know: how many bullets before a slide splits, where the source line goes, what never gets edited.</li>
-</ol>
-</div>
-<div class="prompt-box">
-<div class="box-title">
-<p>Prompt</p>
-</div>
-<p>Read <code>template.pptx</code>. List every slide layout by name and index, and for each one the placeholders it defines with their type and position. Write that into SKILL.md as a table, then write the instructions for filling it.</p>
-</div>
-</section>
-<section id="turn-your-own-template-into-a-skill" class="slide level2 plain-title">
-<h2>Turn your own template into a skill</h2>
-<p><span class="eyebrow">Exercise 10 · 40 minutes</span></p>
-<div class="steps">
-<ol type="1">
-<li>Upload a deck your firm actually uses. Any recent one will do.</li>
-<li>Have the layouts and placeholders enumerated, and check the list against what you see in PowerPoint.</li>
-<li>Write the skill, with the file in its folder.</li>
-<li>Build a three-slide deck from yesterday’s country analysis using it.</li>
-<li>Open the result next to a real deck and find what is off.</li>
-</ol>
-</div>
-<div class="note">
-<p>Step 5 finds the thing the template cannot carry — usually a rule that lives in somebody’s head rather than in the file.</p>
-</div>
-</section>
-<section id="build-the-deliverable" class="slide level2 plain-title">
-<h2>Build the deliverable</h2>
-<p><span class="eyebrow">Exercise 11 · 30 minutes</span></p>
-<div class="steps">
-<ol type="1">
-<li>Take your corrected country analysis.</li>
-<li>Produce it in the format the person who would receive it actually opens.</li>
-<li>Put the revenue definition and the row counts on the face of it.</li>
-<li>Open the file in the file browser and look at it the way they would.</li>
-</ol>
-</div>
-<div class="note">
-<p>If you built a workbook, change one input cell and check that the chart moves.</p>
-</div>
-</section></section>
-<section>
-<section id="creating-apps" class="title-slide slide level1 center">
-<h1>9 · Creating apps</h1>
-<p>Explain how it works, build three, then put one on the internet.</p>
-</section>
-<section id="when-a-skill-is-not-enough" class="slide level2 compare">
-<h2>When a skill is not enough</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span class="eyebrow">A skill</span></p>
-<p>For someone who has the agent, the files, and a reason to be at a command line.</p>
-</div><div class="column" style="width:50%;">
-<p><span class="eyebrow">An app</span></p>
-<p>For someone with a browser and a question. No install, no terminal, no account.</p>
-</div></div>
-<p>Same job, different audience. Which one you build follows from who is going to run it.</p>
-</section>
-<section id="frontend-and-backend" class="slide level2 compare">
-<h2>Frontend and backend</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span class="eyebrow">Frontend</span></p>
-<p>The browser. HTML, CSS and JavaScript — it draws the page and collects the clicks.</p>
-</div><div class="column" style="width:50%;">
-<p><span class="eyebrow">Backend</span></p>
-<p>A program on a server that listens continuously for requests. Yours will be Python.</p>
-</div></div>
-<div class="lead">
-<p>You open a URL. The browser sends a GET request. The server sends back HTML, CSS and JavaScript. The browser interprets that and shows you a page.</p>
-</div>
-<div class="note">
-<p>Right-click any web page and choose View Page Source. That is the frontend code, exactly as the backend handed it over.</p>
-</div>
-</section>
-<section id="then-you-click-something" class="slide level2 plain-title">
-<h2>Then you click something</h2>
-<div class="lead">
-<p>A POST request carries data the other way — a form, a country you typed. The server does what it was written to do and replies.</p>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="images/request-cycle.svg" class="quarto-figure quarto-figure-center" style="width:82.0%"></p>
-</figure>
-</div>
-</section>
-<section id="running-locally" class="slide level2 band-bottom">
-<h2>Running locally</h2>
-<div class="cards cards-2">
-<div class="card">
-<p><span class="card-title">localhost</span></p>
-<p><code>127.0.0.1</code> is the loopback address. The browser asks the machine it is already running on, and the request never reaches a network.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">Ports</span></p>
-<p>One machine runs many programs listening at once. The port number tells the operating system which of them gets the request.</p>
-</div>
-</div>
-<p>You write the app as a <code>.py</code> file. FastAPI writes one; uvicorn runs it and starts it listening on a port.</p>
-</section>
-<section id="three-shapes" class="slide level2">
-<h2>Three shapes</h2>
-<div class="cards cards-3">
-<div class="card">
-<p><span class="card-title">One page, no server</span></p>
-<p>Everything runs in the browser. A single HTML file you can mail to someone.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">A small server</span></p>
-<p>Python behind the page. Needed when there is a database, a key, or a file to write.</p>
-</div>
-<div class="card">
-<p><span class="card-title">A server that calls a model</span></p>
-<p>The page collects a question; the server sends it to the model with your key, not the user’s.</p>
-</div>
-</div>
-</section>
-<section id="one-page-no-server" class="slide level2 plain-title">
-<h2>One page, no server</h2>
-<p><span class="eyebrow">Exercise 12 · 25 minutes</span></p>
-<div class="steps">
-<ol type="1">
-<li>Build a single HTML file that does one useful calculation from your own work.</li>
-<li>Open it in the browser from the file browser. No server involved.</li>
-<li>Mail it to yourself and open it on your phone.</li>
-</ol>
-</div>
-<div class="note">
-<p>This is the shape most business tools should be and almost never are. Nothing to deploy, nothing to break, nothing to pay for.</p>
-</div>
-</section>
-<section id="a-page-with-python-behind-it" class="slide level2 plain-title">
-<h2>A page with Python behind it</h2>
-<p><span class="eyebrow">Exercise 13 · 40 minutes</span></p>
-<div class="steps">
-<ol type="1">
-<li>Take the country analysis. Put a dropdown of countries on a page.</li>
-<li>Have the server read the spreadsheets, compute the answer for the country chosen, and return it.</li>
-<li>Serve it on port 8000 and open it at your own address on the lab server.</li>
-<li>Watch the terminal while you click. Every request appears there.</li>
-</ol>
-</div>
-<div class="note">
-<p>Step 4 is where GET and POST stop being abstract.</p>
-</div>
-</section>
-<section id="hand-it-to-your-neighbour" class="slide level2 plain-title">
-<h2>Hand it to your neighbour</h2>
-<p><span class="eyebrow">Exercise 14 · 25 minutes</span></p>
-<div class="steps">
-<ol type="1">
-<li>Give your address to the person next to you and say nothing else.</li>
-<li>Watch them use it. Write down every place they hesitate.</li>
-<li>Fix the one that cost them the most time.</li>
-<li>Swap back and check the fix on their machine, not yours.</li>
-</ol>
-</div>
-</section>
-<section id="deploying-an-app" class="slide level2 divider">
-<h2>Deploying an app</h2>
-</section>
-<section id="platform-as-a-service" class="slide level2">
-<h2>Platform as a service</h2>
-<div class="lead">
-<p>You hand a host your repository. It builds the app, runs it, and puts it behind a public URL. There is no server for you to administer.</p>
-</div>
-<p>Railway, Render, Koyeb and Heroku all do this. We use Koyeb, which has a free tier.</p>
-<div class="steps">
-<ol type="1">
-<li>Create a free account at <code>koyeb.com</code>.</li>
-<li>In the control panel, create an API access token. Koyeb shows it once, so copy it then.</li>
-<li>Add it to your <code>.env</code> file in the container.</li>
-</ol>
-</div>
-</section>
-<section id="what-has-to-travel" class="slide level2 plain-title">
-<h2>What has to travel</h2>
-<div class="prompt-box">
-<div class="box-title">
-<p>Prompt</p>
-</div>
-<p>My goal is to push this app to GitHub as a new public repo and then create a Koyeb service connected to it. Walk me through it one step at a time.</p>
-</div>
-<div class="note note-plum">
-<p>The host builds only what is in the repository. Data files you told git to ignore never arrive, and the app fails on a machine you cannot see. Nothing from <code>.env</code> belongs in a public repo — secrets go in Koyeb’s environment settings instead.</p>
-</div>
-</section>
-<section id="put-it-on-the-internet" class="slide level2 plain-title">
-<h2>Put it on the internet</h2>
-<p><span class="eyebrow">Exercise 15 · 45 minutes</span></p>
-<div class="steps">
-<ol type="1">
-<li>Push the app from Exercise 13 to a public GitHub repository.</li>
-<li>Create the Koyeb service and watch the build log.</li>
-<li>When it fails, read the log before asking. It is almost always a missing file or a missing key.</li>
-<li>Open the public URL on your phone, off the lab wifi.</li>
-<li>Send the URL to two people in the room.</li>
-</ol>
-</div>
-<div class="note">
-<p>A custom domain is optional and takes ten minutes: buy one, create an API token at the registrar, and have the DNS record written for you.</p>
-</div>
-</section>
-<section id="what-you-just-learned-about-deployment" class="slide level2 band-bottom">
-<h2>What you just learned about deployment</h2>
-<ul>
-<li>What runs on your machine does not run anywhere else until you make it</li>
-<li>The repository is the unit of deployment, and it is not the same as your folder</li>
-<li>Secrets live in the host’s settings, never in the code</li>
-<li>The build log says what went wrong, in order, every time</li>
-</ul>
-</section>
-<section id="this-afternoon" class="slide level2 band-bottom">
-<h2>This afternoon</h2>
-<p>The app you just deployed answers from what you wrote into it. This afternoon it answers from your own documents instead.</p>
+<section id="tomorrow" class="slide level2 band-bottom">
+<h2>Tomorrow</h2>
+<p>The API underneath the tools, an agent with a tool list you chose, and managing security risks.</p>
 
 
 </section></section>

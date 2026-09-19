@@ -1,7 +1,7 @@
 ---
-title: "Thursday, September 24 · Afternoon"
-subtitle: "4 Persistent instructions and memory · 5 Connectors and plugins · 6 Agent harnesses"
-author: "Kerry Back"
+title: "MGMT 803, MBA@Rice, 2026"
+subtitle: "Thursday, September 24, Afternoon"
+author: "Kerry Back<br>J. Howard Creekmore Professor of Finance"
 format:
   revealjs:
     footer: "MGMT 803 · Rice Business"
@@ -13,7 +13,7 @@ format:
 ::: {.card}
 [Persistent instructions]{.card-title}
 
-Standing rules the agent reads every turn, and tasks written down once.
+The instructions already there before yours, the standing rules you add, and tasks written down once.
 :::
 
 ::: {.card .card-blue}
@@ -29,9 +29,68 @@ Claude Code is one program around the model. What the others decided differently
 :::
 :::
 
-Four hands-on blocks. By six you will have written a skill, connected to data you do not hold, and installed plugins other people wrote.
+Four hands-on blocks, about two and a quarter hours: a `CLAUDE.md`, a skill, the Northwind database, and the EIA database.
 
-# 4 · Persistent instructions and memory
+# 9 · Persistent instructions and memory
+
+Instructions that are there before you type: somebody else's first, then yours.
+
+## Somebody already wrote instructions {.plain-title}
+
+::: {.lead}
+Every conversation you had this morning already contained a block of text you did not write and never saw.
+:::
+
+The system prompt. It sits ahead of your first message and is sent again on every turn, telling the model what it is, what it may do, and how to answer.
+
+## What is in one
+
+| | |
+|---|---|
+| Identity | what it is, who made it, what today's date is |
+| Format | when to use markdown, how long an answer should run, when to use a list |
+| Tools | when to search the web, when to write code, when to make an artifact |
+| Refusals | what it declines, and how |
+| Character | what to do when it is uncertain, how much to hedge |
+
+Thousands of words, revised often, and paid for on every turn.
+
+## Read the real one {.plain-title}
+
+Anthropic publishes the system prompts for the Claude apps, dated and by model:
+
+::: {.lead}
+[platform.claude.com/docs/en/release-notes/system-prompts](https://platform.claude.com/docs/en/release-notes/system-prompts/overview)
+:::
+
+::: {.note}
+Worth reading. Behavior you took for the model is often an instruction on that page.
+:::
+
+## It does not come with the API {.plain-title}
+
+::: {.lead}
+Call the Messages endpoint the way you did this morning and none of that is there.
+:::
+
+The `system` field is empty unless you fill it. Same weights, same training, no instructions — which is why a question can get one answer in the chat window and a different one from a script.
+
+::: {.note}
+The scaffolding is in the app, not in the weights.
+:::
+
+## Who writes it, where
+
+| Where you are | Who wrote the system prompt |
+|---|---|
+| claude.ai, Claude Desktop | Anthropic, and published |
+| Claude Code | Anthropic, not published |
+| OpenRouter, or any raw API call | you, or nobody |
+| An agent you build | you, entirely |
+
+::: {.note}
+Further down the list, more of the behavior is yours to specify, and absent if you do not. Sunday you write one.
+:::
 
 ## The repeated instruction
 
@@ -39,7 +98,7 @@ Four hands-on blocks. By six you will have written a skill, connected to data yo
 This morning you typed the same four things into every prompt: describe the data first, show the code, report row counts, reconcile a second way.
 :::
 
-Each of those is a standing instruction about how you want work done. Typing them into each prompt makes them optional, and one of them gets left out at four in the afternoon.
+Each of those is a standing instruction about how you want work done. Typing them into each prompt makes them optional, and eventually one gets left out.
 
 ## Everything arrives as one block of text
 
@@ -100,7 +159,7 @@ A `CLAUDE.md` that runs to three thousand words is paid for on every turn, inclu
 
 ## Write your standing rules {.plain-title}
 
-[Exercise 5 · 30 minutes]{.eyebrow}
+[Exercise]{.eyebrow}
 
 ::: {.steps}
 1. Create `~/CLAUDE.md` in your container.
@@ -208,10 +267,10 @@ Open one. It is the same kind of file you are about to write.
 
 ## Write a skill {.plain-title}
 
-[Exercise 6 · 50 minutes]{.eyebrow}
+[Exercise]{.eyebrow}
 
 ::: {.steps}
-1. Pick something you do at work more than once a month, with inputs and a shape.
+1. Pick something you do at work more than once a month, with inputs and a shape. If nothing comes in two minutes, use Thursday's revenue-by-country report.
 2. Run `/skill-creator` and work through it, answering in your own vocabulary.
 3. Put a real input file in the container and run the skill on it.
 4. In a fresh conversation, ask for the task in the words a colleague would use.
@@ -219,10 +278,10 @@ Open one. It is the same kind of file you are about to write.
 :::
 
 ::: {.note}
-Step 4 is the test. A skill that fires only when you name it has not been described yet.
+A skill that fires only when you name it needs a better description.
 :::
 
-# 5 · Connectors and plugins
+# 10 · Connectors and plugins
 
 ## The problem a standard solves
 
@@ -243,7 +302,7 @@ Every tool wants to reach every data source. Without a standard, that is one int
 
 A server written for nothing in particular is reachable from every client that speaks the protocol.
 
-## What a connector actually sends
+## What a connector sends
 
 ::: {.steps}
 1. The client connects to the server and asks what it offers.
@@ -273,7 +332,7 @@ The model does not know a connector from a built-in tool. Both are entries in th
 }
 ```
 
-The description is what the model reads to decide whether to use it. A badly described tool is an unused tool.
+The description is what the model reads to decide whether to use it.
 
 ## Where the call is made from
 
@@ -323,7 +382,7 @@ It can call `run_sql` with a `SELECT`. That is the entire new capability.
 :::
 ::::
 
-The connector is the smaller of the two. That is why the network stays off and the connector goes on, and not the other way around.
+The connector is the smaller of the two. That is why the network stays off and the connector goes on.
 
 ::: {.note}
 It costs something. The connector reaches out from outside the sandbox holding your credentials, so a sentence in a file it reads can ask for that call. Cutting the machine off from the network did not cut off the connector. Sunday morning.
@@ -339,20 +398,53 @@ It costs something. The connector reaches out from outside the sandbox holding y
 
 Same three servers, reachable from Claude Code in your container and from Claude Desktop on your laptop. Neither was written for either one.
 
-## Connect one {.plain-title}
+## The Northwind server {.plain-title}
 
-[Exercise 7 · 40 minutes]{.eyebrow}
+[Exercise]{.eyebrow}
 
 ::: {.steps}
-1. Connect the Northwind server, and then one of the two data services.
-2. Ask what tools each one offers, and read the descriptions.
-3. Ask the Northwind server which countries generated the most revenue, and have it show the SQL.
-4. Ask something that needs the connector and a file in your container at the same time.
-5. Try to make the database server do something other than read.
+1. Connect the Northwind server and ask what tools it offers. Read the descriptions.
+2. Ask which countries generated the most revenue, and have it show you the SQL it ran.
+3. Put that beside the number you computed from the spreadsheets on Thursday morning.
+4. Explain any difference. One of the two is answering a slightly different question.
+5. Try to make it change something in the database.
 :::
 
 ::: {.note}
-Keep that number. Tomorrow you compute it yourself from spreadsheets and reconcile the two.
+The two numbers usually differ. Freight, discounts, cancelled orders, and shipped versus ordered date are the usual causes.
+:::
+
+## What discovery looks like {.plain-title}
+
+The EIA server does not hand the model a list of datasets. It hands it a way to find one.
+
+| | |
+|---|---|
+| `eia_search_routes` | fuzzy search — "electricity prices by state" |
+| `eia_browse_routes` | walk the taxonomy; fourteen categories at the root |
+| `eia_describe_route` | what filters exist, what columns, what units |
+| `eia_query_route` | the rows, with the filters applied |
+| `eia_dataframe_describe` | what has been pulled so far, and its schema |
+| `eia_dataframe_query` | SQL across those, joins included |
+
+::: {.note}
+Six tools rather than one per dataset. The model reads the descriptions and works out the order, which takes about four turns.
+:::
+
+## The EIA server {.plain-title}
+
+[Exercise]{.eyebrow}
+
+::: {.steps}
+1. Connect the EIA server and ask what tools it offers. Read them before using any.
+2. Have it browse the taxonomy from the root and pick the category closest to your industry.
+3. Ask a question you do not already know the answer to. Make it name the route it used, the filters it applied, and the units.
+4. Ask a second question that needs two of those series in one answer.
+5. Ask for something the server has no tool for, and watch what it does instead.
+:::
+
+::: {.note}
+Energy arrives in thousand megawatthours, million cubic feet, and thousand barrels a day. A right number with the wrong unit is wrong by a factor of a thousand, and nothing in the reply will say so.
 :::
 
 ## Where the limit lives {.divider}
@@ -366,7 +458,7 @@ Keep that number. Tomorrow you compute it yourself from spreadsheets and reconci
 | The connector | `run_sql` rejecting anything that is not a `SELECT` |
 | The tool list | no write tool exists to call |
 
-The model is not consulted at any of them. That is the property that makes them worth having.
+The model is not consulted at any of them.
 
 ## Instructions are not a limit
 
@@ -387,10 +479,6 @@ There is nothing to call.
 No wording reaches it, because nothing is being persuaded.
 :::
 ::::
-
-::: {.note}
-Everything you can talk it out of was a request, not a constraint.
-:::
 
 ## Mail and calendar
 
@@ -418,11 +506,11 @@ No send tool, no delete tool. Sending stays a thing you do.
 :::
 :::
 
-## Why that split is the whole design
+## Two things at once
 
 An agent reading your mail is holding two things at once: your private correspondence, and text written by people outside your organization.
 
-Give it an outbound channel and those two facts combine into a third. We come back to this on Sunday, in detail.
+Give it an outbound channel and text written by outsiders can direct what leaves. Sunday, in detail.
 
 ## Installing plugins {.divider}
 
@@ -457,7 +545,7 @@ The first points Claude at a public repository holding an index of plugins. The 
 
 ## A marketplace you can use today {.plain-title}
 
-`kerryback/skills` holds fifteen. Seven worth your time:
+`kerryback/skills` holds fifteen. Seven of them:
 
 | | |
 |-------------------|--------------------------------------------------------|
@@ -487,18 +575,16 @@ Same question as Sunday morning's, asked earlier: what can it reach, and what ca
 
 ## Install and try {.plain-title}
 
-[Exercise 8 · 40 minutes]{.eyebrow}
+[Demonstration · 10 minutes]{.eyebrow}
 
 ::: {.steps}
 1. Add the `kerryback/skills` marketplace and list what is in it.
-2. Install two plugins that look useful for your own work.
-3. Run one of them on your own data or your own document.
-4. Open its `SKILL.md` and read how it does what it does.
-5. Say what you would change, and what you would have written differently.
+2. Install one and run it.
+3. Open its `SKILL.md` and read how it does what it does.
 :::
 
 ::: {.note}
-You wrote one of these earlier. Step 4 is reading somebody else's.
+Install what you want tonight. The marketplace stays in your container all week.
 :::
 
 ## Four rungs {.band-bottom}
@@ -512,10 +598,10 @@ You wrote one of these earlier. Step 4 is reading somebody else's.
 
 The same instruction each time, moved somewhere that outlasts the conversation.
 
-# 6 · Agent harnesses
+# 11 · Agent harnesses
 
 ::: {.lead}
-You have spent a day inside Claude Code. It is one answer to a design problem, and there are others — increasingly not from the model's maker.
+Claude Code is one answer to a design problem. There are others, increasingly not from the model's maker.
 :::
 
 ## Same model, different program {.plain-title}
@@ -528,9 +614,9 @@ The model is a string in a config file. Everything you experience as "the tool" 
 You pick the model. Everything else on that list is supplied by the program around it.
 :::
 
-Buying a harness — Claude Code, or one of the open ones — is buying somebody's answers to those five questions. The answers are not the same, and this year they stopped being the same in ways that show up in the output.
+Buying a harness — Claude Code, or one of the open ones — is buying somebody's answers to those questions. The answers differ, and the differences show up in the output.
 
-## What actually differs
+## What differs
 
 | | The question it answers |
 |--------------|------------------------------------------------|
@@ -555,7 +641,7 @@ Every one of these is a design choice somebody made and wrote down. None of them
 | DeepSeek Harness | any provider | everything is a plugin, including the loop |
 | Pi | any provider | four tools and a very short prompt |
 | Goose · OpenHands | any provider | neutral governance; container-first |
-| Gemini CLI · Qwen Code | their own models | vendor CLIs on the same pattern |
+| Qwen Code | Alibaba's models | a vendor CLI on the same pattern |
 
 Everything but Claude Code is open source, MIT or Apache — you can read the loop. Two of those still only talk to their maker's models.
 
@@ -567,7 +653,7 @@ Everything but Claude Code is open source, MIT or Apache — you can read the lo
 
 Forty-plus tools. A layered system prompt with a cached boundary. Four fallback strategies when the context fills. Subagents that fork and run in the background.
 
-The harness does a great deal on your behalf, and you did not write any of it.
+The harness does a great deal on your behalf.
 :::
 
 ::: {.column width="50%"}
@@ -575,7 +661,7 @@ The harness does a great deal on your behalf, and you did not write any of it.
 
 Four tools — read, write, edit, run a command. A system prompt under a thousand tokens. No subagents, no plan mode, no MCP.
 
-Anything else, the agent writes for itself as an extension while you watch.
+Anything else, the agent writes for itself as an extension.
 :::
 ::::
 
@@ -597,7 +683,7 @@ Databricks benchmarked both and found the thin one matched or beat the thick one
 The distinction from this morning, in a different form: a mode that asks you, versus a boundary that makes the call impossible. Two of these five are the second kind.
 :::
 
-## Why any of this is on the slide
+## Benchmarks and harnesses
 
 ::: {.lead}
 A benchmark number is a model and a harness together. Change the harness and the number moves.
@@ -607,12 +693,12 @@ A benchmark number is a model and a harness together. Change the harness and the
 1. The same model scores differently under two harnesses on the same benchmark.
 2. Papers report the model and omit the harness.
 3. Removing most of an agent's tools has been shown to raise its score, not lower it.
-4. So a leaderboard tells you less than it appears to.
+4. So a leaderboard ranks model-and-harness pairs, not models.
 :::
 
-When somebody tells you a model can or cannot do something, the useful question is what it was wearing at the time.
+When somebody says a model can or cannot do something, ask which harness it was running in.
 
 
 ## Tomorrow {.band-bottom}
 
-Everything today has been about setting the agent up. Tomorrow you point it at data and find out whether you can trust what comes back.
+Everything today has been about setting the agent up. Tomorrow you point it at data and check what comes back.

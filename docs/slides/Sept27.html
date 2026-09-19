@@ -9,8 +9,8 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.9.38">
 
-  <meta name="author" content="Kerry Back">
-  <title>Sunday, September 27</title>
+  <meta name="author" content="Kerry Back J. Howard Creekmore Professor of Finance">
+  <title>MGMT 803, MBA@Rice, 2026</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -98,7 +98,7 @@
     code span.vs { color: #032f62; } /* VerbatimString */
     code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-ad9d6da6267b2ca2af52a465c31666ff.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-963326a71a77be66e1a2dc2e7f4f8a8d.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -196,13 +196,13 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Sunday, September 27</h1>
-  <p class="subtitle">12 Creating agents · 13 Managing security risks</p>
+  <h1 class="title">MGMT 803, MBA@Rice, 2026</h1>
+  <p class="subtitle">Sunday, September 27, Morning</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Kerry Back 
+Kerry Back<br>J. Howard Creekmore Professor of Finance 
 </div>
 </div>
 </div>
@@ -217,13 +217,13 @@ Kerry Back
 </div>
 <div class="card card-blue">
 <p><span class="card-title">Managing security risks</span></p>
-<p>Believing it, sending data out, letting it act — and what you take back to work.</p>
+<p>Believing it, sending data out, letting it act, and a one-page plan.</p>
 </div>
 </div>
 </section>
 <section>
 <section id="creating-agents" class="title-slide slide level1 center">
-<h1>12 · Creating agents</h1>
+<h1>17 · Creating agents</h1>
 
 </section>
 <section id="a-chatbot-produces-text" class="slide level2">
@@ -248,15 +248,14 @@ Kerry Back
 <li>Repeat until the model answers with text and no tool call.</li>
 </ol>
 </div>
-<p>The loop in step 4 is the whole mechanism. Nothing else is added.</p>
 </section>
-<section id="what-the-model-is-actually-sent" class="slide level2">
-<h2>What the model is actually sent</h2>
+<section id="what-the-model-is-sent" class="slide level2">
+<h2>What the model is sent</h2>
 <p>Every turn, the harness assembles one block of text:</p>
 <div class="cards cards-2">
 <div class="card">
 <p><span class="card-title">Fixed each turn</span></p>
-<p>The system prompt. The tool definitions. Any instruction files the harness decided to include.</p>
+<p>The system prompt. The tool definitions. Any instruction files the harness is coded to include.</p>
 </div>
 <div class="card card-blue">
 <p><span class="card-title">Growing each turn</span></p>
@@ -270,12 +269,12 @@ Kerry Back
 <section id="the-api" class="slide level2 divider">
 <h2>The API</h2>
 </section>
-<section id="a-fourth-door" class="slide level2">
-<h2>A fourth door</h2>
+<section id="a-fourth-interface" class="slide level2">
+<h2>A fourth interface</h2>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>Door</th>
+<th>Interface</th>
 <th>Who is at the keyboard</th>
 <th>What it is for</th>
 </tr>
@@ -304,7 +303,7 @@ Kerry Back
 </tbody>
 </table>
 <div class="note">
-<p>The first three all assume a person is present. The fourth is the one that does not.</p>
+<p>The first three assume a person is present. The API does not.</p>
 </div>
 </section>
 <section id="why-call-it-directly" class="slide level2">
@@ -312,7 +311,7 @@ Kerry Back
 <div class="cards cards-2">
 <div class="card">
 <p><span class="card-title">Repetition</span></p>
-<p>The same judgment applied to five thousand rows. Nobody is going to paste them one at a time.</p>
+<p>The same judgment applied to five thousand rows.</p>
 </div>
 <div class="card card-blue">
 <p><span class="card-title">Software</span></p>
@@ -355,7 +354,7 @@ Kerry Back
 </ol>
 </div>
 <div class="note">
-<p>Step 4 is the one people skip. A loop over a large file with a bug in the exit condition spends real money.</p>
+<p>A loop over a large file with a bug in the exit condition spends real money.</p>
 </div>
 </section>
 <section id="what-you-are-charged-for" class="slide level2">
@@ -383,7 +382,7 @@ Kerry Back
 </section>
 <section id="first-calls" class="slide level2 plain-title">
 <h2>First calls</h2>
-<p><span class="eyebrow">Exercise 18 · 30 minutes</span></p>
+<p><span class="eyebrow">Exercise</span></p>
 <div class="steps">
 <ol type="1">
 <li>Put your key in the environment and make one call that returns a sentence.</li>
@@ -428,7 +427,6 @@ Kerry Back
 <p>Call, execute, feed the result back, repeat.</p>
 </div>
 </div>
-<p>There is no seventh ingredient.</p>
 </section>
 <section id="three-kinds-of-tools" class="slide level2">
 <h2>Three kinds of tools</h2>
@@ -474,7 +472,7 @@ Kerry Back
 </section>
 <section id="build-one" class="slide level2 plain-title">
 <h2>Build one</h2>
-<p><span class="eyebrow">Exercise 19 · 75 minutes · three stages</span></p>
+<p><span class="eyebrow">Exercise · three stages</span></p>
 <div class="steps">
 <ol type="1">
 <li>A chatbot with no tools at all. Ask it how many files are in the directory it is running in. Read the answer carefully.</li>
@@ -496,16 +494,13 @@ Kerry Back
 <li>It produces plausible filenames</li>
 <li>Nothing in the output is marked as unavailable</li>
 </ul>
-<p>The same model with a file-reading tool answers correctly. What changed is not the model. It is that something connected the question to the directory.</p>
+<p>The same model with a file-reading tool answers correctly. What changed is the tool list.</p>
 </section>
 <section id="choosing-what-it-can-do" class="slide level2 divider">
 <h2>Choosing what it can do</h2>
 </section>
-<section id="narrow-beats-capable" class="slide level2">
-<h2>Narrow beats capable</h2>
-<div class="lead">
-<p>What you leave out of the tool list is not a limitation. It is the security model.</p>
-</div>
+<section id="a-general-agent-and-a-narrow-agent" class="slide level2">
+<h2>A general agent and a narrow agent</h2>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -537,9 +532,6 @@ Kerry Back
 </tr>
 </tbody>
 </table>
-<div class="note">
-<p>Buy for yourself; build for other people.</p>
-</div>
 </section>
 <section id="an-agent-whose-tool-is-an-agent" class="slide level2">
 <h2>An agent whose tool is an agent</h2>
@@ -551,11 +543,11 @@ Kerry Back
 <li>It assembles the answer from what both returned.</li>
 </ol>
 </div>
-<p>The two workers never share a context. Neither one holds private data and an outbound channel at the same time — which is the point of the arrangement, and the subject of the rest of this morning.</p>
+<p>The two workers never share a context, so neither holds private data and an outbound channel at the same time.</p>
 </section>
 <section id="talk-it-out-of-its-job" class="slide level2 plain-title">
 <h2>Talk it out of its job</h2>
-<p><span class="eyebrow">Exercise 20 · 25 minutes</span></p>
+<p><span class="eyebrow">Exercise</span></p>
 <div class="steps">
 <ol type="1">
 <li>Take the narrow agent you just built.</li>
@@ -565,7 +557,7 @@ Kerry Back
 </ol>
 </div>
 <div class="note">
-<p>Keep what you found. Some of it is the first item after the break.</p>
+<p>Keep what you found. It is the first item after the break.</p>
 </div>
 </section>
 <section id="screen-shares" class="slide level2 band-bottom">
@@ -573,8 +565,12 @@ Kerry Back
 <ul>
 <li>What your agent is for, in one sentence</li>
 <li>Its tool list, read out loud</li>
-<li>The one thing you could talk it into # 13 · Managing security risks</li>
+<li>The one thing you could talk it into</li>
 </ul>
+</section></section>
+<section>
+<section id="managing-security-risks" class="title-slide slide level1 center">
+<h1>18 · Managing security risks</h1>
 <p>Believing it, sending it out, and letting it act.</p>
 </section>
 <section id="three-risks" class="slide level2">
@@ -743,7 +739,7 @@ Kerry Back
 <p>Any way for text to leave: fetching a URL, sending mail, writing somewhere shared.</p>
 </div>
 </div>
-<p>All three in one agent is the condition. Remove any one and the attack has nowhere to go.</p>
+<p>All three in one agent is the condition. Remove any one and the attack does not work.</p>
 </section>
 <section id="the-question-to-ask-about-any-deployment" class="slide level2">
 <h2>The question to ask about any deployment</h2>
@@ -755,9 +751,30 @@ Kerry Back
 </div>
 <p>It is answerable from an architecture diagram, without knowing anything about how the model works.</p>
 </section>
+<section id="blast-radius-of-an-excel-add-in" class="slide level2">
+<h2>Blast radius of an Excel add-in</h2>
+<p>The Claude for Excel add-in from Thursday, checked against the three legs.</p>
+<div class="cards cards-3">
+<div class="card">
+<p><span class="card-title">Private data</span></p>
+<p>The open workbook. With “work across files” on, also the open deck, the open Word document, and the open Outlook email.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">Untrusted content</span></p>
+<p>A downloaded template, a vendor file, a data import, or an email from outside.</p>
+</div>
+<div class="card card-sand">
+<p><span class="card-title">An outbound channel</span></p>
+<p>Writing into the open document or email, and any connector you have enabled.</p>
+</div>
+</div>
+<div class="note">
+<p>“Work across files” is on by default for Pro and Max plans and off by default for Team and Enterprise. Anthropic’s testing found the add-in could be manipulated into extracting sensitive information, modifying data, or taking destructive actions.</p>
+</div>
+</section>
 <section id="red-team-a-classmates-agent" class="slide level2 plain-title">
 <h2>Red-team a classmate’s agent</h2>
-<p><span class="eyebrow">Exercise 21 · 45 minutes</span></p>
+<p><span class="eyebrow">Exercise</span></p>
 <div class="steps">
 <ol type="1">
 <li>Swap agents with someone. You get their code and their tool list.</li>
@@ -771,8 +788,8 @@ Kerry Back
 <p>Use synthetic data. Nothing in this exercise touches anything real.</p>
 </div>
 </section>
-<section id="making-it-impossible-rather-than-unlikely" class="slide level2 divider">
-<h2>Making it impossible rather than unlikely</h2>
+<section id="isolation-and-governance" class="slide level2 divider">
+<h2>Isolation and governance</h2>
 </section>
 <section id="two-ways-to-stop-the-same-thing" class="slide level2 compare">
 <h2>Two ways to stop the same thing</h2>
@@ -784,7 +801,7 @@ Kerry Back
 </div><div class="column" style="width:50%;">
 <p><span class="eyebrow">Isolation</span></p>
 <p>The route does not exist.</p>
-<p>Works on calls nobody anticipated. Nothing is judged, because nothing is possible.</p>
+<p>Works on calls nobody anticipated. There is nothing to judge at run time.</p>
 </div></div>
 <div class="note">
 <p>Real systems use both. The order matters: isolate first, then govern what remains.</p>
@@ -823,14 +840,14 @@ Kerry Back
 </tr>
 </tbody>
 </table>
-<p>You spent four days inside a working example of the pattern.</p>
+<p>Your container is an instance of that pattern.</p>
 </section>
 <section id="monday" class="slide level2 divider">
 <h2>Monday</h2>
 </section>
 <section id="write-the-plan" class="slide level2 plain-title">
 <h2>Write the plan</h2>
-<p><span class="eyebrow">Exercise 22 · 40 minutes</span></p>
+<p><span class="eyebrow">Exercise</span></p>
 <p>One page, covering:</p>
 <div class="steps">
 <ol type="1">
@@ -845,16 +862,15 @@ Kerry Back
 </section>
 <section id="pitches" class="slide level2 band-bottom">
 <h2>Pitches</h2>
-<p><span class="eyebrow">35 minutes</span></p>
 <p>Three minutes each. The room responds as the people who would have to approve it, fund it, or use it.</p>
 <p>For each plan, someone in the room names:</p>
 <ul>
-<li>The step that will not survive contact with the real workflow</li>
+<li>The step most likely to fail in the real workflow</li>
 <li>The one item on the tool list they would remove</li>
 </ul>
 </section>
-<section id="what-you-have" class="slide level2">
-<h2>What you have</h2>
+<section id="a-habit-a-file-a-question" class="slide level2">
+<h2>A habit, a file, a question</h2>
 <div class="cards cards-3">
 <div class="card">
 <p><span class="card-title">A habit</span></p>
