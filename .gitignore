@@ -3,4 +3,9 @@
 .playwright-mcp/
 MGMT803.csv
 Screenshot 2026-09-18*.png
+
+# Attendance and participation scored after each class, a row per student per
+# meeting. Student records -- never publish.
+participation.csv
+
 .DS_Store
