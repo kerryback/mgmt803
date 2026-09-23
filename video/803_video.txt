@@ -1,0 +1,39 @@
+803_video
+Narration transcript
+Generated from the narration in the Voiceover app. To change the script, edit it there — edits made directly to this file are replaced on the next build.
+
+Slide 1 — Software Setup
+Before we do anything else, we need to get your software set up, because everything that follows in this course depends on having a working environment where an AI agent can write and run code for you. This session walks through the choices and the installations. Nothing here is difficult, but there are a few forks in the road, and it helps to know which fork you are taking before you start clicking installers.
+
+Slide 2 — Two Tracks
+There are two tracks you can follow in this course. Track 1 is to install software on your own computer. You install an AI desktop application, along with Python, Node.js, and Git, and you have full control over your environment. Track 2 is to use the Rice AI Lab, which is a remote server you access through your browser at lab803.kerryback.com. Everything is pre-installed there, so there is nothing to set up. You get a Claude Code terminal and a file browser.
+
+Slide 3 — The Three Major Providers
+All three major AI providers --- Anthropic, OpenAI, and Google --- offer similar products, and any of them can be used for this course. For Claude, use Claude Desktop. For ChatGPT, use Codex Desktop along with Codex CLI. For Gemini, use Google Antigravity 2.0. Each provider pairs a desktop application with a command-line agent, and the shape of the two is much the same across all three.
+
+Slide 4 — Two Modes
+Each of these products has two modes for running code. The first is a container or virtual machine mode. This runs code in a sandbox on your computer. No additional software is needed --- Python and other tools are built in. The tradeoff is that sandboxed code cannot access online data sources or remote services. In Claude Desktop, this mode is called Cowork. The second is CLI mode, which runs code directly on your machine. This requires installing Python, Node.js, and possibly Git for Windows. The benefit is full access to the internet, databases, APIs, and your local files. In Claude Desktop, this mode is called Code, Local.
+
+Slide 5 — Claude Desktop
+Claude Desktop is Anthropic's desktop application. Download and run the installer from claude.com/download. When you open it, it will ask you to connect to your Anthropic account. The app splits in two at the top of the left sidebar: Home and Code. The square icon toggles the sidebar if you cannot find it. Home is the conversational side, the descendant of the web chat. Code is the descendant of the command-line tool, built for working directly in a folder of files. Knowing the split exists explains why the app can look completely different in two people's screenshots.
+
+Slide 6 — Four Modes of Claude Desktop
+Each half splits again, which is where the four modes come from. Inside Home, a toggle in the prompt box chooses Chat or Cowork. Inside Code, a selector at the bottom of the window may allow you to choose Local or Cloud --- whether the work happens on your machine or on Anthropic's, against a GitHub repository. Four modes, two toggles, and the toggles sit in different places, which is the genuinely confusing part.
+
+Slide 7 — What to Use?
+You can chat in any mode and execute code in any mode, so the choice is less consequential than it looks. Chat is just an interface to claude.ai --- everything works the same as the online chatbot. Cowork runs code in a virtual machine on your computer. It can read, write, and edit your files and install whatever Python libraries it needs. It is the easiest way to get started with an agent that writes and runs code. Code Local runs code directly on your computer using whatever software you have installed. Unlike Cowork, which is sandboxed, it can run web apps in your browser. Code Cloud is GitHub integration and is almost certainly overkill here. Note that Cowork seems to be unreliable on Windows computers with ARM processors, like Microsoft Surface Pros.
+
+Slide 8 — Install Python
+To use CLI mode --- Code mode in Claude Desktop, Codex CLI, or Antigravity CLI --- you need Python installed. On Windows, go to python.org/downloads and click Download. Run the installer, and on the very first screen, check the box that says Add python.exe to PATH --- this is important. On Mac, install Homebrew first if you do not already have it, then run brew install python. To verify the installation, open a terminal and type python space --version or python3 space --version.
+
+Slide 9 — Install Node.js
+It is also useful to install Node.js, which is an execution environment for JavaScript --- another programming language. Go to nodejs.org, download the LTS version --- currently v22 --- and run the installer with the default settings. To verify, open a terminal and type node space --version. It should return a version number.
+
+Slide 10 — Install Git for Windows
+Git is a version control system that CLI agents use to track changes to your files. Mac and Linux have Git pre-installed, but on Windows you need to install it separately. Go to git-scm.com, click Download for Windows, and run the installer with the default settings. To verify, open a terminal and type git space --version. Git for Windows also installs Git Bash, which provides a Unix-like terminal on Windows. CLI agents generally work better with Git Bash than with Command Prompt or PowerShell.
+
+Slide 11 — The AI Lab
+That covers Track 1. If you would rather skip the installations entirely, the AI Lab is waiting for you in a browser tab. Open your browser and go to lab803.kerryback.com. Your username is your net ID and your password is your student ID beginning with S zero. Once you are in, you will see a split-pane workspace: a file browser on the left and Claude Code on the right. The left pane has options --- files, terminal, or app --- so you can switch what you are looking at without leaving the page.
+
+Slide 12 — The AI Lab
+The AI Lab is a Linux server with Claude Code pre-installed. Each of you gets your own account. Python, Node.js, skills, and the browser tool are already installed, the course data and exercise files are pre-loaded, and you do not need a subscription. You type your prompts in Claude Code in the right pane. One thing to be aware of: the prompt window is not mouse-enabled, so to edit a prompt you use the left and right arrow keys to move around and Backspace or Delete to remove characters. When Claude Code creates files --- charts, Excel workbooks, Word documents --- they appear in the file browser after you click the Refresh button. Right-click a file and select Download to save it to your computer.

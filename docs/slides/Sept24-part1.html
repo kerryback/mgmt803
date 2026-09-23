@@ -98,7 +98,7 @@
     code span.vs { color: #032f62; } /* VerbatimString */
     code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-963326a71a77be66e1a2dc2e7f4f8a8d.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-fe3e5a70c3c5b29320272df664d210fd.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -504,9 +504,6 @@ Kerry Back<br>J. Howard Creekmore Professor of Finance
 </tr>
 </tbody>
 </table>
-<div class="note">
-<p>In a chatbot, including Claude Desktop, temperature is fixed near 1 and you cannot change it. Through the API you can.</p>
-</div>
 </section>
 <section id="from-prediction-to-conversation" class="slide level2">
 <h2>From prediction to conversation</h2>
@@ -537,8 +534,8 @@ Kerry Back<br>J. Howard Creekmore Professor of Finance
 <p>The thinking you see may be a summary of a much longer chain, and you are charged for the whole chain as output tokens.</p>
 </div>
 </section>
-<section id="demos" class="slide level2">
-<h2>Demos</h2>
+<section id="demo" class="slide level2">
+<h2>Demo</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 24%">
@@ -559,29 +556,24 @@ Kerry Back<br>J. Howard Creekmore Professor of Finance
 <td>Qwen3-1.7B-Base, o200k_base</td>
 </tr>
 <tr class="even">
-<td>Next token</td>
-<td>Next-token probabilities, and temperature</td>
-<td>Qwen3-1.7B-Base</td>
-</tr>
-<tr class="odd">
-<td>Base vs chat</td>
-<td>One prompt, to a base model and a chat model</td>
-<td>Qwen3-1.7B-Base, Qwen3-1.7B</td>
-</tr>
-<tr class="even">
 <td>Token embeddings</td>
 <td>Each token’s vector, and its nearest tokens</td>
 <td>Qwen3-1.7B-Base</td>
 </tr>
 <tr class="odd">
-<td>Passage embeddings</td>
-<td>One vector per passage, and similarity</td>
-<td>all-MiniLM-L6-v2</td>
+<td>Next token</td>
+<td>Next-token probabilities, and temperature</td>
+<td>Qwen3-1.7B-Base</td>
+</tr>
+<tr class="even">
+<td>Base vs chat</td>
+<td>One prompt, to a base model and a chat model</td>
+<td>Qwen3-1.7B-Base, Qwen3-1.7B</td>
 </tr>
 </tbody>
 </table>
 <div class="note">
-<p>Everything runs on this laptop. o200k_base is OpenAI’s tokenizer; the rest are open-weight models from Hugging Face.</p>
+<p>Everything runs on my laptop. o200k_base is OpenAI’s tokenizer; the rest are open-weight models from Hugging Face.</p>
 </div>
 </section></section>
 <section>
@@ -709,7 +701,7 @@ Kerry Back<br>J. Howard Creekmore Professor of Finance
 </tbody>
 </table>
 <div class="note">
-<p>Open weights means anyone can download the model and run it on their own hardware. The prices are for the developer’s hosted API; DeepSeek charges half off-peak.</p>
+<p>Open weights means anyone can download the model and run it on their own hardware. The prices are for the developer’s hosting; DeepSeek charges half off-peak.</p>
 </div>
 </section>
 <section id="some-benchmark-scores" class="slide level2 plain-title">
@@ -972,9 +964,6 @@ Kerry Back<br>J. Howard Creekmore Professor of Finance
 </tr>
 </tbody>
 </table>
-<div class="note">
-<p>Each needs a paid plan for regular use. Developers can also call computer use through each vendor’s API and pay only for tokens.</p>
-</div>
 </section>
 <section id="how-well-it-works" class="slide level2 plain-title">
 <h2>How well it works</h2>
@@ -1027,7 +1016,7 @@ Kerry Back<br>J. Howard Creekmore Professor of Finance
 </div>
 <div class="card card-sand">
 <p><span class="card-title">It asks first</span></p>
-<p>Permission for each app, and confirmation before purchases, posts, and messages. It is slower than a connector or an API.</p>
+<p>Permission for each app, and confirmation before purchases, posts, and messages.</p>
 </div>
 </div>
 </section></section>
@@ -1101,7 +1090,7 @@ Kerry Back<br>J. Howard Creekmore Professor of Finance
 </div>
 <div class="card card-blue">
 <p><span class="card-title">Call a service</span></p>
-<p>A database, an API, or Gmail and Slack through a connector.</p>
+<p>A database or another program.</p>
 </div>
 <div class="card card-sand">
 <p><span class="card-title">Start another agent</span></p>
@@ -1217,47 +1206,224 @@ Kerry Back<br>J. Howard Creekmore Professor of Finance
 <p>The programmers who wrote the harness made these choices in code, before you typed anything.</p>
 </div>
 </section>
+<section id="subagents" class="slide level2">
+<h2>Subagents</h2>
+<div class="cards cards-2">
+<div class="card">
+<p><span class="card-title">A second copy of the model</span></p>
+<p>Started by the harness with its own context window, its own instructions, and its own tools.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">Only the summary comes back</span></p>
+<p>Everything it read stays in its own context. The main conversation gets the report it writes.</p>
+</div>
+<div class="card card-sand">
+<p><span class="card-title">Several can run at once</span></p>
+<p>Independent pieces of work run in parallel instead of one after another.</p>
+</div>
+<div class="card">
+<p><span class="card-title">It cannot ask you anything</span></p>
+<p>It does not see your conversation. Whatever it needs has to be in the prompt that starts it.</p>
+</div>
+</div>
+<div class="note">
+<p>Each one is charged as a full model run, but their context windows are smaller.</p>
+</div>
+</section>
 <section id="harnesses-by-name" class="slide level2 band-bottom">
 <h2>Harnesses by name</h2>
 <table class="caption-top">
-<colgroup>
-<col style="width: 16%">
-<col style="width: 22%">
-<col style="width: 61%">
-</colgroup>
 <thead>
 <tr class="header">
 <th></th>
 <th>Harness</th>
-<th>Where you meet it</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Anthropic</td>
 <td>Claude Code</td>
-<td>Terminal, desktop app, IDEs, web. The Claude Agent SDK for agents you build.</td>
 </tr>
 <tr class="even">
 <td>OpenAI</td>
 <td>Codex</td>
-<td>Codex CLI, ChatGPT desktop app, IDEs, cloud. The Agents API (beta, Sep 10) for agents you build.</td>
 </tr>
 <tr class="odd">
 <td>Google</td>
 <td>Antigravity</td>
-<td>Desktop app and Antigravity CLI. Replaced Gemini CLI in June 2026.</td>
 </tr>
 <tr class="even">
 <td>Open source</td>
 <td>OpenCode · Pi · OpenHands · Goose</td>
-<td>Any provider’s models, including open-weight models you host.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="same-model-different-program" class="slide level2 plain-title">
+<h2>Same model, different program</h2>
+<p>In most harnesses the model is one setting in a config file. Everything you experience as “the tool” is the program wrapped around it: what it sends each turn, which tools it offers, how it asks permission, and where it runs.</p>
+</section>
+<section id="what-the-harness-supplies" class="slide level2">
+<h2>What the harness supplies</h2>
+<div class="lead">
+<p>You pick the model. Everything else is supplied by the program around it.</p>
+</div>
+<p>Picking a harness — Claude Code, or one of the open ones — is picking somebody’s design decisions.</p>
+</section>
+<section id="what-differs" class="slide level2 plain-title">
+<h2>What differs</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 77%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>The question it answers</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Model coupling</td>
+<td>one vendor’s models, or any provider you can point it at</td>
+</tr>
+<tr class="even">
+<td>Context</td>
+<td>what gets sent each turn, and what happens when the window fills</td>
+</tr>
+<tr class="odd">
+<td>Tool surface</td>
+<td>four tools, or forty</td>
+</tr>
+<tr class="even">
+<td>Permissions</td>
+<td>how it stops — approval rules, an OS sandbox, or a container</td>
+</tr>
+<tr class="odd">
+<td>Extension</td>
+<td>plugins, MCP servers, skills, instruction files</td>
+</tr>
+<tr class="even">
+<td>Where it lives</td>
+<td>a terminal, an editor, a web page, or a library you import</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="other-harnesses" class="slide level2 plain-title">
+<h2>Other harnesses</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 27%">
+<col style="width: 49%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Claude Code</td>
+<td>Anthropic models only</td>
+<td>the reference implementation</td>
+</tr>
+<tr class="even">
+<td>Codex</td>
+<td>OpenAI models only</td>
+<td>Rust; OS-level sandbox by default</td>
+</tr>
+<tr class="odd">
+<td>OpenCode</td>
+<td>75+ providers</td>
+<td>the mature open alternative; per-agent permissions</td>
+</tr>
+<tr class="even">
+<td>DeepSeek Harness</td>
+<td>any provider</td>
+<td>everything is a plugin, including the loop</td>
+</tr>
+<tr class="odd">
+<td>Pi</td>
+<td>any provider</td>
+<td>four tools and a very short prompt</td>
+</tr>
+<tr class="even">
+<td>Goose · OpenHands</td>
+<td>any provider</td>
+<td>neutral governance; container-first</td>
+</tr>
+<tr class="odd">
+<td>Qwen Code</td>
+<td>Alibaba’s models</td>
+<td>a vendor CLI on the same pattern</td>
+</tr>
+</tbody>
+</table>
+<p>Everything but Claude Code is open source, MIT or Apache — you can read the loop. Two of those still only talk to their maker’s models.</p>
+</section>
+<section id="claude-code-and-pi" class="slide level2 compare band-bottom">
+<h2>Claude Code and Pi</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="eyebrow">Claude Code</span></p>
+<p>Forty-plus tools. A layered system prompt with a cached boundary. Four fallback strategies when the context fills. Subagents that fork and run in the background.</p>
+</div><div class="column" style="width:50%;">
+<p><span class="eyebrow">Pi</span></p>
+<p>Four tools — read, write, edit, run a command. A system prompt under a thousand tokens. No subagents, no plan mode, no MCP.</p>
+<p>Anything else, the agent writes for itself as an extension.</p>
+</div></div>
+<div class="note">
+<p>Databricks benchmarked both and found the thin one matched or beat the thick one at a fraction of the cost, because it sent roughly three times less context per turn.</p>
+</div>
+</section>
+<section id="the-permission-model" class="slide level2">
+<h2>The permission model</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Harness</th>
+<th>How it stops you</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Claude Code</td>
+<td>rules you configure, checked before each call</td>
+</tr>
+<tr class="even">
+<td>Codex</td>
+<td>the operating system — Seatbelt on macOS, Landlock on Linux</td>
+</tr>
+<tr class="odd">
+<td>OpenHands</td>
+<td>a Docker container the agent cannot leave</td>
+</tr>
+<tr class="even">
+<td>Cline</td>
+<td>a human clicking approve, every time</td>
+</tr>
+<tr class="odd">
+<td>OpenCode</td>
+<td>per-agent tool permissions, granted once and remembered</td>
 </tr>
 </tbody>
 </table>
 <div class="note">
-<p>Codex CLI is also open source (Apache 2.0) but is built around OpenAI’s models.</p>
+<p>A mode that asks you, versus a boundary that makes the call impossible. Two of these five are the second kind.</p>
 </div>
+</section>
+<section id="benchmarks-and-harnesses" class="slide level2">
+<h2>Benchmarks and harnesses</h2>
+<div class="lead">
+<p>A benchmark number is a model and a harness together. Change the harness and the number moves.</p>
+</div>
+<div class="steps">
+<ol type="1">
+<li>The same model scores differently under two harnesses on the same benchmark.</li>
+<li>Papers report the model and omit the harness.</li>
+<li>Removing most of an agent’s tools has been shown to raise its score, not lower it.</li>
+<li>So a leaderboard ranks model-and-harness pairs, not models.</li>
+</ol>
+</div>
+<p>When somebody says a model can or cannot do something, ask which harness it was running in.</p>
 </section>
 <section id="try-it" class="slide level2">
 <h2>Try it</h2>
@@ -1312,7 +1478,7 @@ Windows: right-click the folder name in File Explorer and choose Open in Termina
 </div>
 <div class="card card-sand">
 <p><span class="card-title">Sonnet 5</span></p>
-<p>Claude Code is connected to Sonnet 5 through an API key.</p>
+<p>Claude Code is connected to Sonnet 5.</p>
 </div>
 </div>
 </section>
@@ -1496,10 +1662,10 @@ Windows: right-click the folder name in File Explorer and choose Open in Termina
 </section>
 <section id="try-it-data-wrangling-charts-docs" class="slide level2 plain-title">
 <h2>Try it: data wrangling, charts, docs</h2>
-<p>In the Claude tab at lab803, the five Northwind spreadsheets are in <code>data/</code>. Elsewhere, download <a href="../files/Sept24-part1/northwind.zip" download="northwind.zip">northwind.zip</a>.</p>
+<p>In lab803, the five Northwind spreadsheets are in <code>data/</code>. Elsewhere, download <a href="../files/Sept24-part1/northwind.zip" download="northwind.zip">northwind.zip</a>.</p>
 <div class="steps">
 <ol type="1">
-<li>Ask: <em>Which countries generated the most revenue?</em></li>
+<li>Ask: <em>Which countries generated the most revenue? Compute revenue as price times quantity.</em></li>
 <li>Ask: <em>Create a bar chart of revenue by country for the top five countries.</em></li>
 <li>Ask: <em>Create an Excel workbook containing the revenue table and the chart.</em></li>
 <li>Ask: <em>Create a Word document containing a one-page summary with the table and the chart.</em></li>
@@ -1507,45 +1673,7 @@ Windows: right-click the folder name in File Explorer and choose Open in Termina
 </ol>
 </div>
 <div class="note">
-<p>Open each file before asking for the next. At lab803, download it from the file browser tab.</p>
-</div>
-</section>
-<section id="the-xlsx-docx-and-pptx-skills" class="slide level2">
-<h2>The xlsx, docx, and pptx skills</h2>
-<p>An Office file is a zip archive of XML files. <span class="hl">Skills</span> tell the AI which tools to use to write it.</p>
-<table class="caption-top">
-<colgroup>
-<col style="width: 13%">
-<col style="width: 43%">
-<col style="width: 43%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Skill</th>
-<th>New file</th>
-<th>Existing file</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>xlsx</td>
-<td>Python (openpyxl, pandas)</td>
-<td>Python (openpyxl) opens the workbook and changes cells and formulas</td>
-</tr>
-<tr class="even">
-<td>docx</td>
-<td>JavaScript (docx-js)</td>
-<td>Unzip, edit the XML with Python, zip again</td>
-</tr>
-<tr class="odd">
-<td>pptx</td>
-<td>JavaScript (PptxGenJS)</td>
-<td>Unzip, edit the XML, zip again</td>
-</tr>
-</tbody>
-</table>
-<div class="note">
-<p>The lab has no Office software, so it cannot display the files it makes. Download them and open them on your laptop.</p>
+<p>At lab803, use Refresh and then download files to view them.</p>
 </div>
 </section>
 <section id="claude-and-chatgpt-in-excel" class="slide level2 compare">
@@ -1562,9 +1690,6 @@ Windows: right-click the folder name in File Explorer and choose Open in Termina
 <p>Builds sheets from a description, writes formulas, and sorts and updates tables.</p>
 <p>Asks before it edits the workbook.</p>
 </div></div>
-<div class="note">
-<p>Both work inside Excel on the open workbook. The xlsx skill never opens Excel; it runs Python to write the file. Anthropic warns that an outside workbook can hide instructions the add-in will follow.</p>
-</div>
 </section></section>
 <section>
 <section id="prompting-tips" class="title-slide slide level1 center">
@@ -1577,7 +1702,7 @@ Windows: right-click the folder name in File Explorer and choose Open in Termina
 <div class="box-title">
 <p>Prompt</p>
 </div>
-<p>Plan this and explain your plan to me.</p>
+<p>Think about the best way to do this, formulate a plan, and tell me what your plan is.</p>
 </div>
 </section>
 <section id="afterwards" class="slide level2">
@@ -1588,7 +1713,10 @@ Windows: right-click the folder name in File Explorer and choose Open in Termina
 </div>
 <p>Explain what you did step by step. Did you make any decisions that we have not discussed? Write this as an HTML doc.</p>
 </div>
-<p>HTML is easy for AI to write and easy to read.</p>
+<p><br></p>
+<div class="card card-blue">
+<p>HTML is easy for AI to write and easy to read. Double-click an HTML file in File Explorer (Finder on Mac) and it will open in your browser.</p>
+</div>
 </section>
 <section id="numbers-need-code" class="slide level2">
 <h2>Numbers need code</h2>
@@ -1631,7 +1759,7 @@ Windows: right-click the folder name in File Explorer and choose Open in Termina
 <section id="good-enough-prompting" class="slide level2 band-bottom">
 <h2>Good enough prompting</h2>
 <div class="lead">
-<p>Most ‘prompt engineering’ techniques from a few years ago are now either useless or actually counterproductive.</p>
+<p>Most ‘prompt engineering’ techniques from a few years ago are now either useless or actually counterproductive. Don’t tell it “you are an expert data scientist” or “think step by step.”</p>
 </div>
 <div class="cards cards-2">
 <div class="card">
@@ -1646,6 +1774,14 @@ Windows: right-click the folder name in File Explorer and choose Open in Termina
 <div class="note">
 <p>Treat AI as an infinitely patient colleague with a poor memory.</p>
 </div>
+</section>
+<section id="ai-is-a-prediction-machine-not-a-rational-person" class="slide level2">
+<h2>AI is a prediction machine, not a rational person</h2>
+<p>Suppose an AI agent has told you in the path that Method A beats Method B for some task. You ask it to do the task.</p>
+<div class="card card-blue">
+<p><span class="accent">Do not assume it will use what it knows.</span> If “A beats B” is not in the context window, and B appeared more often in its training data, it will probably use B.</p>
+</div>
+<p>This is the value of “plan before you act.” Planning surfaces “A beats B,” leading Claude to select A for the task.</p>
 </section>
 <section id="try-it-planning" class="slide level2 plain-title">
 <h2>Try it: planning</h2>

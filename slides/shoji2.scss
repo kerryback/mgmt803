@@ -999,3 +999,215 @@ $col-gap: 20px;
   padding: 0 0.15em;
   border-radius: 2px;
 }
+
+// ── MCP diagrams ──────────────────────────────────────────────────────────
+// Ported from engi610/slides/revealjs-style.scss for the Sept 24 connectors
+// section, recoloured onto this theme's palette: plum for the fixed pieces,
+// dusty blue for the agent and the arrows, sand for the outside service.
+
+.reveal .mcp-architecture {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  grid-template-rows: auto auto auto auto auto;
+  gap: 0;
+  margin-top: 0.6em;
+  align-items: center;
+  justify-items: center;
+
+  .mcp-box {
+    border-radius: 10px;
+    padding: 0.8em 1.8em;
+    text-align: center;
+    font-size: 0.85em;
+    font-weight: 700;
+    min-width: 7em;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  }
+
+  .mcp-dark   { background: $plum;      color: #fff; }
+  .mcp-accent { background: $blue-deep; color: #fff; }
+  .mcp-purple { background: $plum-dark; color: #fff; }
+  .mcp-amber  { background: $sand;      color: $ink; }
+
+  .mcp-user    { grid-column: 1; grid-row: 1; }
+  .mcp-h1      { grid-column: 2; grid-row: 1; }
+  .mcp-agent   { grid-column: 3; grid-row: 1; }
+  .mcp-h2      { grid-column: 4; grid-row: 1; }
+  .mcp-llm     { grid-column: 5; grid-row: 1; }
+  .mcp-v1      { grid-column: 3; grid-row: 2; }
+  .mcp-server  { grid-column: 3; grid-row: 3; }
+  .mcp-service-mid { grid-column: 3; grid-row: 3; }
+  .mcp-v2      { grid-column: 3; grid-row: 4; }
+  .mcp-service { grid-column: 3; grid-row: 5; }
+
+  .mcp-arrow-h,
+  .mcp-arrow-v {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: $blue-deep;
+  }
+  .mcp-arrow-h { padding: 0 0.3em; }
+  .mcp-arrow-v { line-height: 1; padding: 0.1em 0; }
+
+  .mcp-caption {
+    width: 0;
+    overflow: visible;
+    justify-self: start;
+    font-size: 0.66em;
+    color: $ink-muted;
+    text-align: left;
+    line-height: 1.4;
+    white-space: nowrap;
+    padding-left: 0.8em;
+  }
+
+  .mcp-cap1 { grid-column: 4; grid-row: 2; }
+  .mcp-cap2 { grid-column: 4; grid-row: 4; }
+
+  p { margin: 0; }
+}
+
+.reveal .mcp-gmail-architecture {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(4em, 0.3fr) auto;
+  grid-template-rows: auto auto auto auto auto;
+  gap: 0;
+  margin-top: 0.2em;
+  align-items: center;
+
+  .mgx-box {
+    border-radius: 10px;
+    padding: 0.45em 1.4em;
+    text-align: center;
+    font-size: 0.72em;
+    font-weight: 700;
+    min-width: 6em;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    background: $plum;
+    color: #fff;
+  }
+
+  .mgx-agent {
+    grid-column: 1; grid-row: 1;
+    justify-self: center;
+    background: $blue-deep;
+  }
+
+  .mgx-arrow-h {
+    grid-column: 1 / 3; grid-row: 1;
+    justify-self: stretch;
+    align-self: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 1.2em;
+    font-weight: 700;
+    color: $blue-deep;
+    z-index: 0;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      right: 0.3em;
+      top: 50%;
+      height: 3px;
+      background: $blue-deep;
+    }
+
+    p {
+      position: relative;
+      background: $panel;
+      padding: 0 0.15em;
+      margin: 0;
+      line-height: 1;
+    }
+  }
+
+  .mgx-agent, .mgx-llm { z-index: 1; }
+  .mgx-llm { grid-column: 3; grid-row: 1; }
+
+  .mgx-arrow-v {
+    grid-column: 1;
+    justify-self: center;
+    font-size: 1.2em;
+    font-weight: 700;
+    color: $blue-deep;
+    line-height: 1;
+    padding: 0.05em 0;
+  }
+
+  .mgx-v1 { grid-row: 2; }
+  .mgx-v2 { grid-row: 4; }
+
+  .mgx-panel {
+    grid-column: 1;
+    width: 100%;
+    border-radius: 10px;
+    padding: 0.35em 1em 0.4em;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+
+    .mgx-panel-title {
+      display: block;
+      font-size: 0.58em;
+      font-weight: 800;
+      margin-bottom: 0.15em;
+      letter-spacing: 0.04em;
+    }
+
+    p { margin: 0; }
+
+    ul {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.05em 1.2em;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      font-size: 0.38em;
+      line-height: 1.5;
+      color: $ink;
+    }
+
+    li::before { content: none; }
+
+    code {
+      background: rgba(255, 255, 255, 0.7);
+      padding: 0 0.25em;
+      border-radius: 4px;
+    }
+  }
+
+  .mgx-mcp {
+    grid-row: 3;
+    background: rgba($blue, 0.18);
+    border: 2px solid $blue-deep;
+    .mgx-panel-title { color: $blue-deep; }
+  }
+
+  .mgx-api {
+    grid-row: 5;
+    background: rgba($sand, 0.28);
+    border: 2px solid $sand;
+    .mgx-panel-title { color: $ink; }
+  }
+
+  .mgx-note {
+    grid-column: 3;
+    grid-row: 3 / 6;
+    align-self: center;
+    max-width: 12em;
+    margin-left: 1.2em;
+    font-size: 0.58em;
+    color: $ink-muted;
+    text-align: left;
+    padding: 0.8em 1em;
+    line-height: 1.5;
+    background: $pale;
+    border-radius: 8px;
+
+    p { margin: 0 0 0.5em; }
+    p:last-child { margin-bottom: 0; }
+  }
+}

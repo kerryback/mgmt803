@@ -9,328 +9,379 @@ format:
 
 ## This morning
 
-::: {.lead}
-Yesterday's output was a number. This morning it becomes a file or an app somebody else opens.
-:::
-
 ::: {.cards .cards-2}
 ::: {.card}
-[Creating docs]{.card-title}
+[Creating HTML]{.card-title}
 
-Excel, Word and PowerPoint out of the machine — including into the template your firm already uses.
+A report, a page of interactive charts, a single-page app, and a slide deck. Four files, each one you can open, send, or put on the web.
 :::
 
 ::: {.card .card-blue}
-[Creating apps]{.card-title}
+[Git and GitHub]{.card-title}
 
-How a web app works, then build one and deploy it.
+Version control, and putting a page on the internet.
 :::
 :::
 
-# 13 · Creating docs
+# 10 · Creating HTML with AI
 
-## Office files are archives
+Four things to build, in order of how much the page does.
+
+## Why HTML
 
 ::: {.lead}
-A `.docx`, `.xlsx` or `.pptx` is a ZIP file containing XML.
+It is the format AI writes best, and the only one that opens on every machine with nothing installed.
 :::
 
-Unzip one and the document's structure, styles and data are readable as text. That is why an agent can edit an existing file in place — keeping its template, its headers and its formatting — instead of rebuilding it.
+| | |
+|---|---|
+| A Word file | needs Word, or something that reads it |
+| A notebook | needs Python and Jupyter |
+| A dashboard | needs a server running somewhere |
+| An HTML file | double-click it |
 
 ::: {.note}
-So "edit the deck the firm already uses" opens the existing file, while "build me a deck like ours" starts from nothing.
+One file. Email it, put it in a shared drive, or serve it on the web unchanged.
 :::
 
-## Excel that is a model, not a table {.compare}
-
-:::: {.columns}
-::: {.column width="50%"}
-[A table]{.eyebrow}
-
-Values pasted into cells. Change an assumption and the analysis is rerun somewhere else, by you.
-:::
-
-::: {.column width="50%"}
-[A model]{.eyebrow}
-
-Inputs in labelled cells, formulas referencing them, a chart bound to the range. Change an assumption in the sheet and everything moves.
-:::
-::::
-
-Ask for formulas rather than values, and name the input cells.
-
-## What the recipient opens
-
-| Recipient | Format | What it has to carry |
-|---|---|---|
-| An analyst who will extend it | `.xlsx` with formulas | inputs, formulas, the definition |
-| A manager approving something | `.pptx` or one page | the number, the chart, the caveat |
-| A job that runs every week | `.csv` plus a script | reproducibility, not formatting |
-| The record | `.docx` or PDF | the method, in sentences |
-
-## The deck already has a house style {.plain-title}
-
-::: {.lead}
-Asking for "a deck in our style" produces an imitation of the design rather than the firm's file.
-:::
-
-A `.pptx` template is not a picture of a design. It is a file holding named slide layouts, a theme with the firm's exact colours and fonts, and placeholder positions measured to the point.
-
-::: {.note}
-Open one with `unzip -l`. The layouts are in `ppt/slideLayouts/`, the palette and typefaces in `ppt/theme/theme1.xml`.
-:::
-
-## Fill the template, do not imitate it {.compare}
-
-:::: {.columns}
-::: {.column width="50%"}
-[Generating a deck]{.eyebrow}
-
-The model invents a layout. Colours are close. The logo is missing, the footer is wrong, and the title is out of position.
-:::
-
-::: {.column width="50%"}
-[Filling a template]{.eyebrow}
-
-The file is opened, a named layout is chosen, and text goes into the placeholders that layout defines. Everything else is inherited.
-:::
-::::
-
-Same request, two implementations.
-
-## A skill that knows your template {.plain-title}
+## Four things to build {.plain-title}
 
 ::: {.steps}
-1. Put the `.pptx` in the skill's folder.
-2. List the layouts by name, and say in prose what each one is for.
-3. Say which placeholder takes what — title, body, source line, page number.
-4. State the rules a human would know: how many bullets before a slide splits, where the source line goes, what never gets edited.
+1. A report — headings, tables, a figure, sources.
+2. The same report with charts you can hover over and zoom.
+3. A page that computes something when the reader changes an input.
+4. A slide deck with those elements on the slides.
 :::
+
+::: {.note}
+Each one is the previous one plus something the reader can do.
+:::
+
+## A report {.divider}
+
+## What we are building {.plain-title}
+
+::: {.lead}
+A report on which AI models run on a laptop, and what each size is good for.
+:::
+
+You have used hosted models all week — in the browser, in your container, through a connector. This asks the opposite question: what runs on hardware you own, with no account and no network.
+
+::: {.note}
+Pick your own subject if you have one. The shape of the exercise is the same.
+:::
+
+## What the report has to contain
+
+::: {.cards .cards-2}
+::: {.card}
+[Facts it must get right]{.card-title}
+
+- Model sizes, and the memory each needs
+- What quantization does to both
+- Which tasks each size handles
+:::
+
+::: {.card .card-blue}
+[Form it must take]{.card-title}
+
+- Headings and a table of contents
+- At least one table and one figure
+- A source for every number
+:::
+:::
+
+## Asking for it {.band-bottom}
 
 ::: {.prompt-box}
 ::: {.box-title}
 Prompt
 :::
-Read `template.pptx`. List every slide layout by name and index, and for each one the placeholders it defines with their type and position. Write that into SKILL.md as a table, then write the instructions for filling it.
+Research which AI models can run locally on a laptop and what each size is useful for. Write it as a single self-contained HTML file. Include a table of model sizes against memory required, and cite a source for every number. Do not state a figure you did not find.
 :::
 
-## Turn your own template into a skill {.plain-title}
+## Reading it in the lab {.plain-title}
+
+Serve the folder and open the View tab:
+
+```bash
+cd <folder> && python3 -m http.server 8000
+```
+
+::: {.note}
+Or download the file from the file browser and double-click it. Kill a server before starting another: `kill $(lsof -t -i:8000)`.
+:::
+
+## Build the report
 
 [Exercise]{.eyebrow}
 
 ::: {.steps}
-1. Upload a deck your firm actually uses. Any recent one will do.
-2. Have the layouts and placeholders enumerated, and check the list against what you see in PowerPoint.
-3. Write the skill, with the file in its folder.
-4. Build a three-slide deck from yesterday's country analysis using it.
-5. Open the result next to a real deck and find what is off.
+1. Ask for the report. Give it the subject and the two lists from two slides back.
+2. Open it. Check that every number has a source and that you can reach the source.
+3. Find one number it did not source, and ask where it came from.
+4. Ask it to fix what you found, and open it again.
 :::
 
 ::: {.note}
-Some of the firm's conventions are not in the template file at all.
+A report that looks finished and cites nothing is the failure mode. Check the citations before the formatting.
 :::
 
-## Build the deliverable {.plain-title}
+## Charts you can touch {.divider}
+
+## What interactive buys you
+
+:::: {.columns}
+::: {.column width="50%"}
+[A picture of a chart]{.eyebrow}
+
+The reader sees what you chose to show them, at the size you chose.
+:::
+
+::: {.column width="50%"}
+[A Plotly chart]{.eyebrow}
+
+Hover for the value, zoom into a range, click a legend entry to drop a series.
+:::
+::::
+
+::: {.note}
+Same file, still one file. The chart is JavaScript that ships inside the page.
+:::
+
+## Two ways to include it {.plain-title}
+
+| | What it does | Cost |
+|---|---|---|
+| `include_plotlyjs="cdn"` | a script tag pointing at Plotly's server | small file, needs the network to open |
+| `include_plotlyjs=True` | the whole library inside the file | opens anywhere, several MB |
+
+::: {.note}
+Python: `fig.write_html("chart.html", include_plotlyjs="cdn")`. Choose `True` for anything you email.
+:::
+
+## Add the charts
 
 [Exercise]{.eyebrow}
 
 ::: {.steps}
-1. Take your corrected country analysis.
-2. Produce it in the format the person who would receive it actually opens.
-3. Put the revenue definition and the row counts on the face of it.
-4. Open the file in the file browser and look at it the way they would.
+1. Take the report you just built and ask for the table as a chart as well.
+2. Ask for it self-contained, then check the file size.
+3. Open it and try all three: hover, zoom, click the legend.
+4. Ask for a second chart that answers a question the table does not.
 :::
 
-::: {.note}
-If you built a workbook, change one input cell and check that the chart moves.
-:::
+## Pages that compute {.divider}
 
-# 14 · Creating apps
-
-Explain how it works, build three, then put one on the internet.
-
-## When a skill is not enough {.compare}
-
-:::: {.columns}
-::: {.column width="50%"}
-[A skill]{.eyebrow}
-
-For someone who has the agent, the files, and a reason to be at a command line.
-:::
-
-::: {.column width="50%"}
-[An app]{.eyebrow}
-
-For someone with a browser and a question. No install, no terminal, no account.
-:::
-::::
-
-Same job, different audience.
-
-## Frontend and backend {.compare}
-
-:::: {.columns}
-::: {.column width="50%"}
-[Frontend]{.eyebrow}
-
-The browser. HTML, CSS and JavaScript — it draws the page and collects the clicks.
-:::
-
-::: {.column width="50%"}
-[Backend]{.eyebrow}
-
-A program on a server that listens continuously for requests. Yours will be Python.
-:::
-::::
+## A single-page app
 
 ::: {.lead}
-You open a URL. The browser sends a GET request. The server sends back HTML, CSS and JavaScript. The browser interprets that and shows you a page.
+One HTML file, holding its own inputs and the code that responds to them. No server, no install, no account.
 :::
-
-::: {.note}
-Right-click any web page and choose View Page Source. That is the frontend code, exactly as the backend handed it over.
-:::
-
-## Then you click something {.plain-title}
-
-::: {.lead}
-A POST request carries data the other way — a form, a country you typed. The server does what it was written to do and replies.
-:::
-
-![](images/request-cycle.svg){.nostretch width="82%" fig-align="center"}
-
-## Running locally {.band-bottom}
-
-::: {.cards .cards-2}
-::: {.card}
-[localhost]{.card-title}
-
-`127.0.0.1` is the loopback address. The browser asks the machine it is already running on, and the request never reaches a network.
-:::
-
-::: {.card .card-blue}
-[Ports]{.card-title}
-
-One machine runs many programs listening at once. The port number tells the operating system which of them gets the request.
-:::
-:::
-
-The app is a `.py` file that imports FastAPI. uvicorn runs that file and starts it listening on a port.
-
-## Three shapes
 
 ::: {.cards .cards-3}
 ::: {.card}
-[One page, no server]{.card-title}
+[The page]{.card-title}
 
-Everything runs in the browser. A single HTML file you can mail to someone.
+Inputs, a button, somewhere to put the answer.
 :::
 
 ::: {.card .card-blue}
-[A small server]{.card-title}
+[The code]{.card-title}
 
-Python behind the page. Needed when there is a database, a key, or a file to write.
+JavaScript, or Python through Pyodide, running in the reader's browser.
 :::
 
-::: {.card}
-[A server that calls a model]{.card-title}
+::: {.card .card-sand}
+[The reach]{.card-title}
 
-The page collects a question; the server sends it to the model with your key, not the user's.
+Anyone you send it to can use it. Nothing of theirs leaves the page.
 :::
 :::
 
-## One page, no server {.plain-title}
+## Two kinds of app in your container {.plain-title}
+
+| | Runs where | Start it with |
+|---|---|---|
+| Single-page HTML | the reader's browser | `python3 -m http.server 8000` |
+| FastAPI | your container | `uvicorn <module>:app --host 0.0.0.0 --port 8000` |
+
+::: {.note}
+Only the first is a file you can send someone. The second needs your container to stay running.
+:::
+
+## Build an app
 
 [Exercise]{.eyebrow}
 
 ::: {.steps}
-1. Build a single HTML file that does one useful calculation from your own work.
-2. Open it in the browser from the file browser. No server involved.
-3. Mail it to yourself and open it on your phone.
+1. Pick a calculation you have done twice this year with a spreadsheet.
+2. Ask for it as a single self-contained HTML file with inputs and a result.
+3. Open it, put in a case you know the answer to, and check it.
+4. Ask for one input you did not think to include, and say why it matters.
 :::
 
 ::: {.note}
-Nothing to deploy, nothing to pay for, and it works with no network.
+A wrong answer that appears instantly is worse than a spreadsheet. Test it against a case you already know.
 :::
 
-## A page with Python behind it {.plain-title}
+## Slides that do something {.divider}
 
-[Exercise]{.eyebrow}
-
-::: {.steps}
-1. Take the country analysis. Put a dropdown of countries on a page.
-2. Have the server read the spreadsheets, compute the answer for the country chosen, and return it.
-3. Serve it on port 8000 and open it at your own address on the lab server.
-4. Watch the terminal while you click. Every request appears there.
-:::
-
-::: {.note}
-The terminal prints one line per request: the method, the path, and the status code.
-:::
-
-## Hand it to your neighbour {.plain-title}
-
-[Exercise]{.eyebrow}
-
-::: {.steps}
-1. Give your address to the person next to you and say nothing else.
-2. Watch them use it. Write down every place they hesitate.
-3. Fix the one that cost them the most time.
-4. Swap back and check the fix on their machine, not yours.
-:::
-
-## Deploying an app {.divider}
-
-## Platform as a service
+## A deck is also a web page
 
 ::: {.lead}
-You hand a host your repository. It builds the app, runs it, and puts it behind a public URL. There is no server for you to administer.
+These slides are reveal.js — HTML, in a browser. Anything that goes on a page can go on a slide.
 :::
 
-Railway, Render, Koyeb and Heroku all do this. We use Koyeb, which has a free tier.
+::: {.cards .cards-2}
+::: {.card}
+[What you gain]{.card-title}
 
-::: {.steps}
-1. Create a free account at `koyeb.com`.
-2. In the control panel, create an API access token. Koyeb shows it once, so copy it then.
-3. Add it to the `~/.env` file you made on Thursday, the same way.
+A chart the audience can interrogate during the question. A figure that answers what they actually asked.
 :::
 
-## What has to travel {.plain-title}
+::: {.card .card-blue}
+[What you give up]{.card-title}
 
-::: {.prompt-box}
-::: {.box-title}
-Prompt
+It is not PowerPoint. Nobody can edit it without the source, and it will not open in the room's podium software.
 :::
-My goal is to push this app to GitHub as a new public repo and then create a Koyeb service connected to it. Walk me through it one step at a time.
 :::
 
-::: {.note .note-plum}
-The host builds only what is in the repository. Data files you told git to ignore never arrive, and the app fails on the host. Nothing from `.env` belongs in a public repo — secrets go in Koyeb's environment settings instead.
-:::
-
-## Put it on the internet {.plain-title}
+## Build a deck {.band-bottom}
 
 [Exercise]{.eyebrow}
 
 ::: {.steps}
-1. Push the app from "A page with Python behind it" to a public GitHub repository.
-2. Create the Koyeb service and watch the build log.
-3. When it fails, read the log before asking. It is almost always a missing file or a missing key.
-4. Open the public URL on your phone, off the lab wifi.
-5. Send the URL to two people in the room.
+1. Ask for a five-slide reveal.js deck on the report's findings.
+2. Put one of your Plotly charts on a slide and check it still works there.
+3. Present it from the browser, full screen, and try the chart in front of someone.
+:::
+
+# 11 · Git and GitHub
+
+Keeping every version of the work, and putting the four files on the web.
+
+## What a commit is
+
+::: {.lead}
+A version control system tracks every change you make. A commit is a snapshot you can return to.
+:::
+
+::: {.cards .cards-3}
+::: {.card}
+[Install]{.card-title}
+
+Claude Code installs Git if it is not already there.
+:::
+
+::: {.card .card-blue}
+[Commits]{.card-title}
+
+Ask it to commit, and the change is saved with a description of what it was.
+:::
+
+::: {.card .card-sand}
+[History]{.card-title}
+
+Ask when something changed, what changed it, or what the file looked like three versions ago.
+:::
+:::
+
+## GitHub {.plain-title}
+
+::: {.lead}
+GitHub hosts Git repositories. The project lives in the cloud, backed up and shareable.
+:::
+
+:::: {.columns}
+::: {.column width="50%"}
+[Pushing]{.eyebrow}
+
+With a free account, Claude Code pushes your repository to GitHub and pushes later commits when you ask. It uses the GitHub CLI.
+:::
+
+::: {.column width="50%"}
+[Collaboration]{.eyebrow}
+
+Others can clone it, propose changes, and open issues. Working alone, it is backup and deployment.
+:::
+::::
+
+::: {.note}
+Claude Code installs the CLI and handles the sign-in. Tell it: *push this project to a new GitHub repo.*
+:::
+
+## GitHub Pages
+
+::: {.lead}
+Any repository becomes a website. No server, no configuration, no cost.
+:::
+
+::: {.steps}
+1. Name the landing page `index.html`.
+2. Push the repository to GitHub.
+3. Settings → Pages, and set the source to the `main` branch, either its root or a `docs/` folder.
+4. The site is live at `yourusername.github.io/repo-name/`.
 :::
 
 ::: {.note}
-A custom domain is optional and takes ten minutes: buy one, create an API token at the registrar, and have the DNS record written for you.
+A custom domain costs about $15 a year and replaces the `github.io` address.
 :::
 
-## Deployment, in four lines {.band-bottom}
+## You have been reading one all week {.plain-title}
 
-- What runs on your machine does not run anywhere else until you make it
-- The repository is the unit of deployment, and it is not the same as your folder
-- Secrets live in the host's settings, never in the code
-- The build log says what went wrong, in order, every time
+| | |
+|---|---|
+| Repository | `github.com/kerryback/mgmt803` |
+| Source | the `main` branch, `docs/` folder |
+| Address | `mgmt803.kerryback.com` |
 
-## This afternoon {.band-bottom}
+::: {.note}
+The slides, the syllabus and the files are a folder of HTML that Quarto writes and Pages serves. Nothing else is running.
+:::
 
-The app you just deployed answers from what you wrote into it. This afternoon it answers from your own documents instead.
+## What Pages will and will not host {.band-bottom}
+
+| From this morning | On Pages |
+|---|---|
+| The report | works |
+| The page of Plotly charts | works |
+| The single-page app | works |
+| The reveal.js deck | works |
+| A FastAPI app | no — it needs a server running |
+
+## Before you push {.plain-title}
+
+::: {.lead}
+A free Pages site is public. Anyone who finds the address can read every file in the folder, and anyone can read the repository.
+:::
+
+::: {.cards .cards-2}
+::: {.card}
+[Keep out]{.card-title}
+
+API keys, passwords, anything under a data agreement, and anything with a name in it.
+:::
+
+::: {.card .card-blue}
+[Remember]{.card-title}
+
+Deleting a file in a later commit does not remove it. It stays in the history.
+:::
+:::
+
+## Publish this morning's work
+
+[Exercise]{.eyebrow}
+
+::: {.steps}
+1. Put the four files in one folder and ask Claude Code to make it a Git repository.
+2. Ask what it is about to commit, and read the list before it does.
+3. Have it push to a new GitHub repository and turn on Pages.
+4. Open the address on your phone.
+5. Change one line, commit, push, and watch the site change.
+:::
+
+::: {.note}
+Step 2 is the habit worth keeping. It is the last point at which a key is easy to remove.
+:::

@@ -31,8 +31,74 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-963326a71a77be66e1a2dc2e7f4f8a8d.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-fe3e5a70c3c5b29320272df664d210fd.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -144,49 +210,150 @@ Kerry Back<br>J. Howard Creekmore Professor of Finance
 </section>
 <section id="this-morning" class="slide level2">
 <h2>This morning</h2>
-<div class="lead">
-<p>Yesterday’s output was a number. This morning it becomes a file or an app somebody else opens.</p>
-</div>
 <div class="cards cards-2">
 <div class="card">
-<p><span class="card-title">Creating docs</span></p>
-<p>Excel, Word and PowerPoint out of the machine — including into the template your firm already uses.</p>
+<p><span class="card-title">Creating HTML</span></p>
+<p>A report, a page of interactive charts, a single-page app, and a slide deck. Four files, each one you can open, send, or put on the web.</p>
 </div>
 <div class="card card-blue">
-<p><span class="card-title">Creating apps</span></p>
-<p>How a web app works, then build one and deploy it.</p>
+<p><span class="card-title">Git and GitHub</span></p>
+<p>Version control, and putting a page on the internet.</p>
 </div>
 </div>
 </section>
 <section>
-<section id="creating-docs" class="title-slide slide level1 center">
-<h1>13 · Creating docs</h1>
-
+<section id="creating-html-with-ai" class="title-slide slide level1 center">
+<h1>10 · Creating HTML with AI</h1>
+<p>Four things to build, in order of how much the page does.</p>
 </section>
-<section id="office-files-are-archives" class="slide level2">
-<h2>Office files are archives</h2>
+<section id="why-html" class="slide level2">
+<h2>Why HTML</h2>
 <div class="lead">
-<p>A <code>.docx</code>, <code>.xlsx</code> or <code>.pptx</code> is a ZIP file containing XML.</p>
+<p>It is the format AI writes best, and the only one that opens on every machine with nothing installed.</p>
 </div>
-<p>Unzip one and the document’s structure, styles and data are readable as text. That is why an agent can edit an existing file in place — keeping its template, its headers and its formatting — instead of rebuilding it.</p>
+<table class="caption-top">
+<tbody>
+<tr class="odd">
+<td>A Word file</td>
+<td>needs Word, or something that reads it</td>
+</tr>
+<tr class="even">
+<td>A notebook</td>
+<td>needs Python and Jupyter</td>
+</tr>
+<tr class="odd">
+<td>A dashboard</td>
+<td>needs a server running somewhere</td>
+</tr>
+<tr class="even">
+<td>An HTML file</td>
+<td>double-click it</td>
+</tr>
+</tbody>
+</table>
 <div class="note">
-<p>So “edit the deck the firm already uses” opens the existing file, while “build me a deck like ours” starts from nothing.</p>
+<p>One file. Email it, put it in a shared drive, or serve it on the web unchanged.</p>
 </div>
 </section>
-<section id="excel-that-is-a-model-not-a-table" class="slide level2 compare">
-<h2>Excel that is a model, not a table</h2>
+<section id="four-things-to-build" class="slide level2 plain-title">
+<h2>Four things to build</h2>
+<div class="steps">
+<ol type="1">
+<li>A report — headings, tables, a figure, sources.</li>
+<li>The same report with charts you can hover over and zoom.</li>
+<li>A page that computes something when the reader changes an input.</li>
+<li>A slide deck with those elements on the slides.</li>
+</ol>
+</div>
+<div class="note">
+<p>Each one is the previous one plus something the reader can do.</p>
+</div>
+</section>
+<section id="a-report" class="slide level2 divider">
+<h2>A report</h2>
+</section>
+<section id="what-we-are-building" class="slide level2 plain-title">
+<h2>What we are building</h2>
+<div class="lead">
+<p>A report on which AI models run on a laptop, and what each size is good for.</p>
+</div>
+<p>You have used hosted models all week — in the browser, in your container, through a connector. This asks the opposite question: what runs on hardware you own, with no account and no network.</p>
+<div class="note">
+<p>Pick your own subject if you have one. The shape of the exercise is the same.</p>
+</div>
+</section>
+<section id="what-the-report-has-to-contain" class="slide level2">
+<h2>What the report has to contain</h2>
+<div class="cards cards-2">
+<div class="card">
+<p><span class="card-title">Facts it must get right</span></p>
+<ul>
+<li>Model sizes, and the memory each needs</li>
+<li>What quantization does to both</li>
+<li>Which tasks each size handles</li>
+</ul>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">Form it must take</span></p>
+<ul>
+<li>Headings and a table of contents</li>
+<li>At least one table and one figure</li>
+<li>A source for every number</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="asking-for-it" class="slide level2 band-bottom">
+<h2>Asking for it</h2>
+<div class="prompt-box">
+<div class="box-title">
+<p>Prompt</p>
+</div>
+<p>Research which AI models can run locally on a laptop and what each size is useful for. Write it as a single self-contained HTML file. Include a table of model sizes against memory required, and cite a source for every number. Do not state a figure you did not find.</p>
+</div>
+</section>
+<section id="reading-it-in-the-lab" class="slide level2 plain-title">
+<h2>Reading it in the lab</h2>
+<p>Serve the folder and open the View tab:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a></a><span class="bu">cd</span> <span class="op">&lt;</span>folder<span class="op">&gt;</span> <span class="kw">&amp;&amp;</span> <span class="ex">python3</span> <span class="at">-m</span> http.server 8000</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="note">
+<p>Or download the file from the file browser and double-click it. Kill a server before starting another: <code>kill $(lsof -t -i:8000)</code>.</p>
+</div>
+</section>
+<section id="build-the-report" class="slide level2">
+<h2>Build the report</h2>
+<p><span class="eyebrow">Exercise</span></p>
+<div class="steps">
+<ol type="1">
+<li>Ask for the report. Give it the subject and the two lists from two slides back.</li>
+<li>Open it. Check that every number has a source and that you can reach the source.</li>
+<li>Find one number it did not source, and ask where it came from.</li>
+<li>Ask it to fix what you found, and open it again.</li>
+</ol>
+</div>
+<div class="note">
+<p>A report that looks finished and cites nothing is the failure mode. Check the citations before the formatting.</p>
+</div>
+</section>
+<section id="charts-you-can-touch" class="slide level2 divider">
+<h2>Charts you can touch</h2>
+</section>
+<section id="what-interactive-buys-you" class="slide level2">
+<h2>What interactive buys you</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><span class="eyebrow">A table</span></p>
-<p>Values pasted into cells. Change an assumption and the analysis is rerun somewhere else, by you.</p>
+<p><span class="eyebrow">A picture of a chart</span></p>
+<p>The reader sees what you chose to show them, at the size you chose.</p>
 </div><div class="column" style="width:50%;">
-<p><span class="eyebrow">A model</span></p>
-<p>Inputs in labelled cells, formulas referencing them, a chart bound to the range. Change an assumption in the sheet and everything moves.</p>
+<p><span class="eyebrow">A Plotly chart</span></p>
+<p>Hover for the value, zoom into a range, click a legend entry to drop a series.</p>
 </div></div>
-<p>Ask for formulas rather than values, and name the input cells.</p>
+<div class="note">
+<p>Same file, still one file. The chart is JavaScript that ships inside the page.</p>
+</div>
 </section>
-<section id="what-the-recipient-opens" class="slide level2">
-<h2>What the recipient opens</h2>
+<section id="two-ways-to-include-it" class="slide level2 plain-title">
+<h2>Two ways to include it</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
@@ -195,279 +362,285 @@ Kerry Back<br>J. Howard Creekmore Professor of Finance
 </colgroup>
 <thead>
 <tr class="header">
-<th>Recipient</th>
-<th>Format</th>
-<th>What it has to carry</th>
+<th></th>
+<th>What it does</th>
+<th>Cost</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>An analyst who will extend it</td>
-<td><code>.xlsx</code> with formulas</td>
-<td>inputs, formulas, the definition</td>
+<td><code>include_plotlyjs="cdn"</code></td>
+<td>a script tag pointing at Plotly’s server</td>
+<td>small file, needs the network to open</td>
 </tr>
 <tr class="even">
-<td>A manager approving something</td>
-<td><code>.pptx</code> or one page</td>
-<td>the number, the chart, the caveat</td>
+<td><code>include_plotlyjs=True</code></td>
+<td>the whole library inside the file</td>
+<td>opens anywhere, several MB</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<p>Python: <code>fig.write_html("chart.html", include_plotlyjs="cdn")</code>. Choose <code>True</code> for anything you email.</p>
+</div>
+</section>
+<section id="add-the-charts" class="slide level2">
+<h2>Add the charts</h2>
+<p><span class="eyebrow">Exercise</span></p>
+<div class="steps">
+<ol type="1">
+<li>Take the report you just built and ask for the table as a chart as well.</li>
+<li>Ask for it self-contained, then check the file size.</li>
+<li>Open it and try all three: hover, zoom, click the legend.</li>
+<li>Ask for a second chart that answers a question the table does not.</li>
+</ol>
+</div>
+</section>
+<section id="pages-that-compute" class="slide level2 divider">
+<h2>Pages that compute</h2>
+</section>
+<section id="a-single-page-app" class="slide level2">
+<h2>A single-page app</h2>
+<div class="lead">
+<p>One HTML file, holding its own inputs and the code that responds to them. No server, no install, no account.</p>
+</div>
+<div class="cards cards-3">
+<div class="card">
+<p><span class="card-title">The page</span></p>
+<p>Inputs, a button, somewhere to put the answer.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">The code</span></p>
+<p>JavaScript, or Python through Pyodide, running in the reader’s browser.</p>
+</div>
+<div class="card card-sand">
+<p><span class="card-title">The reach</span></p>
+<p>Anyone you send it to can use it. Nothing of theirs leaves the page.</p>
+</div>
+</div>
+</section>
+<section id="two-kinds-of-app-in-your-container" class="slide level2 plain-title">
+<h2>Two kinds of app in your container</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Runs where</th>
+<th>Start it with</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Single-page HTML</td>
+<td>the reader’s browser</td>
+<td><code>python3 -m http.server 8000</code></td>
+</tr>
+<tr class="even">
+<td>FastAPI</td>
+<td>your container</td>
+<td><code>uvicorn &lt;module&gt;:app --host 0.0.0.0 --port 8000</code></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<p>Only the first is a file you can send someone. The second needs your container to stay running.</p>
+</div>
+</section>
+<section id="build-an-app" class="slide level2">
+<h2>Build an app</h2>
+<p><span class="eyebrow">Exercise</span></p>
+<div class="steps">
+<ol type="1">
+<li>Pick a calculation you have done twice this year with a spreadsheet.</li>
+<li>Ask for it as a single self-contained HTML file with inputs and a result.</li>
+<li>Open it, put in a case you know the answer to, and check it.</li>
+<li>Ask for one input you did not think to include, and say why it matters.</li>
+</ol>
+</div>
+<div class="note">
+<p>A wrong answer that appears instantly is worse than a spreadsheet. Test it against a case you already know.</p>
+</div>
+</section>
+<section id="slides-that-do-something" class="slide level2 divider">
+<h2>Slides that do something</h2>
+</section>
+<section id="a-deck-is-also-a-web-page" class="slide level2">
+<h2>A deck is also a web page</h2>
+<div class="lead">
+<p>These slides are reveal.js — HTML, in a browser. Anything that goes on a page can go on a slide.</p>
+</div>
+<div class="cards cards-2">
+<div class="card">
+<p><span class="card-title">What you gain</span></p>
+<p>A chart the audience can interrogate during the question. A figure that answers what they actually asked.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">What you give up</span></p>
+<p>It is not PowerPoint. Nobody can edit it without the source, and it will not open in the room’s podium software.</p>
+</div>
+</div>
+</section>
+<section id="build-a-deck" class="slide level2 band-bottom">
+<h2>Build a deck</h2>
+<p><span class="eyebrow">Exercise</span></p>
+<div class="steps">
+<ol type="1">
+<li>Ask for a five-slide reveal.js deck on the report’s findings.</li>
+<li>Put one of your Plotly charts on a slide and check it still works there.</li>
+<li>Present it from the browser, full screen, and try the chart in front of someone.</li>
+</ol>
+</div>
+</section></section>
+<section>
+<section id="git-and-github" class="title-slide slide level1 center">
+<h1>11 · Git and GitHub</h1>
+<p>Keeping every version of the work, and putting the four files on the web.</p>
+</section>
+<section id="what-a-commit-is" class="slide level2">
+<h2>What a commit is</h2>
+<div class="lead">
+<p>A version control system tracks every change you make. A commit is a snapshot you can return to.</p>
+</div>
+<div class="cards cards-3">
+<div class="card">
+<p><span class="card-title">Install</span></p>
+<p>Claude Code installs Git if it is not already there.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">Commits</span></p>
+<p>Ask it to commit, and the change is saved with a description of what it was.</p>
+</div>
+<div class="card card-sand">
+<p><span class="card-title">History</span></p>
+<p>Ask when something changed, what changed it, or what the file looked like three versions ago.</p>
+</div>
+</div>
+</section>
+<section id="github" class="slide level2 plain-title">
+<h2>GitHub</h2>
+<div class="lead">
+<p>GitHub hosts Git repositories. The project lives in the cloud, backed up and shareable.</p>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="eyebrow">Pushing</span></p>
+<p>With a free account, Claude Code pushes your repository to GitHub and pushes later commits when you ask. It uses the GitHub CLI.</p>
+</div><div class="column" style="width:50%;">
+<p><span class="eyebrow">Collaboration</span></p>
+<p>Others can clone it, propose changes, and open issues. Working alone, it is backup and deployment.</p>
+</div></div>
+<div class="note">
+<p>Claude Code installs the CLI and handles the sign-in. Tell it: <em>push this project to a new GitHub repo.</em></p>
+</div>
+</section>
+<section id="github-pages" class="slide level2">
+<h2>GitHub Pages</h2>
+<div class="lead">
+<p>Any repository becomes a website. No server, no configuration, no cost.</p>
+</div>
+<div class="steps">
+<ol type="1">
+<li>Name the landing page <code>index.html</code>.</li>
+<li>Push the repository to GitHub.</li>
+<li>Settings → Pages, and set the source to the <code>main</code> branch, either its root or a <code>docs/</code> folder.</li>
+<li>The site is live at <code>yourusername.github.io/repo-name/</code>.</li>
+</ol>
+</div>
+<div class="note">
+<p>A custom domain costs about $15 a year and replaces the <code>github.io</code> address.</p>
+</div>
+</section>
+<section id="you-have-been-reading-one-all-week" class="slide level2 plain-title">
+<h2>You have been reading one all week</h2>
+<table class="caption-top">
+<tbody>
+<tr class="odd">
+<td>Repository</td>
+<td><code>github.com/kerryback/mgmt803</code></td>
+</tr>
+<tr class="even">
+<td>Source</td>
+<td>the <code>main</code> branch, <code>docs/</code> folder</td>
 </tr>
 <tr class="odd">
-<td>A job that runs every week</td>
-<td><code>.csv</code> plus a script</td>
-<td>reproducibility, not formatting</td>
+<td>Address</td>
+<td><code>mgmt803.kerryback.com</code></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<p>The slides, the syllabus and the files are a folder of HTML that Quarto writes and Pages serves. Nothing else is running.</p>
+</div>
+</section>
+<section id="what-pages-will-and-will-not-host" class="slide level2 band-bottom">
+<h2>What Pages will and will not host</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>From this morning</th>
+<th>On Pages</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>The report</td>
+<td>works</td>
 </tr>
 <tr class="even">
-<td>The record</td>
-<td><code>.docx</code> or PDF</td>
-<td>the method, in sentences</td>
+<td>The page of Plotly charts</td>
+<td>works</td>
+</tr>
+<tr class="odd">
+<td>The single-page app</td>
+<td>works</td>
+</tr>
+<tr class="even">
+<td>The reveal.js deck</td>
+<td>works</td>
+</tr>
+<tr class="odd">
+<td>A FastAPI app</td>
+<td>no — it needs a server running</td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="the-deck-already-has-a-house-style" class="slide level2 plain-title">
-<h2>The deck already has a house style</h2>
+<section id="before-you-push" class="slide level2 plain-title">
+<h2>Before you push</h2>
 <div class="lead">
-<p>Asking for “a deck in our style” produces an imitation of the design rather than the firm’s file.</p>
+<p>A free Pages site is public. Anyone who finds the address can read every file in the folder, and anyone can read the repository.</p>
 </div>
-<p>A <code>.pptx</code> template is not a picture of a design. It is a file holding named slide layouts, a theme with the firm’s exact colours and fonts, and placeholder positions measured to the point.</p>
-<div class="note">
-<p>Open one with <code>unzip -l</code>. The layouts are in <code>ppt/slideLayouts/</code>, the palette and typefaces in <code>ppt/theme/theme1.xml</code>.</p>
-</div>
-</section>
-<section id="fill-the-template-do-not-imitate-it" class="slide level2 compare">
-<h2>Fill the template, do not imitate it</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span class="eyebrow">Generating a deck</span></p>
-<p>The model invents a layout. Colours are close. The logo is missing, the footer is wrong, and the title is out of position.</p>
-</div><div class="column" style="width:50%;">
-<p><span class="eyebrow">Filling a template</span></p>
-<p>The file is opened, a named layout is chosen, and text goes into the placeholders that layout defines. Everything else is inherited.</p>
-</div></div>
-<p>Same request, two implementations.</p>
-</section>
-<section id="a-skill-that-knows-your-template" class="slide level2 plain-title">
-<h2>A skill that knows your template</h2>
-<div class="steps">
-<ol type="1">
-<li>Put the <code>.pptx</code> in the skill’s folder.</li>
-<li>List the layouts by name, and say in prose what each one is for.</li>
-<li>Say which placeholder takes what — title, body, source line, page number.</li>
-<li>State the rules a human would know: how many bullets before a slide splits, where the source line goes, what never gets edited.</li>
-</ol>
-</div>
-<div class="prompt-box">
-<div class="box-title">
-<p>Prompt</p>
-</div>
-<p>Read <code>template.pptx</code>. List every slide layout by name and index, and for each one the placeholders it defines with their type and position. Write that into SKILL.md as a table, then write the instructions for filling it.</p>
-</div>
-</section>
-<section id="turn-your-own-template-into-a-skill" class="slide level2 plain-title">
-<h2>Turn your own template into a skill</h2>
-<p><span class="eyebrow">Exercise</span></p>
-<div class="steps">
-<ol type="1">
-<li>Upload a deck your firm actually uses. Any recent one will do.</li>
-<li>Have the layouts and placeholders enumerated, and check the list against what you see in PowerPoint.</li>
-<li>Write the skill, with the file in its folder.</li>
-<li>Build a three-slide deck from yesterday’s country analysis using it.</li>
-<li>Open the result next to a real deck and find what is off.</li>
-</ol>
-</div>
-<div class="note">
-<p>Some of the firm’s conventions are not in the template file at all.</p>
-</div>
-</section>
-<section id="build-the-deliverable" class="slide level2 plain-title">
-<h2>Build the deliverable</h2>
-<p><span class="eyebrow">Exercise</span></p>
-<div class="steps">
-<ol type="1">
-<li>Take your corrected country analysis.</li>
-<li>Produce it in the format the person who would receive it actually opens.</li>
-<li>Put the revenue definition and the row counts on the face of it.</li>
-<li>Open the file in the file browser and look at it the way they would.</li>
-</ol>
-</div>
-<div class="note">
-<p>If you built a workbook, change one input cell and check that the chart moves.</p>
-</div>
-</section></section>
-<section>
-<section id="creating-apps" class="title-slide slide level1 center">
-<h1>14 · Creating apps</h1>
-<p>Explain how it works, build three, then put one on the internet.</p>
-</section>
-<section id="when-a-skill-is-not-enough" class="slide level2 compare">
-<h2>When a skill is not enough</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span class="eyebrow">A skill</span></p>
-<p>For someone who has the agent, the files, and a reason to be at a command line.</p>
-</div><div class="column" style="width:50%;">
-<p><span class="eyebrow">An app</span></p>
-<p>For someone with a browser and a question. No install, no terminal, no account.</p>
-</div></div>
-<p>Same job, different audience.</p>
-</section>
-<section id="frontend-and-backend" class="slide level2 compare">
-<h2>Frontend and backend</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span class="eyebrow">Frontend</span></p>
-<p>The browser. HTML, CSS and JavaScript — it draws the page and collects the clicks.</p>
-</div><div class="column" style="width:50%;">
-<p><span class="eyebrow">Backend</span></p>
-<p>A program on a server that listens continuously for requests. Yours will be Python.</p>
-</div></div>
-<div class="lead">
-<p>You open a URL. The browser sends a GET request. The server sends back HTML, CSS and JavaScript. The browser interprets that and shows you a page.</p>
-</div>
-<div class="note">
-<p>Right-click any web page and choose View Page Source. That is the frontend code, exactly as the backend handed it over.</p>
-</div>
-</section>
-<section id="then-you-click-something" class="slide level2 plain-title">
-<h2>Then you click something</h2>
-<div class="lead">
-<p>A POST request carries data the other way — a form, a country you typed. The server does what it was written to do and replies.</p>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="images/request-cycle.svg" class="quarto-figure quarto-figure-center" style="width:82.0%"></p>
-</figure>
-</div>
-</section>
-<section id="running-locally" class="slide level2 band-bottom">
-<h2>Running locally</h2>
 <div class="cards cards-2">
 <div class="card">
-<p><span class="card-title">localhost</span></p>
-<p><code>127.0.0.1</code> is the loopback address. The browser asks the machine it is already running on, and the request never reaches a network.</p>
+<p><span class="card-title">Keep out</span></p>
+<p>API keys, passwords, anything under a data agreement, and anything with a name in it.</p>
 </div>
 <div class="card card-blue">
-<p><span class="card-title">Ports</span></p>
-<p>One machine runs many programs listening at once. The port number tells the operating system which of them gets the request.</p>
-</div>
-</div>
-<p>The app is a <code>.py</code> file that imports FastAPI. uvicorn runs that file and starts it listening on a port.</p>
-</section>
-<section id="three-shapes" class="slide level2">
-<h2>Three shapes</h2>
-<div class="cards cards-3">
-<div class="card">
-<p><span class="card-title">One page, no server</span></p>
-<p>Everything runs in the browser. A single HTML file you can mail to someone.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">A small server</span></p>
-<p>Python behind the page. Needed when there is a database, a key, or a file to write.</p>
-</div>
-<div class="card">
-<p><span class="card-title">A server that calls a model</span></p>
-<p>The page collects a question; the server sends it to the model with your key, not the user’s.</p>
+<p><span class="card-title">Remember</span></p>
+<p>Deleting a file in a later commit does not remove it. It stays in the history.</p>
 </div>
 </div>
 </section>
-<section id="one-page-no-server" class="slide level2 plain-title">
-<h2>One page, no server</h2>
+<section id="publish-this-mornings-work" class="slide level2">
+<h2>Publish this morning’s work</h2>
 <p><span class="eyebrow">Exercise</span></p>
 <div class="steps">
 <ol type="1">
-<li>Build a single HTML file that does one useful calculation from your own work.</li>
-<li>Open it in the browser from the file browser. No server involved.</li>
-<li>Mail it to yourself and open it on your phone.</li>
+<li>Put the four files in one folder and ask Claude Code to make it a Git repository.</li>
+<li>Ask what it is about to commit, and read the list before it does.</li>
+<li>Have it push to a new GitHub repository and turn on Pages.</li>
+<li>Open the address on your phone.</li>
+<li>Change one line, commit, push, and watch the site change.</li>
 </ol>
 </div>
 <div class="note">
-<p>Nothing to deploy, nothing to pay for, and it works with no network.</p>
+<p>Step 2 is the habit worth keeping. It is the last point at which a key is easy to remove.</p>
 </div>
-</section>
-<section id="a-page-with-python-behind-it" class="slide level2 plain-title">
-<h2>A page with Python behind it</h2>
-<p><span class="eyebrow">Exercise</span></p>
-<div class="steps">
-<ol type="1">
-<li>Take the country analysis. Put a dropdown of countries on a page.</li>
-<li>Have the server read the spreadsheets, compute the answer for the country chosen, and return it.</li>
-<li>Serve it on port 8000 and open it at your own address on the lab server.</li>
-<li>Watch the terminal while you click. Every request appears there.</li>
-</ol>
-</div>
-<div class="note">
-<p>The terminal prints one line per request: the method, the path, and the status code.</p>
-</div>
-</section>
-<section id="hand-it-to-your-neighbour" class="slide level2 plain-title">
-<h2>Hand it to your neighbour</h2>
-<p><span class="eyebrow">Exercise</span></p>
-<div class="steps">
-<ol type="1">
-<li>Give your address to the person next to you and say nothing else.</li>
-<li>Watch them use it. Write down every place they hesitate.</li>
-<li>Fix the one that cost them the most time.</li>
-<li>Swap back and check the fix on their machine, not yours.</li>
-</ol>
-</div>
-</section>
-<section id="deploying-an-app" class="slide level2 divider">
-<h2>Deploying an app</h2>
-</section>
-<section id="platform-as-a-service" class="slide level2">
-<h2>Platform as a service</h2>
-<div class="lead">
-<p>You hand a host your repository. It builds the app, runs it, and puts it behind a public URL. There is no server for you to administer.</p>
-</div>
-<p>Railway, Render, Koyeb and Heroku all do this. We use Koyeb, which has a free tier.</p>
-<div class="steps">
-<ol type="1">
-<li>Create a free account at <code>koyeb.com</code>.</li>
-<li>In the control panel, create an API access token. Koyeb shows it once, so copy it then.</li>
-<li>Add it to the <code>~/.env</code> file you made on Thursday, the same way.</li>
-</ol>
-</div>
-</section>
-<section id="what-has-to-travel" class="slide level2 plain-title">
-<h2>What has to travel</h2>
-<div class="prompt-box">
-<div class="box-title">
-<p>Prompt</p>
-</div>
-<p>My goal is to push this app to GitHub as a new public repo and then create a Koyeb service connected to it. Walk me through it one step at a time.</p>
-</div>
-<div class="note note-plum">
-<p>The host builds only what is in the repository. Data files you told git to ignore never arrive, and the app fails on the host. Nothing from <code>.env</code> belongs in a public repo — secrets go in Koyeb’s environment settings instead.</p>
-</div>
-</section>
-<section id="put-it-on-the-internet" class="slide level2 plain-title">
-<h2>Put it on the internet</h2>
-<p><span class="eyebrow">Exercise</span></p>
-<div class="steps">
-<ol type="1">
-<li>Push the app from “A page with Python behind it” to a public GitHub repository.</li>
-<li>Create the Koyeb service and watch the build log.</li>
-<li>When it fails, read the log before asking. It is almost always a missing file or a missing key.</li>
-<li>Open the public URL on your phone, off the lab wifi.</li>
-<li>Send the URL to two people in the room.</li>
-</ol>
-</div>
-<div class="note">
-<p>A custom domain is optional and takes ten minutes: buy one, create an API token at the registrar, and have the DNS record written for you.</p>
-</div>
-</section>
-<section id="deployment-in-four-lines" class="slide level2 band-bottom">
-<h2>Deployment, in four lines</h2>
-<ul>
-<li>What runs on your machine does not run anywhere else until you make it</li>
-<li>The repository is the unit of deployment, and it is not the same as your folder</li>
-<li>Secrets live in the host’s settings, never in the code</li>
-<li>The build log says what went wrong, in order, every time</li>
-</ul>
-</section>
-<section id="this-afternoon" class="slide level2 band-bottom">
-<h2>This afternoon</h2>
-<p>The app you just deployed answers from what you wrote into it. This afternoon it answers from your own documents instead.</p>
 
 
 </section></section>

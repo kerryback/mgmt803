@@ -10,40 +10,122 @@ format:
 ## This afternoon
 
 ::: {.cards .cards-3}
+
+::: {.card .card-blue}
+[Permissions]{.card-title}
+
+What to allow without approval
+:::
+
 ::: {.card}
 [Persistent instructions]{.card-title}
 
-The instructions already there before yours, the standing rules you add, and tasks written down once.
+System prompts, CLAUDE.md/AGENTS.md, SKILL.md, memories
 :::
 
 ::: {.card .card-blue}
 [Connectors and plugins]{.card-title}
 
-Tools on somebody else's server, and folders of skills other people published.
+Tools on somebody else's server, and folders of skills other people published
 :::
 
-::: {.card}
-[Agent harnesses]{.card-title}
-
-Claude Code is one program around the model. What the others decided differently.
-:::
 :::
 
-Four hands-on blocks, about two and a quarter hours: a `CLAUDE.md`, a skill, the Northwind database, and the EIA database.
 
-# 9 · Persistent instructions and memory
+# 7 · Permissions
 
-Instructions that are there before you type: somebody else's first, then yours.
+## What Claude asks before it acts
 
-## Somebody already wrote instructions {.plain-title}
+| Mode | What it does |
+|---|---|
+| Manual | asks before the first use of each tool |
+| Plan | reads and explores, edits nothing |
+| Accept edits | file edits go through without asking |
+| Auto | approves on its own, with a check on each action |
+| Don't ask | refuses anything it would otherwise ask about |
+| Bypass | no prompts at all |
+
+::: {.note}
+Enforced by the program around the model, not by the model. A line in `CLAUDE.md` shapes what Claude tries to do; it does not change what is allowed.
+:::
+
+## Permissions in Claude Desktop {.plain-title}
 
 ::: {.lead}
-Every conversation you had this morning already contained a block of text you did not write and never saw.
+The desktop app runs Claude Code, so the modes are the same and carry the same names.
 :::
 
-The system prompt. It sits ahead of your first message and is sent again on every turn, telling the model what it is, what it may do, and how to answer.
+| | |
+|---|---|
+| What it can reach | the folders you connect to the conversation, and nothing else |
+| What it asks about | the first use of each tool, in Manual mode |
+| What "don't ask again" does | writes a rule that outlives the conversation |
 
-## What is in one
+::: {.note}
+Granting a folder is the decision that matters. The mode decides how often you are asked; the folder decides what can be reached at all.
+:::
+
+## Permissions in your container {.band-bottom}
+
+Everything is allowed already, in `~/.claude/settings.json`:
+
+```json
+"permissions": {
+  "allow": ["Bash(*)", "Read(*)", "Write(*)", "Edit(*)",
+            "Glob(*)", "Grep(*)", "WebFetch(*)", "WebSearch(*)"],
+  "deny": []
+}
+```
+
+::: {.note}
+So nothing prompts you all week. That is a decision about this container — it holds your course files and is reachable only by you — not about how to run an agent on your own machine.
+:::
+
+
+# 8 · Persistent instructions
+
+
+## Two kinds of instruction
+
+::: {.lead}
+With no instructions of your own, a model answers everyone's question the same way. Instructions are how that gets changed.
+:::
+
+::: {.cards .cards-2}
+::: {.card}
+[The provider's]{.card-title}
+
+The **system prompt** ships with the product and is sent on every turn. It regulates behavior: what the assistant is, what it declines, how an answer is formatted.
+
+You do not edit it.
+:::
+
+::: {.card .card-blue}
+[Yours]{.card-title}
+
+Added on top. It customizes behavior: how you want work done, what your files hold, the conventions you follow.
+
+You choose what it says and where it applies.
+:::
+:::
+
+
+
+## What reaches the model before your prompt
+
+| Part | Who sets it | When it is sent |
+|---|---|---|
+| System prompt | the provider | every turn |
+| Tool definitions | the product, and what you connect | every turn |
+| `CLAUDE.md` | you | every turn |
+| A skill's description | you | every turn, one line each |
+| A skill's body | you | only when the description matches |
+
+::: {.note}
+Anything sent on every turn costs money and latency, and takes up the model's attention.
+:::
+
+## What is in a system prompt {.plain-title}
 
 | | |
 |---|---|
@@ -53,93 +135,80 @@ The system prompt. It sits ahead of your first message and is sent again on ever
 | Refusals | what it declines, and how |
 | Character | what to do when it is uncertain, how much to hedge |
 
-Thousands of words, revised often, and paid for on every turn.
-
-## Read the real one {.plain-title}
-
-Anthropic publishes the system prompts for the Claude apps, dated and by model:
-
-::: {.lead}
-[platform.claude.com/docs/en/release-notes/system-prompts](https://platform.claude.com/docs/en/release-notes/system-prompts/overview)
-:::
-
 ::: {.note}
-Worth reading. Behavior you took for the model is often an instruction on that page.
+Anthropic publishes the ones in the Claude apps, dated and by model: [platform.claude.com/docs/en/release-notes/system-prompts](https://platform.claude.com/docs/en/release-notes/system-prompts/overview)
 :::
 
-## It does not come with the API {.plain-title}
 
-::: {.lead}
-Call the Messages endpoint the way you did this morning and none of that is there.
-:::
 
-The `system` field is empty unless you fill it. Same weights, same training, no instructions — which is why a question can get one answer in the chat window and a different one from a script.
+## CLAUDE.md, by scope
 
-::: {.note}
-The scaffolding is in the app, not in the weights.
-:::
+Claude Code reads every `CLAUDE.md` from the top of the filesystem down to the folder you started in, and puts them all in context:
 
-## Who writes it, where
-
-| Where you are | Who wrote the system prompt |
-|---|---|
-| claude.ai, Claude Desktop | Anthropic, and published |
-| Claude Code | Anthropic, not published |
-| OpenRouter, or any raw API call | you, or nobody |
-| An agent you build | you, entirely |
-
-::: {.note}
-Further down the list, more of the behavior is yours to specify, and absent if you do not. Sunday you write one.
-:::
-
-## The repeated instruction
-
-::: {.lead}
-This morning you typed the same four things into every prompt: describe the data first, show the code, report row counts, reconcile a second way.
-:::
-
-Each of those is a standing instruction about how you want work done. Typing them into each prompt makes them optional, and eventually one gets left out.
-
-## Everything arrives as one block of text
-
-Each turn, the harness assembles the request from parts you can control:
-
-| Part | Set by | When it is sent |
+| File | Applies to 
 |---|---|---|
-| System prompt | the tool | every turn |
-| Tool definitions | the tool and your config | every turn |
-| `CLAUDE.md` | you | every turn |
-| Skill descriptions | you | every turn, one line each |
-| A skill's body | you | only when that skill is used |
-| The conversation | you and the tools | growing, every turn |
+| `$HOME/.claude/CLAUDE.md` | every folder you work in | nobody |
+| `path/folder/CLAUDE.md` | work in that folder | the team, if you commit it |
 
-## The cost of always
+
+::: {.note}
+The closest file is read last. Keep each one under about 200 lines — all of them are in the context window before you type.
+:::
+
+- OpenAI and Google call it `AGENTS.me`
+- Desktop apps have analogous "instructions" settings 
+
+## A digression on file systems
+
+Windows File Explorer hides the actual filesystem locations of common folders.  You can do the following to see where your home folder is.
+
+- Windows: Start -> Command Prompt.  Then type `cd $HOME` and Enter and then `pwd` and Enter.  That is your home directory.
+
+- Mac: Enter the same commands into the Terminal app.
+
+- lab803: Terminal in left pane.  Enter the same commands.
+
+
+
+
+## Memory {.band-bottom}
 
 ::: {.lead}
-A file read on every turn is paid for on every turn — in money, in latency, and in the model's attention.
+Everything above is written by you. Claude writes this one, as you chat, and puts it in front of itself the next time you open a conversation.
 :::
+
+::: {.steps}
+1. While you talk, it saves individual topics — not a transcript, and not a summary written when the conversation ends.
+2. Those topics arrive with the system prompt, ahead of your first message.
+3. Nothing is searched and no tool runs. There is no sign of it in the conversation.
+4. Each project has its own memory. Topics from one do not reach another.
+:::
+
+## Pushed, or pulled {.compare}
+
+:::: {.columns}
+::: {.column width="50%"}
+[Memory]{.eyebrow}
+
+Saved as you go and placed in the conversation without your asking. Whether it applies is decided before you type.
+:::
+
+::: {.column width="50%"}
+[Chat search]{.eyebrow}
+
+You ask for it. It searches your past conversations, you see the tool run, and the answer cites the chat each piece came from.
+:::
+::::
+
+::: {.note}
+Settings → Memory lists the topics. Read, edit or delete any of them, pause it, or reset it. Say what to remember or forget in the chat and it applies to your next conversation. An incognito chat forms no memory.
+:::
+
+## What belongs in a CLAUDE.md {.band-bottom}
 
 ::: {.cards .cards-2}
 ::: {.card}
-[CLAUDE.md]{.card-title}
-
-Short and always present. Standing rules that apply to everything you do in that folder.
-:::
-
-::: {.card .card-blue}
-[A skill]{.card-title}
-
-One line always present — its description. The body arrives only when the description matches what you asked for.
-:::
-:::
-
-A `CLAUDE.md` that runs to three thousand words is paid for on every turn, including the turns none of it applies to.
-
-## What belongs in each
-
-::: {.cards .cards-2}
-::: {.card}
-[Standing rules]{.card-title}
+[Yes]{.card-title}
 
 - How you want numbers handled
 - What the folders hold
@@ -148,7 +217,7 @@ A `CLAUDE.md` that runs to three thousand words is paid for on every turn, inclu
 :::
 
 ::: {.card .card-sand}
-[Not standing rules]{.card-title}
+[No]{.card-title}
 
 - Steps for one particular task
 - Anything longer than a page
@@ -157,360 +226,334 @@ A `CLAUDE.md` that runs to three thousand words is paid for on every turn, inclu
 :::
 :::
 
-## Write your standing rules {.plain-title}
-
-[Exercise]{.eyebrow}
-
-::: {.steps}
-1. Create `~/CLAUDE.md` in your container.
-2. Write the four rules from this morning in your own words, and two more of your own.
-3. Start a new conversation and give it a task that would break one of the rules.
-4. Change a rule and watch the behavior change.
-:::
-
 ::: {.note}
-Ask it to name the rules it is following. If it cannot, the file is not being read.
+In Claude Code, `#` at the start of a message appends a line to one of these files, and `/memory` opens them for editing.
 :::
+
+## Explore
+
+- In lab803, enter this prompt: `print the CLAUDE.md`
+- Then this prompt: `add "always answer like a pirate" to the CLAUDE.md`
+- Then log out (top right corner), log back in, and ask anything.
+- Then ask it to delete the "always answer like a pirate" from the CLAUDE.md, log out again, and log back in.
+
+
 
 ## Skills {.divider}
 
-## A skill is a folder
+## A skill is a folder {.plain-title}
 
 ```
-country-report/
+skill-name/
   SKILL.md          the instructions
   references/       longer material, read only when needed
   scripts/          code the skill runs rather than regenerates
 ```
 
-`SKILL.md` opens with two lines of metadata and then plain prose:
+`SKILL.md` opens with two lines of metadata (name and description) and then plain text.
 
-```yaml
----
-name: country-report
-description: Build the monthly revenue-by-country report from the
-  order spreadsheets. Use when asked for the country report, the
-  monthly revenue rollup, or revenue by market.
----
-```
-
-## The description is the trigger {.compare}
-
-:::: {.columns}
-::: {.column width="50%"}
-[Does not fire]{.eyebrow}
-
-"Helps with reporting."
-:::
-
-::: {.column width="50%"}
-[Fires]{.eyebrow}
-
-"Build the monthly revenue-by-country report from the order spreadsheets. Use when asked for the country report, the monthly revenue rollup, or revenue by market."
-:::
-::::
-
-The description is the only part of a skill always in front of the model, and it decides whether the rest is ever read. Write the words the person asking would use.
-
-## What goes in the body
-
-::: {.steps}
-1. What the task produces, stated first.
-2. Where the inputs are, by path.
-3. The steps in order, including the checks.
-4. What to do when something is missing.
-5. What the output looks like when it is right.
-:::
 
 ::: {.note}
-Prose, not pseudocode. The reader is a model that already knows Python and does not know your files.
+In Claude Desktop: Choose Customize in left pane.  Then Skills.  Explore or Add.
 :::
 
-## Scripts beat instructions {.compare .band-bottom}
 
-:::: {.columns}
-::: {.column width="50%"}
-[Instructions]{.eyebrow}
 
-The code is written fresh each time. Same intent, a different implementation, different bugs.
+
+## The same file in other agents {.plain-title}
+
+::: {.lead}
+Anthropic wrote the format and released it as an open standard. The others
+adopted it rather than inventing their own.
 :::
 
-::: {.column width="50%"}
-[A script]{.eyebrow}
+| Agent | Where it looks |
+|---|---|
+| Claude Code | `.claude/skills/` |
+| Codex and ChatGPT | `.agents/skills/` |
+| Gemini CLI | `.gemini/skills/`, or `.agents/skills/` |
 
-The code is written once and tested. The skill says when to run it and what the arguments mean.
+::: {.note}
+Same file, same description-first loading. Put the folder in `.agents/skills/`
+and both Codex and Gemini CLI find it.
 :::
-::::
+
+## Creating a skill {.plain-title}
+
+- Work with AI until you get what you want
+- Tell AI to create a skill so you can get the same thing the next time 
+- Give the skill a meaningful name.
+- As you use it and find things to add or modify, tell AI to edit the skill.
+
 
 ## Three ways to invoke
 
-| | How | When |
-|---|---|---|
-| Slash command | `/country-report` | you know exactly what you want |
-| By name | "use the country report skill" | you are half sure |
-| Automatically | "build me the March rollup" | the description matched |
-
-The third only happens if the description was written for it.
-
-## Already in your container {.plain-title}
-
-| Skill | What it does |
-|---|---|
-| `xlsx` | builds and edits Excel workbooks, with formulas and charts |
-| `docx` | the same for Word, including templates |
-| `pptx` | the same for PowerPoint, including an existing deck |
-| `finance-data` | pulls prices, fundamentals and macro series |
-| `web-app` | scaffolds an app you can serve on port 8000 |
-| `skill-creator` | writes and tests a new skill |
-
-Open one. It is the same kind of file you are about to write.
-
-## Write a skill {.plain-title}
-
-[Exercise]{.eyebrow}
-
-::: {.steps}
-1. Pick something you do at work more than once a month, with inputs and a shape. If nothing comes in two minutes, use Thursday's revenue-by-country report.
-2. Run `/skill-creator` and work through it, answering in your own vocabulary.
-3. Put a real input file in the container and run the skill on it.
-4. In a fresh conversation, ask for the task in the words a colleague would use.
-5. Fix the description until it fires.
-:::
-
-::: {.note}
-A skill that fires only when you name it needs a better description.
-:::
-
-# 10 · Connectors and plugins
-
-## The problem a standard solves
-
-::: {.lead}
-Every tool wants to reach every data source. Without a standard, that is one integration per pair.
-:::
-
-::: {.stats}
-::: {.stat}
-[N × M]{.stat-value}
-[integrations without a protocol]{.stat-label}
-:::
-::: {.stat}
-[N + M]{.stat-value}
-[with one]{.stat-label}
-:::
-:::
-
-A server written for nothing in particular is reachable from every client that speaks the protocol.
-
-## What a connector sends
-
-::: {.steps}
-1. The client connects to the server and asks what it offers.
-2. The server returns a list of tools: each with a name, a description in English, and the parameters it takes.
-3. That list goes into the model's context alongside its built-in tools.
-4. The model asks for one by name. The client calls the server and puts the result back in the conversation.
-:::
-
-::: {.note}
-The model does not know a connector from a built-in tool. Both are entries in the same list.
-:::
-
-## A tool definition
-
-```json
-{
-  "name": "run_sql",
-  "description": "Run a read-only SQL query against the Northwind
-                  database and return the rows. SELECT only.",
-  "input_schema": {
-    "type": "object",
-    "properties": {
-      "query": {"type": "string", "description": "A SELECT statement"}
-    },
-    "required": ["query"]
-  }
-}
-```
-
-The description is what the model reads to decide whether to use it.
-
-## Where the call is made from
-
-::: {.lead}
-In Claude Cowork, and in most setups a firm will hand you, the machine the agent's shell runs on has no route to the internet. The connector works anyway.
-:::
-
-:::: {.columns}
-::: {.column width="50%"}
-[At the shell]{.eyebrow}
-
-```bash
-curl https://api.stlouisfed.org/...
-```
-
-Refused. Everything leaving that machine passes a proxy that allows a short list of addresses, and that is not one of them.
-:::
-
-::: {.column width="50%"}
-[Through the connector]{.eyebrow}
-
-```text
-fred_get_observations("UNRATE")
-```
-
-Rows come back. Same machine, same second, same model.
-:::
-::::
-
-::: {.note}
-Because your machine never places the call. The client end sits outside it, calls FRED itself, and hands the rows back into the conversation. Your key goes with it and is never on the machine to steal.
-:::
-
-## A narrower door, not a hole
-
-:::: {.columns}
-::: {.column width="50%"}
-[Open the network instead]{.eyebrow}
-
-Allow the machine to reach `stlouisfed.org` and it can send anything to any address there, in any form it likes.
-:::
-
-::: {.column width="50%"}
-[Leave it shut, add a connector]{.eyebrow}
-
-It can call `run_sql` with a `SELECT`. That is the entire new capability.
-:::
-::::
-
-The connector is the smaller of the two. That is why the network stays off and the connector goes on.
-
-::: {.note}
-It costs something. The connector reaches out from outside the sandbox holding your credentials, so a sentence in a file it reads can ask for that call. Cutting the machine off from the network did not cut off the connector. Sunday morning.
-:::
-
-## Servers you can connect today
-
-| Server | Address | Sign-in |
-|---|---|---|
-| Northwind orders | `northwind-mcp.rice-business.org/mcp` | none |
-| Energy data (EIA) | `eia.rice-business.org/mcp` | none |
-| Economic data (FRED) | `fred.kerryback.com/mcp` | none |
-
-Same three servers, reachable from Claude Code in your container and from Claude Desktop on your laptop. Neither was written for either one.
-
-## The Northwind server {.plain-title}
-
-[Exercise]{.eyebrow}
-
-::: {.steps}
-1. Connect the Northwind server and ask what tools it offers. Read the descriptions.
-2. Ask which countries generated the most revenue, and have it show you the SQL it ran.
-3. Put that beside the number you computed from the spreadsheets on Thursday morning.
-4. Explain any difference. One of the two is answering a slightly different question.
-5. Try to make it change something in the database.
-:::
-
-::: {.note}
-The two numbers usually differ. Freight, discounts, cancelled orders, and shipped versus ordered date are the usual causes.
-:::
-
-## What discovery looks like {.plain-title}
-
-The EIA server does not hand the model a list of datasets. It hands it a way to find one.
-
 | | |
 |---|---|
-| `eia_search_routes` | fuzzy search — "electricity prices by state" |
-| `eia_browse_routes` | walk the taxonomy; fourteen categories at the root |
-| `eia_describe_route` | what filters exist, what columns, what units |
-| `eia_query_route` | the rows, with the filters applied |
-| `eia_dataframe_describe` | what has been pulled so far, and its schema |
-| `eia_dataframe_query` | SQL across those, joins included |
+| Slash command | `/skill-name` |
+| By name | "use the ... skill" |
+| Automatically | "build ..." | 
 
-::: {.note}
-Six tools rather than one per dataset. The model reads the descriptions and works out the order, which takes about four turns.
+The third only works when the skill description clearly applies.
+
+
+
+## Anthropic's skill repository
+
+[https://github.com/anthropics/skills](https://github.com/anthropics/skills)
+
+## lab803
+
+- Enter the prompt `/skills`
+- You will get a list of the installed skills
+- All are from Anthropic
+
+
+## Breakout exercise {.plain-title}
+
+
+- The goal is to get Claude to always create PowerPoint decks following a template you choose.  You can use one of your existing decks or choose a new template from any online source.  Upload the deck to lab803.
+
+- Tell Claude to create a new deck using the style of the uploaded deck.  Give Claude some content and tell it to build the deck from scratch rather than just editing the uploaded deck.
+
+- Download and view the deck.  Instruct Claude on any changes you want.  Rinse and repeat until you like the deck.
+
+- Tell Claude to write the steps needed to get the good deck in a a my-pptx skill so that Claude will always create decks in the template style.
+
+
+# 9 · Connectors and plugins
+
+
+## An agent reaching a service
+
+::: {.mcp-architecture}
+::: {.mcp-box .mcp-dark .mcp-user}
+User
+:::
+::: {.mcp-arrow-h .mcp-h1}
+&#8596;
+:::
+::: {.mcp-box .mcp-accent .mcp-agent}
+Harness
+:::
+::: {.mcp-arrow-h .mcp-h2}
+&#8596;
+:::
+::: {.mcp-box .mcp-dark .mcp-llm}
+LLM
+:::
+::: {.mcp-arrow-v .mcp-v1}
+&#8597;
+:::
+::: {.mcp-box .mcp-amber .mcp-service-mid}
+Data or Service
+:::
 :::
 
-## The EIA server {.plain-title}
+## An MCP server is a bridge
 
-[Exercise]{.eyebrow}
-
-::: {.steps}
-1. Connect the EIA server and ask what tools it offers. Read them before using any.
-2. Have it browse the taxonomy from the root and pick the category closest to your industry.
-3. Ask a question you do not already know the answer to. Make it name the route it used, the filters it applied, and the units.
-4. Ask a second question that needs two of those series in one answer.
-5. Ask for something the server has no tool for, and watch what it does instead.
+::: {.mcp-architecture}
+::: {.mcp-box .mcp-dark .mcp-user}
+User
+:::
+::: {.mcp-arrow-h .mcp-h1}
+&#8596;
+:::
+::: {.mcp-box .mcp-accent .mcp-agent}
+Harness
+:::
+::: {.mcp-arrow-h .mcp-h2}
+&#8596;
+:::
+::: {.mcp-box .mcp-dark .mcp-llm}
+LLM
+:::
+::: {.mcp-arrow-v .mcp-v1}
+&#8597;
+:::
+::: {.mcp-caption .mcp-cap1}
+The harness starts the server<br>and asks it what tools it has
+:::
+::: {.mcp-box .mcp-purple .mcp-server}
+MCP Server
+:::
+::: {.mcp-arrow-v .mcp-v2}
+&#8597;
+:::
+::: {.mcp-caption .mcp-cap2}
+The server holds the credentials<br>and makes the actual calls
+:::
+::: {.mcp-box .mcp-amber .mcp-service}
+Data or Service
+:::
 :::
 
-::: {.note}
-Energy arrives in thousand megawatthours, million cubic feet, and thousand barrels a day. A right number with the wrong unit is wrong by a factor of a thousand, and nothing in the reply will say so.
+## What the server tells the harness
+
+::: {.mcp-gmail-architecture}
+::: {.mgx-box .mgx-agent}
+Harness
+:::
+::: {.mgx-arrow-h}
+&#8596;
+:::
+::: {.mgx-box .mgx-llm}
+LLM
+:::
+::: {.mgx-arrow-v .mgx-v1}
+&#8597;
+:::
+::: {.mgx-panel .mgx-mcp}
+[Gmail MCP server --- tools it exposes]{.mgx-panel-title}
+
+- `search_threads` --- find threads matching a query
+- `create_draft` --- start a reply, unsent
+- `get_message` --- fetch one message
+- `update_draft` --- edit a draft
+- `list_labels` --- list the labels on the account
+- `label_message` --- add or remove a label
+:::
+::: {.mgx-arrow-v .mgx-v2}
+&#8597;
+:::
+::: {.mgx-panel .mgx-api}
+[Gmail --- what the API exposes]{.mgx-panel-title}
+
+- `GET users/me/threads?q=` --- search
+- `POST users/me/drafts` --- create draft
+- `GET users/me/messages/{id}` --- read
+- `PUT users/me/drafts/{id}` --- update draft
+- `GET users/me/labels` --- list labels
+- `POST users/me/messages/{id}/modify` --- labels and state
+:::
+::: {.mgx-note}
+The harness gets the tool descriptions from the server.
+
+It sends that list to the LLM with every request.
+
+The LLM answers with a tool name and arguments. The server turns that into an API call.
+:::
 :::
 
-## Where the limit lives {.divider}
-
-## Read-only, enforced four ways
-
-| Where | What refuses |
-|---|---|
-| The database | a role without write permission |
-| The application | a whitelist of allowed operations |
-| The connector | `run_sql` rejecting anything that is not a `SELECT` |
-| The tool list | no write tool exists to call |
-
-The model is not consulted at any of them.
-
-## Instructions are not a limit
-
-:::: {.columns}
-::: {.column width="50%"}
-[A rule in a prompt]{.eyebrow}
-
-"Never modify the database."
-
-Text in a conversation, competing with other text in the same conversation.
-:::
-
-::: {.column width="50%"}
-[A tool that does not exist]{.eyebrow}
-
-There is nothing to call.
-
-No wording reaches it, because nothing is being persuaded.
-:::
-::::
-
-## Mail and calendar
+## Tools from MCP servers
 
 ::: {.lead}
-The same shape applied to an inbox: an agent that reads everything and sends nothing.
+Tools written by somebody else, running on a server somebody else operates. Thousands of MCP servers exist already.
 :::
 
 ::: {.cards .cards-3}
-::: {.card}
-[It reads]{.card-title}
+::: {.card .card-blue}
+[What you add]{.card-title}
 
-Threads, calendar entries, attachments. Enough to tell you what is waiting and what it is about.
+A URL, in the agent's configuration
 :::
 
-::: {.card .card-blue}
-[It drafts]{.card-title}
+::: {.card}
+[What arrives]{.card-title}
 
-Replies, parked where you can read them.
+A name, a description and an input schema for every tool the server publishes
 :::
 
 ::: {.card .card-sand}
-[It does not send]{.card-title}
+[What stays there]{.card-title}
 
-No send tool, no delete tool. Sending stays a thing you do.
+The code, and the credential it uses to reach the service
 :::
 :::
 
-## Two things at once
+::: {.note}
+To the model these are more entries in the same tool list. What differs is whose machine runs them.
+:::
 
-An agent reading your mail is holding two things at once: your private correspondence, and text written by people outside your organization.
+## Example: Google's Gmail server {.plain-title}
 
-Give it an outbound channel and text written by outsiders can direct what leaves. Sunday, in detail.
+```
+search_threads     get_thread        get_message
+create_draft       list_drafts       list_labels
+label_thread       unlabel_thread
+label_message      unlabel_message
+```
+
+::: {.note}
+Ten tools, at `https://gmailmcp.googleapis.com/mcp/v1`. Published at [developers.google.com/workspace/gmail/api/reference/mcp](https://developers.google.com/workspace/gmail/api/reference/mcp).
+:::
+
+## Example: Anthropic's Gmail server
+
+| | Google | Anthropic |
+|---|---|---|
+| Tools | 10 | 29 |
+| Read | `search_threads` · `get_thread` · `get_message` | the same three |
+| Drafts | `create_draft` | create, get, update, delete |
+| Send | none | `send_message` · `reply` · `forward` |
+| Remove | none | `trash_message` · `delete_draft` |
+| Labels | apply and remove | plus create, update, delete |
+
+::: {.note}
+The same account and the same API underneath. A different answer to what an agent may do with it.
+:::
+
+## Example MCP servers {.band-bottom}
+
+::: {.cards .cards-2}
+::: {.card .card-blue}
+[Warehouses]{.card-title}
+
+Snowflake, Databricks, BigQuery, MongoDB, dbt
+:::
+
+::: {.card}
+[Business systems]{.card-title}
+
+Salesforce, HubSpot, Workday, SAP, ServiceNow
+:::
+
+::: {.card .card-sand}
+[Work and code]{.card-title}
+
+Slack, Notion, Linear, GitHub, Atlassian, Figma, Sentry
+:::
+
+::: {.card .card-sage}
+[Money]{.card-title}
+
+Stripe, Shopify, PayPal, Plaid
+:::
+:::
+
+
+## Connecting to an MCP server
+
+::: {.cards .cards-2}
+::: {.card}
+[In Claude Desktop]{.card-title}
+
+- Choose Customize from the left pane
+- Then Connectors and Explore or Add
+:::
+
+::: {.card .card-blue}
+[In lab803]{.card-title}
+
+- Tell Claude to add the connection
+- You provide the URL, or Claude can search for it online
+- Claude may say it can't do it directly but then ask permission to use a terminal command. Allow.
+- Log out and log in again.
+:::
+:::
+
+::: {.note}
+Example: `fred.kerryback.com/mcp`, the Federal Reserve's economic data.
+:::
+
+## Exercise {.band-bottom}
+
+Ask Claude to get the US consumer price index from FRED, compute quarterly percent changes, and annualize them.
+
+## Breakout exercise
+
+Connect to a Gmail MCP server either in a desktop app or on lab803.  Create a new Gmail account if you don't want to connect to your real one.  Ask Claude to help connect.  You can use any server (Anthropic, Google, ...).  Ask Claude how to disable any tools you don't want.  Then ask Claude to get your most recent messages.  Ask Claude how to delete the connection if you don't want to keep it.  Ask Claude to write a summary of what was done.
+
 
 ## Installing plugins {.divider}
 
@@ -534,171 +577,23 @@ Every file and script in it, without being told which ones to copy where.
 :::
 :::
 
-## Two commands
+## Anthropic's plugin marketplace
+
+[https://code.claude.com/docs/en/discover-plugins](https://code.claude.com/docs/en/discover-plugins)
+
+## Exercise
+
+Give Claude the following prompts
 
 ```
 /plugin marketplace add kerryback/skills
 /plugin install finance-data@kerryback
 ```
 
-The first points Claude at a public repository holding an index of plugins. The second installs one of them. `/plugin` on its own lists what you have.
-
-## A marketplace you can use today {.plain-title}
-
-`kerryback/skills` holds fifteen. Seven of them:
-
-| | |
-|-------------------|--------------------------------------------------------|
-| `finance-data` | prices, fundamentals, SEC filings and macro series, as CSV |
-| `elegant-pdf` | branded flyers, programs and reports as print-quality PDF |
-| `critique` | parallel reviewers on work Claude produced, and what to do |
-| `human-write` | prose that does not read as machine-generated |
-| `shoji2` | Quarto slide decks in the theme these slides use |
-| `voiceover` | a narrated MP4 and transcript from a deck |
-| `smithers` | a read-only desk over your mail and calendar |
-
-## Read it before you install {.plain-title}
-
-::: {.lead}
-An installed plugin runs with your permissions, on your machine, against your files.
-:::
-
-::: {.steps}
-1. Open the repository and read the `SKILL.md` of anything you are about to install.
-2. Check what it runs: a script, a command, an MCP server reaching outside.
-3. Install into a container first when you are not sure.
-:::
+Then ask Claude what was installed.  Finally, ask Claude to compute monthly stock returns for Apple since the start of 2020 and to produce a histogram.
 
 ::: {.note}
-Same question as Sunday morning's, asked earlier: what can it reach, and what can leave.
+You should see Claude say "using the finance-data skill"
 :::
 
-## Install and try {.plain-title}
 
-[Demonstration · 10 minutes]{.eyebrow}
-
-::: {.steps}
-1. Add the `kerryback/skills` marketplace and list what is in it.
-2. Install one and run it.
-3. Open its `SKILL.md` and read how it does what it does.
-:::
-
-::: {.note}
-Install what you want tonight. The marketplace stays in your container all week.
-:::
-
-## Four rungs {.band-bottom}
-
-| | Where it lives | Who has it |
-|---|---|---|
-| A prompt | in your head | you, when you remember |
-| `CLAUDE.md` | one folder | anyone working in that folder |
-| A skill | a file | you, everywhere, when it matches |
-| A plugin | a repository someone published | anyone who installs it |
-
-The same instruction each time, moved somewhere that outlasts the conversation.
-
-# 11 · Agent harnesses
-
-::: {.lead}
-Claude Code is one answer to a design problem. There are others, increasingly not from the model's maker.
-:::
-
-## Same model, different program {.plain-title}
-
-The model is a string in a config file. Everything you experience as "the tool" is the program wrapped around it: what it sends each turn, which tools it offers, how it asks permission, and where it runs.
-
-## The harness is the other five
-
-::: {.lead}
-You pick the model. Everything else on that list is supplied by the program around it.
-:::
-
-Buying a harness — Claude Code, or one of the open ones — is buying somebody's answers to those questions. The answers differ, and the differences show up in the output.
-
-## What differs
-
-| | The question it answers |
-|--------------|------------------------------------------------|
-| Model coupling | one vendor's models, or any provider you can point it at |
-| Context | what gets sent each turn, and what happens when the window fills |
-| Tool surface | four tools, or forty |
-| Permissions | how it stops — approval rules, an OS sandbox, or a container |
-| Extension | plugins, MCP servers, skills, instruction files |
-| Where it lives | a terminal, an editor, a web page, or a library you import |
-
-::: {.note}
-Every one of these is a design choice somebody made and wrote down. None of them is the model.
-:::
-
-## The open field
-
-| | | |
-|-----------------|--------------------|------------------------------------|
-| Claude Code | Anthropic models only | the reference implementation |
-| Codex | OpenAI models only | Rust; OS-level sandbox by default |
-| OpenCode | 75+ providers | the mature open alternative; per-agent permissions |
-| DeepSeek Harness | any provider | everything is a plugin, including the loop |
-| Pi | any provider | four tools and a very short prompt |
-| Goose · OpenHands | any provider | neutral governance; container-first |
-| Qwen Code | Alibaba's models | a vendor CLI on the same pattern |
-
-Everything but Claude Code is open source, MIT or Apache — you can read the loop. Two of those still only talk to their maker's models.
-
-## Thick or thin {.compare}
-
-:::: {.columns}
-::: {.column width="50%"}
-[Claude Code]{.eyebrow}
-
-Forty-plus tools. A layered system prompt with a cached boundary. Four fallback strategies when the context fills. Subagents that fork and run in the background.
-
-The harness does a great deal on your behalf.
-:::
-
-::: {.column width="50%"}
-[Pi]{.eyebrow}
-
-Four tools — read, write, edit, run a command. A system prompt under a thousand tokens. No subagents, no plan mode, no MCP.
-
-Anything else, the agent writes for itself as an extension.
-:::
-::::
-
-::: {.note}
-Databricks benchmarked both and found the thin one matched or beat the thick one at a fraction of the cost, because it sent roughly three times less context per turn.
-:::
-
-## The permission model
-
-| Harness | How it stops you |
-|---|---|
-| Claude Code | rules you configure, checked before each call |
-| Codex | the operating system — Seatbelt on macOS, Landlock on Linux |
-| OpenHands | a Docker container the agent cannot leave |
-| Cline | a human clicking approve, every time |
-| OpenCode | per-agent tool permissions, granted once and remembered |
-
-::: {.note}
-The distinction from this morning, in a different form: a mode that asks you, versus a boundary that makes the call impossible. Two of these five are the second kind.
-:::
-
-## Benchmarks and harnesses
-
-::: {.lead}
-A benchmark number is a model and a harness together. Change the harness and the number moves.
-:::
-
-::: {.steps}
-1. The same model scores differently under two harnesses on the same benchmark.
-2. Papers report the model and omit the harness.
-3. Removing most of an agent's tools has been shown to raise its score, not lower it.
-4. So a leaderboard ranks model-and-harness pairs, not models.
-:::
-
-When somebody says a model can or cannot do something, ask which harness it was running in.
-
-
-## Tomorrow {.band-bottom}
-
-Everything today has been about setting the agent up. Tomorrow you point it at data and check what comes back.

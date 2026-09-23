@@ -9,380 +9,856 @@ format:
 
 ## This morning
 
-::: {.lead}
-Five spreadsheets and one question: which countries generated the most revenue, and how do you know.
+::: {.cards .cards-2}
+::: {.card}
+[Creating agents]{.card-title}
+
+The API underneath everything, and an agent with a tool list you chose.
 :::
+
+::: {.card .card-blue}
+[Managing security risks]{.card-title}
+
+Believing it, sending data out, letting it act, and a one-page plan.
+:::
+:::
+
+# 17 · Creating agents
+
+## A chatbot produces text
+
+::: {.lead}
+It receives text and returns text. That is the entire capability.
+:::
+
+- Everything it "knows" arrived as text in the request
+- Everything it "does" leaves as text in the response
+- No files, no network, no memory between conversations
+
+A chatbot that appears to remember you is being handed the earlier conversation again on every turn.
+
+## An agent is a chatbot with tools {.band-bottom}
+
+::: {.steps}
+1. You send a request. The harness also sends a list of tools and what each one does.
+2. The model answers with text, or with a request to use a tool.
+3. The harness runs the tool and puts the result back into the conversation.
+4. Repeat until the model answers with text and no tool call.
+:::
+
+## What the model is sent
+
+Every turn, the harness assembles one block of text:
 
 ::: {.cards .cards-2}
 ::: {.card}
-[Where the data is]{.card-title}
+[Fixed each turn]{.card-title}
 
-What an organization actually holds, which system is the record, and why the copies disagree.
+The system prompt. The tool definitions. Any instruction files the harness is coded to include.
 :::
 
 ::: {.card .card-blue}
-[Whether to believe it]{.card-title}
+[Growing each turn]{.card-title}
 
-The joins, columns and blanks that produce a wrong total with no error message.
-:::
-:::
-
-# 12 · Working with data
-
-The country revenue report, then the four ways the number comes out wrong.
-
-## "We should point AI at our data" {.plain-title}
-
-::: {.prompt-box}
-::: {.box-title}
-Heard in every company this year
-:::
-We should point AI at our data.
-:::
-
-::: {.cards .cards-3}
-::: {.card}
-[Which data?]{.card-title}
-:::
-::: {.card .card-blue}
-[In whose system?]{.card-title}
-:::
-::: {.card}
-[Entered by whom, and when?]{.card-title}
-:::
-:::
-
-## What the surveys say
-
-::: {.stats}
-::: {.stat}
-[897]{.stat-value}
-[applications in the average enterprise]{.stat-label}
-:::
-::: {.stat}
-[29%]{.stat-value}
-[of them connected to anything else]{.stat-label}
-:::
-::: {.stat}
-[7%]{.stat-value}
-[of leaders call their data ready for AI]{.stat-label}
+Your messages, the model's replies, and the full output of every tool that has run so far.
 :::
 :::
 
 ::: {.note}
-In the same surveys, 19% of data is called siloed or unusable, and 70% of leaders believe their most valuable insights are inside that 19%.
+A tool result is text in the conversation, which is why a document the agent read can change what it does next.
 :::
 
-## Where a number actually lives {.plain-title}
+## How software works {.divider}
 
-| | Holds | Reachable by |
+## Frontend and backend
+
+:::: {.columns}
+::: {.column width="50%"}
+[Frontend]{.eyebrow}
+
+The browser. HTML, CSS and JavaScript — it draws the page and collects the clicks.
+:::
+
+::: {.column width="50%"}
+[Backend]{.eyebrow}
+
+A program on a server, listening continuously for requests. Yours will be Python.
+:::
+::::
+
+::: {.lead}
+You open a URL. The browser sends a request. The server sends back HTML, CSS and JavaScript. The browser interprets that and shows you a page.
+:::
+
+::: {.note}
+Right-click any page and choose View Page Source. That is the frontend code, exactly as the backend handed it over.
+:::
+
+## Two kinds of request {.plain-title}
+
+| | What it carries | What the server does |
 |---|---|---|
-| The operational system | what is true right now | its own screens |
-| The warehouse | a nightly copy, reshaped for questions | analysts with SQL |
-| A dashboard | a fixed set of questions chosen when it was built | anyone |
-| An extract | one analyst's copy, as of when it was pulled | whoever they mailed it to |
-| A shared drive | the documents none of the above hold | anyone who can find it |
+| `GET` | a path, and parameters in the URL | sends back a page, or data |
+| `POST` | a body — a form, a ticker you typed | whatever it was written to do, then replies |
 
-## Four systems, four meanings of "customer"
+::: {.note}
+Opening a page is a `GET`. Clicking submit is usually a `POST`.
+:::
 
-| In this system | A customer is | Identified by |
-|---|---|---|
-| Sales | an organization you might sell to | an account number |
-| Finance | an entity you invoice | a bill-to number |
-| The warehouse | an address you deliver to | a ship-to code |
-| Support | whoever opened the ticket | an email address |
+## Running it on one machine {.band-bottom}
 
-The four counts differ.
-
-## Why you cannot just query the live system
+::: {.lead}
+The frontend and the backend can be the same computer — your container, or your own laptop with Python on it.
+:::
 
 ::: {.cards .cards-2}
 ::: {.card}
-[It is built for writing]{.card-title}
+[localhost]{.card-title}
 
-Thousands of tiny writes a minute, tuned for that rather than for scanning a year.
+`127.0.0.1` is the loopback address. The browser asks the machine it is already running on, and the request never reaches a network.
 :::
 
 ::: {.card .card-blue}
-[Your report competes]{.card-title}
+[Ports]{.card-title}
 
-A heavy query slows the screen somebody is typing an order into.
+One machine runs many programs listening at once. The port number tells the operating system which of them gets the request.
 :::
-
-::: {.card}
-[It knows one corner]{.card-title}
-
-Finance cannot see sales. Neither can see the warehouse.
-:::
-
-::: {.card .card-sand}
-[It holds now]{.card-title}
-
-The current address and the current price. Not last year's.
-:::
-:::
-
-## Three kinds of copy, routinely confused {.plain-title}
-
-::: {.steps}
-1. The warehouse: a governed copy, refreshed on a schedule, with definitions written down.
-2. The extract: a file somebody pulled once, for one question, and never refreshed.
-3. The export: a spreadsheet mailed to someone who now treats it as the source.
 :::
 
 ::: {.note}
-The extract and the export are never refreshed.
+You write the app as a `.py` file. FastAPI is the usual Python library for one, and `uvicorn` starts it listening: `uvicorn app:app --host 0.0.0.0 --port 8000`.
 :::
 
-## The vocabulary you need for the rest of the day
 
-| | |
-|---|---|
-| System of record | the one place a fact is authoritative |
-| Silo | a store nothing else can reach |
-| Semantics | whether two columns with one name mean one thing |
-| Lineage | where this number came from, through every hop |
-| Quality | blanks, duplicates, and values nobody validates |
-
-## Five files, one question {.plain-title}
-
-::: {.lead}
-Northwind: a supplier of specialty foods to restaurants and delis. 500 orders, 93 customers, 77 products, 8 categories, spanning 2012 to 2023.
-:::
-
-Small enough to read in full.
-
-## What you are building {.plain-title}
-
-::: {.lead}
-Five spreadsheets in `~/data`: orders, order details, customers, products, categories. One question — which countries generated the most revenue, and how do you know.
-:::
-
-::: {.note .note-plum}
-Read all five parts before you start. Reach Part D even if you have to shorten Part C.
-:::
-
-## Part A — describe it first {.plain-title}
-
-
-Before any analysis, have it report — with the code shown:
-
-::: {.steps}
-1. Every file: row count, column names, data types.
-2. The date range of the orders, and whether each date column is a date or a string.
-3. Missing values by column, as counts rather than "a few".
-4. Which column joins to which, and whether each join is one-to-one or one-to-many.
-:::
-
-::: {.note}
-Write the join map on paper. You will need it in Part D.
-:::
-
-## Part B — revenue by country {.plain-title}
-
-
-::: {.steps}
-1. Compute revenue per order line, then total by the customer's country.
-2. There are two columns that could be the price. Say in writing which one you used and why.
-3. Report the row count after every merge and compare it to the row count before.
-4. Rank the countries and take the top five.
-:::
-
-::: {.note}
-There is no discount column and no freight column in these files. Whatever you report is price times quantity, and the deliverable has to say so.
-:::
-
-## Part C — a deliverable {.plain-title}
-
-
-::: {.cards .cards-2}
-::: {.card}
-[Option 1]{.card-title}
-
-An Excel workbook: the country table on one sheet, a chart, and a cell stating the revenue definition in words.
-:::
-
-::: {.card .card-blue}
-[Option 2]{.card-title}
-
-A five-slide deck: the question, the top five, the chart, the definition, and what you checked.
-:::
-:::
-
-Either one states the revenue definition on its face.
-
-## Part D — verify it {.plain-title}
-
-
-::: {.steps}
-1. Recompute the total by a second route — a different tool, a different order of operations, or straight from the raw files with no merges at all.
-2. Reconcile the two to the cent.
-3. If they disagree, find the cause before changing either one.
-4. List three things that could have made your number wrong, and how you ruled each one out.
-:::
-
-::: {.note}
-If the second route reproduces the first to the cent, say so on the deliverable.
-:::
-
-## Part E — if you finish {.plain-title}
-
-[remaining time]{.eyebrow}
-
-- Break revenue out by month and by category
-- Find a month that does not follow the months around it
-- Say what in the data produces it, and show the rows
-
-## When you are done {.band-bottom}
-
-Have open and ready to share:
-
-- Your number, and the definition behind it
-- Your chart
-- Your second route, and what it gave
-- The three things that could have gone wrong
-
-## What went wrong {.divider}
-
-## Four failures that raise no error
-
-::: {.cards .cards-2}
-::: {.card}
-[The wrong join]{.card-title}
-
-Rows that did not match are dropped. The total is smaller and nothing says so.
-:::
-
-::: {.card .card-blue}
-[The wrong column]{.card-title}
-
-Two files use one name for two different things, and the merge keeps both.
-:::
-
-::: {.card}
-[The unstated assumption]{.card-title}
-
-What counts as revenue, which rows are excluded, which dates are in scope.
-:::
-
-::: {.card .card-sand}
-[Invention]{.card-title}
-
-A number in prose that no line of code produced.
-:::
-:::
-
-## What is actually in these files
-
-| File | Rows | |
-|---|---:|---|
-| Orders | 500 | July 2012 to October 2023 |
-| Order details | 18,976 | 38 lines per order on average |
-| Customers | 93 | in 21 countries |
-| Products | 77 | in 8 categories |
-
-Every order line matches a product, an order, and a customer. No merge in this analysis drops a row.
-
-## Two columns named UnitPrice
-
-::: {.lead}
-Order details carries the price charged. Products carries the list price. Merge them and you get `UnitPrice_x` and `UnitPrice_y`.
-:::
-
-| Priced at | Total revenue |
-|---|---:|
-| The price charged | $13,963,378.65 |
-| The list price | $13,966,340.55 |
-
-The two answers differ by $2,962 on $14 million. A sanity check on the magnitude passes either way.
-
-## The rows with no country
-
-::: {.stats}
-::: {.stat}
-[2]{.stat-value}
-[customers with a blank country]{.stat-label}
-:::
-::: {.stat}
-[482]{.stat-value}
-[order lines behind them]{.stat-label}
-:::
-::: {.stat}
-[$373,609]{.stat-value}
-[revenue in those lines]{.stat-label}
-:::
-:::
-
-Grouping by country drops blank keys by default. The country table still adds up, to a total 2.7% below the real one, and no country is wrong.
-
-## One-to-many
-
-::: {.lead}
-Merge orders into order details and every order appears once per line — on average 38 times.
-:::
-
-Sum anything defined per order after that merge and you have counted it 38 times. On these files the multiplier is large enough to notice. On files where the ratio is 1.2, it is not.
-
-::: {.note}
-The check is one line: row count before the merge, row count after.
-:::
-
-## Dates
-
-- `03/04/2023` is March 4 or April 3 depending on who wrote the file
-- A date column read as text sorts `10/01` before `2/01`
-- These orders carry a time as well as a date, so a filter on equality matches nothing
-- A date read out of Excel can arrive as a serial number
-
-Ask which columns are date types and which are strings, before grouping by month.
-
-## Missing values
-
-| How it is written | What a naive count does |
-|---|---|
-| An empty cell | usually skipped |
-| `0` | included in the average |
-| `NA`, `N/A`, `-`, `unknown` | makes the whole column text |
-| A sentinel such as `-999` | included, silently |
-
-A numeric column that is text because of four `N/A` cells concatenates where you expected a sum.
-
-## Recompute another way {.band-bottom}
-
-::: {.steps}
-1. The same question by a different route through the data.
-2. The same question in a different tool — SQL against the same files, or a pivot table.
-3. The same question in a fresh conversation that has not seen the first answer.
-:::
-
-Each route drops different rows and rounds at different points. Agreement across them narrows what can still be wrong.
-
-## Make it read its own code
-
-::: {.prompt-box}
-::: {.box-title}
-Prompt
-:::
-Here is code and the answer it produced. Ignore the answer. Read the code and tell me what it actually computes — including what it drops and what it assumes.
-:::
-
-A fresh conversation has not seen the answer, so it cannot work backward from it.
-
-## Find the bug {.plain-title}
+## Build something interactive {.band-bottom}
 
 [Exercise]{.eyebrow}
 
 ::: {.steps}
-1. `~/data/planted/country_report.py` produces a country table. Its total is wrong.
-2. Read it first and predict where the number goes wrong. Do not run it yet.
-3. Now run it, find the actual causes, and say how much each one moves the total.
-4. Fix them and reconcile against your own Part B number.
+1. Ask for a small FastAPI app with one page and one input — a unit converter, a loan payment, anything with a number in and a number out.
+2. Run it: `uvicorn app:app --host 0.0.0.0 --port 8000`, and open the View tab.
+3. Watch the terminal while you use it. Opening the page logs a `GET`; submitting the form logs a `POST`.
+4. Change one thing and reload. Kill the old server first: `kill $(lsof -t -i:8000)`.
+:::
+
+
+## The API {.divider}
+
+## A fourth interface
+
+| Interface | Who is at the keyboard | What it is for |
+|---|---|---|
+| Chat in a browser | you | one question |
+| Claude Code | you | work on a machine |
+| A connector | you, inside another tool | reaching your data |
+| The API | a program | the same operation, many times |
+
+::: {.note}
+The first three assume a person is present. The API does not.
+:::
+
+
+## An API call in Python
+
+```python
+import anthropic
+
+client = anthropic.Anthropic()          # reads ANTHROPIC_API_KEY
+
+resp = client.messages.create(
+    model="claude-sonnet-5",
+    max_tokens=500,
+    system="You classify customer complaints. Answer with one word.",
+    messages=[{"role": "user", "content": "The unit arrived cracked."}],
+)
+
+print(resp.content[0].text)
+```
+
+
+## The same call through OpenRouter
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://openrouter.ai/api/v1",
+    api_key=os.environ["OPENROUTER_API_KEY"],
+)
+resp = client.chat.completions.create(
+    model="nvidia/nemotron-3.5-lightning:free",
+    messages=[{"role": "user", "content": "The unit arrived cracked."}],
+)
+print(resp.choices[0].message.content)
+```
+
+::: {.note}
+A different library, a different response shape, and the model is a string you can change. Free accounts are capped at fifty requests a day.
+:::
+
+
+## Get two keys {.plain-title}
+
+:::: {.columns}
+::: {.column width="50%"}
+[Anthropic]{.eyebrow}
+
+`platform.claude.com` → API keys → Create key. Pay per token, so set a spending limit on it.
+:::
+
+::: {.column width="50%"}
+[OpenRouter]{.eyebrow}
+
+`openrouter.ai` → Keys → Create key. Sign in with Google or GitHub, no card. One key reaches every provider it carries.
+:::
+::::
+
+::: {.note}
+Both are shown once. Copy each into a file called `env.txt`, one per line, and upload it to your container from the Files tab. Then tell Claude: *my keys are in `env.txt`*.
+:::
+
+
+## The key
+
+::: {.steps}
+1. Create a key in the console. It is shown once.
+2. Put it in an environment variable, not in the code.
+3. Never commit it. A key in a public repository is found in minutes.
+4. Set a spending limit on the key before you use it in a loop.
 :::
 
 ::: {.note}
-There is more than one defect, and they move the total in different directions.
+A loop over a large file with a bug in the exit condition spends real money.
 :::
 
-## Tomorrow {.band-bottom}
+## What you are charged for
 
-Today the output was a number. Tomorrow it is a document, and then an application.
+::: {.lead}
+Input tokens and output tokens, priced separately, per million.
+:::
+
+| | |
+|---|---|
+| Input | everything you send — instructions, tool definitions, the whole conversation so far |
+| Output | only what comes back |
+
+A conversation costs more each turn because the entire history is sent again every time. In an agent loop, every tool result joins that history.
+
+## First calls {.plain-title}
+
+[Exercise]{.eyebrow}
+
+::: {.steps}
+1. Put your key in the environment and make one call that returns a sentence.
+2. Change the system prompt and make the same call. Note what moved.
+3. Run the same request three times at temperature 1, then three times at 0.
+4. Now loop it: classify 200 rows of a CSV, one call per row, and write the results to a new column.
+5. Report what it cost.
+:::
+
+::: {.note}
+Record the cost of step 4 per row. Fifty thousand rows is that number times two hundred and fifty.
+:::
+
+## Build a chatbot {.band-bottom}
+
+[Breakout exercise]{.eyebrow}
+
+::: {.steps}
+1. Build a chatbot on either key — Anthropic or OpenRouter, your choice.
+2. Put your name on it, where anyone using it can see.
+3. Give the page a background you picked.
+4. Give it a system prompt that makes it answer in a way nobody else's will.
+:::
+
+::: {.note}
+The system prompt is the part that makes it yours. The other three are what make it obvious whose it is.
+:::
+
+
+## The loop {.divider}
+
+## What an agent is, exactly
+
+::: {.cards .cards-3}
+::: {.card}
+[A model]{.card-title}
+
+Which one, and at what temperature.
+:::
+
+::: {.card .card-blue}
+[A system prompt]{.card-title}
+
+What it is for, and what it refuses.
+:::
+
+::: {.card}
+[A tool list]{.card-title}
+
+Everything it can do. Nothing else is possible.
+:::
+
+::: {.card .card-sand}
+[A permission mode]{.card-title}
+
+Which actions stop for approval.
+:::
+
+::: {.card}
+[A place to run]{.card-title}
+
+A machine, a directory, a network.
+:::
+
+::: {.card .card-blue}
+[A loop]{.card-title}
+
+Call, execute, feed the result back, repeat.
+:::
+:::
+
+## Three kinds of tools
+
+| | Where the code is | Example |
+|---|---|---|
+| Built in | in the harness | read a file, run a command, fetch a page |
+| Yours | a function you wrote | look up a customer in your system |
+| Someone else's | an MCP server | the Northwind database, EIA, FRED |
+
+All three arrive at the model the same way: a name, a description, and a parameter schema.
+
+## A tool you write
+
+```python
+@tool("order_total",
+      "Total revenue for one order. Takes an order id.",
+      {"order_id": int})
+async def order_total(args):
+    df = pd.read_excel("northwind_orderdetails.xlsx")
+    rows = df[df.OrderID == args["order_id"]]
+    total = (rows.UnitPrice * rows.Quantity).sum()
+    return {"content": [{"type": "text", "text": f"${total:,.2f}"}]}
+```
+
+The description is the interface. The model never sees the code.
+
+## Tools from an agent SDK {.plain-title}
+
+::: {.lead}
+Pre-built code for the harness, and a set of tools that come with it. The Claude Agent SDK, the OpenAI Agents SDK, LangChain.
+:::
+
+```
+Read        Write       Edit
+Glob        Grep        Bash
+WebSearch   WebFetch    Task
+```
+
+::: {.note}
+The built-ins in the Claude Agent SDK. You choose which to include: `tools=[]` includes none, and naming a few includes only those.
+:::
+
+## Where they run
+
+| | |
+|---|---|
+| Read, Write, Edit, Bash, Grep | the agent's own process — its filesystem, its shell, its network |
+| Internal MCP tools | the same process — whatever it can import, it can run |
+| External MCP tools | someone else's server — arguments out over HTTP, only the result back |
+| `WebSearch` | Anthropic's search backend — titles and URLs, not pages |
+| `WebFetch` | downloads from your machine, then a small model extracts what was asked |
+
+::: {.note}
+So "on your machine" holds for the filesystem and shell tools. The two web tools are not local: the search runs at Anthropic, and the fetched page is sent there to be read.
+:::
+
+## Agent options {.plain-title}
+
+| `ClaudeAgentOptions` | |
+|---|---|
+| `system_prompt` | a string, or a file on disk when it is long |
+| `tools` | which built-ins to include — `tools=[]` for none |
+| `disallowed_tools` | takes a tool out of the model's context entirely |
+| `allowed_tools` | the tools that run without prompting |
+| `mcp_servers` | the servers to connect, plus the one holding your tools |
+| `max_turns` | how many tool-use round trips before the app stops it |
+
+::: {.note}
+`allowed_tools` is not a whitelist. A tool left off it still runs — it falls through to `permission_mode`.
+:::
+
+## Permission modes, in code {.band-bottom}
+
+| `permission_mode` | |
+|---|---|
+| `default` | prompts before file edits, shell commands, and network requests |
+| `acceptEdits` | auto-approves edits and common filesystem commands |
+| `plan` | read-only — proposes changes but makes none |
+| `dontAsk` | only `allowed_tools` run; anything else is denied, not prompted |
+| `bypassPermissions` | everything runs, no checks — sandboxed containers only |
+
+
+## Build one {.plain-title}
+
+[Exercise · three stages]{.eyebrow}
+
+::: {.steps}
+1. A chatbot with no tools at all. Ask it how many files are in the directory it is running in. Read the answer carefully.
+2. Give it one built-in tool — reading files — and ask again.
+3. Write a tool of your own over data you brought or the order spreadsheets. Give it a system prompt that says what it is for.
+:::
+
+::: {.note}
+In stage 1 the model has no way to see the directory. Keep its answer — you compare it against stage 2.
+:::
+
+## What stage 1 shows
+
+::: {.lead}
+Asked a question about a filesystem it cannot reach, a model with no tools still answers.
+:::
+
+- It produces a plausible number
+- It produces plausible filenames
+- Nothing in the output is marked as unavailable
+
+The same model with a file-reading tool answers correctly. What changed is the tool list.
+
+## Choosing what it can do {.divider}
+
+## A general agent and a narrow agent
+
+| | A general agent | A narrow agent |
+|---|---|---|
+| Tool list | everything | three tools |
+| Runs as | you | a service account |
+| Reaches | your whole machine | one dataset |
+| Right for | your own work | anything you hand to someone else |
+
+## An agent whose tool is an agent
+
+::: {.steps}
+1. An orchestrator receives the question and holds no data of its own.
+2. It calls a research agent that can read the public web and nothing private.
+3. It calls a data agent that can read your database and cannot reach the internet.
+4. It assembles the answer from what both returned.
+:::
+
+The two workers never share a context, so neither holds private data and an outbound channel at the same time.
+
+## Talk it out of its job {.plain-title}
+
+[Exercise]{.eyebrow}
+
+::: {.steps}
+1. Take the narrow agent you just built.
+2. Ask it something outside its purpose. See whether the system prompt holds.
+3. Now ask persuasively — a plausible reason, an appeal to an exception, an instruction that claims to come from you.
+4. Note which refusals came from the prompt and which came from a tool that does not exist.
+:::
+
+::: {.note}
+Keep what you found. It is the first item after the break.
+:::
+
+## Screen shares {.band-bottom}
+
+- What your agent is for, in one sentence
+- Its tool list, read out loud
+- The one thing you could talk it into
+
+# 18 · Managing security risks
+
+Believing it, sending it out, and letting it act.
+
+## Three risks
+
+::: {.cards .cards-3}
+::: {.card}
+[Believing it]{.card-title}
+
+A wrong number, delivered fluently. Friday morning was this one.
+:::
+
+::: {.card .card-blue}
+[Sending data out]{.card-title}
+
+Your material reaching a third party. A contract problem.
+:::
+
+::: {.card .card-sand}
+[Letting it act]{.card-title}
+
+An agent doing something on your behalf that you did not ask for. An engineering problem.
+:::
+:::
+
+Most corporate AI policy addresses the second one only.
+
+## Sending data out {.divider}
+
+## What a contract gives you
+
+| | What it adds | Enough for |
+|---|---|---|
+| Opt out of training | a setting, revocable, data still retained briefly | personal, non-sensitive work |
+| A signed DPA | liability, breach notice, audit rights, a subprocessor list | client data, regulated data |
+| A DPA plus a BAA | the same, covering protected health information | anything under HIPAA |
+| An enterprise agreement | SLAs, support, SSO, capacity | scale and operations |
+
+::: {.note}
+The last row buys operations. The privacy terms are the same as the row above it.
+:::
+
+## What the regulation actually requires
+
+:::: {.columns}
+::: {.column width="50%"}
+[HIPAA]{.eyebrow}
+
+Satisfactory assurances "must be documented through a written contract" meeting §164.504(e).
+
+A BAA is required, not advisable. 45 CFR 164.502(e).
+:::
+
+::: {.column width="50%"}
+[SEC Reg S-P]{.eyebrow}
+
+Written policies "reasonably designed to require oversight, including through due diligence and monitoring, of service providers."
+
+17 CFR 248.30.
+:::
+::::
+
+## Run it where the data already is
+
+| | AWS | Google Cloud | Azure |
+|---|---|---|---|
+| Claude | Bedrock | Vertex AI | Foundry |
+| GPT | Bedrock | | Azure AI Foundry |
+| Gemini | | native | |
+
+If the data already sits in one of those, the model can run inside the same perimeter. No new vendor, no new trust boundary, and the DPA you already signed still applies.
+
+## When the contract is not enough
+
+::: {.steps}
+1. Send less — a schema and a few synthetic rows rather than the table.
+2. Anonymize — strip the names, the account numbers, the identifiers.
+3. Run a smaller model on your own hardware, so nothing leaves at all.
+:::
+
+::: {.note}
+A DPA is a promise backed by liability. These three are physical facts about where the data went.
+:::
+
+## Letting it act {.divider}
+
+## Prompt injection
+
+::: {.lead}
+The model cannot tell an instruction from a piece of content. Both arrive as text in the same conversation.
+:::
+
+Text placed where the agent will read it — an email, a document, a web page, a spreadsheet cell — is read in the same way as text you typed. An attacker needs no credentials, only a way to get words in front of the model.
+
+::: {.note}
+OWASP has ranked this first among risks to LLM applications since 2025.
+:::
+
+## EchoLeak {.plain-title}
+
+[CVE-2025-32711 · Microsoft 365 Copilot · June 2025]{.eyebrow}
+
+::: {.steps}
+1. An attacker mails the victim a message containing instructions invisible to a human reader.
+2. The victim asks Copilot to summarize their email. Copilot reads the hidden instructions.
+3. Following them, Copilot places confidential data inside a URL in its response.
+4. The victim's browser fetches that URL automatically.
+5. The attacker reads the data out of their own server log.
+:::
+
+Zero clicks by the victim beyond the summary request.
+
+## Three legs
+
+::: {.cards .cards-3}
+::: {.card}
+[Private data]{.card-title}
+
+Something worth taking: client records, financials, an inbox.
+:::
+
+::: {.card .card-blue}
+[Untrusted content]{.card-title}
+
+Text an outsider can control: a web page, an email, an uploaded file.
+:::
+
+::: {.card .card-sand}
+[An outbound channel]{.card-title}
+
+Any way for text to leave: fetching a URL, sending mail, writing somewhere shared.
+:::
+:::
+
+All three in one agent is the condition. Remove any one and the attack does not work.
+
+## The question to ask about any deployment
+
+::: {.prompt-box}
+::: {.box-title}
+The check
+:::
+Does this agent hold private data, read content an outsider can influence, and have a way to send text out — at the same time?
+:::
+
+It is answerable from an architecture diagram, without knowing anything about how the model works.
+
+## Blast radius of an Excel add-in
+
+The Claude for Excel add-in from Thursday, checked against the three legs.
+
+::: {.cards .cards-3}
+::: {.card}
+[Private data]{.card-title}
+
+The open workbook. With "work across files" on, also the open deck, the open Word document, and the open Outlook email.
+:::
+
+::: {.card .card-blue}
+[Untrusted content]{.card-title}
+
+A downloaded template, a vendor file, a data import, or an email from outside.
+:::
+
+::: {.card .card-sand}
+[An outbound channel]{.card-title}
+
+Writing into the open document or email, and any connector you have enabled.
+:::
+:::
+
+::: {.note}
+"Work across files" is on by default for Pro and Max plans and off by default for Team and Enterprise. Anthropic's testing found the add-in could be manipulated into extracting sensitive information, modifying data, or taking destructive actions.
+:::
+
+## Red-team a classmate's agent {.plain-title}
+
+[Exercise]{.eyebrow}
+
+::: {.steps}
+1. Swap agents with someone. You get their code and their tool list.
+2. Diagram it: what private data can it reach, what untrusted text does it read, how could text leave.
+3. Plant an injection in something it will read — a file, a row, a page it fetches.
+4. Try to make it act on the injection. Record what worked and what it refused.
+5. Give the author two changes: one to the prompt, one to the tool list. Say which one you would actually rely on.
+:::
+
+::: {.note}
+Use synthetic data. Nothing in this exercise touches anything real.
+:::
+
+## Isolation and governance {.divider}
+
+## Two ways to stop the same thing {.compare}
+
+:::: {.columns}
+::: {.column width="50%"}
+[Governance]{.eyebrow}
+
+Every call is inspected as it is made and allowed or refused.
+
+Works on the calls you anticipated. Judgment happens at run time, every time.
+:::
+
+::: {.column width="50%"}
+[Isolation]{.eyebrow}
+
+The route does not exist.
+
+Works on calls nobody anticipated. There is nothing to judge at run time.
+:::
+::::
+
+::: {.note}
+Real systems use both. The order matters: isolate first, then govern what remains.
+:::
+
+## Where the call is made from {.plain-title}
+
+::: {.lead}
+In Claude Cowork, and in most setups a firm will hand you, the machine the agent's shell runs on has no route to the internet. The connector works anyway.
+:::
+
+:::: {.columns}
+::: {.column width="50%"}
+[At the shell]{.eyebrow}
+
+```bash
+curl https://api.stlouisfed.org/...
+```
+
+Refused. Everything leaving that machine passes a proxy that allows a short list of addresses, and that is not one of them.
+:::
+
+::: {.column width="50%"}
+[Through the connector]{.eyebrow}
+
+```text
+fred_get_observations("UNRATE")
+```
+
+Rows come back. Same machine, same model.
+:::
+::::
+
+::: {.note}
+Because your machine never places the call. The client end sits outside it, calls FRED itself, and hands the rows back into the conversation. Your key goes with it and is never on the machine.
+:::
+
+## What each option allows
+
+:::: {.columns}
+::: {.column width="50%"}
+[Open the network instead]{.eyebrow}
+
+Allow the machine to reach `stlouisfed.org` and it can send anything to any address there, in any form it likes.
+:::
+
+::: {.column width="50%"}
+[Leave it shut, add a connector]{.eyebrow}
+
+It can call `run_sql` with a `SELECT`. That is the entire new capability.
+:::
+::::
+
+The network stays off and the connector goes on.
+
+::: {.note}
+The connector reaches out from outside the sandbox holding your credentials, so a sentence in a file it reads can ask for that call.
+:::
+
+## The split
+
+::: {.steps}
+1. The agent that reads untrusted content gets no private data and no credentials.
+2. The agent that holds private data has no route to the internet.
+3. An orchestrator calls both as tools and never exposes one to the other's context.
+:::
+
+Neither worker ever holds all three legs. That property is a fact about the network and the tool lists, not a rule either agent has been asked to follow.
+
+## Your container, as an example
+
+| | |
+|---|---|
+| Filesystem | its own — no other student's files exist inside it |
+| Processes | its own — you cannot see anyone else's |
+| Network | its own namespace, and it cannot reach a peer container |
+| The gate | your terminal sits behind your own login |
+
+Your container is an instance of that pattern.
+
+## Monday {.divider}
+
+## Write the plan {.plain-title}
+
+[Exercise]{.eyebrow}
+
+One page, covering:
+
+::: {.steps}
+1. The workflow. Who does it now, how often, and how long it takes.
+2. What you would build — a skill, an app, or an agent — and who uses it.
+3. The data it touches, and where that data lives today.
+4. The tool list, written out. What it can do and what it deliberately cannot.
+5. The three-leg check, answered.
+6. What it costs to run, and what has to be true for it to be worth that.
+:::
+
+## Pitches {.band-bottom}
+
+
+Three minutes each. The room responds as the people who would have to approve it, fund it, or use it.
+
+For each plan, someone in the room names:
+
+- The step most likely to fail in the real workflow
+- The one item on the tool list they would remove
+
+## A habit, a file, a question
+
+::: {.cards .cards-3}
+::: {.card}
+[A habit]{.card-title}
+
+Describe the data, require the code, check the counts, reconcile a second way.
+:::
+
+::: {.card .card-blue}
+[A file]{.card-title}
+
+A skill, published, that a colleague can install in two commands.
+:::
+
+::: {.card}
+[A question]{.card-title}
+
+Private data, untrusted content, an outbound channel — asked of anything before it is switched on.
+:::
+:::
+
+## The Northwind MCP server {.plain-title}
+
+::: {.lead}
+A read-only server over the Northwind trading database, at `https://northwind-mcp.rice-business.org/mcp`.
+:::
+
+| | |
+|---|---|
+| `list_tables` | every table in the database |
+| `describe_table` | column names and types for one table |
+| `query_northwind` | a read-only `SELECT`, returned as CSV |
+
+::: {.note}
+`query_northwind` reads only categories, customers, order_details, orders and products. There is no tool that writes.
+:::
+
+## Connect it yourself
+
+Add it to Claude Code in one command:
+
+```bash
+claude mcp add --transport http --scope user \
+  northwind https://northwind-mcp.rice-business.org/mcp
+```
+
+::: {.note}
+`claude mcp list` shows it connected; `/mcp` inside Claude lists the three tools. `--scope user` makes it available from any directory — drop the flag and it lives only in the current project.
+:::
+
+## Build a data explorer {.band-bottom}
+
+[Exercise]{.eyebrow}
+
+::: {.prompt-box}
+::: {.box-title}
+Tell Claude
+:::
+Using the `claude_agent_sdk`, create a FastAPI agent app called `explorer.py` that connects to the Northwind MCP server and allows its three tools. Also create an internal MCP server exposing one tool, `run_python`, that runs Python for calculations and charts. The system prompt should say the agent is a data analyst for the Northwind trading company, that those tools are its only source of Northwind data, and that it should call `list_tables` and `describe_table` before it writes a query. Set `tools=[]`, `permission_mode` to `dontAsk`, and `max_turns` to 15.
+:::
+
+## Ask it something a chatbot cannot answer
+
+::: {.lead}
+Which customers ordered in 1997 but not in 1998?
+:::
+
+::: {.steps}
+1. Watch which tools it calls, and in what order.
+2. Check that it described the tables before writing SQL.
+3. Ask for the answer as a chart, and see `run_python` used instead.
+:::

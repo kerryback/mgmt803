@@ -31,8 +31,74 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-963326a71a77be66e1a2dc2e7f4f8a8d.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-fe3e5a70c3c5b29320272df664d210fd.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -144,64 +210,84 @@ Kerry Back<br>J. Howard Creekmore Professor of Finance
 </section>
 <section id="this-morning" class="slide level2">
 <h2>This morning</h2>
-<div class="lead">
-<p>Five spreadsheets and one question: which countries generated the most revenue, and how do you know.</p>
-</div>
 <div class="cards cards-2">
 <div class="card">
-<p><span class="card-title">Where the data is</span></p>
-<p>What an organization actually holds, which system is the record, and why the copies disagree.</p>
+<p><span class="card-title">Creating agents</span></p>
+<p>The API underneath everything, and an agent with a tool list you chose.</p>
 </div>
 <div class="card card-blue">
-<p><span class="card-title">Whether to believe it</span></p>
-<p>The joins, columns and blanks that produce a wrong total with no error message.</p>
+<p><span class="card-title">Managing security risks</span></p>
+<p>Believing it, sending data out, letting it act, and a one-page plan.</p>
 </div>
 </div>
 </section>
 <section>
-<section id="working-with-data" class="title-slide slide level1 center">
-<h1>12 · Working with data</h1>
-<p>The country revenue report, then the four ways the number comes out wrong.</p>
+<section id="creating-agents" class="title-slide slide level1 center">
+<h1>17 · Creating agents</h1>
+
 </section>
-<section id="we-should-point-ai-at-our-data" class="slide level2 plain-title">
-<h2>“We should point AI at our data”</h2>
-<div class="prompt-box">
-<div class="box-title">
-<p>Heard in every company this year</p>
+<section id="a-chatbot-produces-text" class="slide level2">
+<h2>A chatbot produces text</h2>
+<div class="lead">
+<p>It receives text and returns text. That is the entire capability.</p>
 </div>
-<p>We should point AI at our data.</p>
+<ul>
+<li>Everything it “knows” arrived as text in the request</li>
+<li>Everything it “does” leaves as text in the response</li>
+<li>No files, no network, no memory between conversations</li>
+</ul>
+<p>A chatbot that appears to remember you is being handed the earlier conversation again on every turn.</p>
+</section>
+<section id="an-agent-is-a-chatbot-with-tools" class="slide level2 band-bottom">
+<h2>An agent is a chatbot with tools</h2>
+<div class="steps">
+<ol type="1">
+<li>You send a request. The harness also sends a list of tools and what each one does.</li>
+<li>The model answers with text, or with a request to use a tool.</li>
+<li>The harness runs the tool and puts the result back into the conversation.</li>
+<li>Repeat until the model answers with text and no tool call.</li>
+</ol>
 </div>
-<div class="cards cards-3">
+</section>
+<section id="what-the-model-is-sent" class="slide level2">
+<h2>What the model is sent</h2>
+<p>Every turn, the harness assembles one block of text:</p>
+<div class="cards cards-2">
 <div class="card">
-<p><span class="card-title">Which data?</span></p>
+<p><span class="card-title">Fixed each turn</span></p>
+<p>The system prompt. The tool definitions. Any instruction files the harness is coded to include.</p>
 </div>
 <div class="card card-blue">
-<p><span class="card-title">In whose system?</span></p>
-</div>
-<div class="card">
-<p><span class="card-title">Entered by whom, and when?</span></p>
-</div>
-</div>
-</section>
-<section id="what-the-surveys-say" class="slide level2">
-<h2>What the surveys say</h2>
-<div class="stats">
-<div class="stat">
-<p><span class="stat-value">897</span> <span class="stat-label">applications in the average enterprise</span></p>
-</div>
-<div class="stat">
-<p><span class="stat-value">29%</span> <span class="stat-label">of them connected to anything else</span></p>
-</div>
-<div class="stat">
-<p><span class="stat-value">7%</span> <span class="stat-label">of leaders call their data ready for AI</span></p>
+<p><span class="card-title">Growing each turn</span></p>
+<p>Your messages, the model’s replies, and the full output of every tool that has run so far.</p>
 </div>
 </div>
 <div class="note">
-<p>In the same surveys, 19% of data is called siloed or unusable, and 70% of leaders believe their most valuable insights are inside that 19%.</p>
+<p>A tool result is text in the conversation, which is why a document the agent read can change what it does next.</p>
 </div>
 </section>
-<section id="where-a-number-actually-lives" class="slide level2 plain-title">
-<h2>Where a number actually lives</h2>
+<section id="how-software-works" class="slide level2 divider">
+<h2>How software works</h2>
+</section>
+<section id="frontend-and-backend" class="slide level2">
+<h2>Frontend and backend</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="eyebrow">Frontend</span></p>
+<p>The browser. HTML, CSS and JavaScript — it draws the page and collects the clicks.</p>
+</div><div class="column" style="width:50%;">
+<p><span class="eyebrow">Backend</span></p>
+<p>A program on a server, listening continuously for requests. Yours will be Python.</p>
+</div></div>
+<div class="lead">
+<p>You open a URL. The browser sends a request. The server sends back HTML, CSS and JavaScript. The browser interprets that and shows you a page.</p>
+</div>
+<div class="note">
+<p>Right-click any page and choose View Page Source. That is the frontend code, exactly as the backend handed it over.</p>
+</div>
+</section>
+<section id="two-kinds-of-request" class="slide level2 plain-title">
+<h2>Two kinds of request</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
@@ -211,415 +297,920 @@ Kerry Back<br>J. Howard Creekmore Professor of Finance
 <thead>
 <tr class="header">
 <th></th>
-<th>Holds</th>
-<th>Reachable by</th>
+<th>What it carries</th>
+<th>What the server does</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>The operational system</td>
-<td>what is true right now</td>
-<td>its own screens</td>
+<td><code>GET</code></td>
+<td>a path, and parameters in the URL</td>
+<td>sends back a page, or data</td>
 </tr>
 <tr class="even">
-<td>The warehouse</td>
-<td>a nightly copy, reshaped for questions</td>
-<td>analysts with SQL</td>
-</tr>
-<tr class="odd">
-<td>A dashboard</td>
-<td>a fixed set of questions chosen when it was built</td>
-<td>anyone</td>
-</tr>
-<tr class="even">
-<td>An extract</td>
-<td>one analyst’s copy, as of when it was pulled</td>
-<td>whoever they mailed it to</td>
-</tr>
-<tr class="odd">
-<td>A shared drive</td>
-<td>the documents none of the above hold</td>
-<td>anyone who can find it</td>
+<td><code>POST</code></td>
+<td>a body — a form, a ticker you typed</td>
+<td>whatever it was written to do, then replies</td>
 </tr>
 </tbody>
 </table>
+<div class="note">
+<p>Opening a page is a <code>GET</code>. Clicking submit is usually a <code>POST</code>.</p>
+</div>
 </section>
-<section id="four-systems-four-meanings-of-customer" class="slide level2">
-<h2>Four systems, four meanings of “customer”</h2>
+<section id="running-it-on-one-machine" class="slide level2 band-bottom">
+<h2>Running it on one machine</h2>
+<div class="lead">
+<p>The frontend and the backend can be the same computer — your container, or your own laptop with Python on it.</p>
+</div>
+<div class="cards cards-2">
+<div class="card">
+<p><span class="card-title">localhost</span></p>
+<p><code>127.0.0.1</code> is the loopback address. The browser asks the machine it is already running on, and the request never reaches a network.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">Ports</span></p>
+<p>One machine runs many programs listening at once. The port number tells the operating system which of them gets the request.</p>
+</div>
+</div>
+<div class="note">
+<p>You write the app as a <code>.py</code> file. FastAPI is the usual Python library for one, and <code>uvicorn</code> starts it listening: <code>uvicorn app:app --host 0.0.0.0 --port 8000</code>.</p>
+</div>
+</section>
+<section id="build-something-interactive" class="slide level2 band-bottom">
+<h2>Build something interactive</h2>
+<p><span class="eyebrow">Exercise</span></p>
+<div class="steps">
+<ol type="1">
+<li>Ask for a small FastAPI app with one page and one input — a unit converter, a loan payment, anything with a number in and a number out.</li>
+<li>Run it: <code>uvicorn app:app --host 0.0.0.0 --port 8000</code>, and open the View tab.</li>
+<li>Watch the terminal while you use it. Opening the page logs a <code>GET</code>; submitting the form logs a <code>POST</code>.</li>
+<li>Change one thing and reload. Kill the old server first: <code>kill $(lsof -t -i:8000)</code>.</li>
+</ol>
+</div>
+</section>
+<section id="the-api" class="slide level2 divider">
+<h2>The API</h2>
+</section>
+<section id="a-fourth-interface" class="slide level2">
+<h2>A fourth interface</h2>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>In this system</th>
-<th>A customer is</th>
-<th>Identified by</th>
+<th>Interface</th>
+<th>Who is at the keyboard</th>
+<th>What it is for</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Sales</td>
-<td>an organization you might sell to</td>
-<td>an account number</td>
+<td>Chat in a browser</td>
+<td>you</td>
+<td>one question</td>
 </tr>
 <tr class="even">
-<td>Finance</td>
-<td>an entity you invoice</td>
-<td>a bill-to number</td>
+<td>Claude Code</td>
+<td>you</td>
+<td>work on a machine</td>
 </tr>
 <tr class="odd">
-<td>The warehouse</td>
-<td>an address you deliver to</td>
-<td>a ship-to code</td>
+<td>A connector</td>
+<td>you, inside another tool</td>
+<td>reaching your data</td>
 </tr>
 <tr class="even">
-<td>Support</td>
-<td>whoever opened the ticket</td>
-<td>an email address</td>
+<td>The API</td>
+<td>a program</td>
+<td>the same operation, many times</td>
 </tr>
 </tbody>
 </table>
-<p>The four counts differ.</p>
-</section>
-<section id="why-you-cannot-just-query-the-live-system" class="slide level2">
-<h2>Why you cannot just query the live system</h2>
-<div class="cards cards-2">
-<div class="card">
-<p><span class="card-title">It is built for writing</span></p>
-<p>Thousands of tiny writes a minute, tuned for that rather than for scanning a year.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">Your report competes</span></p>
-<p>A heavy query slows the screen somebody is typing an order into.</p>
-</div>
-<div class="card">
-<p><span class="card-title">It knows one corner</span></p>
-<p>Finance cannot see sales. Neither can see the warehouse.</p>
-</div>
-<div class="card card-sand">
-<p><span class="card-title">It holds now</span></p>
-<p>The current address and the current price. Not last year’s.</p>
-</div>
+<div class="note">
+<p>The first three assume a person is present. The API does not.</p>
 </div>
 </section>
-<section id="three-kinds-of-copy-routinely-confused" class="slide level2 plain-title">
-<h2>Three kinds of copy, routinely confused</h2>
+<section id="an-api-call-in-python" class="slide level2">
+<h2>An API call in Python</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">import</span> anthropic</span>
+<span id="cb1-2"><a></a></span>
+<span id="cb1-3"><a></a>client <span class="op">=</span> anthropic.Anthropic()          <span class="co"># reads ANTHROPIC_API_KEY</span></span>
+<span id="cb1-4"><a></a></span>
+<span id="cb1-5"><a></a>resp <span class="op">=</span> client.messages.create(</span>
+<span id="cb1-6"><a></a>    model<span class="op">=</span><span class="st">"claude-sonnet-5"</span>,</span>
+<span id="cb1-7"><a></a>    max_tokens<span class="op">=</span><span class="dv">500</span>,</span>
+<span id="cb1-8"><a></a>    system<span class="op">=</span><span class="st">"You classify customer complaints. Answer with one word."</span>,</span>
+<span id="cb1-9"><a></a>    messages<span class="op">=</span>[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: <span class="st">"The unit arrived cracked."</span>}],</span>
+<span id="cb1-10"><a></a>)</span>
+<span id="cb1-11"><a></a></span>
+<span id="cb1-12"><a></a><span class="bu">print</span>(resp.content[<span class="dv">0</span>].text)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="the-same-call-through-openrouter" class="slide level2">
+<h2>The same call through OpenRouter</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="im">import</span> os</span>
+<span id="cb2-2"><a></a><span class="im">from</span> openai <span class="im">import</span> OpenAI</span>
+<span id="cb2-3"><a></a></span>
+<span id="cb2-4"><a></a>client <span class="op">=</span> OpenAI(</span>
+<span id="cb2-5"><a></a>    base_url<span class="op">=</span><span class="st">"https://openrouter.ai/api/v1"</span>,</span>
+<span id="cb2-6"><a></a>    api_key<span class="op">=</span>os.environ[<span class="st">"OPENROUTER_API_KEY"</span>],</span>
+<span id="cb2-7"><a></a>)</span>
+<span id="cb2-8"><a></a>resp <span class="op">=</span> client.chat.completions.create(</span>
+<span id="cb2-9"><a></a>    model<span class="op">=</span><span class="st">"nvidia/nemotron-3.5-lightning:free"</span>,</span>
+<span id="cb2-10"><a></a>    messages<span class="op">=</span>[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: <span class="st">"The unit arrived cracked."</span>}],</span>
+<span id="cb2-11"><a></a>)</span>
+<span id="cb2-12"><a></a><span class="bu">print</span>(resp.choices[<span class="dv">0</span>].message.content)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="note">
+<p>A different library, a different response shape, and the model is a string you can change. Free accounts are capped at fifty requests a day.</p>
+</div>
+</section>
+<section id="get-two-keys" class="slide level2 plain-title">
+<h2>Get two keys</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="eyebrow">Anthropic</span></p>
+<p><code>platform.claude.com</code> → API keys → Create key. Pay per token, so set a spending limit on it.</p>
+</div><div class="column" style="width:50%;">
+<p><span class="eyebrow">OpenRouter</span></p>
+<p><code>openrouter.ai</code> → Keys → Create key. Sign in with Google or GitHub, no card. One key reaches every provider it carries.</p>
+</div></div>
+<div class="note">
+<p>Both are shown once. Copy each into a file called <code>env.txt</code>, one per line, and upload it to your container from the Files tab. Then tell Claude: <em>my keys are in <code>env.txt</code></em>.</p>
+</div>
+</section>
+<section id="the-key" class="slide level2">
+<h2>The key</h2>
 <div class="steps">
 <ol type="1">
-<li>The warehouse: a governed copy, refreshed on a schedule, with definitions written down.</li>
-<li>The extract: a file somebody pulled once, for one question, and never refreshed.</li>
-<li>The export: a spreadsheet mailed to someone who now treats it as the source.</li>
+<li>Create a key in the console. It is shown once.</li>
+<li>Put it in an environment variable, not in the code.</li>
+<li>Never commit it. A key in a public repository is found in minutes.</li>
+<li>Set a spending limit on the key before you use it in a loop.</li>
 </ol>
 </div>
 <div class="note">
-<p>The extract and the export are never refreshed.</p>
+<p>A loop over a large file with a bug in the exit condition spends real money.</p>
 </div>
 </section>
-<section id="the-vocabulary-you-need-for-the-rest-of-the-day" class="slide level2">
-<h2>The vocabulary you need for the rest of the day</h2>
+<section id="what-you-are-charged-for" class="slide level2">
+<h2>What you are charged for</h2>
+<div class="lead">
+<p>Input tokens and output tokens, priced separately, per million.</p>
+</div>
 <table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
 <tbody>
 <tr class="odd">
-<td>System of record</td>
-<td>the one place a fact is authoritative</td>
+<td>Input</td>
+<td>everything you send — instructions, tool definitions, the whole conversation so far</td>
 </tr>
 <tr class="even">
-<td>Silo</td>
-<td>a store nothing else can reach</td>
-</tr>
-<tr class="odd">
-<td>Semantics</td>
-<td>whether two columns with one name mean one thing</td>
-</tr>
-<tr class="even">
-<td>Lineage</td>
-<td>where this number came from, through every hop</td>
-</tr>
-<tr class="odd">
-<td>Quality</td>
-<td>blanks, duplicates, and values nobody validates</td>
+<td>Output</td>
+<td>only what comes back</td>
 </tr>
 </tbody>
 </table>
+<p>A conversation costs more each turn because the entire history is sent again every time. In an agent loop, every tool result joins that history.</p>
 </section>
-<section id="five-files-one-question" class="slide level2 plain-title">
-<h2>Five files, one question</h2>
-<div class="lead">
-<p>Northwind: a supplier of specialty foods to restaurants and delis. 500 orders, 93 customers, 77 products, 8 categories, spanning 2012 to 2023.</p>
-</div>
-<p>Small enough to read in full.</p>
-</section>
-<section id="what-you-are-building" class="slide level2 plain-title">
-<h2>What you are building</h2>
-<div class="lead">
-<p>Five spreadsheets in <code>~/data</code>: orders, order details, customers, products, categories. One question — which countries generated the most revenue, and how do you know.</p>
-</div>
-<div class="note note-plum">
-<p>Read all five parts before you start. Reach Part D even if you have to shorten Part C.</p>
-</div>
-</section>
-<section id="part-a-describe-it-first" class="slide level2 plain-title">
-<h2>Part A — describe it first</h2>
-<p>Before any analysis, have it report — with the code shown:</p>
+<section id="first-calls" class="slide level2 plain-title">
+<h2>First calls</h2>
+<p><span class="eyebrow">Exercise</span></p>
 <div class="steps">
 <ol type="1">
-<li>Every file: row count, column names, data types.</li>
-<li>The date range of the orders, and whether each date column is a date or a string.</li>
-<li>Missing values by column, as counts rather than “a few”.</li>
-<li>Which column joins to which, and whether each join is one-to-one or one-to-many.</li>
+<li>Put your key in the environment and make one call that returns a sentence.</li>
+<li>Change the system prompt and make the same call. Note what moved.</li>
+<li>Run the same request three times at temperature 1, then three times at 0.</li>
+<li>Now loop it: classify 200 rows of a CSV, one call per row, and write the results to a new column.</li>
+<li>Report what it cost.</li>
 </ol>
 </div>
 <div class="note">
-<p>Write the join map on paper. You will need it in Part D.</p>
+<p>Record the cost of step 4 per row. Fifty thousand rows is that number times two hundred and fifty.</p>
 </div>
 </section>
-<section id="part-b-revenue-by-country" class="slide level2 plain-title">
-<h2>Part B — revenue by country</h2>
+<section id="build-a-chatbot" class="slide level2 band-bottom">
+<h2>Build a chatbot</h2>
+<p><span class="eyebrow">Breakout exercise</span></p>
 <div class="steps">
 <ol type="1">
-<li>Compute revenue per order line, then total by the customer’s country.</li>
-<li>There are two columns that could be the price. Say in writing which one you used and why.</li>
-<li>Report the row count after every merge and compare it to the row count before.</li>
-<li>Rank the countries and take the top five.</li>
+<li>Build a chatbot on either key — Anthropic or OpenRouter, your choice.</li>
+<li>Put your name on it, where anyone using it can see.</li>
+<li>Give the page a background you picked.</li>
+<li>Give it a system prompt that makes it answer in a way nobody else’s will.</li>
 </ol>
 </div>
 <div class="note">
-<p>There is no discount column and no freight column in these files. Whatever you report is price times quantity, and the deliverable has to say so.</p>
+<p>The system prompt is the part that makes it yours. The other three are what make it obvious whose it is.</p>
 </div>
 </section>
-<section id="part-c-a-deliverable" class="slide level2 plain-title">
-<h2>Part C — a deliverable</h2>
-<div class="cards cards-2">
+<section id="the-loop" class="slide level2 divider">
+<h2>The loop</h2>
+</section>
+<section id="what-an-agent-is-exactly" class="slide level2">
+<h2>What an agent is, exactly</h2>
+<div class="cards cards-3">
 <div class="card">
-<p><span class="card-title">Option 1</span></p>
-<p>An Excel workbook: the country table on one sheet, a chart, and a cell stating the revenue definition in words.</p>
+<p><span class="card-title">A model</span></p>
+<p>Which one, and at what temperature.</p>
 </div>
 <div class="card card-blue">
-<p><span class="card-title">Option 2</span></p>
-<p>A five-slide deck: the question, the top five, the chart, the definition, and what you checked.</p>
-</div>
-</div>
-<p>Either one states the revenue definition on its face.</p>
-</section>
-<section id="part-d-verify-it" class="slide level2 plain-title">
-<h2>Part D — verify it</h2>
-<div class="steps">
-<ol type="1">
-<li>Recompute the total by a second route — a different tool, a different order of operations, or straight from the raw files with no merges at all.</li>
-<li>Reconcile the two to the cent.</li>
-<li>If they disagree, find the cause before changing either one.</li>
-<li>List three things that could have made your number wrong, and how you ruled each one out.</li>
-</ol>
-</div>
-<div class="note">
-<p>If the second route reproduces the first to the cent, say so on the deliverable.</p>
-</div>
-</section>
-<section id="part-e-if-you-finish" class="slide level2 plain-title">
-<h2>Part E — if you finish</h2>
-<p><span class="eyebrow">remaining time</span></p>
-<ul>
-<li>Break revenue out by month and by category</li>
-<li>Find a month that does not follow the months around it</li>
-<li>Say what in the data produces it, and show the rows</li>
-</ul>
-</section>
-<section id="when-you-are-done" class="slide level2 band-bottom">
-<h2>When you are done</h2>
-<p>Have open and ready to share:</p>
-<ul>
-<li>Your number, and the definition behind it</li>
-<li>Your chart</li>
-<li>Your second route, and what it gave</li>
-<li>The three things that could have gone wrong</li>
-</ul>
-</section>
-<section id="what-went-wrong" class="slide level2 divider">
-<h2>What went wrong</h2>
-</section>
-<section id="four-failures-that-raise-no-error" class="slide level2">
-<h2>Four failures that raise no error</h2>
-<div class="cards cards-2">
-<div class="card">
-<p><span class="card-title">The wrong join</span></p>
-<p>Rows that did not match are dropped. The total is smaller and nothing says so.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">The wrong column</span></p>
-<p>Two files use one name for two different things, and the merge keeps both.</p>
+<p><span class="card-title">A system prompt</span></p>
+<p>What it is for, and what it refuses.</p>
 </div>
 <div class="card">
-<p><span class="card-title">The unstated assumption</span></p>
-<p>What counts as revenue, which rows are excluded, which dates are in scope.</p>
+<p><span class="card-title">A tool list</span></p>
+<p>Everything it can do. Nothing else is possible.</p>
 </div>
 <div class="card card-sand">
-<p><span class="card-title">Invention</span></p>
-<p>A number in prose that no line of code produced.</p>
+<p><span class="card-title">A permission mode</span></p>
+<p>Which actions stop for approval.</p>
+</div>
+<div class="card">
+<p><span class="card-title">A place to run</span></p>
+<p>A machine, a directory, a network.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">A loop</span></p>
+<p>Call, execute, feed the result back, repeat.</p>
 </div>
 </div>
 </section>
-<section id="what-is-actually-in-these-files" class="slide level2">
-<h2>What is actually in these files</h2>
+<section id="three-kinds-of-tools" class="slide level2">
+<h2>Three kinds of tools</h2>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th>File</th>
-<th style="text-align: right;">Rows</th>
+<th></th>
+<th>Where the code is</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Built in</td>
+<td>in the harness</td>
+<td>read a file, run a command, fetch a page</td>
+</tr>
+<tr class="even">
+<td>Yours</td>
+<td>a function you wrote</td>
+<td>look up a customer in your system</td>
+</tr>
+<tr class="odd">
+<td>Someone else’s</td>
+<td>an MCP server</td>
+<td>the Northwind database, EIA, FRED</td>
+</tr>
+</tbody>
+</table>
+<p>All three arrive at the model the same way: a name, a description, and a parameter schema.</p>
+</section>
+<section id="a-tool-you-write" class="slide level2">
+<h2>A tool you write</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="at">@tool</span>(<span class="st">"order_total"</span>,</span>
+<span id="cb3-2"><a></a>      <span class="st">"Total revenue for one order. Takes an order id."</span>,</span>
+<span id="cb3-3"><a></a>      {<span class="st">"order_id"</span>: <span class="bu">int</span>})</span>
+<span id="cb3-4"><a></a><span class="cf">async</span> <span class="kw">def</span> order_total(args):</span>
+<span id="cb3-5"><a></a>    df <span class="op">=</span> pd.read_excel(<span class="st">"northwind_orderdetails.xlsx"</span>)</span>
+<span id="cb3-6"><a></a>    rows <span class="op">=</span> df[df.OrderID <span class="op">==</span> args[<span class="st">"order_id"</span>]]</span>
+<span id="cb3-7"><a></a>    total <span class="op">=</span> (rows.UnitPrice <span class="op">*</span> rows.Quantity).<span class="bu">sum</span>()</span>
+<span id="cb3-8"><a></a>    <span class="cf">return</span> {<span class="st">"content"</span>: [{<span class="st">"type"</span>: <span class="st">"text"</span>, <span class="st">"text"</span>: <span class="ss">f"$</span><span class="sc">{</span>total<span class="sc">:,.2f}</span><span class="ss">"</span>}]}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The description is the interface. The model never sees the code.</p>
+</section>
+<section id="tools-from-an-agent-sdk" class="slide level2 plain-title">
+<h2>Tools from an agent SDK</h2>
+<div class="lead">
+<p>Pre-built code for the harness, and a set of tools that come with it. The Claude Agent SDK, the OpenAI Agents SDK, LangChain.</p>
+</div>
+<pre><code>Read        Write       Edit
+Glob        Grep        Bash
+WebSearch   WebFetch    Task</code></pre>
+<div class="note">
+<p>The built-ins in the Claude Agent SDK. You choose which to include: <code>tools=[]</code> includes none, and naming a few includes only those.</p>
+</div>
+</section>
+<section id="where-they-run" class="slide level2">
+<h2>Where they run</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Read, Write, Edit, Bash, Grep</td>
+<td>the agent’s own process — its filesystem, its shell, its network</td>
+</tr>
+<tr class="even">
+<td>Internal MCP tools</td>
+<td>the same process — whatever it can import, it can run</td>
+</tr>
+<tr class="odd">
+<td>External MCP tools</td>
+<td>someone else’s server — arguments out over HTTP, only the result back</td>
+</tr>
+<tr class="even">
+<td><code>WebSearch</code></td>
+<td>Anthropic’s search backend — titles and URLs, not pages</td>
+</tr>
+<tr class="odd">
+<td><code>WebFetch</code></td>
+<td>downloads from your machine, then a small model extracts what was asked</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<p>So “on your machine” holds for the filesystem and shell tools. The two web tools are not local: the search runs at Anthropic, and the fetched page is sent there to be read.</p>
+</div>
+</section>
+<section id="agent-options" class="slide level2 plain-title">
+<h2>Agent options</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><code>ClaudeAgentOptions</code></th>
 <th></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Orders</td>
-<td style="text-align: right;">500</td>
-<td>July 2012 to October 2023</td>
+<td><code>system_prompt</code></td>
+<td>a string, or a file on disk when it is long</td>
 </tr>
 <tr class="even">
-<td>Order details</td>
-<td style="text-align: right;">18,976</td>
-<td>38 lines per order on average</td>
+<td><code>tools</code></td>
+<td>which built-ins to include — <code>tools=[]</code> for none</td>
 </tr>
 <tr class="odd">
-<td>Customers</td>
-<td style="text-align: right;">93</td>
-<td>in 21 countries</td>
+<td><code>disallowed_tools</code></td>
+<td>takes a tool out of the model’s context entirely</td>
 </tr>
 <tr class="even">
-<td>Products</td>
-<td style="text-align: right;">77</td>
-<td>in 8 categories</td>
+<td><code>allowed_tools</code></td>
+<td>the tools that run without prompting</td>
+</tr>
+<tr class="odd">
+<td><code>mcp_servers</code></td>
+<td>the servers to connect, plus the one holding your tools</td>
+</tr>
+<tr class="even">
+<td><code>max_turns</code></td>
+<td>how many tool-use round trips before the app stops it</td>
 </tr>
 </tbody>
 </table>
-<p>Every order line matches a product, an order, and a customer. No merge in this analysis drops a row.</p>
-</section>
-<section id="two-columns-named-unitprice" class="slide level2">
-<h2>Two columns named UnitPrice</h2>
-<div class="lead">
-<p>Order details carries the price charged. Products carries the list price. Merge them and you get <code>UnitPrice_x</code> and <code>UnitPrice_y</code>.</p>
-</div>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Priced at</th>
-<th style="text-align: right;">Total revenue</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>The price charged</td>
-<td style="text-align: right;">$13,963,378.65</td>
-</tr>
-<tr class="even">
-<td>The list price</td>
-<td style="text-align: right;">$13,966,340.55</td>
-</tr>
-</tbody>
-</table>
-<p>The two answers differ by $2,962 on $14 million. A sanity check on the magnitude passes either way.</p>
-</section>
-<section id="the-rows-with-no-country" class="slide level2">
-<h2>The rows with no country</h2>
-<div class="stats">
-<div class="stat">
-<p><span class="stat-value">2</span> <span class="stat-label">customers with a blank country</span></p>
-</div>
-<div class="stat">
-<p><span class="stat-value">482</span> <span class="stat-label">order lines behind them</span></p>
-</div>
-<div class="stat">
-<p><span class="stat-value">$373,609</span> <span class="stat-label">revenue in those lines</span></p>
-</div>
-</div>
-<p>Grouping by country drops blank keys by default. The country table still adds up, to a total 2.7% below the real one, and no country is wrong.</p>
-</section>
-<section id="one-to-many" class="slide level2">
-<h2>One-to-many</h2>
-<div class="lead">
-<p>Merge orders into order details and every order appears once per line — on average 38 times.</p>
-</div>
-<p>Sum anything defined per order after that merge and you have counted it 38 times. On these files the multiplier is large enough to notice. On files where the ratio is 1.2, it is not.</p>
 <div class="note">
-<p>The check is one line: row count before the merge, row count after.</p>
+<p><code>allowed_tools</code> is not a whitelist. A tool left off it still runs — it falls through to <code>permission_mode</code>.</p>
 </div>
 </section>
-<section id="dates" class="slide level2">
-<h2>Dates</h2>
-<ul>
-<li><code>03/04/2023</code> is March 4 or April 3 depending on who wrote the file</li>
-<li>A date column read as text sorts <code>10/01</code> before <code>2/01</code></li>
-<li>These orders carry a time as well as a date, so a filter on equality matches nothing</li>
-<li>A date read out of Excel can arrive as a serial number</li>
-</ul>
-<p>Ask which columns are date types and which are strings, before grouping by month.</p>
-</section>
-<section id="missing-values" class="slide level2">
-<h2>Missing values</h2>
+<section id="permission-modes-in-code" class="slide level2 band-bottom">
+<h2>Permission modes, in code</h2>
 <table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
 <thead>
 <tr class="header">
-<th>How it is written</th>
-<th>What a naive count does</th>
+<th><code>permission_mode</code></th>
+<th></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>An empty cell</td>
-<td>usually skipped</td>
+<td><code>default</code></td>
+<td>prompts before file edits, shell commands, and network requests</td>
 </tr>
 <tr class="even">
-<td><code>0</code></td>
-<td>included in the average</td>
+<td><code>acceptEdits</code></td>
+<td>auto-approves edits and common filesystem commands</td>
 </tr>
 <tr class="odd">
-<td><code>NA</code>, <code>N/A</code>, <code>-</code>, <code>unknown</code></td>
-<td>makes the whole column text</td>
+<td><code>plan</code></td>
+<td>read-only — proposes changes but makes none</td>
 </tr>
 <tr class="even">
-<td>A sentinel such as <code>-999</code></td>
-<td>included, silently</td>
+<td><code>dontAsk</code></td>
+<td>only <code>allowed_tools</code> run; anything else is denied, not prompted</td>
+</tr>
+<tr class="odd">
+<td><code>bypassPermissions</code></td>
+<td>everything runs, no checks — sandboxed containers only</td>
 </tr>
 </tbody>
 </table>
-<p>A numeric column that is text because of four <code>N/A</code> cells concatenates where you expected a sum.</p>
 </section>
-<section id="recompute-another-way" class="slide level2 band-bottom">
-<h2>Recompute another way</h2>
+<section id="build-one" class="slide level2 plain-title">
+<h2>Build one</h2>
+<p><span class="eyebrow">Exercise · three stages</span></p>
 <div class="steps">
 <ol type="1">
-<li>The same question by a different route through the data.</li>
-<li>The same question in a different tool — SQL against the same files, or a pivot table.</li>
-<li>The same question in a fresh conversation that has not seen the first answer.</li>
+<li>A chatbot with no tools at all. Ask it how many files are in the directory it is running in. Read the answer carefully.</li>
+<li>Give it one built-in tool — reading files — and ask again.</li>
+<li>Write a tool of your own over data you brought or the order spreadsheets. Give it a system prompt that says what it is for.</li>
 </ol>
 </div>
-<p>Each route drops different rows and rounds at different points. Agreement across them narrows what can still be wrong.</p>
-</section>
-<section id="make-it-read-its-own-code" class="slide level2">
-<h2>Make it read its own code</h2>
-<div class="prompt-box">
-<div class="box-title">
-<p>Prompt</p>
+<div class="note">
+<p>In stage 1 the model has no way to see the directory. Keep its answer — you compare it against stage 2.</p>
 </div>
-<p>Here is code and the answer it produced. Ignore the answer. Read the code and tell me what it actually computes — including what it drops and what it assumes.</p>
-</div>
-<p>A fresh conversation has not seen the answer, so it cannot work backward from it.</p>
 </section>
-<section id="find-the-bug" class="slide level2 plain-title">
-<h2>Find the bug</h2>
+<section id="what-stage-1-shows" class="slide level2">
+<h2>What stage 1 shows</h2>
+<div class="lead">
+<p>Asked a question about a filesystem it cannot reach, a model with no tools still answers.</p>
+</div>
+<ul>
+<li>It produces a plausible number</li>
+<li>It produces plausible filenames</li>
+<li>Nothing in the output is marked as unavailable</li>
+</ul>
+<p>The same model with a file-reading tool answers correctly. What changed is the tool list.</p>
+</section>
+<section id="choosing-what-it-can-do" class="slide level2 divider">
+<h2>Choosing what it can do</h2>
+</section>
+<section id="a-general-agent-and-a-narrow-agent" class="slide level2">
+<h2>A general agent and a narrow agent</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th>A general agent</th>
+<th>A narrow agent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tool list</td>
+<td>everything</td>
+<td>three tools</td>
+</tr>
+<tr class="even">
+<td>Runs as</td>
+<td>you</td>
+<td>a service account</td>
+</tr>
+<tr class="odd">
+<td>Reaches</td>
+<td>your whole machine</td>
+<td>one dataset</td>
+</tr>
+<tr class="even">
+<td>Right for</td>
+<td>your own work</td>
+<td>anything you hand to someone else</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="an-agent-whose-tool-is-an-agent" class="slide level2">
+<h2>An agent whose tool is an agent</h2>
+<div class="steps">
+<ol type="1">
+<li>An orchestrator receives the question and holds no data of its own.</li>
+<li>It calls a research agent that can read the public web and nothing private.</li>
+<li>It calls a data agent that can read your database and cannot reach the internet.</li>
+<li>It assembles the answer from what both returned.</li>
+</ol>
+</div>
+<p>The two workers never share a context, so neither holds private data and an outbound channel at the same time.</p>
+</section>
+<section id="talk-it-out-of-its-job" class="slide level2 plain-title">
+<h2>Talk it out of its job</h2>
 <p><span class="eyebrow">Exercise</span></p>
 <div class="steps">
 <ol type="1">
-<li><code>~/data/planted/country_report.py</code> produces a country table. Its total is wrong.</li>
-<li>Read it first and predict where the number goes wrong. Do not run it yet.</li>
-<li>Now run it, find the actual causes, and say how much each one moves the total.</li>
-<li>Fix them and reconcile against your own Part B number.</li>
+<li>Take the narrow agent you just built.</li>
+<li>Ask it something outside its purpose. See whether the system prompt holds.</li>
+<li>Now ask persuasively — a plausible reason, an appeal to an exception, an instruction that claims to come from you.</li>
+<li>Note which refusals came from the prompt and which came from a tool that does not exist.</li>
 </ol>
 </div>
 <div class="note">
-<p>There is more than one defect, and they move the total in different directions.</p>
+<p>Keep what you found. It is the first item after the break.</p>
 </div>
 </section>
-<section id="tomorrow" class="slide level2 band-bottom">
-<h2>Tomorrow</h2>
-<p>Today the output was a number. Tomorrow it is a document, and then an application.</p>
+<section id="screen-shares" class="slide level2 band-bottom">
+<h2>Screen shares</h2>
+<ul>
+<li>What your agent is for, in one sentence</li>
+<li>Its tool list, read out loud</li>
+<li>The one thing you could talk it into</li>
+</ul>
+</section></section>
+<section>
+<section id="managing-security-risks" class="title-slide slide level1 center">
+<h1>18 · Managing security risks</h1>
+<p>Believing it, sending it out, and letting it act.</p>
+</section>
+<section id="three-risks" class="slide level2">
+<h2>Three risks</h2>
+<div class="cards cards-3">
+<div class="card">
+<p><span class="card-title">Believing it</span></p>
+<p>A wrong number, delivered fluently. Friday morning was this one.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">Sending data out</span></p>
+<p>Your material reaching a third party. A contract problem.</p>
+</div>
+<div class="card card-sand">
+<p><span class="card-title">Letting it act</span></p>
+<p>An agent doing something on your behalf that you did not ask for. An engineering problem.</p>
+</div>
+</div>
+<p>Most corporate AI policy addresses the second one only.</p>
+</section>
+<section id="sending-data-out" class="slide level2 divider">
+<h2>Sending data out</h2>
+</section>
+<section id="what-a-contract-gives-you" class="slide level2">
+<h2>What a contract gives you</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>What it adds</th>
+<th>Enough for</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Opt out of training</td>
+<td>a setting, revocable, data still retained briefly</td>
+<td>personal, non-sensitive work</td>
+</tr>
+<tr class="even">
+<td>A signed DPA</td>
+<td>liability, breach notice, audit rights, a subprocessor list</td>
+<td>client data, regulated data</td>
+</tr>
+<tr class="odd">
+<td>A DPA plus a BAA</td>
+<td>the same, covering protected health information</td>
+<td>anything under HIPAA</td>
+</tr>
+<tr class="even">
+<td>An enterprise agreement</td>
+<td>SLAs, support, SSO, capacity</td>
+<td>scale and operations</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<p>The last row buys operations. The privacy terms are the same as the row above it.</p>
+</div>
+</section>
+<section id="what-the-regulation-actually-requires" class="slide level2">
+<h2>What the regulation actually requires</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="eyebrow">HIPAA</span></p>
+<p>Satisfactory assurances “must be documented through a written contract” meeting §164.504(e).</p>
+<p>A BAA is required, not advisable. 45 CFR 164.502(e).</p>
+</div><div class="column" style="width:50%;">
+<p><span class="eyebrow">SEC Reg S-P</span></p>
+<p>Written policies “reasonably designed to require oversight, including through due diligence and monitoring, of service providers.”</p>
+<p>17 CFR 248.30.</p>
+</div></div>
+</section>
+<section id="run-it-where-the-data-already-is" class="slide level2">
+<h2>Run it where the data already is</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th>AWS</th>
+<th>Google Cloud</th>
+<th>Azure</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Claude</td>
+<td>Bedrock</td>
+<td>Vertex AI</td>
+<td>Foundry</td>
+</tr>
+<tr class="even">
+<td>GPT</td>
+<td>Bedrock</td>
+<td></td>
+<td>Azure AI Foundry</td>
+</tr>
+<tr class="odd">
+<td>Gemini</td>
+<td></td>
+<td>native</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>If the data already sits in one of those, the model can run inside the same perimeter. No new vendor, no new trust boundary, and the DPA you already signed still applies.</p>
+</section>
+<section id="when-the-contract-is-not-enough" class="slide level2">
+<h2>When the contract is not enough</h2>
+<div class="steps">
+<ol type="1">
+<li>Send less — a schema and a few synthetic rows rather than the table.</li>
+<li>Anonymize — strip the names, the account numbers, the identifiers.</li>
+<li>Run a smaller model on your own hardware, so nothing leaves at all.</li>
+</ol>
+</div>
+<div class="note">
+<p>A DPA is a promise backed by liability. These three are physical facts about where the data went.</p>
+</div>
+</section>
+<section id="letting-it-act" class="slide level2 divider">
+<h2>Letting it act</h2>
+</section>
+<section id="prompt-injection" class="slide level2">
+<h2>Prompt injection</h2>
+<div class="lead">
+<p>The model cannot tell an instruction from a piece of content. Both arrive as text in the same conversation.</p>
+</div>
+<p>Text placed where the agent will read it — an email, a document, a web page, a spreadsheet cell — is read in the same way as text you typed. An attacker needs no credentials, only a way to get words in front of the model.</p>
+<div class="note">
+<p>OWASP has ranked this first among risks to LLM applications since 2025.</p>
+</div>
+</section>
+<section id="echoleak" class="slide level2 plain-title">
+<h2>EchoLeak</h2>
+<p><span class="eyebrow">CVE-2025-32711 · Microsoft 365 Copilot · June 2025</span></p>
+<div class="steps">
+<ol type="1">
+<li>An attacker mails the victim a message containing instructions invisible to a human reader.</li>
+<li>The victim asks Copilot to summarize their email. Copilot reads the hidden instructions.</li>
+<li>Following them, Copilot places confidential data inside a URL in its response.</li>
+<li>The victim’s browser fetches that URL automatically.</li>
+<li>The attacker reads the data out of their own server log.</li>
+</ol>
+</div>
+<p>Zero clicks by the victim beyond the summary request.</p>
+</section>
+<section id="three-legs" class="slide level2">
+<h2>Three legs</h2>
+<div class="cards cards-3">
+<div class="card">
+<p><span class="card-title">Private data</span></p>
+<p>Something worth taking: client records, financials, an inbox.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">Untrusted content</span></p>
+<p>Text an outsider can control: a web page, an email, an uploaded file.</p>
+</div>
+<div class="card card-sand">
+<p><span class="card-title">An outbound channel</span></p>
+<p>Any way for text to leave: fetching a URL, sending mail, writing somewhere shared.</p>
+</div>
+</div>
+<p>All three in one agent is the condition. Remove any one and the attack does not work.</p>
+</section>
+<section id="the-question-to-ask-about-any-deployment" class="slide level2">
+<h2>The question to ask about any deployment</h2>
+<div class="prompt-box">
+<div class="box-title">
+<p>The check</p>
+</div>
+<p>Does this agent hold private data, read content an outsider can influence, and have a way to send text out — at the same time?</p>
+</div>
+<p>It is answerable from an architecture diagram, without knowing anything about how the model works.</p>
+</section>
+<section id="blast-radius-of-an-excel-add-in" class="slide level2">
+<h2>Blast radius of an Excel add-in</h2>
+<p>The Claude for Excel add-in from Thursday, checked against the three legs.</p>
+<div class="cards cards-3">
+<div class="card">
+<p><span class="card-title">Private data</span></p>
+<p>The open workbook. With “work across files” on, also the open deck, the open Word document, and the open Outlook email.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">Untrusted content</span></p>
+<p>A downloaded template, a vendor file, a data import, or an email from outside.</p>
+</div>
+<div class="card card-sand">
+<p><span class="card-title">An outbound channel</span></p>
+<p>Writing into the open document or email, and any connector you have enabled.</p>
+</div>
+</div>
+<div class="note">
+<p>“Work across files” is on by default for Pro and Max plans and off by default for Team and Enterprise. Anthropic’s testing found the add-in could be manipulated into extracting sensitive information, modifying data, or taking destructive actions.</p>
+</div>
+</section>
+<section id="red-team-a-classmates-agent" class="slide level2 plain-title">
+<h2>Red-team a classmate’s agent</h2>
+<p><span class="eyebrow">Exercise</span></p>
+<div class="steps">
+<ol type="1">
+<li>Swap agents with someone. You get their code and their tool list.</li>
+<li>Diagram it: what private data can it reach, what untrusted text does it read, how could text leave.</li>
+<li>Plant an injection in something it will read — a file, a row, a page it fetches.</li>
+<li>Try to make it act on the injection. Record what worked and what it refused.</li>
+<li>Give the author two changes: one to the prompt, one to the tool list. Say which one you would actually rely on.</li>
+</ol>
+</div>
+<div class="note">
+<p>Use synthetic data. Nothing in this exercise touches anything real.</p>
+</div>
+</section>
+<section id="isolation-and-governance" class="slide level2 divider">
+<h2>Isolation and governance</h2>
+</section>
+<section id="two-ways-to-stop-the-same-thing" class="slide level2 compare">
+<h2>Two ways to stop the same thing</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="eyebrow">Governance</span></p>
+<p>Every call is inspected as it is made and allowed or refused.</p>
+<p>Works on the calls you anticipated. Judgment happens at run time, every time.</p>
+</div><div class="column" style="width:50%;">
+<p><span class="eyebrow">Isolation</span></p>
+<p>The route does not exist.</p>
+<p>Works on calls nobody anticipated. There is nothing to judge at run time.</p>
+</div></div>
+<div class="note">
+<p>Real systems use both. The order matters: isolate first, then govern what remains.</p>
+</div>
+</section>
+<section id="where-the-call-is-made-from" class="slide level2 plain-title">
+<h2>Where the call is made from</h2>
+<div class="lead">
+<p>In Claude Cowork, and in most setups a firm will hand you, the machine the agent’s shell runs on has no route to the internet. The connector works anyway.</p>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="eyebrow">At the shell</span></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a></a><span class="ex">curl</span> https://api.stlouisfed.org/...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Refused. Everything leaving that machine passes a proxy that allows a short list of addresses, and that is not one of them.</p>
+</div><div class="column" style="width:50%;">
+<p><span class="eyebrow">Through the connector</span></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a></a>fred_get_observations("UNRATE")</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Rows come back. Same machine, same model.</p>
+</div></div>
+<div class="note">
+<p>Because your machine never places the call. The client end sits outside it, calls FRED itself, and hands the rows back into the conversation. Your key goes with it and is never on the machine.</p>
+</div>
+</section>
+<section id="what-each-option-allows" class="slide level2">
+<h2>What each option allows</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="eyebrow">Open the network instead</span></p>
+<p>Allow the machine to reach <code>stlouisfed.org</code> and it can send anything to any address there, in any form it likes.</p>
+</div><div class="column" style="width:50%;">
+<p><span class="eyebrow">Leave it shut, add a connector</span></p>
+<p>It can call <code>run_sql</code> with a <code>SELECT</code>. That is the entire new capability.</p>
+</div></div>
+<p>The network stays off and the connector goes on.</p>
+<div class="note">
+<p>The connector reaches out from outside the sandbox holding your credentials, so a sentence in a file it reads can ask for that call.</p>
+</div>
+</section>
+<section id="the-split" class="slide level2">
+<h2>The split</h2>
+<div class="steps">
+<ol type="1">
+<li>The agent that reads untrusted content gets no private data and no credentials.</li>
+<li>The agent that holds private data has no route to the internet.</li>
+<li>An orchestrator calls both as tools and never exposes one to the other’s context.</li>
+</ol>
+</div>
+<p>Neither worker ever holds all three legs. That property is a fact about the network and the tool lists, not a rule either agent has been asked to follow.</p>
+</section>
+<section id="your-container-as-an-example" class="slide level2">
+<h2>Your container, as an example</h2>
+<table class="caption-top">
+<tbody>
+<tr class="odd">
+<td>Filesystem</td>
+<td>its own — no other student’s files exist inside it</td>
+</tr>
+<tr class="even">
+<td>Processes</td>
+<td>its own — you cannot see anyone else’s</td>
+</tr>
+<tr class="odd">
+<td>Network</td>
+<td>its own namespace, and it cannot reach a peer container</td>
+</tr>
+<tr class="even">
+<td>The gate</td>
+<td>your terminal sits behind your own login</td>
+</tr>
+</tbody>
+</table>
+<p>Your container is an instance of that pattern.</p>
+</section>
+<section id="monday" class="slide level2 divider">
+<h2>Monday</h2>
+</section>
+<section id="write-the-plan" class="slide level2 plain-title">
+<h2>Write the plan</h2>
+<p><span class="eyebrow">Exercise</span></p>
+<p>One page, covering:</p>
+<div class="steps">
+<ol type="1">
+<li>The workflow. Who does it now, how often, and how long it takes.</li>
+<li>What you would build — a skill, an app, or an agent — and who uses it.</li>
+<li>The data it touches, and where that data lives today.</li>
+<li>The tool list, written out. What it can do and what it deliberately cannot.</li>
+<li>The three-leg check, answered.</li>
+<li>What it costs to run, and what has to be true for it to be worth that.</li>
+</ol>
+</div>
+</section>
+<section id="pitches" class="slide level2 band-bottom">
+<h2>Pitches</h2>
+<p>Three minutes each. The room responds as the people who would have to approve it, fund it, or use it.</p>
+<p>For each plan, someone in the room names:</p>
+<ul>
+<li>The step most likely to fail in the real workflow</li>
+<li>The one item on the tool list they would remove</li>
+</ul>
+</section>
+<section id="a-habit-a-file-a-question" class="slide level2">
+<h2>A habit, a file, a question</h2>
+<div class="cards cards-3">
+<div class="card">
+<p><span class="card-title">A habit</span></p>
+<p>Describe the data, require the code, check the counts, reconcile a second way.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">A file</span></p>
+<p>A skill, published, that a colleague can install in two commands.</p>
+</div>
+<div class="card">
+<p><span class="card-title">A question</span></p>
+<p>Private data, untrusted content, an outbound channel — asked of anything before it is switched on.</p>
+</div>
+</div>
+</section>
+<section id="the-northwind-mcp-server" class="slide level2 plain-title">
+<h2>The Northwind MCP server</h2>
+<div class="lead">
+<p>A read-only server over the Northwind trading database, at <code>https://northwind-mcp.rice-business.org/mcp</code>.</p>
+</div>
+<table class="caption-top">
+<tbody>
+<tr class="odd">
+<td><code>list_tables</code></td>
+<td>every table in the database</td>
+</tr>
+<tr class="even">
+<td><code>describe_table</code></td>
+<td>column names and types for one table</td>
+</tr>
+<tr class="odd">
+<td><code>query_northwind</code></td>
+<td>a read-only <code>SELECT</code>, returned as CSV</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<p><code>query_northwind</code> reads only categories, customers, order_details, orders and products. There is no tool that writes.</p>
+</div>
+</section>
+<section id="connect-it-yourself" class="slide level2">
+<h2>Connect it yourself</h2>
+<p>Add it to Claude Code in one command:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a></a><span class="ex">claude</span> mcp add <span class="at">--transport</span> http <span class="at">--scope</span> user <span class="dt">\</span></span>
+<span id="cb7-2"><a></a>  northwind https://northwind-mcp.rice-business.org/mcp</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="note">
+<p><code>claude mcp list</code> shows it connected; <code>/mcp</code> inside Claude lists the three tools. <code>--scope user</code> makes it available from any directory — drop the flag and it lives only in the current project.</p>
+</div>
+</section>
+<section id="build-a-data-explorer" class="slide level2 band-bottom">
+<h2>Build a data explorer</h2>
+<p><span class="eyebrow">Exercise</span></p>
+<div class="prompt-box">
+<div class="box-title">
+<p>Tell Claude</p>
+</div>
+<p>Using the <code>claude_agent_sdk</code>, create a FastAPI agent app called <code>explorer.py</code> that connects to the Northwind MCP server and allows its three tools. Also create an internal MCP server exposing one tool, <code>run_python</code>, that runs Python for calculations and charts. The system prompt should say the agent is a data analyst for the Northwind trading company, that those tools are its only source of Northwind data, and that it should call <code>list_tables</code> and <code>describe_table</code> before it writes a query. Set <code>tools=[]</code>, <code>permission_mode</code> to <code>dontAsk</code>, and <code>max_turns</code> to 15.</p>
+</div>
+</section>
+<section id="ask-it-something-a-chatbot-cannot-answer" class="slide level2">
+<h2>Ask it something a chatbot cannot answer</h2>
+<div class="lead">
+<p>Which customers ordered in 1997 but not in 1998?</p>
+</div>
+<div class="steps">
+<ol type="1">
+<li>Watch which tools it calls, and in what order.</li>
+<li>Check that it described the tables before writing SQL.</li>
+<li>Ask for the answer as a chart, and see <code>run_python</code> used instead.</li>
+</ol>
+</div>
 
 
 </section></section>

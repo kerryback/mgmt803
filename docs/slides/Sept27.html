@@ -31,74 +31,8 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
-    /* CSS for syntax highlighting */
-    html { -webkit-text-size-adjust: 100%; }
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-      }
-    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-    div.sourceCode
-      { color: #24292e;  }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span { color: #24292e; } /* Normal */
-    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
-    code span.an { color: #6a737d; } /* Annotation */
-    code span.at { color: #d73a49; } /* Attribute */
-    code span.bn { color: #005cc5; } /* BaseN */
-    code span.bu { color: #d73a49; } /* BuiltIn */
-    code span.cf { color: #d73a49; } /* ControlFlow */
-    code span.ch { color: #032f62; } /* Char */
-    code span.cn { color: #005cc5; } /* Constant */
-    code span.co { color: #6a737d; } /* Comment */
-    code span.cv { color: #6a737d; } /* CommentVar */
-    code span.do { color: #6a737d; } /* Documentation */
-    code span.dt { color: #d73a49; } /* DataType */
-    code span.dv { color: #005cc5; } /* DecVal */
-    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
-    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
-    code span.fl { color: #005cc5; } /* Float */
-    code span.fu { color: #6f42c1; } /* Function */
-    code span.im { color: #032f62; } /* Import */
-    code span.in { color: #6a737d; } /* Information */
-    code span.kw { color: #d73a49; } /* Keyword */
-    code span.op { color: #24292e; } /* Operator */
-    code span.ot { color: #6f42c1; } /* Other */
-    code span.pp { color: #d73a49; } /* Preprocessor */
-    code span.re { color: #6a737d; } /* RegionMarker */
-    code span.sc { color: #005cc5; } /* SpecialChar */
-    code span.ss { color: #032f62; } /* SpecialString */
-    code span.st { color: #032f62; } /* String */
-    code span.va { color: #e36209; } /* Variable */
-    code span.vs { color: #032f62; } /* VerbatimString */
-    code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-963326a71a77be66e1a2dc2e7f4f8a8d.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-fe3e5a70c3c5b29320272df664d210fd.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -208,394 +142,304 @@ Kerry Back<br>J. Howard Creekmore Professor of Finance
 </div>
 
 </section>
-<section id="this-morning" class="slide level2">
-<h2>This morning</h2>
+<section id="this-afternoon" class="slide level2">
+<h2>This afternoon</h2>
 <div class="cards cards-2">
 <div class="card">
-<p><span class="card-title">Creating agents</span></p>
-<p>The API underneath everything, and an agent with a tool list you chose.</p>
+<p><span class="card-title">Retrieval augmented generation</span></p>
+<p>Answering from your own documents, with a citation you can open.</p>
 </div>
 <div class="card card-blue">
-<p><span class="card-title">Managing security risks</span></p>
-<p>Believing it, sending data out, letting it act, and a one-page plan.</p>
+<p><span class="card-title">Open source models</span></p>
+<p>What you can download and run yourself, and how far behind it is.</p>
 </div>
 </div>
 </section>
 <section>
-<section id="creating-agents" class="title-slide slide level1 center">
-<h1>17 · Creating agents</h1>
-
+<section id="retrieval-augmented-generation" class="title-slide slide level1 center">
+<h1>15 · Retrieval augmented generation</h1>
+<p>Answering from your own documents, with a citation you can open.</p>
 </section>
-<section id="a-chatbot-produces-text" class="slide level2">
-<h2>A chatbot produces text</h2>
-<div class="lead">
-<p>It receives text and returns text. That is the entire capability.</p>
-</div>
-<ul>
-<li>Everything it “knows” arrived as text in the request</li>
-<li>Everything it “does” leaves as text in the response</li>
-<li>No files, no network, no memory between conversations</li>
-</ul>
-<p>A chatbot that appears to remember you is being handed the earlier conversation again on every turn.</p>
-</section>
-<section id="an-agent-is-a-chatbot-with-tools" class="slide level2 band-bottom">
-<h2>An agent is a chatbot with tools</h2>
-<div class="steps">
-<ol type="1">
-<li>You send a request. The harness also sends a list of tools and what each one does.</li>
-<li>The model answers with text, or with a request to use a tool.</li>
-<li>The harness runs the tool and puts the result back into the conversation.</li>
-<li>Repeat until the model answers with text and no tool call.</li>
-</ol>
+<section id="structured-and-unstructured" class="slide level2 compare">
+<h2>Structured and unstructured</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="eyebrow">Yesterday</span></p>
+<p>Rows, columns, joins. Five spreadsheets and a total you could reconcile.</p>
+</div><div class="column" style="width:50%;">
+<p><span class="eyebrow">Everything else a firm holds</span></p>
+<p>Contracts, mail, board papers, policies, reports, decks, notes.</p>
+</div></div>
+<div class="note">
+<p>65% of data leaders call their structured data ready for AI. 39% say the same of the unstructured kind, which is most of the volume.</p>
 </div>
 </section>
-<section id="what-the-model-is-sent" class="slide level2">
-<h2>What the model is sent</h2>
-<p>Every turn, the harness assembles one block of text:</p>
-<div class="cards cards-2">
+<section id="why-not-just-paste-it-in" class="slide level2">
+<h2>Why not just paste it in</h2>
+<div class="cards cards-3">
 <div class="card">
-<p><span class="card-title">Fixed each turn</span></p>
-<p>The system prompt. The tool definitions. Any instruction files the harness is coded to include.</p>
+<p><span class="card-title">It was not trained on yours</span></p>
+<p>Your contracts were not on the public web. Nothing in the weights knows them.</p>
 </div>
 <div class="card card-blue">
-<p><span class="card-title">Growing each turn</span></p>
-<p>Your messages, the model’s replies, and the full output of every tool that has run so far.</p>
-</div>
-</div>
-<div class="note">
-<p>A tool result is text in the conversation, which is why a document the agent read can change what it does next.</p>
-</div>
-</section>
-<section id="the-api" class="slide level2 divider">
-<h2>The API</h2>
-</section>
-<section id="a-fourth-interface" class="slide level2">
-<h2>A fourth interface</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Interface</th>
-<th>Who is at the keyboard</th>
-<th>What it is for</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Chat in a browser</td>
-<td>you</td>
-<td>one question</td>
-</tr>
-<tr class="even">
-<td>Claude Code</td>
-<td>you</td>
-<td>work on a machine</td>
-</tr>
-<tr class="odd">
-<td>A connector</td>
-<td>you, inside another tool</td>
-<td>reaching your data</td>
-</tr>
-<tr class="even">
-<td>The API</td>
-<td>a program</td>
-<td>the same operation, many times</td>
-</tr>
-</tbody>
-</table>
-<div class="note">
-<p>The first three assume a person is present. The API does not.</p>
-</div>
-</section>
-<section id="why-call-it-directly" class="slide level2">
-<h2>Why call it directly</h2>
-<div class="cards cards-2">
-<div class="card">
-<p><span class="card-title">Repetition</span></p>
-<p>The same judgment applied to five thousand rows.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">Software</span></p>
-<p>The model becomes a component inside something else, with your instructions fixed and the user’s input as the variable.</p>
+<p><span class="card-title">The window is finite</span></p>
+<p>A million tokens is large and your document store is larger.</p>
 </div>
 <div class="card">
-<p><span class="card-title">Control</span></p>
-<p>You pick the model, the temperature, and the system prompt, and they do not change under you.</p>
-</div>
-<div class="card card-sand">
-<p><span class="card-title">Cost</span></p>
-<p>You pay per token rather than per seat, which is cheaper for bursts and dearer for constant use.</p>
+<p><span class="card-title">You pay for every turn</span></p>
+<p>Input is billed each turn. Pasting the corpus into every question bills the corpus every question.</p>
 </div>
 </div>
 </section>
-<section id="the-request" class="slide level2">
-<h2>The request</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">import</span> anthropic</span>
-<span id="cb1-2"><a></a></span>
-<span id="cb1-3"><a></a>client <span class="op">=</span> anthropic.Anthropic()          <span class="co"># reads ANTHROPIC_API_KEY</span></span>
-<span id="cb1-4"><a></a></span>
-<span id="cb1-5"><a></a>resp <span class="op">=</span> client.messages.create(</span>
-<span id="cb1-6"><a></a>    model<span class="op">=</span><span class="st">"claude-sonnet-5"</span>,</span>
-<span id="cb1-7"><a></a>    max_tokens<span class="op">=</span><span class="dv">500</span>,</span>
-<span id="cb1-8"><a></a>    system<span class="op">=</span><span class="st">"You classify customer complaints. Answer with one word."</span>,</span>
-<span id="cb1-9"><a></a>    messages<span class="op">=</span>[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: <span class="st">"The unit arrived cracked."</span>}],</span>
-<span id="cb1-10"><a></a>)</span>
-<span id="cb1-11"><a></a></span>
-<span id="cb1-12"><a></a><span class="bu">print</span>(resp.content[<span class="dv">0</span>].text)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Everything in that call is something you chose: the model, the ceiling on output, the instructions, and the input.</p>
-</section>
-<section id="the-key" class="slide level2">
-<h2>The key</h2>
+<section id="four-steps" class="slide level2 plain-title">
+<h2>Four steps</h2>
 <div class="steps">
 <ol type="1">
-<li>Create a key in the console. It is shown once.</li>
-<li>Put it in an environment variable, not in the code.</li>
-<li>Never commit it. A key in a public repository is found in minutes.</li>
-<li>Set a spending limit on the key before you use it in a loop.</li>
+<li>Chunk. Split the documents into passages of a few hundred words.</li>
+<li>Embed. Turn each passage into a vector, the same way tokens became vectors on Thursday.</li>
+<li>Retrieve. Embed the question and find the handful of passages closest to it.</li>
+<li>Paste. Put those passages in the prompt, with the question.</li>
 </ol>
 </div>
-<div class="note">
-<p>A loop over a large file with a bug in the exit condition spends real money.</p>
+<div class="note note-plum">
+<p>The model never reads your corpus. It reads an excerpt that a similarity search chose.</p>
 </div>
 </section>
-<section id="what-you-are-charged-for" class="slide level2">
-<h2>What you are charged for</h2>
+<section id="a-passage-becomes-384-numbers" class="slide level2">
+<h2>A passage becomes 384 numbers</h2>
 <div class="lead">
-<p>Input tokens and output tokens, priced separately, per million.</p>
+<p>An embedding model reads a passage and returns a fixed-length list of numbers — 384, or 768, or 1,536, depending on the model.</p>
 </div>
+<p>Passages about the same thing land near each other, whatever words they used. “Revenue fell in the third quarter” sits close to “Q3 sales were down”, and a keyword search for “revenue” finds only the first.</p>
+</section>
+<section id="chunking-choices" class="slide level2 plain-title">
+<h2>Chunking choices</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 50%">
 <col style="width: 50%">
 </colgroup>
+<thead>
+<tr class="header">
+<th>Choice</th>
+<th>What it costs</th>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
-<td>Input</td>
-<td>everything you send — instructions, tool definitions, the whole conversation so far</td>
+<td>Chunks too small</td>
+<td>the passage arrives without the sentence that made it mean something</td>
 </tr>
 <tr class="even">
-<td>Output</td>
-<td>only what comes back</td>
+<td>Chunks too large</td>
+<td>the relevant line arrives inside a page of text you paid for</td>
+</tr>
+<tr class="odd">
+<td>Split mid-table</td>
+<td>numbers arrive with no column headings</td>
+</tr>
+<tr class="even">
+<td>No overlap</td>
+<td>an answer spanning a boundary is never retrieved whole</td>
 </tr>
 </tbody>
 </table>
-<p>A conversation costs more each turn because the entire history is sent again every time. In an agent loop, every tool result joins that history.</p>
+<p>Split on the document’s own structure — sections, clauses, slides — before falling back on a word count.</p>
 </section>
-<section id="first-calls" class="slide level2 plain-title">
-<h2>First calls</h2>
+<section id="two-ways-to-have-one" class="slide level2 compare">
+<h2>Two ways to have one</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="eyebrow">A hosted tool</span></p>
+<p>Upload the folder, ask questions. Somebody else chose the chunking, the embedder and the number of passages retrieved.</p>
+</div><div class="column" style="width:50%;">
+<p><span class="eyebrow">A pipeline you own</span></p>
+<p>Your chunking rules, your embedder, your store, and the retrieved text visible before it reaches the model.</p>
+</div></div>
+<p>Start hosted. Build your own when the answers are wrong and you need to see which passages came back.</p>
+</section>
+<section id="build-one-over-your-own-documents" class="slide level2 plain-title">
+<h2>Build one over your own documents</h2>
 <p><span class="eyebrow">Exercise</span></p>
 <div class="steps">
 <ol type="1">
-<li>Put your key in the environment and make one call that returns a sentence.</li>
-<li>Change the system prompt and make the same call. Note what moved.</li>
-<li>Run the same request three times at temperature 1, then three times at 0.</li>
-<li>Now loop it: classify 200 rows of a CSV, one call per row, and write the results to a new column.</li>
-<li>Report what it cost.</li>
+<li>Put twenty or more of your own documents in a folder — reports, policies, decks, anything real but not confidential.</li>
+<li>Have them chunked and embedded into a local store, and have the chunking rule stated in writing.</li>
+<li>Add a search tool to an agent, so it retrieves before it answers.</li>
+<li>Ask five questions you already know the answers to.</li>
+<li>Make it print the passages it retrieved, not just the answer.</li>
 </ol>
 </div>
 <div class="note">
-<p>Record the cost of step 4 per row. Fifty thousand rows is that number times two hundred and fifty.</p>
+<p>An answer you cannot trace back to a passage is not verifiable.</p>
 </div>
 </section>
-<section id="the-loop" class="slide level2 divider">
-<h2>The loop</h2>
+<section id="make-it-cite-then-check-the-citation" class="slide level2">
+<h2>Make it cite, then check the citation</h2>
+<div class="lead">
+<p>Open each passage it cites and check that the answer is in it.</p>
+</div>
+<div class="steps">
+<ol type="1">
+<li>Ask a question whose answer is in exactly one document.</li>
+<li>Ask one whose answer is spread over three.</li>
+<li>Ask one whose answer is in none of them, and see whether it says so.</li>
+</ol>
+</div>
+<div class="note">
+<p>A retriever always returns its closest matches, whether or not any of them are relevant.</p>
+</div>
 </section>
-<section id="what-an-agent-is-exactly" class="slide level2">
-<h2>What an agent is, exactly</h2>
+<section id="permissions-and-chunking" class="slide level2 compare">
+<h2>Permissions and chunking</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="eyebrow">The document</span></p>
+<p>Sat in a folder with an access list. Three people could open it.</p>
+</div><div class="column" style="width:50%;">
+<p><span class="eyebrow">The chunk in the store</span></p>
+<p>Is a row in a database with a vector next to it. Usually carries no access list at all.</p>
+</div></div>
+<p>Index everything and the retriever will return a passage from a file the person asking could never have opened.</p>
+</section>
+<section id="retrieved-text-is-untrusted-text" class="slide level2 plain-title">
+<h2>Retrieved text is untrusted text</h2>
+<p>Anything that reaches the model reaches it as text, and text from a retrieved passage arrives in the same stream as your question. Whoever can put a document into the index can put instructions in front of the model.</p>
+<div class="note">
+<p>The Sunday morning question: who can write to the corpus, and what can the agent do once it has read one.</p>
+</div>
+</section>
+<section id="when-it-is-the-wrong-tool" class="slide level2">
+<h2>When it is the wrong tool</h2>
 <div class="cards cards-3">
 <div class="card">
-<p><span class="card-title">A model</span></p>
-<p>Which one, and at what temperature.</p>
+<p><span class="card-title">Few enough to paste</span></p>
+<p>Twenty pages fit in the window. Retrieval adds a failure mode and buys nothing.</p>
 </div>
 <div class="card card-blue">
-<p><span class="card-title">A system prompt</span></p>
-<p>What it is for, and what it refuses.</p>
+<p><span class="card-title">The answer is a number</span></p>
+<p>Totals, counts and rankings come from a query against the data, not a similarity search over prose.</p>
 </div>
 <div class="card">
-<p><span class="card-title">A tool list</span></p>
-<p>Everything it can do. Nothing else is possible.</p>
-</div>
-<div class="card card-sand">
-<p><span class="card-title">A permission mode</span></p>
-<p>Which actions stop for approval.</p>
-</div>
-<div class="card">
-<p><span class="card-title">A place to run</span></p>
-<p>A machine, a directory, a network.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">A loop</span></p>
-<p>Call, execute, feed the result back, repeat.</p>
+<p><span class="card-title">The corpus changes hourly</span></p>
+<p>Every change means re-embedding, and the index is out of date between rebuilds.</p>
 </div>
 </div>
 </section>
-<section id="three-kinds-of-tools" class="slide level2">
-<h2>Three kinds of tools</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th></th>
-<th>Where the code is</th>
-<th>Example</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Built in</td>
-<td>in the harness</td>
-<td>read a file, run a command, fetch a page</td>
-</tr>
-<tr class="even">
-<td>Yours</td>
-<td>a function you wrote</td>
-<td>look up a customer in your system</td>
-</tr>
-<tr class="odd">
-<td>Someone else’s</td>
-<td>an MCP server</td>
-<td>the Northwind database, EIA, FRED</td>
-</tr>
-</tbody>
-</table>
-<p>All three arrive at the model the same way: a name, a description, and a parameter schema.</p>
-</section>
-<section id="a-tool-you-write" class="slide level2">
-<h2>A tool you write</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="at">@tool</span>(<span class="st">"order_total"</span>,</span>
-<span id="cb2-2"><a></a>      <span class="st">"Total revenue for one order. Takes an order id."</span>,</span>
-<span id="cb2-3"><a></a>      {<span class="st">"order_id"</span>: <span class="bu">int</span>})</span>
-<span id="cb2-4"><a></a><span class="cf">async</span> <span class="kw">def</span> order_total(args):</span>
-<span id="cb2-5"><a></a>    df <span class="op">=</span> pd.read_excel(<span class="st">"northwind_orderdetails.xlsx"</span>)</span>
-<span id="cb2-6"><a></a>    rows <span class="op">=</span> df[df.OrderID <span class="op">==</span> args[<span class="st">"order_id"</span>]]</span>
-<span id="cb2-7"><a></a>    total <span class="op">=</span> (rows.UnitPrice <span class="op">*</span> rows.Quantity).<span class="bu">sum</span>()</span>
-<span id="cb2-8"><a></a>    <span class="cf">return</span> {<span class="st">"content"</span>: [{<span class="st">"type"</span>: <span class="st">"text"</span>, <span class="st">"text"</span>: <span class="ss">f"$</span><span class="sc">{</span>total<span class="sc">:,.2f}</span><span class="ss">"</span>}]}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The description is the interface. The model never sees the code.</p>
-</section>
-<section id="build-one" class="slide level2 plain-title">
-<h2>Build one</h2>
-<p><span class="eyebrow">Exercise · three stages</span></p>
-<div class="steps">
-<ol type="1">
-<li>A chatbot with no tools at all. Ask it how many files are in the directory it is running in. Read the answer carefully.</li>
-<li>Give it one built-in tool — reading files — and ask again.</li>
-<li>Write a tool of your own over data you brought or the order spreadsheets. Give it a system prompt that says what it is for.</li>
-</ol>
-</div>
-<div class="note">
-<p>In stage 1 the model has no way to see the directory. Keep its answer — you compare it against stage 2.</p>
-</div>
-</section>
-<section id="what-stage-1-shows" class="slide level2">
-<h2>What stage 1 shows</h2>
-<div class="lead">
-<p>Asked a question about a filesystem it cannot reach, a model with no tools still answers.</p>
-</div>
-<ul>
-<li>It produces a plausible number</li>
-<li>It produces plausible filenames</li>
-<li>Nothing in the output is marked as unavailable</li>
-</ul>
-<p>The same model with a file-reading tool answers correctly. What changed is the tool list.</p>
-</section>
-<section id="choosing-what-it-can-do" class="slide level2 divider">
-<h2>Choosing what it can do</h2>
-</section>
-<section id="a-general-agent-and-a-narrow-agent" class="slide level2">
-<h2>A general agent and a narrow agent</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th></th>
-<th>A general agent</th>
-<th>A narrow agent</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Tool list</td>
-<td>everything</td>
-<td>three tools</td>
-</tr>
-<tr class="even">
-<td>Runs as</td>
-<td>you</td>
-<td>a service account</td>
-</tr>
-<tr class="odd">
-<td>Reaches</td>
-<td>your whole machine</td>
-<td>one dataset</td>
-</tr>
-<tr class="even">
-<td>Right for</td>
-<td>your own work</td>
-<td>anything you hand to someone else</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="an-agent-whose-tool-is-an-agent" class="slide level2">
-<h2>An agent whose tool is an agent</h2>
-<div class="steps">
-<ol type="1">
-<li>An orchestrator receives the question and holds no data of its own.</li>
-<li>It calls a research agent that can read the public web and nothing private.</li>
-<li>It calls a data agent that can read your database and cannot reach the internet.</li>
-<li>It assembles the answer from what both returned.</li>
-</ol>
-</div>
-<p>The two workers never share a context, so neither holds private data and an outbound channel at the same time.</p>
-</section>
-<section id="talk-it-out-of-its-job" class="slide level2 plain-title">
-<h2>Talk it out of its job</h2>
+<section id="break-your-own" class="slide level2 plain-title">
+<h2>Break your own</h2>
 <p><span class="eyebrow">Exercise</span></p>
 <div class="steps">
 <ol type="1">
-<li>Take the narrow agent you just built.</li>
-<li>Ask it something outside its purpose. See whether the system prompt holds.</li>
-<li>Now ask persuasively — a plausible reason, an appeal to an exception, an instruction that claims to come from you.</li>
-<li>Note which refusals came from the prompt and which came from a tool that does not exist.</li>
+<li>Add a document to your index that contradicts another one. Ask the question both answer.</li>
+<li>Add one containing an instruction addressed to the agent. Ask an unrelated question.</li>
+<li>Ask something answered only by a table you chunked in the middle.</li>
+<li>Write down which of the three your setup handled, and what you would change.</li>
 </ol>
-</div>
-<div class="note">
-<p>Keep what you found. It is the first item after the break.</p>
 </div>
 </section>
 <section id="screen-shares" class="slide level2 band-bottom">
 <h2>Screen shares</h2>
 <ul>
-<li>What your agent is for, in one sentence</li>
-<li>Its tool list, read out loud</li>
-<li>The one thing you could talk it into</li>
+<li>What you indexed, and how you chunked it</li>
+<li>One question it answered well, with the passage it used</li>
+<li>The one that broke it</li>
 </ul>
 </section></section>
 <section>
-<section id="managing-security-risks" class="title-slide slide level1 center">
-<h1>18 · Managing security risks</h1>
-<p>Believing it, sending it out, and letting it act.</p>
+<section id="open-source-models" class="title-slide slide level1 center">
+<h1>16 · Open source models</h1>
+
 </section>
-<section id="three-risks" class="slide level2">
-<h2>Three risks</h2>
+<section id="what-gpqa-diamond-measures" class="slide level2 plain-title">
+<h2>What GPQA Diamond measures</h2>
+<div class="lead">
+<p>Four-way multiple-choice questions in biology, physics and chemistry, written by people who hold or are working toward a PhD in the field they wrote for.</p>
+</div>
+<div class="stats">
+<div class="stat">
+<p><span class="stat-value">25%</span> <span class="stat-label">guessing</span></p>
+</div>
+<div class="stat">
+<p><span class="stat-value">34%</span> <span class="stat-label">skilled non-experts, 30+ minutes of open web search</span></p>
+</div>
+<div class="stat">
+<p><span class="stat-value">74%</span> <span class="stat-label">PhDs answering inside their own field</span></p>
+</div>
+</div>
+<div class="note">
+<p>Diamond is the hardest 198 of the 448 questions: both expert annotators answered correctly and most non-experts did not. Rein et al., 2023.</p>
+</div>
+</section>
+<section id="how-far-behind-is-it" class="slide level2 plain-title">
+<h2>How far behind is it?</h2>
+<p><img data-src="images/lag-gpqa.png" style="width:76.0%"></p>
+<div class="note">
+<p>Each line is that tier’s best score so far; gray dots are every other model. Source: Epoch AI, 8 Sep 2026.</p>
+</div>
+</section>
+<section id="what-terminal-bench-measures" class="slide level2 plain-title">
+<h2>What Terminal-Bench measures</h2>
+<div class="lead">
+<p>An agent is given a container, a plain-English objective, and a terminal. It has to do the job: compile the code, train the model, configure the server, find the bug.</p>
+</div>
+<div class="stats">
+<div class="stat">
+<p><span class="stat-value">7</span> <span class="stat-label">task domains: software, ML, science, operations, security, hardware, media</span></p>
+</div>
+<div class="stat">
+<p><span class="stat-value">4</span> <span class="stat-label">parts to a task: instruction, container, test suite, reference solution</span></p>
+</div>
+<div class="stat">
+<p><span class="stat-value">0 or 1</span> <span class="stat-label">per task — the tests pass or they do not</span></p>
+</div>
+</div>
+<div class="note">
+<p>Built by the Laude Institute with Stanford researchers. No human baseline is published. The version charted here dates from mid-2025; a harder v4.0 has since cut the frontier to about 60%.</p>
+</div>
+</section>
+<section id="the-same-three-tiers-on-agentic-work" class="slide level2 plain-title">
+<h2>The same three tiers, on agentic work</h2>
+<p><img data-src="images/lag-tbench.png" style="width:80.0%"></p>
+<div class="note">
+<p>Epoch’s mirror of Terminal-Bench; its closed-model coverage runs to April 2026.</p>
+</div>
+</section>
+<section id="where-each-tier-stands-today" class="slide level2 plain-title">
+<h2>Where each tier stands today</h2>
+<p><img data-src="images/lag-gap.png" style="width:99.0%"></p>
+</section>
+<section id="two-numbers-two-different-answers" class="slide level2 compare">
+<h2>Two numbers, two different answers</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="eyebrow">The months</span></p>
+<p>Three to five months, on both benchmarks. A model small enough for one consumer GPU is nine to ten months back, on both.</p>
+</div><div class="column" style="width:50%;">
+<p><span class="eyebrow">The scores</span></p>
+<p>On graduate science questions the open gap is 3 points. On agentic terminal work it is 33, and the small model solves 23% against the frontier’s 85%.</p>
+</div></div>
+<p>GPQA Diamond is near its ceiling, which compresses the gap: five months of lag is worth three points because there is nowhere left to go. Terminal-Bench is not near any ceiling, and there the same few months is most of the task.</p>
+</section>
+<section id="what-that-means-for-a-choice" class="slide level2 band-bottom">
+<h2>What that means for a choice</h2>
 <div class="cards cards-3">
 <div class="card">
-<p><span class="card-title">Believing it</span></p>
-<p>A wrong number, delivered fluently. Friday morning was this one.</p>
+<p><span class="card-title">Answer from knowledge</span></p>
+<p>A 27B open model scores 86% on GPQA Diamond against the frontier’s 96%, on hardware you own.</p>
 </div>
 <div class="card card-blue">
-<p><span class="card-title">Sending data out</span></p>
-<p>Your material reaching a third party. A contract problem.</p>
+<p><span class="card-title">Reason over your documents</span></p>
+<p>A large open model is a few months behind and self-hostable. Test it on your own task before taking the ranking.</p>
 </div>
 <div class="card card-sand">
-<p><span class="card-title">Letting it act</span></p>
-<p>An agent doing something on your behalf that you did not ask for. An engineering problem.</p>
+<p><span class="card-title">Run a multi-step agent</span></p>
+<p>On Terminal-Bench the best open model solves 52% and the best small one 23%, against the frontier’s 85%.</p>
 </div>
 </div>
-<p>Most corporate AI policy addresses the second one only.</p>
 </section>
-<section id="sending-data-out" class="slide level2 divider">
-<h2>Sending data out</h2>
-</section>
-<section id="what-a-contract-gives-you" class="slide level2">
-<h2>What a contract gives you</h2>
+<section id="not-every-job-needs-the-largest-model" class="slide level2">
+<h2>Not every job needs the largest model</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
@@ -605,286 +449,45 @@ Kerry Back<br>J. Howard Creekmore Professor of Finance
 <thead>
 <tr class="header">
 <th></th>
-<th>What it adds</th>
-<th>Enough for</th>
+<th>Where it runs</th>
+<th>What it suits</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Opt out of training</td>
-<td>a setting, revocable, data still retained briefly</td>
-<td>personal, non-sensitive work</td>
+<td>A frontier model</td>
+<td>the provider’s API</td>
+<td>judgment, long context, code</td>
 </tr>
 <tr class="even">
-<td>A signed DPA</td>
-<td>liability, breach notice, audit rights, a subprocessor list</td>
-<td>client data, regulated data</td>
+<td>A mid-size model</td>
+<td>the same API, less per token</td>
+<td>classification, extraction, routing</td>
 </tr>
 <tr class="odd">
-<td>A DPA plus a BAA</td>
-<td>the same, covering protected health information</td>
-<td>anything under HIPAA</td>
+<td>A small open model</td>
+<td>your own hardware</td>
+<td>high volume, or data that cannot leave</td>
 </tr>
 <tr class="even">
-<td>An enterprise agreement</td>
-<td>SLAs, support, SSO, capacity</td>
-<td>scale and operations</td>
+<td>A fine-tuned small model</td>
+<td>your own hardware</td>
+<td>one narrow task, done constantly</td>
 </tr>
 </tbody>
 </table>
-<div class="note">
-<p>The last row buys operations. The privacy terms are the same as the row above it.</p>
-</div>
+<p>The price difference is negligible on a single question and decides the budget at a million classifications.</p>
 </section>
-<section id="what-the-regulation-actually-requires" class="slide level2">
-<h2>What the regulation actually requires</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span class="eyebrow">HIPAA</span></p>
-<p>Satisfactory assurances “must be documented through a written contract” meeting §164.504(e).</p>
-<p>A BAA is required, not advisable. 45 CFR 164.502(e).</p>
-</div><div class="column" style="width:50%;">
-<p><span class="eyebrow">SEC Reg S-P</span></p>
-<p>Written policies “reasonably designed to require oversight, including through due diligence and monitoring, of service providers.”</p>
-<p>17 CFR 248.30.</p>
-</div></div>
-</section>
-<section id="run-it-where-the-data-already-is" class="slide level2">
-<h2>Run it where the data already is</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th></th>
-<th>AWS</th>
-<th>Google Cloud</th>
-<th>Azure</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Claude</td>
-<td>Bedrock</td>
-<td>Vertex AI</td>
-<td>Foundry</td>
-</tr>
-<tr class="even">
-<td>GPT</td>
-<td>Bedrock</td>
-<td></td>
-<td>Azure AI Foundry</td>
-</tr>
-<tr class="odd">
-<td>Gemini</td>
-<td></td>
-<td>native</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>If the data already sits in one of those, the model can run inside the same perimeter. No new vendor, no new trust boundary, and the DPA you already signed still applies.</p>
-</section>
-<section id="when-the-contract-is-not-enough" class="slide level2">
-<h2>When the contract is not enough</h2>
-<div class="steps">
-<ol type="1">
-<li>Send less — a schema and a few synthetic rows rather than the table.</li>
-<li>Anonymize — strip the names, the account numbers, the identifiers.</li>
-<li>Run a smaller model on your own hardware, so nothing leaves at all.</li>
-</ol>
-</div>
-<div class="note">
-<p>A DPA is a promise backed by liability. These three are physical facts about where the data went.</p>
-</div>
-</section>
-<section id="letting-it-act" class="slide level2 divider">
-<h2>Letting it act</h2>
-</section>
-<section id="prompt-injection" class="slide level2">
-<h2>Prompt injection</h2>
+<section id="distillation-in-one-paragraph" class="slide level2">
+<h2>Distillation, in one paragraph</h2>
 <div class="lead">
-<p>The model cannot tell an instruction from a piece of content. Both arrive as text in the same conversation.</p>
+<p>Run the frontier model on a few thousand examples of your task. Keep the inputs and its outputs. Train a small model on those pairs.</p>
 </div>
-<p>Text placed where the agent will read it — an email, a document, a web page, a spreadsheet cell — is read in the same way as text you typed. An attacker needs no credentials, only a way to get words in front of the model.</p>
-<div class="note">
-<p>OWASP has ranked this first among risks to LLM applications since 2025.</p>
-</div>
+<p>The small model does not become generally capable. It becomes capable at the one task you sampled, at a fraction of the cost per call, on hardware you control.</p>
 </section>
-<section id="echoleak" class="slide level2 plain-title">
-<h2>EchoLeak</h2>
-<p><span class="eyebrow">CVE-2025-32711 · Microsoft 365 Copilot · June 2025</span></p>
-<div class="steps">
-<ol type="1">
-<li>An attacker mails the victim a message containing instructions invisible to a human reader.</li>
-<li>The victim asks Copilot to summarize their email. Copilot reads the hidden instructions.</li>
-<li>Following them, Copilot places confidential data inside a URL in its response.</li>
-<li>The victim’s browser fetches that URL automatically.</li>
-<li>The attacker reads the data out of their own server log.</li>
-</ol>
-</div>
-<p>Zero clicks by the victim beyond the summary request.</p>
-</section>
-<section id="three-legs" class="slide level2">
-<h2>Three legs</h2>
-<div class="cards cards-3">
-<div class="card">
-<p><span class="card-title">Private data</span></p>
-<p>Something worth taking: client records, financials, an inbox.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">Untrusted content</span></p>
-<p>Text an outsider can control: a web page, an email, an uploaded file.</p>
-</div>
-<div class="card card-sand">
-<p><span class="card-title">An outbound channel</span></p>
-<p>Any way for text to leave: fetching a URL, sending mail, writing somewhere shared.</p>
-</div>
-</div>
-<p>All three in one agent is the condition. Remove any one and the attack does not work.</p>
-</section>
-<section id="the-question-to-ask-about-any-deployment" class="slide level2">
-<h2>The question to ask about any deployment</h2>
-<div class="prompt-box">
-<div class="box-title">
-<p>The check</p>
-</div>
-<p>Does this agent hold private data, read content an outsider can influence, and have a way to send text out — at the same time?</p>
-</div>
-<p>It is answerable from an architecture diagram, without knowing anything about how the model works.</p>
-</section>
-<section id="blast-radius-of-an-excel-add-in" class="slide level2">
-<h2>Blast radius of an Excel add-in</h2>
-<p>The Claude for Excel add-in from Thursday, checked against the three legs.</p>
-<div class="cards cards-3">
-<div class="card">
-<p><span class="card-title">Private data</span></p>
-<p>The open workbook. With “work across files” on, also the open deck, the open Word document, and the open Outlook email.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">Untrusted content</span></p>
-<p>A downloaded template, a vendor file, a data import, or an email from outside.</p>
-</div>
-<div class="card card-sand">
-<p><span class="card-title">An outbound channel</span></p>
-<p>Writing into the open document or email, and any connector you have enabled.</p>
-</div>
-</div>
-<div class="note">
-<p>“Work across files” is on by default for Pro and Max plans and off by default for Team and Enterprise. Anthropic’s testing found the add-in could be manipulated into extracting sensitive information, modifying data, or taking destructive actions.</p>
-</div>
-</section>
-<section id="red-team-a-classmates-agent" class="slide level2 plain-title">
-<h2>Red-team a classmate’s agent</h2>
-<p><span class="eyebrow">Exercise</span></p>
-<div class="steps">
-<ol type="1">
-<li>Swap agents with someone. You get their code and their tool list.</li>
-<li>Diagram it: what private data can it reach, what untrusted text does it read, how could text leave.</li>
-<li>Plant an injection in something it will read — a file, a row, a page it fetches.</li>
-<li>Try to make it act on the injection. Record what worked and what it refused.</li>
-<li>Give the author two changes: one to the prompt, one to the tool list. Say which one you would actually rely on.</li>
-</ol>
-</div>
-<div class="note">
-<p>Use synthetic data. Nothing in this exercise touches anything real.</p>
-</div>
-</section>
-<section id="isolation-and-governance" class="slide level2 divider">
-<h2>Isolation and governance</h2>
-</section>
-<section id="two-ways-to-stop-the-same-thing" class="slide level2 compare">
-<h2>Two ways to stop the same thing</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span class="eyebrow">Governance</span></p>
-<p>Every call is inspected as it is made and allowed or refused.</p>
-<p>Works on the calls you anticipated. Judgment happens at run time, every time.</p>
-</div><div class="column" style="width:50%;">
-<p><span class="eyebrow">Isolation</span></p>
-<p>The route does not exist.</p>
-<p>Works on calls nobody anticipated. There is nothing to judge at run time.</p>
-</div></div>
-<div class="note">
-<p>Real systems use both. The order matters: isolate first, then govern what remains.</p>
-</div>
-</section>
-<section id="the-split" class="slide level2">
-<h2>The split</h2>
-<div class="steps">
-<ol type="1">
-<li>The agent that reads untrusted content gets no private data and no credentials.</li>
-<li>The agent that holds private data has no route to the internet.</li>
-<li>An orchestrator calls both as tools and never exposes one to the other’s context.</li>
-</ol>
-</div>
-<p>Neither worker ever holds all three legs. That property is a fact about the network and the tool lists, not a rule either agent has been asked to follow.</p>
-</section>
-<section id="your-container-as-an-example" class="slide level2">
-<h2>Your container, as an example</h2>
-<table class="caption-top">
-<tbody>
-<tr class="odd">
-<td>Filesystem</td>
-<td>its own — no other student’s files exist inside it</td>
-</tr>
-<tr class="even">
-<td>Processes</td>
-<td>its own — you cannot see anyone else’s</td>
-</tr>
-<tr class="odd">
-<td>Network</td>
-<td>its own namespace, and it cannot reach a peer container</td>
-</tr>
-<tr class="even">
-<td>The gate</td>
-<td>your terminal sits behind your own login</td>
-</tr>
-</tbody>
-</table>
-<p>Your container is an instance of that pattern.</p>
-</section>
-<section id="monday" class="slide level2 divider">
-<h2>Monday</h2>
-</section>
-<section id="write-the-plan" class="slide level2 plain-title">
-<h2>Write the plan</h2>
-<p><span class="eyebrow">Exercise</span></p>
-<p>One page, covering:</p>
-<div class="steps">
-<ol type="1">
-<li>The workflow. Who does it now, how often, and how long it takes.</li>
-<li>What you would build — a skill, an app, or an agent — and who uses it.</li>
-<li>The data it touches, and where that data lives today.</li>
-<li>The tool list, written out. What it can do and what it deliberately cannot.</li>
-<li>The three-leg check, answered.</li>
-<li>What it costs to run, and what has to be true for it to be worth that.</li>
-</ol>
-</div>
-</section>
-<section id="pitches" class="slide level2 band-bottom">
-<h2>Pitches</h2>
-<p>Three minutes each. The room responds as the people who would have to approve it, fund it, or use it.</p>
-<p>For each plan, someone in the room names:</p>
-<ul>
-<li>The step most likely to fail in the real workflow</li>
-<li>The one item on the tool list they would remove</li>
-</ul>
-</section>
-<section id="a-habit-a-file-a-question" class="slide level2">
-<h2>A habit, a file, a question</h2>
-<div class="cards cards-3">
-<div class="card">
-<p><span class="card-title">A habit</span></p>
-<p>Describe the data, require the code, check the counts, reconcile a second way.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">A file</span></p>
-<p>A skill, published, that a colleague can install in two commands.</p>
-</div>
-<div class="card">
-<p><span class="card-title">A question</span></p>
-<p>Private data, untrusted content, an outbound channel — asked of anything before it is switched on.</p>
-</div>
-</div>
+<section id="tomorrow" class="slide level2 band-bottom">
+<h2>Tomorrow</h2>
+<p>The API underneath the tools, an agent with a tool list you chose, and managing security risks.</p>
 
 
 </section></section>

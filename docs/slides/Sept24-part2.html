@@ -98,7 +98,7 @@
     code span.vs { color: #032f62; } /* VerbatimString */
     code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-963326a71a77be66e1a2dc2e7f4f8a8d.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-fe3e5a70c3c5b29320272df664d210fd.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -211,35 +211,173 @@ Kerry Back<br>J. Howard Creekmore Professor of Finance
 <section id="this-afternoon" class="slide level2">
 <h2>This afternoon</h2>
 <div class="cards cards-3">
+<div class="card card-blue">
+<p><span class="card-title">Permissions</span></p>
+<p>What to allow without approval</p>
+</div>
 <div class="card">
 <p><span class="card-title">Persistent instructions</span></p>
-<p>The instructions already there before yours, the standing rules you add, and tasks written down once.</p>
+<p>System prompts, CLAUDE.md/AGENTS.md, SKILL.md, memories</p>
 </div>
 <div class="card card-blue">
 <p><span class="card-title">Connectors and plugins</span></p>
-<p>Tools on somebody else’s server, and folders of skills other people published.</p>
-</div>
-<div class="card">
-<p><span class="card-title">Agent harnesses</span></p>
-<p>Claude Code is one program around the model. What the others decided differently.</p>
+<p>Tools on somebody else’s server, and folders of skills other people published</p>
 </div>
 </div>
-<p>Four hands-on blocks, about two and a quarter hours: a <code>CLAUDE.md</code>, a skill, the Northwind database, and the EIA database.</p>
 </section>
 <section>
-<section id="persistent-instructions-and-memory" class="title-slide slide level1 center">
-<h1>9 · Persistent instructions and memory</h1>
-<p>Instructions that are there before you type: somebody else’s first, then yours.</p>
+<section id="permissions" class="title-slide slide level1 center">
+<h1>7 · Permissions</h1>
+
 </section>
-<section id="somebody-already-wrote-instructions" class="slide level2 plain-title">
-<h2>Somebody already wrote instructions</h2>
-<div class="lead">
-<p>Every conversation you had this morning already contained a block of text you did not write and never saw.</p>
+<section id="what-claude-asks-before-it-acts" class="slide level2">
+<h2>What Claude asks before it acts</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Mode</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Manual</td>
+<td>asks before the first use of each tool</td>
+</tr>
+<tr class="even">
+<td>Plan</td>
+<td>reads and explores, edits nothing</td>
+</tr>
+<tr class="odd">
+<td>Accept edits</td>
+<td>file edits go through without asking</td>
+</tr>
+<tr class="even">
+<td>Auto</td>
+<td>approves on its own, with a check on each action</td>
+</tr>
+<tr class="odd">
+<td>Don’t ask</td>
+<td>refuses anything it would otherwise ask about</td>
+</tr>
+<tr class="even">
+<td>Bypass</td>
+<td>no prompts at all</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<p>Enforced by the program around the model, not by the model. A line in <code>CLAUDE.md</code> shapes what Claude tries to do; it does not change what is allowed.</p>
 </div>
-<p>The system prompt. It sits ahead of your first message and is sent again on every turn, telling the model what it is, what it may do, and how to answer.</p>
 </section>
-<section id="what-is-in-one" class="slide level2">
-<h2>What is in one</h2>
+<section id="permissions-in-claude-desktop" class="slide level2 plain-title">
+<h2>Permissions in Claude Desktop</h2>
+<div class="lead">
+<p>The desktop app runs Claude Code, so the modes are the same and carry the same names.</p>
+</div>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>What it can reach</td>
+<td>the folders you connect to the conversation, and nothing else</td>
+</tr>
+<tr class="even">
+<td>What it asks about</td>
+<td>the first use of each tool, in Manual mode</td>
+</tr>
+<tr class="odd">
+<td>What “don’t ask again” does</td>
+<td>writes a rule that outlives the conversation</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<p>Granting a folder is the decision that matters. The mode decides how often you are asked; the folder decides what can be reached at all.</p>
+</div>
+</section>
+<section id="permissions-in-your-container" class="slide level2 band-bottom">
+<h2>Permissions in your container</h2>
+<p>Everything is allowed already, in <code>~/.claude/settings.json</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource json number-lines code-with-copy"><code class="sourceCode json"><span id="cb1-1"><a></a><span class="st">"permissions"</span><span class="er">:</span> <span class="fu">{</span></span>
+<span id="cb1-2"><a></a>  <span class="dt">"allow"</span><span class="fu">:</span> <span class="ot">[</span><span class="st">"Bash(*)"</span><span class="ot">,</span> <span class="st">"Read(*)"</span><span class="ot">,</span> <span class="st">"Write(*)"</span><span class="ot">,</span> <span class="st">"Edit(*)"</span><span class="ot">,</span></span>
+<span id="cb1-3"><a></a>            <span class="st">"Glob(*)"</span><span class="ot">,</span> <span class="st">"Grep(*)"</span><span class="ot">,</span> <span class="st">"WebFetch(*)"</span><span class="ot">,</span> <span class="st">"WebSearch(*)"</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb1-4"><a></a>  <span class="dt">"deny"</span><span class="fu">:</span> <span class="ot">[]</span></span>
+<span id="cb1-5"><a></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="note">
+<p>So nothing prompts you all week. That is a decision about this container — it holds your course files and is reachable only by you — not about how to run an agent on your own machine.</p>
+</div>
+</section></section>
+<section>
+<section id="persistent-instructions" class="title-slide slide level1 center">
+<h1>8 · Persistent instructions</h1>
+
+</section>
+<section id="two-kinds-of-instruction" class="slide level2">
+<h2>Two kinds of instruction</h2>
+<div class="lead">
+<p>With no instructions of your own, a model answers everyone’s question the same way. Instructions are how that gets changed.</p>
+</div>
+<div class="cards cards-2">
+<div class="card">
+<p><span class="card-title">The provider’s</span></p>
+<p>The <strong>system prompt</strong> ships with the product and is sent on every turn. It regulates behavior: what the assistant is, what it declines, how an answer is formatted.</p>
+<p>You do not edit it.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">Yours</span></p>
+<p>Added on top. It customizes behavior: how you want work done, what your files hold, the conventions you follow.</p>
+<p>You choose what it says and where it applies.</p>
+</div>
+</div>
+</section>
+<section id="what-reaches-the-model-before-your-prompt" class="slide level2">
+<h2>What reaches the model before your prompt</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Part</th>
+<th>Who sets it</th>
+<th>When it is sent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>System prompt</td>
+<td>the provider</td>
+<td>every turn</td>
+</tr>
+<tr class="even">
+<td>Tool definitions</td>
+<td>the product, and what you connect</td>
+<td>every turn</td>
+</tr>
+<tr class="odd">
+<td><code>CLAUDE.md</code></td>
+<td>you</td>
+<td>every turn</td>
+</tr>
+<tr class="even">
+<td>A skill’s description</td>
+<td>you</td>
+<td>every turn, one line each</td>
+</tr>
+<tr class="odd">
+<td>A skill’s body</td>
+<td>you</td>
+<td>only when the description matches</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<p>Anything sent on every turn costs money and latency, and takes up the model’s attention.</p>
+</div>
+</section>
+<section id="what-is-in-a-system-prompt" class="slide level2 plain-title">
+<h2>What is in a system prompt</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 50%">
@@ -268,134 +406,89 @@ Kerry Back<br>J. Howard Creekmore Professor of Finance
 </tr>
 </tbody>
 </table>
-<p>Thousands of words, revised often, and paid for on every turn.</p>
-</section>
-<section id="read-the-real-one" class="slide level2 plain-title">
-<h2>Read the real one</h2>
-<p>Anthropic publishes the system prompts for the Claude apps, dated and by model:</p>
-<div class="lead">
-<p><a href="https://platform.claude.com/docs/en/release-notes/system-prompts/overview">platform.claude.com/docs/en/release-notes/system-prompts</a></p>
-</div>
 <div class="note">
-<p>Worth reading. Behavior you took for the model is often an instruction on that page.</p>
+<p>Anthropic publishes the ones in the Claude apps, dated and by model: <a href="https://platform.claude.com/docs/en/release-notes/system-prompts/overview">platform.claude.com/docs/en/release-notes/system-prompts</a></p>
 </div>
 </section>
-<section id="it-does-not-come-with-the-api" class="slide level2 plain-title">
-<h2>It does not come with the API</h2>
-<div class="lead">
-<p>Call the Messages endpoint the way you did this morning and none of that is there.</p>
-</div>
-<p>The <code>system</code> field is empty unless you fill it. Same weights, same training, no instructions — which is why a question can get one answer in the chat window and a different one from a script.</p>
-<div class="note">
-<p>The scaffolding is in the app, not in the weights.</p>
-</div>
-</section>
-<section id="who-writes-it-where" class="slide level2">
-<h2>Who writes it, where</h2>
+<section id="claude.md-by-scope" class="slide level2">
+<h2>CLAUDE.md, by scope</h2>
+<p>Claude Code reads every <code>CLAUDE.md</code> from the top of the filesystem down to the folder you started in, and puts them all in context:</p>
 <table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
 <thead>
 <tr class="header">
-<th>Where you are</th>
-<th>Who wrote the system prompt</th>
+<th>File</th>
+<th>Applies to</th>
+<th></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>claude.ai, Claude Desktop</td>
-<td>Anthropic, and published</td>
+<td><code>$HOME/.claude/CLAUDE.md</code></td>
+<td>every folder you work in</td>
+<td>nobody</td>
 </tr>
 <tr class="even">
-<td>Claude Code</td>
-<td>Anthropic, not published</td>
-</tr>
-<tr class="odd">
-<td>OpenRouter, or any raw API call</td>
-<td>you, or nobody</td>
-</tr>
-<tr class="even">
-<td>An agent you build</td>
-<td>you, entirely</td>
+<td><code>path/folder/CLAUDE.md</code></td>
+<td>work in that folder</td>
+<td>the team, if you commit it</td>
 </tr>
 </tbody>
 </table>
 <div class="note">
-<p>Further down the list, more of the behavior is yours to specify, and absent if you do not. Sunday you write one.</p>
+<p>The closest file is read last. Keep each one under about 200 lines — all of them are in the context window before you type.</p>
 </div>
+<ul>
+<li>OpenAI and Google call it <code>AGENTS.me</code></li>
+<li>Desktop apps have analogous “instructions” settings</li>
+</ul>
 </section>
-<section id="the-repeated-instruction" class="slide level2">
-<h2>The repeated instruction</h2>
+<section id="a-digression-on-file-systems" class="slide level2">
+<h2>A digression on file systems</h2>
+<p>Windows File Explorer hides the actual filesystem locations of common folders. You can do the following to see where your home folder is.</p>
+<ul>
+<li><p>Windows: Start -&gt; Command Prompt. Then type <code>cd $HOME</code> and Enter and then <code>pwd</code> and Enter. That is your home directory.</p></li>
+<li><p>Mac: Enter the same commands into the Terminal app.</p></li>
+<li><p>lab803: Terminal in left pane. Enter the same commands.</p></li>
+</ul>
+</section>
+<section id="memory" class="slide level2 band-bottom">
+<h2>Memory</h2>
 <div class="lead">
-<p>This morning you typed the same four things into every prompt: describe the data first, show the code, report row counts, reconcile a second way.</p>
+<p>Everything above is written by you. Claude writes this one, as you chat, and puts it in front of itself the next time you open a conversation.</p>
 </div>
-<p>Each of those is a standing instruction about how you want work done. Typing them into each prompt makes them optional, and eventually one gets left out.</p>
-</section>
-<section id="everything-arrives-as-one-block-of-text" class="slide level2">
-<h2>Everything arrives as one block of text</h2>
-<p>Each turn, the harness assembles the request from parts you can control:</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Part</th>
-<th>Set by</th>
-<th>When it is sent</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>System prompt</td>
-<td>the tool</td>
-<td>every turn</td>
-</tr>
-<tr class="even">
-<td>Tool definitions</td>
-<td>the tool and your config</td>
-<td>every turn</td>
-</tr>
-<tr class="odd">
-<td><code>CLAUDE.md</code></td>
-<td>you</td>
-<td>every turn</td>
-</tr>
-<tr class="even">
-<td>Skill descriptions</td>
-<td>you</td>
-<td>every turn, one line each</td>
-</tr>
-<tr class="odd">
-<td>A skill’s body</td>
-<td>you</td>
-<td>only when that skill is used</td>
-</tr>
-<tr class="even">
-<td>The conversation</td>
-<td>you and the tools</td>
-<td>growing, every turn</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="the-cost-of-always" class="slide level2">
-<h2>The cost of always</h2>
-<div class="lead">
-<p>A file read on every turn is paid for on every turn — in money, in latency, and in the model’s attention.</p>
+<div class="steps">
+<ol type="1">
+<li>While you talk, it saves individual topics — not a transcript, and not a summary written when the conversation ends.</li>
+<li>Those topics arrive with the system prompt, ahead of your first message.</li>
+<li>Nothing is searched and no tool runs. There is no sign of it in the conversation.</li>
+<li>Each project has its own memory. Topics from one do not reach another.</li>
+</ol>
 </div>
+</section>
+<section id="pushed-or-pulled" class="slide level2 compare">
+<h2>Pushed, or pulled</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="eyebrow">Memory</span></p>
+<p>Saved as you go and placed in the conversation without your asking. Whether it applies is decided before you type.</p>
+</div><div class="column" style="width:50%;">
+<p><span class="eyebrow">Chat search</span></p>
+<p>You ask for it. It searches your past conversations, you see the tool run, and the answer cites the chat each piece came from.</p>
+</div></div>
+<div class="note">
+<p>Settings → Memory lists the topics. Read, edit or delete any of them, pause it, or reset it. Say what to remember or forget in the chat and it applies to your next conversation. An incognito chat forms no memory.</p>
+</div>
+</section>
+<section id="what-belongs-in-a-claude.md" class="slide level2 band-bottom">
+<h2>What belongs in a CLAUDE.md</h2>
 <div class="cards cards-2">
 <div class="card">
-<p><span class="card-title">CLAUDE.md</span></p>
-<p>Short and always present. Standing rules that apply to everything you do in that folder.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">A skill</span></p>
-<p>One line always present — its description. The body arrives only when the description matches what you asked for.</p>
-</div>
-</div>
-<p>A <code>CLAUDE.md</code> that runs to three thousand words is paid for on every turn, including the turns none of it applies to.</p>
-</section>
-<section id="what-belongs-in-each" class="slide level2">
-<h2>What belongs in each</h2>
-<div class="cards cards-2">
-<div class="card">
-<p><span class="card-title">Standing rules</span></p>
+<p><span class="card-title">Yes</span></p>
 <ul>
 <li>How you want numbers handled</li>
 <li>What the folders hold</li>
@@ -404,7 +497,7 @@ Kerry Back<br>J. Howard Creekmore Professor of Finance
 </ul>
 </div>
 <div class="card card-sand">
-<p><span class="card-title">Not standing rules</span></p>
+<p><span class="card-title">No</span></p>
 <ul>
 <li>Steps for one particular task</li>
 <li>Anything longer than a page</li>
@@ -413,79 +506,265 @@ Kerry Back<br>J. Howard Creekmore Professor of Finance
 </ul>
 </div>
 </div>
-</section>
-<section id="write-your-standing-rules" class="slide level2 plain-title">
-<h2>Write your standing rules</h2>
-<p><span class="eyebrow">Exercise</span></p>
-<div class="steps">
-<ol type="1">
-<li>Create <code>~/CLAUDE.md</code> in your container.</li>
-<li>Write the four rules from this morning in your own words, and two more of your own.</li>
-<li>Start a new conversation and give it a task that would break one of the rules.</li>
-<li>Change a rule and watch the behavior change.</li>
-</ol>
-</div>
 <div class="note">
-<p>Ask it to name the rules it is following. If it cannot, the file is not being read.</p>
+<p>In Claude Code, <code>#</code> at the start of a message appends a line to one of these files, and <code>/memory</code> opens them for editing.</p>
 </div>
+</section>
+<section id="explore" class="slide level2">
+<h2>Explore</h2>
+<ul>
+<li>In lab803, enter this prompt: <code>print the CLAUDE.md</code></li>
+<li>Then this prompt: <code>add "always answer like a pirate" to the CLAUDE.md</code></li>
+<li>Then log out (top right corner), log back in, and ask anything.</li>
+<li>Then ask it to delete the “always answer like a pirate” from the CLAUDE.md, log out again, and log back in.</li>
+</ul>
 </section>
 <section id="skills" class="slide level2 divider">
 <h2>Skills</h2>
 </section>
-<section id="a-skill-is-a-folder" class="slide level2">
+<section id="a-skill-is-a-folder" class="slide level2 plain-title">
 <h2>A skill is a folder</h2>
-<pre><code>country-report/
+<pre><code>skill-name/
   SKILL.md          the instructions
   references/       longer material, read only when needed
   scripts/          code the skill runs rather than regenerates</code></pre>
-<p><code>SKILL.md</code> opens with two lines of metadata and then plain prose:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><a></a><span class="pp">---</span></span>
-<span id="cb2-2"><a></a><span class="fu">name</span><span class="kw">:</span><span class="at"> country-report</span></span>
-<span id="cb2-3"><a></a><span class="fu">description</span><span class="kw">:</span><span class="at"> Build the monthly revenue-by-country report from the</span></span>
-<span id="cb2-4"><a></a><span class="at">  order spreadsheets. Use when asked for the country report, the</span></span>
-<span id="cb2-5"><a></a><span class="at">  monthly revenue rollup, or revenue by market.</span></span>
-<span id="cb2-6"><a></a><span class="pp">---</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="the-description-is-the-trigger" class="slide level2 compare">
-<h2>The description is the trigger</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span class="eyebrow">Does not fire</span></p>
-<p>“Helps with reporting.”</p>
-</div><div class="column" style="width:50%;">
-<p><span class="eyebrow">Fires</span></p>
-<p>“Build the monthly revenue-by-country report from the order spreadsheets. Use when asked for the country report, the monthly revenue rollup, or revenue by market.”</p>
-</div></div>
-<p>The description is the only part of a skill always in front of the model, and it decides whether the rest is ever read. Write the words the person asking would use.</p>
-</section>
-<section id="what-goes-in-the-body" class="slide level2">
-<h2>What goes in the body</h2>
-<div class="steps">
-<ol type="1">
-<li>What the task produces, stated first.</li>
-<li>Where the inputs are, by path.</li>
-<li>The steps in order, including the checks.</li>
-<li>What to do when something is missing.</li>
-<li>What the output looks like when it is right.</li>
-</ol>
-</div>
+<p><code>SKILL.md</code> opens with two lines of metadata (name and description) and then plain text.</p>
 <div class="note">
-<p>Prose, not pseudocode. The reader is a model that already knows Python and does not know your files.</p>
+<p>In Claude Desktop: Choose Customize in left pane. Then Skills. Explore or Add.</p>
 </div>
 </section>
-<section id="scripts-beat-instructions" class="slide level2 compare band-bottom">
-<h2>Scripts beat instructions</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span class="eyebrow">Instructions</span></p>
-<p>The code is written fresh each time. Same intent, a different implementation, different bugs.</p>
-</div><div class="column" style="width:50%;">
-<p><span class="eyebrow">A script</span></p>
-<p>The code is written once and tested. The skill says when to run it and what the arguments mean.</p>
-</div></div>
+<section id="the-same-file-in-other-agents" class="slide level2 plain-title">
+<h2>The same file in other agents</h2>
+<div class="lead">
+<p>Anthropic wrote the format and released it as an open standard. The others adopted it rather than inventing their own.</p>
+</div>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Agent</th>
+<th>Where it looks</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Claude Code</td>
+<td><code>.claude/skills/</code></td>
+</tr>
+<tr class="even">
+<td>Codex and ChatGPT</td>
+<td><code>.agents/skills/</code></td>
+</tr>
+<tr class="odd">
+<td>Gemini CLI</td>
+<td><code>.gemini/skills/</code>, or <code>.agents/skills/</code></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<p>Same file, same description-first loading. Put the folder in <code>.agents/skills/</code> and both Codex and Gemini CLI find it.</p>
+</div>
+</section>
+<section id="creating-a-skill" class="slide level2 plain-title">
+<h2>Creating a skill</h2>
+<ul>
+<li>Work with AI until you get what you want</li>
+<li>Tell AI to create a skill so you can get the same thing the next time</li>
+<li>Give the skill a meaningful name.</li>
+<li>As you use it and find things to add or modify, tell AI to edit the skill.</li>
+</ul>
 </section>
 <section id="three-ways-to-invoke" class="slide level2">
 <h2>Three ways to invoke</h2>
+<table class="caption-top">
+<tbody>
+<tr class="odd">
+<td>Slash command</td>
+<td><code>/skill-name</code></td>
+</tr>
+<tr class="even">
+<td>By name</td>
+<td>“use the … skill”</td>
+</tr>
+<tr class="odd">
+<td>Automatically</td>
+<td>“build …”</td>
+</tr>
+</tbody>
+</table>
+<p>The third only works when the skill description clearly applies.</p>
+</section>
+<section id="anthropics-skill-repository" class="slide level2">
+<h2>Anthropic’s skill repository</h2>
+<p><a href="https://github.com/anthropics/skills">https://github.com/anthropics/skills</a></p>
+</section>
+<section id="lab803" class="slide level2">
+<h2>lab803</h2>
+<ul>
+<li>Enter the prompt <code>/skills</code></li>
+<li>You will get a list of the installed skills</li>
+<li>All are from Anthropic</li>
+</ul>
+</section>
+<section id="breakout-exercise" class="slide level2 plain-title">
+<h2>Breakout exercise</h2>
+<ul>
+<li><p>The goal is to get Claude to always create PowerPoint decks following a template you choose. You can use one of your existing decks or choose a new template from any online source. Upload the deck to lab803.</p></li>
+<li><p>Tell Claude to create a new deck using the style of the uploaded deck. Give Claude some content and tell it to build the deck from scratch rather than just editing the uploaded deck.</p></li>
+<li><p>Download and view the deck. Instruct Claude on any changes you want. Rinse and repeat until you like the deck.</p></li>
+<li><p>Tell Claude to write the steps needed to get the good deck in a a my-pptx skill so that Claude will always create decks in the template style.</p></li>
+</ul>
+</section></section>
+<section>
+<section id="connectors-and-plugins" class="title-slide slide level1 center">
+<h1>9 · Connectors and plugins</h1>
+
+</section>
+<section id="an-agent-reaching-a-service" class="slide level2">
+<h2>An agent reaching a service</h2>
+<div class="mcp-architecture">
+<div class="mcp-box mcp-dark mcp-user">
+<p>User</p>
+</div>
+<div class="mcp-arrow-h mcp-h1">
+<p>↔︎</p>
+</div>
+<div class="mcp-box mcp-accent mcp-agent">
+<p>Harness</p>
+</div>
+<div class="mcp-arrow-h mcp-h2">
+<p>↔︎</p>
+</div>
+<div class="mcp-box mcp-dark mcp-llm">
+<p>LLM</p>
+</div>
+<div class="mcp-arrow-v mcp-v1">
+<p>↕</p>
+</div>
+<div class="mcp-box mcp-amber mcp-service-mid">
+<p>Data or Service</p>
+</div>
+</div>
+</section>
+<section id="an-mcp-server-is-a-bridge" class="slide level2">
+<h2>An MCP server is a bridge</h2>
+<div class="mcp-architecture">
+<div class="mcp-box mcp-dark mcp-user">
+<p>User</p>
+</div>
+<div class="mcp-arrow-h mcp-h1">
+<p>↔︎</p>
+</div>
+<div class="mcp-box mcp-accent mcp-agent">
+<p>Harness</p>
+</div>
+<div class="mcp-arrow-h mcp-h2">
+<p>↔︎</p>
+</div>
+<div class="mcp-box mcp-dark mcp-llm">
+<p>LLM</p>
+</div>
+<div class="mcp-arrow-v mcp-v1">
+<p>↕</p>
+</div>
+<div class="mcp-caption mcp-cap1">
+<p>The harness starts the server<br>and asks it what tools it has</p>
+</div>
+<div class="mcp-box mcp-purple mcp-server">
+<p>MCP Server</p>
+</div>
+<div class="mcp-arrow-v mcp-v2">
+<p>↕</p>
+</div>
+<div class="mcp-caption mcp-cap2">
+<p>The server holds the credentials<br>and makes the actual calls</p>
+</div>
+<div class="mcp-box mcp-amber mcp-service">
+<p>Data or Service</p>
+</div>
+</div>
+</section>
+<section id="what-the-server-tells-the-harness" class="slide level2">
+<h2>What the server tells the harness</h2>
+<div class="mcp-gmail-architecture">
+<div class="mgx-box mgx-agent">
+<p>Harness</p>
+</div>
+<div class="mgx-arrow-h">
+<p>↔︎</p>
+</div>
+<div class="mgx-box mgx-llm">
+<p>LLM</p>
+</div>
+<div class="mgx-arrow-v mgx-v1">
+<p>↕</p>
+</div>
+<div class="mgx-panel mgx-mcp">
+<p><span class="mgx-panel-title">Gmail MCP server — tools it exposes</span></p>
+<ul>
+<li><code>search_threads</code> — find threads matching a query</li>
+<li><code>create_draft</code> — start a reply, unsent</li>
+<li><code>get_message</code> — fetch one message</li>
+<li><code>update_draft</code> — edit a draft</li>
+<li><code>list_labels</code> — list the labels on the account</li>
+<li><code>label_message</code> — add or remove a label</li>
+</ul>
+</div>
+<div class="mgx-arrow-v mgx-v2">
+<p>↕</p>
+</div>
+<div class="mgx-panel mgx-api">
+<p><span class="mgx-panel-title">Gmail — what the API exposes</span></p>
+<ul>
+<li><code>GET users/me/threads?q=</code> — search</li>
+<li><code>POST users/me/drafts</code> — create draft</li>
+<li><code>GET users/me/messages/{id}</code> — read</li>
+<li><code>PUT users/me/drafts/{id}</code> — update draft</li>
+<li><code>GET users/me/labels</code> — list labels</li>
+<li><code>POST users/me/messages/{id}/modify</code> — labels and state</li>
+</ul>
+</div>
+<div class="mgx-note">
+<p>The harness gets the tool descriptions from the server.</p>
+<p>It sends that list to the LLM with every request.</p>
+<p>The LLM answers with a tool name and arguments. The server turns that into an API call.</p>
+</div>
+</div>
+</section>
+<section id="tools-from-mcp-servers" class="slide level2">
+<h2>Tools from MCP servers</h2>
+<div class="lead">
+<p>Tools written by somebody else, running on a server somebody else operates. Thousands of MCP servers exist already.</p>
+</div>
+<div class="cards cards-3">
+<div class="card card-blue">
+<p><span class="card-title">What you add</span></p>
+<p>A URL, in the agent’s configuration</p>
+</div>
+<div class="card">
+<p><span class="card-title">What arrives</span></p>
+<p>A name, a description and an input schema for every tool the server publishes</p>
+</div>
+<div class="card card-sand">
+<p><span class="card-title">What stays there</span></p>
+<p>The code, and the credential it uses to reach the service</p>
+</div>
+</div>
+<div class="note">
+<p>To the model these are more entries in the same tool list. What differs is whose machine runs them.</p>
+</div>
+</section>
+<section id="example-googles-gmail-server" class="slide level2 plain-title">
+<h2>Example: Google’s Gmail server</h2>
+<pre><code>search_threads     get_thread        get_message
+create_draft       list_drafts       list_labels
+label_thread       unlabel_thread
+label_message      unlabel_message</code></pre>
+<div class="note">
+<p>Ten tools, at <code>https://gmailmcp.googleapis.com/mcp/v1</code>. Published at <a href="https://developers.google.com/workspace/gmail/api/reference/mcp">developers.google.com/workspace/gmail/api/reference/mcp</a>.</p>
+</div>
+</section>
+<section id="example-anthropics-gmail-server" class="slide level2">
+<h2>Example: Anthropic’s Gmail server</h2>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
@@ -495,339 +774,99 @@ Kerry Back<br>J. Howard Creekmore Professor of Finance
 <thead>
 <tr class="header">
 <th></th>
-<th>How</th>
-<th>When</th>
+<th>Google</th>
+<th>Anthropic</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Slash command</td>
-<td><code>/country-report</code></td>
-<td>you know exactly what you want</td>
+<td>Tools</td>
+<td>10</td>
+<td>29</td>
 </tr>
 <tr class="even">
-<td>By name</td>
-<td>“use the country report skill”</td>
-<td>you are half sure</td>
+<td>Read</td>
+<td><code>search_threads</code> · <code>get_thread</code> · <code>get_message</code></td>
+<td>the same three</td>
 </tr>
 <tr class="odd">
-<td>Automatically</td>
-<td>“build me the March rollup”</td>
-<td>the description matched</td>
-</tr>
-</tbody>
-</table>
-<p>The third only happens if the description was written for it.</p>
-</section>
-<section id="already-in-your-container" class="slide level2 plain-title">
-<h2>Already in your container</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Skill</th>
-<th>What it does</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>xlsx</code></td>
-<td>builds and edits Excel workbooks, with formulas and charts</td>
+<td>Drafts</td>
+<td><code>create_draft</code></td>
+<td>create, get, update, delete</td>
 </tr>
 <tr class="even">
-<td><code>docx</code></td>
-<td>the same for Word, including templates</td>
-</tr>
-<tr class="odd">
-<td><code>pptx</code></td>
-<td>the same for PowerPoint, including an existing deck</td>
-</tr>
-<tr class="even">
-<td><code>finance-data</code></td>
-<td>pulls prices, fundamentals and macro series</td>
-</tr>
-<tr class="odd">
-<td><code>web-app</code></td>
-<td>scaffolds an app you can serve on port 8000</td>
-</tr>
-<tr class="even">
-<td><code>skill-creator</code></td>
-<td>writes and tests a new skill</td>
-</tr>
-</tbody>
-</table>
-<p>Open one. It is the same kind of file you are about to write.</p>
-</section>
-<section id="write-a-skill" class="slide level2 plain-title">
-<h2>Write a skill</h2>
-<p><span class="eyebrow">Exercise</span></p>
-<div class="steps">
-<ol type="1">
-<li>Pick something you do at work more than once a month, with inputs and a shape. If nothing comes in two minutes, use Thursday’s revenue-by-country report.</li>
-<li>Run <code>/skill-creator</code> and work through it, answering in your own vocabulary.</li>
-<li>Put a real input file in the container and run the skill on it.</li>
-<li>In a fresh conversation, ask for the task in the words a colleague would use.</li>
-<li>Fix the description until it fires.</li>
-</ol>
-</div>
-<div class="note">
-<p>A skill that fires only when you name it needs a better description.</p>
-</div>
-</section></section>
-<section>
-<section id="connectors-and-plugins" class="title-slide slide level1 center">
-<h1>10 · Connectors and plugins</h1>
-
-</section>
-<section id="the-problem-a-standard-solves" class="slide level2">
-<h2>The problem a standard solves</h2>
-<div class="lead">
-<p>Every tool wants to reach every data source. Without a standard, that is one integration per pair.</p>
-</div>
-<div class="stats">
-<div class="stat">
-<p><span class="stat-value">N × M</span> <span class="stat-label">integrations without a protocol</span></p>
-</div>
-<div class="stat">
-<p><span class="stat-value">N + M</span> <span class="stat-label">with one</span></p>
-</div>
-</div>
-<p>A server written for nothing in particular is reachable from every client that speaks the protocol.</p>
-</section>
-<section id="what-a-connector-sends" class="slide level2">
-<h2>What a connector sends</h2>
-<div class="steps">
-<ol type="1">
-<li>The client connects to the server and asks what it offers.</li>
-<li>The server returns a list of tools: each with a name, a description in English, and the parameters it takes.</li>
-<li>That list goes into the model’s context alongside its built-in tools.</li>
-<li>The model asks for one by name. The client calls the server and puts the result back in the conversation.</li>
-</ol>
-</div>
-<div class="note">
-<p>The model does not know a connector from a built-in tool. Both are entries in the same list.</p>
-</div>
-</section>
-<section id="a-tool-definition" class="slide level2">
-<h2>A tool definition</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource json number-lines code-with-copy"><code class="sourceCode json"><span id="cb3-1"><a></a><span class="fu">{</span></span>
-<span id="cb3-2"><a></a>  <span class="dt">"name"</span><span class="fu">:</span> <span class="st">"run_sql"</span><span class="fu">,</span></span>
-<span id="cb3-3"><a></a>  <span class="dt">"description"</span><span class="fu">:</span> <span class="st">"Run a read-only SQL query against the Northwind</span></span>
-<span id="cb3-4"><a></a><span class="st">                  database and return the rows. SELECT only."</span><span class="fu">,</span></span>
-<span id="cb3-5"><a></a>  <span class="dt">"input_schema"</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb3-6"><a></a>    <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"object"</span><span class="fu">,</span></span>
-<span id="cb3-7"><a></a>    <span class="dt">"properties"</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb3-8"><a></a>      <span class="dt">"query"</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">"type"</span><span class="fu">:</span> <span class="st">"string"</span><span class="fu">,</span> <span class="dt">"description"</span><span class="fu">:</span> <span class="st">"A SELECT statement"</span><span class="fu">}</span></span>
-<span id="cb3-9"><a></a>    <span class="fu">},</span></span>
-<span id="cb3-10"><a></a>    <span class="dt">"required"</span><span class="fu">:</span> <span class="ot">[</span><span class="st">"query"</span><span class="ot">]</span></span>
-<span id="cb3-11"><a></a>  <span class="fu">}</span></span>
-<span id="cb3-12"><a></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The description is what the model reads to decide whether to use it.</p>
-</section>
-<section id="where-the-call-is-made-from" class="slide level2">
-<h2>Where the call is made from</h2>
-<div class="lead">
-<p>In Claude Cowork, and in most setups a firm will hand you, the machine the agent’s shell runs on has no route to the internet. The connector works anyway.</p>
-</div>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span class="eyebrow">At the shell</span></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a></a><span class="ex">curl</span> https://api.stlouisfed.org/...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Refused. Everything leaving that machine passes a proxy that allows a short list of addresses, and that is not one of them.</p>
-</div><div class="column" style="width:50%;">
-<p><span class="eyebrow">Through the connector</span></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1"><a></a>fred_get_observations("UNRATE")</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Rows come back. Same machine, same second, same model.</p>
-</div></div>
-<div class="note">
-<p>Because your machine never places the call. The client end sits outside it, calls FRED itself, and hands the rows back into the conversation. Your key goes with it and is never on the machine to steal.</p>
-</div>
-</section>
-<section id="a-narrower-door-not-a-hole" class="slide level2">
-<h2>A narrower door, not a hole</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span class="eyebrow">Open the network instead</span></p>
-<p>Allow the machine to reach <code>stlouisfed.org</code> and it can send anything to any address there, in any form it likes.</p>
-</div><div class="column" style="width:50%;">
-<p><span class="eyebrow">Leave it shut, add a connector</span></p>
-<p>It can call <code>run_sql</code> with a <code>SELECT</code>. That is the entire new capability.</p>
-</div></div>
-<p>The connector is the smaller of the two. That is why the network stays off and the connector goes on.</p>
-<div class="note">
-<p>It costs something. The connector reaches out from outside the sandbox holding your credentials, so a sentence in a file it reads can ask for that call. Cutting the machine off from the network did not cut off the connector. Sunday morning.</p>
-</div>
-</section>
-<section id="servers-you-can-connect-today" class="slide level2">
-<h2>Servers you can connect today</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Server</th>
-<th>Address</th>
-<th>Sign-in</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Northwind orders</td>
-<td><code>northwind-mcp.rice-business.org/mcp</code></td>
+<td>Send</td>
 <td>none</td>
+<td><code>send_message</code> · <code>reply</code> · <code>forward</code></td>
 </tr>
-<tr class="even">
-<td>Energy data (EIA)</td>
-<td><code>eia.rice-business.org/mcp</code></td>
+<tr class="odd">
+<td>Remove</td>
 <td>none</td>
-</tr>
-<tr class="odd">
-<td>Economic data (FRED)</td>
-<td><code>fred.kerryback.com/mcp</code></td>
-<td>none</td>
-</tr>
-</tbody>
-</table>
-<p>Same three servers, reachable from Claude Code in your container and from Claude Desktop on your laptop. Neither was written for either one.</p>
-</section>
-<section id="the-northwind-server" class="slide level2 plain-title">
-<h2>The Northwind server</h2>
-<p><span class="eyebrow">Exercise</span></p>
-<div class="steps">
-<ol type="1">
-<li>Connect the Northwind server and ask what tools it offers. Read the descriptions.</li>
-<li>Ask which countries generated the most revenue, and have it show you the SQL it ran.</li>
-<li>Put that beside the number you computed from the spreadsheets on Thursday morning.</li>
-<li>Explain any difference. One of the two is answering a slightly different question.</li>
-<li>Try to make it change something in the database.</li>
-</ol>
-</div>
-<div class="note">
-<p>The two numbers usually differ. Freight, discounts, cancelled orders, and shipped versus ordered date are the usual causes.</p>
-</div>
-</section>
-<section id="what-discovery-looks-like" class="slide level2 plain-title">
-<h2>What discovery looks like</h2>
-<p>The EIA server does not hand the model a list of datasets. It hands it a way to find one.</p>
-<table class="caption-top">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<tbody>
-<tr class="odd">
-<td><code>eia_search_routes</code></td>
-<td>fuzzy search — “electricity prices by state”</td>
+<td><code>trash_message</code> · <code>delete_draft</code></td>
 </tr>
 <tr class="even">
-<td><code>eia_browse_routes</code></td>
-<td>walk the taxonomy; fourteen categories at the root</td>
-</tr>
-<tr class="odd">
-<td><code>eia_describe_route</code></td>
-<td>what filters exist, what columns, what units</td>
-</tr>
-<tr class="even">
-<td><code>eia_query_route</code></td>
-<td>the rows, with the filters applied</td>
-</tr>
-<tr class="odd">
-<td><code>eia_dataframe_describe</code></td>
-<td>what has been pulled so far, and its schema</td>
-</tr>
-<tr class="even">
-<td><code>eia_dataframe_query</code></td>
-<td>SQL across those, joins included</td>
+<td>Labels</td>
+<td>apply and remove</td>
+<td>plus create, update, delete</td>
 </tr>
 </tbody>
 </table>
 <div class="note">
-<p>Six tools rather than one per dataset. The model reads the descriptions and works out the order, which takes about four turns.</p>
+<p>The same account and the same API underneath. A different answer to what an agent may do with it.</p>
 </div>
 </section>
-<section id="the-eia-server" class="slide level2 plain-title">
-<h2>The EIA server</h2>
-<p><span class="eyebrow">Exercise</span></p>
-<div class="steps">
-<ol type="1">
-<li>Connect the EIA server and ask what tools it offers. Read them before using any.</li>
-<li>Have it browse the taxonomy from the root and pick the category closest to your industry.</li>
-<li>Ask a question you do not already know the answer to. Make it name the route it used, the filters it applied, and the units.</li>
-<li>Ask a second question that needs two of those series in one answer.</li>
-<li>Ask for something the server has no tool for, and watch what it does instead.</li>
-</ol>
-</div>
-<div class="note">
-<p>Energy arrives in thousand megawatthours, million cubic feet, and thousand barrels a day. A right number with the wrong unit is wrong by a factor of a thousand, and nothing in the reply will say so.</p>
-</div>
-</section>
-<section id="where-the-limit-lives" class="slide level2 divider">
-<h2>Where the limit lives</h2>
-</section>
-<section id="read-only-enforced-four-ways" class="slide level2">
-<h2>Read-only, enforced four ways</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Where</th>
-<th>What refuses</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>The database</td>
-<td>a role without write permission</td>
-</tr>
-<tr class="even">
-<td>The application</td>
-<td>a whitelist of allowed operations</td>
-</tr>
-<tr class="odd">
-<td>The connector</td>
-<td><code>run_sql</code> rejecting anything that is not a <code>SELECT</code></td>
-</tr>
-<tr class="even">
-<td>The tool list</td>
-<td>no write tool exists to call</td>
-</tr>
-</tbody>
-</table>
-<p>The model is not consulted at any of them.</p>
-</section>
-<section id="instructions-are-not-a-limit" class="slide level2">
-<h2>Instructions are not a limit</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span class="eyebrow">A rule in a prompt</span></p>
-<p>“Never modify the database.”</p>
-<p>Text in a conversation, competing with other text in the same conversation.</p>
-</div><div class="column" style="width:50%;">
-<p><span class="eyebrow">A tool that does not exist</span></p>
-<p>There is nothing to call.</p>
-<p>No wording reaches it, because nothing is being persuaded.</p>
-</div></div>
-</section>
-<section id="mail-and-calendar" class="slide level2">
-<h2>Mail and calendar</h2>
-<div class="lead">
-<p>The same shape applied to an inbox: an agent that reads everything and sends nothing.</p>
-</div>
-<div class="cards cards-3">
-<div class="card">
-<p><span class="card-title">It reads</span></p>
-<p>Threads, calendar entries, attachments. Enough to tell you what is waiting and what it is about.</p>
-</div>
+<section id="example-mcp-servers" class="slide level2 band-bottom">
+<h2>Example MCP servers</h2>
+<div class="cards cards-2">
 <div class="card card-blue">
-<p><span class="card-title">It drafts</span></p>
-<p>Replies, parked where you can read them.</p>
+<p><span class="card-title">Warehouses</span></p>
+<p>Snowflake, Databricks, BigQuery, MongoDB, dbt</p>
+</div>
+<div class="card">
+<p><span class="card-title">Business systems</span></p>
+<p>Salesforce, HubSpot, Workday, SAP, ServiceNow</p>
 </div>
 <div class="card card-sand">
-<p><span class="card-title">It does not send</span></p>
-<p>No send tool, no delete tool. Sending stays a thing you do.</p>
+<p><span class="card-title">Work and code</span></p>
+<p>Slack, Notion, Linear, GitHub, Atlassian, Figma, Sentry</p>
+</div>
+<div class="card card-sage">
+<p><span class="card-title">Money</span></p>
+<p>Stripe, Shopify, PayPal, Plaid</p>
 </div>
 </div>
 </section>
-<section id="two-things-at-once" class="slide level2">
-<h2>Two things at once</h2>
-<p>An agent reading your mail is holding two things at once: your private correspondence, and text written by people outside your organization.</p>
-<p>Give it an outbound channel and text written by outsiders can direct what leaves. Sunday, in detail.</p>
+<section id="connecting-to-an-mcp-server" class="slide level2">
+<h2>Connecting to an MCP server</h2>
+<div class="cards cards-2">
+<div class="card">
+<p><span class="card-title">In Claude Desktop</span></p>
+<ul>
+<li>Choose Customize from the left pane</li>
+<li>Then Connectors and Explore or Add</li>
+</ul>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">In lab803</span></p>
+<ul>
+<li>Tell Claude to add the connection</li>
+<li>You provide the URL, or Claude can search for it online</li>
+<li>Claude may say it can’t do it directly but then ask permission to use a terminal command. Allow.</li>
+<li>Log out and log in again.</li>
+</ul>
+</div>
+</div>
+<div class="note">
+<p>Example: <code>fred.kerryback.com/mcp</code>, the Federal Reserve’s economic data.</p>
+</div>
+</section>
+<section id="exercise" class="slide level2 band-bottom">
+<h2>Exercise</h2>
+<p>Ask Claude to get the US consumer price index from FRED, compute quarterly percent changes, and annualize them.</p>
+</section>
+<section id="breakout-exercise-1" class="slide level2">
+<h2>Breakout exercise</h2>
+<p>Connect to a Gmail MCP server either in a desktop app or on lab803. Create a new Gmail account if you don’t want to connect to your real one. Ask Claude to help connect. You can use any server (Anthropic, Google, …). Ask Claude how to disable any tools you don’t want. Then ask Claude to get your most recent messages. Ask Claude how to delete the connection if you don’t want to keep it. Ask Claude to write a summary of what was done.</p>
 </section>
 <section id="installing-plugins" class="slide level2 divider">
 <h2>Installing plugins</h2>
@@ -848,297 +887,19 @@ Kerry Back<br>J. Howard Creekmore Professor of Finance
 </div>
 </div>
 </section>
-<section id="two-commands" class="slide level2">
-<h2>Two commands</h2>
+<section id="anthropics-plugin-marketplace" class="slide level2">
+<h2>Anthropic’s plugin marketplace</h2>
+<p><a href="https://code.claude.com/docs/en/discover-plugins">https://code.claude.com/docs/en/discover-plugins</a></p>
+</section>
+<section id="exercise-1" class="slide level2">
+<h2>Exercise</h2>
+<p>Give Claude the following prompts</p>
 <pre><code>/plugin marketplace add kerryback/skills
 /plugin install finance-data@kerryback</code></pre>
-<p>The first points Claude at a public repository holding an index of plugins. The second installs one of them. <code>/plugin</code> on its own lists what you have.</p>
-</section>
-<section id="a-marketplace-you-can-use-today" class="slide level2 plain-title">
-<h2>A marketplace you can use today</h2>
-<p><code>kerryback/skills</code> holds fifteen. Seven of them:</p>
-<table class="caption-top">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 74%">
-</colgroup>
-<tbody>
-<tr class="odd">
-<td><code>finance-data</code></td>
-<td>prices, fundamentals, SEC filings and macro series, as CSV</td>
-</tr>
-<tr class="even">
-<td><code>elegant-pdf</code></td>
-<td>branded flyers, programs and reports as print-quality PDF</td>
-</tr>
-<tr class="odd">
-<td><code>critique</code></td>
-<td>parallel reviewers on work Claude produced, and what to do</td>
-</tr>
-<tr class="even">
-<td><code>human-write</code></td>
-<td>prose that does not read as machine-generated</td>
-</tr>
-<tr class="odd">
-<td><code>shoji2</code></td>
-<td>Quarto slide decks in the theme these slides use</td>
-</tr>
-<tr class="even">
-<td><code>voiceover</code></td>
-<td>a narrated MP4 and transcript from a deck</td>
-</tr>
-<tr class="odd">
-<td><code>smithers</code></td>
-<td>a read-only desk over your mail and calendar</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="read-it-before-you-install" class="slide level2 plain-title">
-<h2>Read it before you install</h2>
-<div class="lead">
-<p>An installed plugin runs with your permissions, on your machine, against your files.</p>
-</div>
-<div class="steps">
-<ol type="1">
-<li>Open the repository and read the <code>SKILL.md</code> of anything you are about to install.</li>
-<li>Check what it runs: a script, a command, an MCP server reaching outside.</li>
-<li>Install into a container first when you are not sure.</li>
-</ol>
-</div>
+<p>Then ask Claude what was installed. Finally, ask Claude to compute monthly stock returns for Apple since the start of 2020 and to produce a histogram.</p>
 <div class="note">
-<p>Same question as Sunday morning’s, asked earlier: what can it reach, and what can leave.</p>
+<p>You should see Claude say “using the finance-data skill”</p>
 </div>
-</section>
-<section id="install-and-try" class="slide level2 plain-title">
-<h2>Install and try</h2>
-<p><span class="eyebrow">Demonstration · 10 minutes</span></p>
-<div class="steps">
-<ol type="1">
-<li>Add the <code>kerryback/skills</code> marketplace and list what is in it.</li>
-<li>Install one and run it.</li>
-<li>Open its <code>SKILL.md</code> and read how it does what it does.</li>
-</ol>
-</div>
-<div class="note">
-<p>Install what you want tonight. The marketplace stays in your container all week.</p>
-</div>
-</section>
-<section id="four-rungs" class="slide level2 band-bottom">
-<h2>Four rungs</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th></th>
-<th>Where it lives</th>
-<th>Who has it</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>A prompt</td>
-<td>in your head</td>
-<td>you, when you remember</td>
-</tr>
-<tr class="even">
-<td><code>CLAUDE.md</code></td>
-<td>one folder</td>
-<td>anyone working in that folder</td>
-</tr>
-<tr class="odd">
-<td>A skill</td>
-<td>a file</td>
-<td>you, everywhere, when it matches</td>
-</tr>
-<tr class="even">
-<td>A plugin</td>
-<td>a repository someone published</td>
-<td>anyone who installs it</td>
-</tr>
-</tbody>
-</table>
-<p>The same instruction each time, moved somewhere that outlasts the conversation.</p>
-</section></section>
-<section>
-<section id="agent-harnesses" class="title-slide slide level1 center">
-<h1>11 · Agent harnesses</h1>
-<div class="lead">
-<p>Claude Code is one answer to a design problem. There are others, increasingly not from the model’s maker.</p>
-</div>
-</section>
-<section id="same-model-different-program" class="slide level2 plain-title">
-<h2>Same model, different program</h2>
-<p>The model is a string in a config file. Everything you experience as “the tool” is the program wrapped around it: what it sends each turn, which tools it offers, how it asks permission, and where it runs.</p>
-</section>
-<section id="the-harness-is-the-other-five" class="slide level2">
-<h2>The harness is the other five</h2>
-<div class="lead">
-<p>You pick the model. Everything else on that list is supplied by the program around it.</p>
-</div>
-<p>Buying a harness — Claude Code, or one of the open ones — is buying somebody’s answers to those questions. The answers differ, and the differences show up in the output.</p>
-</section>
-<section id="what-differs" class="slide level2">
-<h2>What differs</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 22%">
-<col style="width: 77%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th>The question it answers</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Model coupling</td>
-<td>one vendor’s models, or any provider you can point it at</td>
-</tr>
-<tr class="even">
-<td>Context</td>
-<td>what gets sent each turn, and what happens when the window fills</td>
-</tr>
-<tr class="odd">
-<td>Tool surface</td>
-<td>four tools, or forty</td>
-</tr>
-<tr class="even">
-<td>Permissions</td>
-<td>how it stops — approval rules, an OS sandbox, or a container</td>
-</tr>
-<tr class="odd">
-<td>Extension</td>
-<td>plugins, MCP servers, skills, instruction files</td>
-</tr>
-<tr class="even">
-<td>Where it lives</td>
-<td>a terminal, an editor, a web page, or a library you import</td>
-</tr>
-</tbody>
-</table>
-<div class="note">
-<p>Every one of these is a design choice somebody made and wrote down. None of them is the model.</p>
-</div>
-</section>
-<section id="the-open-field" class="slide level2">
-<h2>The open field</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 23%">
-<col style="width: 27%">
-<col style="width: 49%">
-</colgroup>
-<tbody>
-<tr class="odd">
-<td>Claude Code</td>
-<td>Anthropic models only</td>
-<td>the reference implementation</td>
-</tr>
-<tr class="even">
-<td>Codex</td>
-<td>OpenAI models only</td>
-<td>Rust; OS-level sandbox by default</td>
-</tr>
-<tr class="odd">
-<td>OpenCode</td>
-<td>75+ providers</td>
-<td>the mature open alternative; per-agent permissions</td>
-</tr>
-<tr class="even">
-<td>DeepSeek Harness</td>
-<td>any provider</td>
-<td>everything is a plugin, including the loop</td>
-</tr>
-<tr class="odd">
-<td>Pi</td>
-<td>any provider</td>
-<td>four tools and a very short prompt</td>
-</tr>
-<tr class="even">
-<td>Goose · OpenHands</td>
-<td>any provider</td>
-<td>neutral governance; container-first</td>
-</tr>
-<tr class="odd">
-<td>Qwen Code</td>
-<td>Alibaba’s models</td>
-<td>a vendor CLI on the same pattern</td>
-</tr>
-</tbody>
-</table>
-<p>Everything but Claude Code is open source, MIT or Apache — you can read the loop. Two of those still only talk to their maker’s models.</p>
-</section>
-<section id="thick-or-thin" class="slide level2 compare">
-<h2>Thick or thin</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span class="eyebrow">Claude Code</span></p>
-<p>Forty-plus tools. A layered system prompt with a cached boundary. Four fallback strategies when the context fills. Subagents that fork and run in the background.</p>
-<p>The harness does a great deal on your behalf.</p>
-</div><div class="column" style="width:50%;">
-<p><span class="eyebrow">Pi</span></p>
-<p>Four tools — read, write, edit, run a command. A system prompt under a thousand tokens. No subagents, no plan mode, no MCP.</p>
-<p>Anything else, the agent writes for itself as an extension.</p>
-</div></div>
-<div class="note">
-<p>Databricks benchmarked both and found the thin one matched or beat the thick one at a fraction of the cost, because it sent roughly three times less context per turn.</p>
-</div>
-</section>
-<section id="the-permission-model" class="slide level2">
-<h2>The permission model</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Harness</th>
-<th>How it stops you</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Claude Code</td>
-<td>rules you configure, checked before each call</td>
-</tr>
-<tr class="even">
-<td>Codex</td>
-<td>the operating system — Seatbelt on macOS, Landlock on Linux</td>
-</tr>
-<tr class="odd">
-<td>OpenHands</td>
-<td>a Docker container the agent cannot leave</td>
-</tr>
-<tr class="even">
-<td>Cline</td>
-<td>a human clicking approve, every time</td>
-</tr>
-<tr class="odd">
-<td>OpenCode</td>
-<td>per-agent tool permissions, granted once and remembered</td>
-</tr>
-</tbody>
-</table>
-<div class="note">
-<p>The distinction from this morning, in a different form: a mode that asks you, versus a boundary that makes the call impossible. Two of these five are the second kind.</p>
-</div>
-</section>
-<section id="benchmarks-and-harnesses" class="slide level2">
-<h2>Benchmarks and harnesses</h2>
-<div class="lead">
-<p>A benchmark number is a model and a harness together. Change the harness and the number moves.</p>
-</div>
-<div class="steps">
-<ol type="1">
-<li>The same model scores differently under two harnesses on the same benchmark.</li>
-<li>Papers report the model and omit the harness.</li>
-<li>Removing most of an agent’s tools has been shown to raise its score, not lower it.</li>
-<li>So a leaderboard ranks model-and-harness pairs, not models.</li>
-</ol>
-</div>
-<p>When somebody says a model can or cannot do something, ask which harness it was running in.</p>
-</section>
-<section id="tomorrow" class="slide level2 band-bottom">
-<h2>Tomorrow</h2>
-<p>Everything today has been about setting the agent up. Tomorrow you point it at data and check what comes back.</p>
 
 
 </section></section>

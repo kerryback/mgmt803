@@ -210,9 +210,6 @@ The network does not output one token. It outputs a probability for every token 
 | Near 1 | Sampled from the distribution. Different each run. |
 | Higher | Low-probability tokens get picked. Text degrades. |
 
-::: {.note}
-In a chatbot, including Claude Desktop, temperature is fixed near 1 and you cannot change it. Through the API you can.
-:::
 
 ## From prediction to conversation
 
@@ -249,18 +246,18 @@ The thinking you see may be a summary of a much longer chain, and you are charge
 :::
 
 
-## Demos
+## Demo
 
 | Tab | What it shows | Model |
 |--------|---------------|----------|
 | Tokens | How text is cut into tokens | Qwen3-1.7B-Base, o200k_base |
+| Token embeddings | Each token's vector, and its nearest tokens | Qwen3-1.7B-Base |
 | Next token | Next-token probabilities, and temperature | Qwen3-1.7B-Base |
 | Base vs chat | One prompt, to a base model and a chat model | Qwen3-1.7B-Base, Qwen3-1.7B |
-| Token embeddings | Each token's vector, and its nearest tokens | Qwen3-1.7B-Base |
-| Passage embeddings | One vector per passage, and similarity | all-MiniLM-L6-v2 |
+
 
 ::: {.note}
-Everything runs on this laptop. o200k_base is OpenAI's tokenizer; the rest are open-weight models from Hugging Face.
+Everything runs on my laptop. o200k_base is OpenAI's tokenizer; the rest are open-weight models from Hugging Face.
 :::
 
 # 2 · Models and performance
@@ -292,7 +289,7 @@ Who makes the frontier models, what they cost, and how they are compared. Prices
 | Mistral | Mistral Medium 3.5 | Apr 2026 | 1.50 / 7.50 |
 
 ::: {.note}
-Open weights means anyone can download the model and run it on their own hardware. The prices are for the developer's hosted API; DeepSeek charges half off-peak. 
+Open weights means anyone can download the model and run it on their own hardware. The prices are for the developer's hosting; DeepSeek charges half off-peak. 
 :::
 
 
@@ -449,9 +446,6 @@ Same loop, different reach: the web, or any app on the machine.
 | OpenAI | Browser tabs in the ChatGPT desktop app | Computer Use plugin in the ChatGPT desktop app | Plus, $20 a month (Free has limited access) |
 | Google | Auto browse in Chrome (U.S. preview) | Gemini Spark in the Gemini Mac app (beta) | AI Pro, $19.99 for browser; Ultra for desktop |
 
-::: {.note}
-Each needs a paid plan for regular use. Developers can also call computer use through each vendor's API and pay only for tokens.
-:::
 
 ## How well it works {.plain-title}
 
@@ -486,7 +480,7 @@ It clicks with your accounts and sees whatever is on your screen. Anthropic advi
 ::: {.card .card-sand}
 [It asks first]{.card-title}
 
-Permission for each app, and confirmation before purchases, posts, and messages. It is slower than a connector or an API.
+Permission for each app, and confirmation before purchases, posts, and messages. 
 :::
 :::
 
@@ -574,7 +568,7 @@ Click and type in a browser or a desktop app.
 ::: {.card .card-blue}
 [Call a service]{.card-title}
 
-A database, an API, or Gmail and Slack through a connector.
+A database or another program.
 :::
 
 ::: {.card .card-sand}
@@ -709,18 +703,135 @@ All of it is text, and the model treats all of it the same way.
 The programmers who wrote the harness made these choices in code, before you typed anything. 
 :::
 
-## Harnesses by name {.band-bottom}
+## Subagents
 
-| | Harness | Where you meet it |
-|---|----|-----------|
-| Anthropic | Claude Code | Terminal, desktop app, IDEs, web. The Claude Agent SDK for agents you build. |
-| OpenAI | Codex | Codex CLI, ChatGPT desktop app, IDEs, cloud. The Agents API (beta, Sep 10) for agents you build. |
-| Google | Antigravity | Desktop app and Antigravity CLI. Replaced Gemini CLI in June 2026. |
-| Open source | OpenCode · Pi · OpenHands · Goose | Any provider's models, including open-weight models you host. |
+::: {.cards .cards-2}
+::: {.card}
+[A second copy of the model]{.card-title}
+
+Started by the harness with its own context window, its own instructions, and its own tools.
+:::
+
+::: {.card .card-blue}
+[Only the summary comes back]{.card-title}
+
+Everything it read stays in its own context. The main conversation gets the report it writes.
+:::
+
+::: {.card .card-sand}
+[Several can run at once]{.card-title}
+
+Independent pieces of work run in parallel instead of one after another.
+:::
+
+::: {.card}
+[It cannot ask you anything]{.card-title}
+
+It does not see your conversation. Whatever it needs has to be in the prompt that starts it.
+:::
+:::
 
 ::: {.note}
-Codex CLI is also open source (Apache 2.0) but is built around OpenAI's models.
+Each one is charged as a full model run, but their context windows are smaller.
 :::
+
+## Harnesses by name {.band-bottom}
+
+| | Harness |
+|---|----|
+| Anthropic | Claude Code |
+| OpenAI | Codex |
+| Google | Antigravity |
+| Open source | OpenCode · Pi · OpenHands · Goose |
+
+
+## Same model, different program {.plain-title}
+
+In most harnesses the model is one setting in a config file. Everything you experience as "the tool" is the program wrapped around it: what it sends each turn, which tools it offers, how it asks permission, and where it runs.
+
+## What the harness supplies
+
+::: {.lead}
+You pick the model. Everything else is supplied by the program around it.
+:::
+
+Picking a harness — Claude Code, or one of the open ones — is picking somebody's design decisions.
+
+## What differs {.plain-title}
+
+| | The question it answers |
+|--------------|------------------------------------------------|
+| Model coupling | one vendor's models, or any provider you can point it at |
+| Context | what gets sent each turn, and what happens when the window fills |
+| Tool surface | four tools, or forty |
+| Permissions | how it stops — approval rules, an OS sandbox, or a container |
+| Extension | plugins, MCP servers, skills, instruction files |
+| Where it lives | a terminal, an editor, a web page, or a library you import |
+
+## Other harnesses {.plain-title}
+
+| | | |
+|-----------------|--------------------|------------------------------------|
+| Claude Code | Anthropic models only | the reference implementation |
+| Codex | OpenAI models only | Rust; OS-level sandbox by default |
+| OpenCode | 75+ providers | the mature open alternative; per-agent permissions |
+| DeepSeek Harness | any provider | everything is a plugin, including the loop |
+| Pi | any provider | four tools and a very short prompt |
+| Goose · OpenHands | any provider | neutral governance; container-first |
+| Qwen Code | Alibaba's models | a vendor CLI on the same pattern |
+
+Everything but Claude Code is open source, MIT or Apache — you can read the loop. Two of those still only talk to their maker's models.
+
+## Claude Code and Pi {.compare .band-bottom}
+
+:::: {.columns}
+::: {.column width="50%"}
+[Claude Code]{.eyebrow}
+
+Forty-plus tools. A layered system prompt with a cached boundary. Four fallback strategies when the context fills. Subagents that fork and run in the background.
+:::
+
+::: {.column width="50%"}
+[Pi]{.eyebrow}
+
+Four tools — read, write, edit, run a command. A system prompt under a thousand tokens. No subagents, no plan mode, no MCP.
+
+Anything else, the agent writes for itself as an extension.
+:::
+::::
+
+::: {.note}
+Databricks benchmarked both and found the thin one matched or beat the thick one at a fraction of the cost, because it sent roughly three times less context per turn.
+:::
+
+## The permission model
+
+| Harness | How it stops you |
+|---|---|
+| Claude Code | rules you configure, checked before each call |
+| Codex | the operating system — Seatbelt on macOS, Landlock on Linux |
+| OpenHands | a Docker container the agent cannot leave |
+| Cline | a human clicking approve, every time |
+| OpenCode | per-agent tool permissions, granted once and remembered |
+
+::: {.note}
+A mode that asks you, versus a boundary that makes the call impossible. Two of these five are the second kind.
+:::
+
+## Benchmarks and harnesses
+
+::: {.lead}
+A benchmark number is a model and a harness together. Change the harness and the number moves.
+:::
+
+::: {.steps}
+1. The same model scores differently under two harnesses on the same benchmark.
+2. Papers report the model and omit the harness.
+3. Removing most of an agent's tools has been shown to raise its score, not lower it.
+4. So a leaderboard ranks model-and-harness pairs, not models.
+:::
+
+When somebody says a model can or cannot do something, ask which harness it was running in.
 
 ## Try it
 
@@ -782,7 +893,7 @@ Both are installed in each container.
 ::: {.card .card-sand}
 [Sonnet 5]{.card-title}
 
-Claude Code is connected to Sonnet 5 through an API key.
+Claude Code is connected to Sonnet 5.
 :::
 :::
 
@@ -941,10 +1052,10 @@ Pick one: I was (was not) successful in getting a chart added.
 
 ## Try it: data wrangling, charts, docs {.plain-title}
 
-In the Claude tab at lab803, the five Northwind spreadsheets are in `data/`. Elsewhere, download [northwind.zip](../files/Sept24-part1/northwind.zip){download="northwind.zip"}.
+In lab803, the five Northwind spreadsheets are in `data/`. Elsewhere, download [northwind.zip](../files/Sept24-part1/northwind.zip){download="northwind.zip"}.
 
 ::: {.steps}
-1. Ask: *Which countries generated the most revenue?*
+1. Ask: *Which countries generated the most revenue? Compute revenue as price times quantity.*
 2. Ask: *Create a bar chart of revenue by country for the top five countries.*
 3. Ask: *Create an Excel workbook containing the revenue table and the chart.*
 4. Ask: *Create a Word document containing a one-page summary with the table and the chart.*
@@ -952,22 +1063,9 @@ In the Claude tab at lab803, the five Northwind spreadsheets are in `data/`. Els
 :::
 
 ::: {.note}
-Open each file before asking for the next. At lab803, download it from the file browser tab.
+At lab803, use Refresh and then download files to view them. 
 :::
 
-## The xlsx, docx, and pptx skills
-
-An Office file is a zip archive of XML files. [Skills]{.hl} tell the AI which tools to use to write it.
-
-| Skill | New file | Existing file |
-|------|--------------------|--------------------|
-| xlsx | Python (openpyxl, pandas) | Python (openpyxl) opens the workbook and changes cells and formulas |
-| docx | JavaScript (docx-js) | Unzip, edit the XML with Python, zip again |
-| pptx | JavaScript (PptxGenJS) | Unzip, edit the XML, zip again |
-
-::: {.note}
-The lab has no Office software, so it cannot display the files it makes. Download them and open them on your laptop.
-:::
 
 ## Claude and ChatGPT in Excel {.compare}
 
@@ -993,9 +1091,7 @@ Asks before it edits the workbook.
 :::
 ::::
 
-::: {.note}
-Both work inside Excel on the open workbook. The xlsx skill never opens Excel; it runs Python to write the file. Anthropic warns that an outside workbook can hide instructions the add-in will follow.
-:::
+
 
 # 6 · Prompting tips
 
@@ -1005,7 +1101,7 @@ Both work inside Excel on the open workbook. The xlsx skill never opens Excel; i
 ::: {.box-title}
 Prompt
 :::
-Plan this and explain your plan to me.
+Think about the best way to do this, formulate a plan, and tell me what your plan is.
 :::
 
 ## Afterwards
@@ -1017,7 +1113,11 @@ Prompt
 Explain what you did step by step. Did you make any decisions that we have not discussed? Write this as an HTML doc.
 :::
 
-HTML is easy for AI to write and easy to read.
+<br>
+
+::: {.card .card-blue}
+HTML is easy for AI to write and easy to read.  Double-click an HTML file in File Explorer (Finder on Mac) and it will open in your browser.
+:::
 
 ## Numbers need code
 
@@ -1064,7 +1164,7 @@ The second conversation has no stake in the first answer.
 ## Good enough prompting {.band-bottom}
 
 ::: {.lead}
-Most 'prompt engineering' techniques from a few years ago are now either useless or actually counterproductive.
+Most 'prompt engineering' techniques from a few years ago are now either useless or actually counterproductive.  Don't tell it "you are an expert data scientist" or "think step by step."
 :::
 
 ::: {.cards .cards-2}
@@ -1084,6 +1184,17 @@ Try again.
 ::: {.note}
 Treat AI as an infinitely patient colleague with a poor memory.
 :::
+
+## AI is a prediction machine, not a rational person
+
+Suppose an AI agent has told you in the path that Method A beats Method B for some task. You ask it to do the task.
+
+::: {.card .card-blue}
+
+[Do not assume it will use what it knows.]{.accent} If "A beats B" is not in the context window, and B appeared more often in its training data, it will probably use B.
+:::
+
+This is the value of "plan before you act."  Planning surfaces "A beats B," leading Claude to select A for the task.
 
 ## Try it: planning {.plain-title}
 

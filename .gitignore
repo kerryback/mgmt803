@@ -9,3 +9,12 @@ Screenshot 2026-09-18*.png
 participation.csv
 
 .DS_Store
+
+# Voiceover render outputs -- the narrated MP4 and its intermediates are large
+# binaries rebuilt from the deck, so only the source .qmd and the narration
+# script are tracked.
+video/.voiceover/
+video/*.mp4
+video/*.pdf
+video/*.html
+video/803_video_files/
