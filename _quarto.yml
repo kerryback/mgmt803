@@ -13,6 +13,8 @@ project:
     - files/Sept24-part1/*.md
     - index.html
     - under-construction.html
+    - breakouts.html
+    - wheel.html
 
 website:
   title: ""
