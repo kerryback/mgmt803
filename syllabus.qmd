@@ -82,34 +82,42 @@ By the end of the course, you should be able to:
 
 ### Topic Schedule
 
-+----+------------------------+------------------------------------------+
-|    | When                   | Topics                                   |
-+====+========================+==========================================+
-| 1  | Thu, Sep 24\           | 1 How language models work\              |
-|    | 8:00 AM – 12:30 PM     | 2 Models and performance\                |
-|    |                        | 3 Computer use\                          |
-|    |                        | 4 How agents work\                       |
-|    |                        | 5 AI coding\                             |
-|    |                        | 6 APIs\                                  |
-|    |                        | 7 Chat, CLI, and sandbox\                |
-|    |                        | 8 Prompting tips                         |
-+----+------------------------+------------------------------------------+
-| 2  | Thu, Sep 24\           | 9 Persistent instructions and memory\    |
-|    | 1:30 – 6:00 PM         | 10 Connectors and plugins\               |
-|    |                        | 11 Agent harnesses                       |
-+----+------------------------+------------------------------------------+
-| 3  | Fri, Sep 25\           | 12 Working with data                     |
-|    | 8:00 AM – 12:30 PM     |                                          |
-+----+------------------------+------------------------------------------+
-| 4  | Sat, Sep 26\           | 13 Creating docs\                        |
-|    | 8:00 AM – 12:30 PM     | 14 Creating apps                         |
-+----+------------------------+------------------------------------------+
-| 5  | Sat, Sep 26\           | 15 Retrieval augmented generation\       |
-|    | 1:30 – 6:00 PM         | 16 Open source models                    |
-+----+------------------------+------------------------------------------+
-| 6  | Sun, Sep 27\           | 17 Creating agents\                      |
-|    | 8:00 AM – 12:30 PM     | 18 Managing security risks               |
-+----+------------------------+------------------------------------------+
++----+--------------------------------------+------------------------------------------+
+|    | Part                                 | Topics                                   |
++====+======================================+==========================================+
+| 1  | Intro to models and agents           | 1 How language models work\              |
+|    |                                      | 2 Models and performance\                |
+|    |                                      | 3 How agents work\                       |
+|    |                                      | 4 Computer use                           |
++----+--------------------------------------+------------------------------------------+
+| 2  | Working with AI                      | 5 Doing work with AI\                    |
+|    |                                      | 6 Prompting tips\                        |
+|    |                                      | 7 Permissions                            |
++----+--------------------------------------+------------------------------------------+
+| 3  | Standing instructions and connectors | 8 CLAUDE.md (AGENTS.md)\                 |
+|    |                                      | 9 How it remembers you\                  |
+|    |                                      | 10 SKILL.md\                             |
+|    |                                      | 11 MCP connectors\                       |
+|    |                                      | 12 Plugins                               |
++----+--------------------------------------+------------------------------------------+
+| 4  | Building agents                      | 13 How software works\                   |
+|    |                                      | 14 API calls\                            |
+|    |                                      | 15 Build a chatbot\                      |
+|    |                                      | 16 Build an agent                        |
++----+--------------------------------------+------------------------------------------+
+| 5  | Deploying agents                     | 17 Academic Studio\                      |
+|    |                                      | 18 Running apps and agents locally\      |
+|    |                                      | 19 Git and GitHub\                       |
+|    |                                      | 20 Deploying apps and agents             |
++----+--------------------------------------+------------------------------------------+
+| 6  | Documents and local models           | 21 Retrieval augmented generation\       |
+|    |                                      | 22 Gemini Notebook\                      |
+|    |                                      | 23 Running models locally                |
++----+--------------------------------------+------------------------------------------+
+| 7  | Agent security                       | 24 Multi-agent architectures\            |
+|    |                                      | 25 Security risks\                       |
+|    |                                      | 26 Mitigating risks                      |
++----+--------------------------------------+------------------------------------------+
 
 ### Grading
 

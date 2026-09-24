@@ -76,7 +76,9 @@ body { background: var(--bg); color: var(--ink);
 .flyer table.schedule td { padding: 11px 10px 11px 0; border-bottom: 1px solid var(--line);
   font-size: 16px; color: var(--gray); vertical-align: top; }
 .flyer table.schedule td.num { color: var(--navy); font-weight: 700; width: 28px; }
-.flyer table.schedule td.when { color: var(--ink); white-space: nowrap; width: 200px; }
+.flyer table.schedule td.when { color: var(--ink); width: 190px; }
+.flyer table.schedule td.when .part-name { display: block; font-size: 13.5px; color: var(--gray);
+  font-weight: 400; line-height: 1.3; margin-top: 2px; }
 .flyer table.schedule td.slides-col { white-space: nowrap; width: 90px; }
 .flyer table.schedule a { color: var(--navy); font-weight: 700; text-decoration: none; }
 .flyer table.schedule a:hover { text-decoration: underline; }
@@ -139,19 +141,23 @@ body { background: var(--bg); color: var(--ink);
       <div class="subline">led by <b>Kerry Back</b></div>
       <div class="rule"></div>
 
-      <div class="section-head"><span class="label">September</span><span class="dates">September 24&ndash;27</span></div>
       <table class="schedule">
-        <tr><th></th><th>When</th><th>Topics</th><th class="slides-col">Slides</th></tr>
-        <tr><td class="num">1</td><td class="when">Thursday morning</td><td>How LLMs work &middot; models &middot; computer use &middot; how agents work &middot; doing work with AI &middot; prompting</td><td class="slides-col"><span class="has-menu"><a href="slides/Sept24-part1.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="slides/Sept24-part1.html" target="_blank" rel="noopener">HTML</a><a href="pdf/Sept24-part1.pdf" target="_blank" rel="noopener">PDF</a></span></span></td></tr>
-        <tr><td class="num">2</td><td class="when">Thursday afternoon</td><td>AGENTS.md, SKILL.md &middot; connectors and plugins &middot; harnesses</td><td class="slides-col"><span class="has-menu"><a href="slides/Sept24-part2.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="slides/Sept24-part2.html" target="_blank" rel="noopener">HTML</a><a href="pdf/Sept24-part2.pdf" target="_blank" rel="noopener">PDF</a></span></span></td></tr>
-        <tr><td class="num">3</td><td class="when">Friday morning</td><td>Working with data</td><td class="slides-col"><a class="pending" href="under-construction.html">Slides</a></td></tr>
-        <tr><td class="num">4</td><td class="when">Saturday morning</td><td>Creating docs &middot; creating apps</td><td class="slides-col"><a class="pending" href="under-construction.html">Slides</a></td></tr>
-        <tr><td class="num">5</td><td class="when">Saturday afternoon</td><td>Retrieval augmented generation &middot; open source models</td><td class="slides-col"><a class="pending" href="under-construction.html">Slides</a></td></tr>
-        <tr><td class="num">6</td><td class="when">Sunday morning</td><td>Creating agents &middot; managing security risks</td><td class="slides-col"><a class="pending" href="under-construction.html">Slides</a></td></tr>
+        <tr><td class="when">Part 1<br><span class="part-name">Intro to models and agents</span></td><td>How LLMs work &middot; models and performance &middot; how agents work &middot; computer use</td><td class="slides-col"><span class="has-menu"><a href="slides/part1.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="slides/part1.html" target="_blank" rel="noopener">HTML</a><a href="pdf/part1.pdf" target="_blank" rel="noopener">PDF</a></span></span></td></tr>
+        <tr><td class="when">Part 2<br><span class="part-name">Working with AI</span></td><td>Doing work with AI &middot; prompting tips &middot; permissions</td><td class="slides-col"><span class="has-menu"><a href="slides/part2.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="slides/part2.html" target="_blank" rel="noopener">HTML</a><a href="pdf/part2.pdf" target="_blank" rel="noopener">PDF</a></span></span></td></tr>
+        <tr><td class="when">Part 3<br><span class="part-name">Standing instructions and connectors</span></td><td>CLAUDE.md &middot; how it remembers you &middot; SKILL.md &middot; MCP connectors &middot; plugins</td><td class="slides-col"><span class="has-menu"><a href="slides/part3.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="slides/part3.html" target="_blank" rel="noopener">HTML</a><a href="pdf/part3.pdf" target="_blank" rel="noopener">PDF</a></span></span></td></tr>
+        <tr><td class="when">Part 4<br><span class="part-name">Building agents</span></td><td>How software works &middot; API calls &middot; build a chatbot &middot; build an agent</td><td class="slides-col"><span class="has-menu"><a href="slides/part4.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="slides/part4.html" target="_blank" rel="noopener">HTML</a><a href="pdf/part4.pdf" target="_blank" rel="noopener">PDF</a></span></span></td></tr>
+        <tr><td class="when">Part 5<br><span class="part-name">Deploying agents</span></td><td>Academic Studio &middot; running apps and agents locally &middot; Git and GitHub &middot; deploying apps and agents</td><td class="slides-col"><span class="has-menu"><a href="slides/part5.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="slides/part5.html" target="_blank" rel="noopener">HTML</a><a href="pdf/part5.pdf" target="_blank" rel="noopener">PDF</a></span></span></td></tr>
+        <tr><td class="when">Part 6<br><span class="part-name">Documents and local models</span></td><td>Retrieval augmented generation &middot; Gemini Notebook &middot; running models locally</td><td class="slides-col"><span class="has-menu"><a href="slides/part6.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="slides/part6.html" target="_blank" rel="noopener">HTML</a><a href="pdf/part6.pdf" target="_blank" rel="noopener">PDF</a></span></span></td></tr>
+        <tr><td class="when">Part 7<br><span class="part-name">Agent security</span></td><td>Multi-agent architectures &middot; security risks &middot; mitigating risks</td><td class="slides-col"><span class="has-menu"><a href="slides/part7.html" target="_blank" rel="noopener">Slides</a><span class="submenu"><a href="slides/part7.html" target="_blank" rel="noopener">HTML</a><a href="pdf/part7.pdf" target="_blank" rel="noopener">PDF</a></span></span></td></tr>
       </table>
 
-      <p class="downloads">Session 1 data:
-        <a href="files/Sept24-part1/northwind.zip" download="northwind.zip">northwind.zip</a>
+      <p class="downloads">Part 2 data:
+        <a href="files/part2/northwind.zip" download="northwind.zip">northwind.zip</a> &middot;
+        <a href="files/part2/workover.md" download="workover.md">workover.md</a>
+      </p>
+      <p class="downloads">Part 6 data:
+        <a href="files/part6/orders.csv" download="orders.csv">orders.csv</a> &middot;
+        <a href="files/part6/order_details.csv" download="order_details.csv">order_details.csv</a>
       </p>
 
       <div class="sheet-foot">

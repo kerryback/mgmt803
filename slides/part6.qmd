@@ -1,0 +1,243 @@
+---
+title: "MGMT 803, MBA@Rice, 2026"
+subtitle: "Documents and local models"
+author: "Kerry Back<br>J. Howard Creekmore Professor of Finance"
+format:
+  revealjs:
+    footer: "MGMT 803 · Rice Business"
+---
+
+## This session
+
+21. Retrieval augmented generation
+22. Gemini Notebook
+23. Running models locally
+
+# 21 · Retrieval augmented generation
+
+
+## Structured and unstructured {.compare}
+
+:::: {.columns}
+::: {.column width="50%"}
+[Structured data]{.eyebrow}
+
+Rows, columns, joins. 
+:::
+
+::: {.column width="50%"}
+[Everything else a firm holds]{.eyebrow}
+
+Contracts, mail, board papers, policies, reports, decks, notes.
+:::
+::::
+
+::: {.note}
+65% of data leaders call their structured data ready for AI. 39% say the same of the unstructured kind, which is most of the volume.
+:::
+
+## Why not just paste it in
+
+::: {.cards .cards-3}
+::: {.card}
+[It was not trained on yours]{.card-title}
+
+Your contracts were not on the public web. Nothing in the weights knows them.
+:::
+
+::: {.card .card-blue}
+[The window is finite]{.card-title}
+
+A million tokens is large and your document store is larger.
+:::
+
+::: {.card}
+[You pay for every turn]{.card-title}
+
+Input is billed each turn. Pasting the corpus into every question bills the corpus every question.
+:::
+:::
+
+## Four steps {.plain-title}
+
+::: {.steps}
+1. Chunk. Split the documents into passages of a few hundred words.
+2. Embed. Turn each passage into a vector, the same way tokens became vectors.
+3. Retrieve. Embed the question and find the handful of passages closest to it.
+4. Paste. Put those passages in the prompt, with the question.
+:::
+
+::: {.note .note-plum}
+The model never reads your corpus. It reads an excerpt that a similarity search chooses.
+:::
+
+## A passage becomes a vector
+
+::: {.lead}
+An embedding model reads a passage and returns a fixed-length list of numbers — 384, or 768, or 1,536, depending on the model.
+:::
+
+Passages about the same thing land near each other, whatever words they used. "Revenue fell in the third quarter" sits close to "Q3 sales were down", and a keyword search for "revenue" finds only the first.
+
+::: {.note}
+The similarity is the cosine between the question's vector and the passage's. No model is involved until the passages have already been chosen.
+:::
+
+## Cosine, in two dimensions {.plain-title}
+
+```{=html}
+<iframe src="cosine.html" style="width:100%; height:430px; border:0; background:transparent;" loading="eager" title="Cosine between two vectors"></iframe>
+```
+
+## Demo
+
+::: {.lead}
+Five documents for a fictional company: a returns policy, an August board memo, an employee handbook, a shipping service-level page, and September operations meeting notes.
+:::
+
+::: {.note}
+ `all-MiniLM-L6-v2` embeds and `Qwen3-1.7B` answers, on the laptop.
+:::
+
+
+# 22 · Gemini Notebook
+
+
+## Formerly NotebookLM
+
+::: {.lead}
+NotebookLM became Gemini Notebook in July, 2026. Same product, same notebooks, new address: `notebook.google.com`.
+:::
+
+You give it sources. It answers from those sources and cites the passage it used. Nothing you upload is added to a public index.
+
+## What goes in, and how much {.plain-title}
+
+::: {.cards .cards-2}
+::: {.card}
+[Sources]{.card-title}
+
+PDFs and files you upload, Google Docs and Slides, web pages, YouTube links, pasted text.
+:::
+
+::: {.card .card-blue}
+[Caps]{.card-title}
+
+500,000 words or 200MB per source. No page limit.
+:::
+:::
+
+| | Free | Plus |
+|---|---|---|
+| Notebooks | 100 | 200 |
+| Sources per notebook | 50 | 100 |
+| Chats per day | 50 | 200 |
+
+## Citations in the answer {.band-bottom}
+
+::: {.steps}
+1. Ask a question. The answer arrives with a numbered marker after each claim.
+2. Click the marker. The source opens at the passage the claim came from.
+3. Ask something the sources do not cover, and it says they do not cover it.
+:::
+
+## Outputs
+
+In addition to chat, Gemini Notebook offers video (slide deck) overviews, audio overviews (podcast style), flash cards, and more.
+
+
+
+## Breakout exercise {.plain-title}
+
+::: {.steps}
+1. Create a Gemini notebook from the slide decks for this course, and ask it questions.
+2. Upload the decks to lab803. Tell Claude you want a RAG chatbot built on them.
+3. Have Claude lay out the options for chunking, for the embedding model, and for the model that writes the answer. Decide each one with it.
+4. Build it as a FastAPI app.
+:::
+
+# 23 · Running models locally
+
+## Where each tier stands today {.plain-title}
+
+![](images/lag-gap.png){width=99%}
+
+GPQA Diamond is near its ceiling, which compresses the gap: five months of lag is worth three points because there is nowhere left to go. Terminal-Bench is not near any ceiling, and there the same few months is most of the task.
+
+## Not every job needs the largest model
+
+| | Where it runs | What it suits |
+|---|---|---|
+| A frontier model | the provider's API | judgment, long context, code |
+| A mid-size model | the same API, less per token | classification, extraction, routing |
+| A small open model | your own hardware | high volume, or data that cannot leave |
+| A fine-tuned small model | your own hardware | one narrow task, done constantly |
+
+The price difference is negligible on a single question and decides the budget at a million classifications.
+
+## Fine tuning by distillation
+
+::: {.lead}
+Run the frontier model on a few thousand examples of your task. Keep the inputs and its outputs. Train a small model on those pairs.
+:::
+
+::: {.card .card}
+The small model does not become generally capable. It becomes capable at the one task you sampled, at a fraction of the cost per call, on hardware you control.
+:::
+
+::: {.card .card-blue}
+It is generally OK to do this, but perhaps not if you plan to compete with the frontier model.  [China's distillation](https://www.cisa.gov/news-events/cybersecurity-advisories/aa26-251a)
+:::
+
+
+
+## What fits on hardware you own
+
+| | Memory | What runs at 4-bit | On disk |
+|---|---|---|---|
+| A laptop, no GPU | 8 GB | 1B to 4B | Gemma 3 4B, 3.3 GB |
+| A laptop with a GPU | 16 GB | up to 12B | Gemma 3 12B, 8.1 GB |
+| One consumer GPU | 24 GB | up to 32B | Qwen 3.8 27B, 17 GB |
+| DGX Spark | 128 GB unified | 70B class | |
+| Mac Studio | 256 GB unified | 235B class | |
+
+A model needs roughly half a gigabyte per billion parameters at 4-bit, plus room for the context window.
+
+::: {.note}
+Capacity decides whether it loads. Bandwidth decides how fast it answers: the Spark moves 273 GB/s, the Mac Studio 819 GB/s.
+:::
+
+## Breakout exercise part 1 {.band-bottom}
+
+::: {.steps}
+1. Install Ollama: [ollama.com/download](https://ollama.com/download).
+2. In a terminal, type `ollama run gemma4:e2b-it-qat`. The download is 4.3 GB.
+3. Ask it something you asked a frontier model. Compare the two answers.
+4. Type `/bye` to leave. Then run `ollama run gemma3:1b`, an 815 MB download from the previous generation, and ask the same question again.
+:::
+
+::: {.note}
+Nothing you type leaves your machine. In a second terminal window, `ollama ps` shows what is loaded and how much memory it holds.
+:::
+
+
+
+
+## Breakout exercise part 2 {.plain-title}
+
+::: {.lead}
+Part 1 creates a local chatbot.  For a local agent, we need a harness.  
+:::
+
+::: {.steps}
+1. Install OpenCode 1.18.0 or newer: [opencode.ai/docs](https://opencode.ai/docs/#install).
+2. Put [orders.csv](../files/part6/orders.csv){download="orders.csv"} and [order_details.csv](../files/part6/order_details.csv){download="order_details.csv"} in a new folder, with the `opencode.json` on the next slide.
+3. Run `opencode` in that folder, type `/models`, and choose Gemma 4 under Ollama.
+4. Ask: *Merge orders.csv and order_details.csv on OrderID and save the result as orders_complete.csv.*
+5. Ask: *List the exact names of every tool you have.*
+6. Write down where it stopped being able to do the job.
+:::
+
+::: {.note}
+Same model as the exercise before, so nothing more to download. Gemma 4 supports function calling, and Python is already installed, so it has tools and something to run them with.
+:::

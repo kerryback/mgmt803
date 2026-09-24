@@ -1,0 +1,530 @@
+---
+title: "MGMT 803, MBA@Rice, 2026"
+subtitle: "Standing instructions and connectors"
+author: "Kerry Back<br>J. Howard Creekmore Professor of Finance"
+format:
+  revealjs:
+    footer: "MGMT 803 · Rice Business"
+---
+
+## This session
+
+8. CLAUDE.md (AGENTS.md)
+9. How it remembers you
+10. SKILL.md
+11. MCP connectors
+12. Plugins
+
+# 8 · CLAUDE.md (AGENTS.md)
+
+
+## Two kinds of instruction
+
+::: {.lead}
+With no instructions of your own, a model answers everyone's question the same way. Instructions are how that gets changed.
+:::
+
+::: {.cards .cards-2}
+::: {.card}
+[The provider's]{.card-title}
+
+The **system prompt** ships with the product and is sent on every turn. It regulates behavior: what the assistant is, what it declines, how an answer is formatted.
+
+You do not edit it.
+:::
+
+::: {.card .card-blue}
+[Yours]{.card-title}
+
+Added on top. It customizes behavior: how you want work done, what your files hold, the conventions you follow.
+
+You choose what it says and where it applies.
+:::
+:::
+
+
+
+## What reaches the model before your prompt
+
+| Part | Who sets it | When it is sent |
+|---|---|---|
+| System prompt | the provider | every turn |
+| Tool definitions | the product, and what you connect | every turn |
+| `CLAUDE.md` | you | every turn |
+| A skill's description | you | every turn, one line each |
+| A skill's body | you | only when the description matches |
+
+::: {.note}
+Anything sent on every turn costs money and latency, and takes up the model's attention.
+:::
+
+## What is in a system prompt {.plain-title}
+
+| | |
+|---|---|
+| Identity | what it is, who made it, what today's date is |
+| Format | when to use markdown, how long an answer should run, when to use a list |
+| Tools | when to search the web, when to write code, when to make an artifact |
+| Refusals | what it declines, and how |
+| Character | what to do when it is uncertain, how much to hedge |
+
+::: {.note}
+Anthropic publishes the ones in the Claude apps, dated and by model: [platform.claude.com/docs/en/release-notes/system-prompts](https://platform.claude.com/docs/en/release-notes/system-prompts/overview)
+:::
+
+
+
+## CLAUDE.md, by scope
+
+Claude Code reads every `CLAUDE.md` from the top of the filesystem down to the folder you started in, and puts them all in context:
+
+| File | Applies to 
+|---|---|---|
+| `$HOME/.claude/CLAUDE.md` | every folder you work in | nobody |
+| `path/folder/CLAUDE.md` | work in that folder | the team, if you commit it |
+
+
+::: {.note}
+The closest file is read last. Keep each one under about 200 lines — all of them are in the context window before you type.
+:::
+
+- OpenAI and Google call it `AGENTS.me`
+- Desktop apps have analogous "instructions" settings 
+
+## A digression on file systems
+
+Windows File Explorer hides the actual filesystem locations of common folders.  You can do the following to see where your home folder is.
+
+- Windows: Start -> Command Prompt.  Then type `cd $HOME` and Enter and then `pwd` and Enter.  That is your home directory.
+
+- Mac: Enter the same commands into the Terminal app.
+
+- lab803: Terminal in left pane.  Enter the same commands.
+
+
+
+
+## What belongs in a CLAUDE.md {.band-bottom}
+
+::: {.cards .cards-2}
+::: {.card}
+[Yes]{.card-title}
+
+- How you want numbers handled
+- What the folders hold
+- Conventions everything here follows
+- Anything you have corrected twice
+:::
+
+::: {.card .card-sand}
+[No]{.card-title}
+
+- Steps for one particular task
+- Anything longer than a page
+- Background that can be looked up
+- A tool you use once a month
+:::
+:::
+
+::: {.note}
+In Claude Code, `#` at the start of a message appends a line to one of these files, and `/memory` opens them for editing.
+:::
+
+## Explore
+
+- In lab803, enter this prompt: `print the CLAUDE.md`
+- Then this prompt: `add "always answer like a pirate" to the CLAUDE.md`
+- Then log out (top right corner), log back in, and ask anything.
+- Then ask it to delete the "always answer like a pirate" from the CLAUDE.md, log out again, and log back in.
+
+
+
+# 9 · How it remembers you
+
+## Memory {.band-bottom}
+
+::: {.steps}
+1. While you talk, it saves individual topics — not a transcript, and not a summary written when the conversation ends.
+2. Those topics arrive with the system prompt, ahead of your first message.
+3. Nothing is searched and no tool runs. There is no sign of it in the conversation.
+4. Each project has its own memory. Topics from one do not reach another.
+:::
+
+## Pushed, or pulled {.compare}
+
+:::: {.columns}
+::: {.column width="50%"}
+[Memory]{.eyebrow}
+
+Saved as you go and placed in the conversation without your asking. Whether it applies is decided before you type.
+:::
+
+::: {.column width="50%"}
+[Chat search]{.eyebrow}
+
+You ask for it. It searches your past conversations, you see the tool run, and the answer cites the chat each piece came from.
+:::
+::::
+
+::: {.note}
+Settings → Memory lists the topics. Read, edit or delete any of them, pause it, or reset it. Say what to remember or forget in the chat and it applies to your next conversation. An incognito chat forms no memory.
+:::
+
+# 10 · SKILL.md
+
+## A skill is a folder {.plain-title}
+
+```
+skill-name/
+  SKILL.md          the instructions
+  references/       longer material, read only when needed
+  scripts/          code the skill runs rather than regenerates
+```
+
+`SKILL.md` opens with two lines of metadata (name and description) and then plain text.
+
+
+::: {.note}
+In Claude Desktop: Choose Customize in left pane.  Then Skills.  Explore or Add.
+:::
+
+
+
+
+## The same file in other agents {.plain-title}
+
+::: {.lead}
+Anthropic wrote the format and released it as an open standard. The others
+adopted it rather than inventing their own.
+:::
+
+| Agent | Where it looks |
+|---|---|
+| Claude Code | `.claude/skills/` |
+| Codex and ChatGPT | `.agents/skills/` |
+| Gemini CLI | `.gemini/skills/`, or `.agents/skills/` |
+
+::: {.note}
+Same file, same description-first loading. Put the folder in `.agents/skills/`
+and both Codex and Gemini CLI find it.
+:::
+
+## Creating a skill {.plain-title}
+
+- Work with AI until you get what you want
+- Tell AI to create a skill so you can get the same thing the next time 
+- Give the skill a meaningful name.
+- As you use it and find things to add or modify, tell AI to edit the skill.
+
+
+## Three ways to invoke
+
+| | |
+|---|---|
+| Slash command | `/skill-name` |
+| By name | "use the ... skill" |
+| Automatically | "build ..." | 
+
+The third only works when the skill description clearly applies.
+
+
+
+## Anthropic's skill repository
+
+[https://github.com/anthropics/skills](https://github.com/anthropics/skills)
+
+## lab803
+
+- Enter the prompt `/skills`
+- You will get a list of the installed skills
+- All are from Anthropic
+
+
+## Breakout exercise {.plain-title}
+
+
+- The goal is to get Claude to always create PowerPoint decks following a template you choose.  You can use one of your existing decks or choose a new template from any online source.  Upload the deck to lab803.
+
+- Tell Claude to create a new deck using the style of the uploaded deck.  Give Claude some content and tell it to build the deck from scratch rather than just editing the uploaded deck.
+
+- Download and view the deck.  Instruct Claude on any changes you want.  Rinse and repeat until you like the deck.
+
+- Tell Claude to write the steps needed to get the good deck in a a my-pptx skill so that Claude will always create decks in the template style.
+
+
+# 11 · MCP connectors
+
+
+## An agent reaching a service
+
+::: {.mcp-architecture}
+::: {.mcp-box .mcp-dark .mcp-user}
+User
+:::
+::: {.mcp-arrow-h .mcp-h1}
+&#8596;
+:::
+::: {.mcp-box .mcp-accent .mcp-agent}
+Harness
+:::
+::: {.mcp-arrow-h .mcp-h2}
+&#8596;
+:::
+::: {.mcp-box .mcp-dark .mcp-llm}
+LLM
+:::
+::: {.mcp-arrow-v .mcp-v1}
+&#8597;
+:::
+::: {.mcp-box .mcp-amber .mcp-service-mid}
+Data or Service
+:::
+:::
+
+## An MCP server is a bridge
+
+::: {.mcp-architecture}
+::: {.mcp-box .mcp-dark .mcp-user}
+User
+:::
+::: {.mcp-arrow-h .mcp-h1}
+&#8596;
+:::
+::: {.mcp-box .mcp-accent .mcp-agent}
+Harness
+:::
+::: {.mcp-arrow-h .mcp-h2}
+&#8596;
+:::
+::: {.mcp-box .mcp-dark .mcp-llm}
+LLM
+:::
+::: {.mcp-arrow-v .mcp-v1}
+&#8597;
+:::
+::: {.mcp-caption .mcp-cap1}
+The harness starts the server<br>and asks it what tools it has
+:::
+::: {.mcp-box .mcp-purple .mcp-server}
+MCP Server
+:::
+::: {.mcp-arrow-v .mcp-v2}
+&#8597;
+:::
+::: {.mcp-caption .mcp-cap2}
+The server holds the credentials<br>and makes the actual calls
+:::
+::: {.mcp-box .mcp-amber .mcp-service}
+Data or Service
+:::
+:::
+
+## What the server tells the harness
+
+::: {.mcp-gmail-architecture}
+::: {.mgx-box .mgx-agent}
+Harness
+:::
+::: {.mgx-arrow-h}
+&#8596;
+:::
+::: {.mgx-box .mgx-llm}
+LLM
+:::
+::: {.mgx-arrow-v .mgx-v1}
+&#8597;
+:::
+::: {.mgx-panel .mgx-mcp}
+[Gmail MCP server --- tools it exposes]{.mgx-panel-title}
+
+- `search_threads` --- find threads matching a query
+- `create_draft` --- start a reply, unsent
+- `get_message` --- fetch one message
+- `update_draft` --- edit a draft
+- `list_labels` --- list the labels on the account
+- `label_message` --- add or remove a label
+:::
+::: {.mgx-arrow-v .mgx-v2}
+&#8597;
+:::
+::: {.mgx-panel .mgx-api}
+[Gmail --- what the API exposes]{.mgx-panel-title}
+
+- `GET users/me/threads?q=` --- search
+- `POST users/me/drafts` --- create draft
+- `GET users/me/messages/{id}` --- read
+- `PUT users/me/drafts/{id}` --- update draft
+- `GET users/me/labels` --- list labels
+- `POST users/me/messages/{id}/modify` --- labels and state
+:::
+::: {.mgx-note}
+The harness gets the tool descriptions from the server.
+
+It sends that list to the LLM with every request.
+
+The LLM answers with a tool name and arguments. The server turns that into an API call.
+:::
+:::
+
+## Tools from MCP servers
+
+::: {.lead}
+Tools written by somebody else, running on a server somebody else operates. Thousands of MCP servers exist already.
+:::
+
+::: {.cards .cards-3}
+::: {.card .card-blue}
+[What you add]{.card-title}
+
+A URL, in the agent's configuration
+:::
+
+::: {.card}
+[What arrives]{.card-title}
+
+A name, a description and an input schema for every tool the server publishes
+:::
+
+::: {.card .card-sand}
+[What stays there]{.card-title}
+
+The code, and the credential it uses to reach the service
+:::
+:::
+
+::: {.note}
+To the model these are more entries in the same tool list. What differs is whose machine runs them.
+:::
+
+## Example: Google's Gmail server {.plain-title}
+
+```
+search_threads     get_thread        get_message
+create_draft       list_drafts       list_labels
+label_thread       unlabel_thread
+label_message      unlabel_message
+```
+
+::: {.note}
+Ten tools, at `https://gmailmcp.googleapis.com/mcp/v1`. Published at [developers.google.com/workspace/gmail/api/reference/mcp](https://developers.google.com/workspace/gmail/api/reference/mcp).
+:::
+
+## Example: Anthropic's Gmail server
+
+| | Google | Anthropic |
+|---|---|---|
+| Tools | 10 | 29 |
+| Read | `search_threads` · `get_thread` · `get_message` | the same three |
+| Drafts | `create_draft` | create, get, update, delete |
+| Send | none | `send_message` · `reply` · `forward` |
+| Remove | none | `trash_message` · `delete_draft` |
+| Labels | apply and remove | plus create, update, delete |
+
+::: {.note}
+The same account and the same API underneath. A different answer to what an agent may do with it.
+:::
+
+## Example MCP servers {.band-bottom}
+
+::: {.cards .cards-2}
+::: {.card .card-blue}
+[Warehouses]{.card-title}
+
+Snowflake, Databricks, BigQuery, MongoDB, dbt
+:::
+
+::: {.card}
+[Business systems]{.card-title}
+
+Salesforce, HubSpot, Workday, SAP, ServiceNow
+:::
+
+::: {.card .card-sand}
+[Work and code]{.card-title}
+
+Slack, Notion, Linear, GitHub, Atlassian, Figma, Sentry
+:::
+
+::: {.card .card-sage}
+[Money]{.card-title}
+
+Stripe, Shopify, PayPal, Plaid
+:::
+:::
+
+
+## Connecting to an MCP server
+
+::: {.cards .cards-2}
+::: {.card}
+[In Claude Desktop]{.card-title}
+
+- Choose Customize from the left pane
+- Then Connectors and Explore or Add
+:::
+
+::: {.card .card-blue}
+[In lab803]{.card-title}
+
+- Tell Claude to add the connection
+- You provide the URL, or Claude can search for it online
+- Claude may say it can't do it directly but then ask permission to use a terminal command. Allow.
+- Log out and log in again.
+:::
+:::
+
+::: {.note}
+Example: `fred.kerryback.com/mcp`, the Federal Reserve's economic data.
+:::
+
+## Try it {.band-bottom}
+
+Ask Claude to get the US consumer price index from FRED, compute quarterly percent changes, and annualize them.
+
+## Breakout exercise
+
+Connect to a Gmail MCP server either in a desktop app or on lab803.  Create a new Gmail account if you don't want to connect to your real one.  Ask Claude to help connect.  You can use any server (Anthropic, Google, ...).  Ask Claude how to disable any tools you don't want.  Then ask Claude to get your most recent messages.  Ask Claude how to delete the connection if you don't want to keep it.  Ask Claude to write a summary of what was done.
+
+
+# 12 · Plugins
+
+## What you install
+
+::: {.lead}
+A plugin is a folder somebody else published. Installing it adds their work to your Claude in one step.
+:::
+
+::: {.cards .cards-2}
+::: {.card}
+[What it can carry]{.card-title}
+
+Skills, slash commands, subagents, hooks, and MCP servers.
+:::
+
+::: {.card .card-blue}
+[What you get]{.card-title}
+
+Every file and script in it, without being told which ones to copy where.
+:::
+:::
+
+## Anthropic's plugin marketplace
+
+[https://code.claude.com/docs/en/discover-plugins](https://code.claude.com/docs/en/discover-plugins)
+
+## Try it
+
+Give Claude the following prompts
+
+```
+/plugin marketplace add kerryback/skills
+/plugin install finance-data@kerryback
+```
+
+Then ask Claude what was installed.  Finally, ask Claude to compute monthly stock returns for Apple since the start of 2020 and to produce a histogram.
+
+::: {.note}
+You should see Claude say "using the finance-data skill"
+:::
+
+

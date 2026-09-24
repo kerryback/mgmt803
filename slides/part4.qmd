@@ -1,0 +1,437 @@
+---
+title: "MGMT 803, MBA@Rice, 2026"
+subtitle: "Building agents"
+author: "Kerry Back<br>J. Howard Creekmore Professor of Finance"
+format:
+  revealjs:
+    footer: "MGMT 803 · Rice Business"
+---
+
+## This session
+
+13. How software works
+14. API calls
+15. Build a chatbot
+16. Build an agent
+
+# 13 · How software works
+
+## Frontend and backend
+
+:::: {.columns}
+::: {.column width="50%"}
+[Frontend]{.eyebrow}
+
+The browser. HTML, CSS and JavaScript — it draws the page and collects the clicks.
+:::
+
+::: {.column width="50%"}
+[Backend]{.eyebrow}
+
+A program on a server, listening continuously for requests. Yours will be Python.
+:::
+::::
+
+::: {.lead}
+You open a URL. The browser sends a request. The server sends back HTML, CSS and JavaScript. The browser interprets that and shows you a page.
+:::
+
+::: {.note}
+Right-click any page and choose View Page Source. That is the frontend code, exactly as the backend handed it over.
+:::
+
+## Two kinds of request {.plain-title}
+
+| | What it carries | What the server does |
+|---|---|---|
+| `GET` | a path, and parameters in the URL | sends back a page, or data |
+| `POST` | a body — a form, a ticker you typed | whatever it was written to do, then replies |
+
+::: {.note}
+Opening a page is a `GET`. Clicking submit is usually a `POST`.
+:::
+
+## Running it on one machine {.band-bottom}
+
+::: {.lead}
+The frontend and the backend can be the same computer — your container, or your own laptop with Python on it.
+:::
+
+::: {.cards .cards-2}
+::: {.card}
+[localhost]{.card-title}
+
+`127.0.0.1` is the loopback address. The browser asks the machine it is already running on, and the request never reaches a network.
+:::
+
+::: {.card .card-blue}
+[Ports]{.card-title}
+
+One machine runs many programs listening at once. The port number tells the operating system which of them gets the request.
+:::
+:::
+
+::: {.note}
+You write the app as a `.py` file. FastAPI is the usual Python library for one, and `uvicorn` starts it listening: `uvicorn app:app --host 0.0.0.0 --port 8000`.
+:::
+
+
+## Build something interactive {.band-bottom}
+
+::: {.steps}
+1. Ask for a FastAPI app with one page and one input — a unit converter, a loan payment, anything with a number in and a number out.
+2. Ask Claude to run it, and open the View tab.  Click Refresh.
+3. Watch the terminal while you use it. Opening the page logs a `GET`; submitting the form logs a `POST`.
+:::
+
+## Single-page HTML apps
+
+
+- There is an exception to the frontend/backend pattern.
+- If an app gets its data from browser input and does not need to reach outside, then we may not need a backend server.  The code execution (JavaScript) can be done in the browser.
+
+::: {.steps}
+1. Ask for the same app as a single-page HTML app.  
+2. When it is complete, click Refresh in the File Explorer and you should see a new .html file.
+3. Download the file.
+4. In your File Explorer (Finder on Mac) --- **not in your browser** --- double-click the file.  It should open in your browser.  Test it.
+:::
+
+
+## Artifacts
+
+Claude calls a single-page HTML app an artifact.
+
+::: {.steps}
+1. In Claude Desktop, choose Artifact in the left pane.  
+2. Choose New.  Prompt Claude to create the same app. 
+3. You should get options to deploy the app online or to download it.  
+:::
+- 
+
+## Breakout exercise 
+
+Get free accounts at Replit and Lovable and build the same app with their tools.  Then try something more ambitious (you may run out of credits on the free tier).
+
+
+# 14 · API calls
+
+## APIs
+
+- An API (application programming interface) is a feature of a software service that allows other services to talk to it
+- For example, if I want my website to accept payment by PayPal, then my website has to talk to PayPal's API
+- If I want my program to send messages and get responses from an LLM, then my program has to talk to the LLM provider's API
+
+
+## An API call in Python
+
+```python
+import anthropic
+
+client = anthropic.Anthropic()          # reads ANTHROPIC_API_KEY
+
+SYSTEM = "Classify the complaint: damage, delay, billing, or other. One word."
+
+resp = client.messages.create(
+    model="claude-sonnet-5",
+    max_tokens=500,
+    system=SYSTEM,
+    messages=[{"role": "user", "content": "The unit arrived cracked."}],
+)
+
+print(resp.content[0].text)
+```
+
+
+## The same call through OpenRouter
+
+```python
+from openai import OpenAI
+
+client = OpenAI(                        # reads OPENAI_API_KEY
+    base_url="https://openrouter.ai/api/v1",
+)
+resp = client.chat.completions.create(
+    model="nvidia/nemotron-3.5-lightning:free",
+    messages=[
+        {"role": "system", "content": SYSTEM},
+        {"role": "user", "content": "The unit arrived cracked."},
+    ],
+)
+print(resp.choices[0].message.content)
+```
+
+::: {.note}
+The system prompt is a message here, not a separate argument. A different library, a different response shape, and the model is a string you can change. Fifty free requests a day.
+:::
+
+
+## What comes back
+
+:::: {.columns}
+::: {.column width="50%"}
+[Anthropic]{.eyebrow}
+
+```json
+{
+  "role": "assistant",
+  "content": [
+    {"type": "text", "text": "damage"}
+  ],
+  "stop_reason": "end_turn",
+  "usage": {"input_tokens": 38,
+            "output_tokens": 4}
+}
+```
+:::
+
+::: {.column width="50%"}
+[OpenRouter]{.eyebrow}
+
+```json
+{
+  "choices": [
+    {"message": {"role": "assistant",
+                 "content": "damage"},
+     "finish_reason": "stop"}
+  ],
+  "usage": {"prompt_tokens": 38,
+            "completion_tokens": 4}
+}
+```
+:::
+::::
+
+::: {.note}
+Both carry the word `damage`. The envelope differs, which is why one prints `resp.content[0].text` and the other `resp.choices[0].message.content`. `stop_reason` and `finish_reason` are how the app knows whether the model finished or wants to use a tool.
+:::
+
+
+## Get two keys {.plain-title}
+
+:::: {.columns}
+::: {.column width="50%"}
+[Anthropic]{.eyebrow}
+
+`platform.claude.com` → API keys → Create key. Pay per token, so set a spending limit on it.
+
+Store it as `ANTHROPIC_API_KEY`.
+:::
+
+::: {.column width="50%"}
+[OpenRouter]{.eyebrow}
+
+
+`openrouter.ai` → Keys → Create key. Sign in with Google or create an account with username and password, no card. One key reaches every provider it carries.
+
+Store it as `OPENAI_API_KEY`. The OpenAI library looks for that name only.
+:::
+::::
+
+::: {.note}
+The keys are only shown once. Copy each into a file called `env.txt`, one `NAME=value` per line, and upload it to your container from the Files tab. Then tell Claude: *my keys are in `env.txt`*.
+:::
+
+
+# 15 · Build a chatbot
+
+## FastAPI app that makes API calls
+
+- A chatbot is a software program that calls an LLM.
+- We can build one as a FastAPI app.
+- The app should have a user interface (prompt window).
+- The browser sends prompts to the backend as POST requests.
+- The backend makes an API call, gets a response, and replies to the browser.
+
+## What does it need?
+
+- An endpoint for the API call (Anthropic, OpenAI, OpenRouter, ...)
+- A model name
+- A system prompt
+- A loop to keep the message list
+- A user interface
+
+::: {.note}
+We need to tell Claude what provider we want (Anthropic, OpenAI, ...), what model we want, and what the system prompt should be.  Claude can do everything else.
+:::
+
+
+## Breakout exercise {.band-bottom}
+
+
+::: {.steps}
+1. Build a chatbot on either key — Anthropic (ANTHROPIC_API_KEY) or OpenRouter (OPENAI_API_KEY), your choice.
+2. Put your name on it, where anyone using it can see.
+3. Give it a system prompt that makes it answer in a distinctive way (for example, talk like a pirate).
+:::
+
+::: {.note}
+You can tell Claude to do these things.  You are not expected to write the code yourself.
+:::
+
+
+# 16 · Build an agent
+
+
+
+
+## Chatbot vs agent
+
+::: {.cards .cards-2}
+::: {.card}
+[The chatbot]{.card-title}
+
+Text in, text out. The app does the same thing with every reply it gets
+:::
+
+::: {.card .card-blue}
+[The agent]{.card-title}
+
+The reply can be a request to run something. The app runs it, sends the result back, and asks the model what to do next
+:::
+:::
+
+::: {.lead}
+An agent is an app that takes actions at the discretion of a model.
+:::
+
+## An agent is a chatbot with tools {.band-bottom}
+
+::: {.steps}
+1. You send a request. The harness also sends a list of tools and what each one does.
+2. The model answers with text, or with a request to use a tool.
+3. The harness runs the tool and puts the result back into the conversation.
+4. Repeat until the model answers with text and no tool call.
+:::
+
+## A tool is a description
+
+```json
+{
+  "tools": [
+    {"name": "query_northwind",
+     "description": "Run a read-only SELECT against Northwind. Returns CSV.",
+     "input_schema": {
+       "type": "object",
+       "properties": {"query": {"type": "string"}},
+       "required": ["query"]}}
+  ]
+}
+```
+
+::: {.note}
+Sent in the same request, alongside `messages`. The description is what the model reads when deciding whether to call it.
+:::
+
+## The reply asks for the tool
+
+```json
+{
+  "role": "assistant",
+  "content": [
+    {"type": "tool_use",
+     "id": "toolu_01A9pK",
+     "name": "query_northwind",
+     "input": {
+       "query": "SELECT Country, COUNT(*) FROM customers GROUP BY Country"
+     }}
+  ],
+  "stop_reason": "tool_use"
+}
+```
+
+::: {.note}
+Your code runs the query and calls again, with a `tool_result` block carrying the same `id`, and the whole conversation behind it.
+:::
+
+
+
+## Three kinds of tools
+
+| | Where the code is | Example |
+|---|---|---|
+| Built in | in the harness | read a file, run a command, fetch a page |
+| Yours | a function you wrote | look up a customer in your system |
+| Someone else's | an MCP server | the Northwind database, EIA, FRED |
+
+All three arrive at the model the same way: a name, a description, and a parameter schema.
+
+
+
+## Tools from an agent SDK {.plain-title}
+
+::: {.lead}
+Pre-built code for the harness, and a set of tools that come with it. The Claude Agent SDK, the OpenAI Agents SDK, LangChain.
+:::
+
+```
+Read        Write       Edit
+Glob        Grep        Bash
+WebSearch   WebFetch    Task
+```
+
+::: {.note}
+The built-ins in the Claude Agent SDK. You choose which to include: `tools=[]` includes none, and naming a few includes only those.  **If we use the Claude Agent SDK, we get the Claude Code harness**.
+:::
+
+
+## Tools from MCP servers
+
+::: {.lead}
+Tools written by somebody else, running on a server somebody else operates. Thousands of MCP servers exist already. 
+:::
+
+::: {.cards .cards-3}
+::: {.card}
+[What you add]{.card-title}
+
+A URL, in the agent's configuration
+:::
+
+::: {.card .card-blue}
+[What arrives]{.card-title}
+
+A name, a description and an input schema for every tool the server publishes
+:::
+
+::: {.card .card-sand}
+[What stays there]{.card-title}
+
+The code, and the credential it uses to reach the service
+:::
+:::
+
+::: {.note}
+To the model these are more entries in the same tool list. What differs is whose machine runs them.
+:::
+
+
+## Custom tools
+
+```python
+@tool(
+    "add_two_numbers",
+    "Add two numbers and return the sum.",
+    {"a": Annotated[float, "The first number"],
+     "b": Annotated[float, "The second number"]},
+)
+async def add_two_numbers(args):
+    total = args["a"] + args["b"]
+    return {"content": [{"type": "text", "text": str(total)}]}
+```
+
+::: {.note}
+A name, a description and typed arguments --- the three parts every tool has --- written as a Python function. The SDK turns the decorator into the JSON it sends the model.
+:::
+
+
+## Breakout exercise {.band-bottom}
+
+::: {.steps}
+1. Build an agent using the Claude Agent SDK and your Anthropic API key.
+2. Give it the FRED MCP server, `fred.kerryback.com/mcp`, as its only source of data.
+3. Give it a run_python tool.
+4. Run it and ask for something that needs data and python: for example, unemployment and inflation over the last ten years, on one chart.
+5. Repeat, but instead of using the Claude Agent SDK, tell Claude you want to use the OpenCode harness and your OpenRouter API key.
+:::
+

@@ -1,0 +1,463 @@
+---
+title: "MGMT 803, MBA@Rice, 2026"
+subtitle: "Working with AI"
+author: "Kerry Back<br>J. Howard Creekmore Professor of Finance"
+format:
+  revealjs:
+    footer: "MGMT 803 · Rice Business"
+---
+
+## This session
+
+5. Doing work with AI
+6. Prompting tips
+7. Permissions
+
+# 5 · Doing work with AI
+
+## Where to work
+
+::: {.cards .cards-3}
+::: {.card}
+[Online chatbot]{.card-title}
+
+In a browser. Nothing to install.
+:::
+
+::: {.card .card-blue}
+[Desktop app or CLI]{.card-title}
+
+Installed on your computer. Works with files on your computer.
+:::
+
+::: {.card .card-sand}
+[lab803.kerryback.com]{.card-title}
+
+A container on a server, with the software already installed.
+:::
+:::
+
+## lab803
+
+Sign in at `lab803.kerryback.com` with your NetID as the username and your Rice student ID (S followed by eight digits) as the password.
+
+::: {.cards .cards-3}
+::: {.card}
+[A container]{.card-title}
+
+Each of you has a container on a Linux server.
+:::
+
+::: {.card .card-blue}
+[Claude Code and Python]{.card-title}
+
+Both are installed in each container.
+:::
+
+::: {.card .card-sand}
+[Sonnet 5]{.card-title}
+
+Claude Code is connected to Sonnet 5.
+:::
+:::
+
+## Workspace {.band-bottom}
+
+::: {.cards .cards-3}
+::: {.card}
+[Right panel]{.card-title}
+
+Claude Code. The prompt window is at the bottom.
+:::
+
+::: {.card .card-blue}
+[Left panel]{.card-title}
+
+Files (the default), Terminal, and View. Ignore Terminal and View for now.
+:::
+
+::: {.card}
+[Three-dots menu in Files]{.card-title}
+
+Upload from your laptop and download to your laptop.
+:::
+:::
+
+## Important {.plain-title}
+
+::: {.cards .cards-3}
+::: {.card}
+[Refresh]{.card-title}
+
+Click Refresh, above the left panel, to see a new file in Files.
+:::
+
+::: {.card .card-blue}
+[No Microsoft Office]{.card-title}
+
+Double-clicking a Word, PowerPoint, or Excel file will not open it. Office is not installed.
+:::
+
+::: {.card}
+[Download]{.card-title}
+
+Download Office files from the three-dots menu and open them on your laptop.
+:::
+:::
+
+## Explore {.band-bottom}
+
+::: {.cards .cards-3}
+::: {.card}
+[Ask]{.card-title}
+
+Ask a question, anything. Type in the prompt window and press Enter.
+:::
+
+::: {.card .card-blue}
+[Upload]{.card-title}
+
+Upload a Word doc and ask Claude to read it.
+:::
+
+::: {.card}
+[Download]{.card-title}
+
+Ask Claude to create a Word doc, then download it and read it.
+:::
+:::
+
+::: notes
+All that apply: I got signed on, I was able to ask questions, I was able to upload and download
+:::
+
+## Managing Claude {.plain-title}
+
+| | |
+|---|---|
+| `Esc` | stop what it is doing, and keep the conversation |
+| `Esc` twice | jump back to an earlier message and take a different path |
+| `Ctrl-C` twice | kill Claude Code outright |
+| `claude` | start it again, in a new conversation |
+| Up arrow | your previous prompts |
+| `Shift-Tab` | cycle the permission mode |
+
+::: {.note}
+`Esc` stops a wrong turn without throwing away the context you built. Two `Ctrl-C`s are for when the process itself is stuck. In lab803, press Enter after that to reconnect.
+:::
+
+## Resume and continue {.plain-title}
+
+Every conversation is written to disk in your container as you go.
+
+| | What you get |
+|---|---|
+| `claude` | a new, empty conversation |
+| `claude --continue` | the most recent one, where you left it |
+| `claude --resume` | a list of your past conversations, to pick from |
+
+::: {.note}
+So the answer to a stuck terminal is always the same: two `Ctrl-C`s, then `claude --continue`.
+:::
+
+## Slash commands {.plain-title}
+
+Typed into Claude, not into the shell.
+
+| | |
+|---|---|
+| `/clear` | wipe the conversation and start fresh without leaving |
+| `/resume` | switch to another conversation from inside this one |
+| `/rename` | name this conversation so you recognize it in that list |
+| `/help` | everything available |
+
+::: {.note}
+A conversation that has wandered sends all of that back to the model on every turn — you pay for it, and it crowds out the question you asked.
+:::
+
+## A few more worth knowing
+
+| | |
+|---|---|
+| `/context` | what is filling the context window right now |
+| `/cost` | what this session has cost so far |
+| `/model` | change models mid-conversation |
+| `/permissions` | what is allowed without asking |
+| `/init` | write a starting `CLAUDE.md` for this folder |
+| `/mcp` · `/plugin` | connectors and plugins |
+
+::: {.note}
+Three prefixes work without a slash: `!` runs a shell command directly, `@` points at a file, and `#` adds a line to memory.
+:::
+
+## Managing conversations {.band-bottom}
+
+::: {.cards .cards-2}
+::: {.card}
+[Start a new conversation for a new task]{.card-title}
+
+AI reads the entire conversation again each time you prompt. Irrelevant stuff consumes tokens and may be confusing.
+:::
+
+::: {.card .card-blue}
+[When a conversation gets very long]{.card-title}
+
+Tell AI to write a handoff document so you can start a fresh conversation.
+:::
+:::
+
+::: notes 
+Why start a new conversation for a new task?  [Claude re-reads the whole conversation every time you prompt / Claude can only work on one task per conversation / Old conversations are deleted after a day]  answer: Claude re-reads the whole conversation every time you prompt
+:::
+
+## Try it: build an Excel workbook
+
+::: {.note .note-plum}
+Tell Claude: Build an Excel workbook containing a mortgage amortization table.  Include a chart of the amount going to interest and the amount going to principal each month.
+:::
+
+## Download and investigate {.plain-title}
+
+::: {.lead}
+Download the file, open it on your own machine.
+:::
+
+::: {.steps}
+1. Click a payment cell. Formula, or a number?
+2. Change the rate to 12%. Does the chart move?
+3. Change the term to 15 years. Does the table shorten?
+:::
+
+::: {.note}
+If any answer is no, say so in one sentence and ask Claude to fix that specifically.
+:::
+
+::: notes 
+Pick one: I was (was not) successful in building the Excel workbook.
+:::
+
+## Ask for something else {.band-bottom}
+
+::: {.steps}
+1. Ask Claude to add a worksheet containing a plot of the monthly payment as a function of the interest rate.
+2. Download and check.
+:::
+
+
+
+## Breakout exercise {.plain-title}
+
+In lab803, the five Northwind spreadsheets are in `data/`. Elsewhere, download [northwind.zip](../files/part2/northwind.zip){download="northwind.zip"}.
+
+::: {.steps}
+1. Ask: *Which countries generated the most revenue? Compute revenue as price times quantity.*
+2. Ask: *Create a bar chart of revenue by country for the top five countries.*
+3. Ask: *Create an Excel workbook containing the revenue table and the chart.*
+4. Ask: *Create a Word document containing a one-page summary with the table and the chart.*
+5. Ask: *Create a PowerPoint deck containing three slides: the question, the table, and the chart.*
+:::
+
+::: {.note}
+At lab803, use Refresh and then download files to view them. 
+:::
+
+
+## Claude and ChatGPT in Excel {.compare}
+
+:::: {.columns}
+::: {.column width="50%"}
+[Claude for Excel]{.eyebrow}
+
+From Anthropic. Paid Claude plans: Pro, Max, Team, Enterprise.
+
+Cites the cells behind its answers. Edits cells without breaking formulas. Builds pivot tables, sorts, and filters.
+
+Also available for PowerPoint, Word, and Outlook.
+:::
+
+::: {.column width="50%"}
+[ChatGPT for Excel]{.eyebrow}
+
+From OpenAI. All ChatGPT plans. Also works in Google Sheets.
+
+Builds sheets from a description, writes formulas, and sorts and updates tables.
+
+Asks before it edits the workbook.
+:::
+::::
+
+
+
+# 6 · Prompting tips
+
+## Plan
+
+::: {.prompt-box}
+::: {.box-title}
+Prompt
+:::
+Think about the best way to do this, formulate a plan, and tell me what your plan is.
+:::
+
+## Afterwards
+
+::: {.prompt-box}
+::: {.box-title}
+Prompt
+:::
+Explain what you did step by step. Did you make any decisions that we have not discussed? Write this as an HTML doc.
+:::
+
+<br>
+
+::: {.card .card-blue}
+HTML is easy for AI to write and easy to read.  Double-click an HTML file in File Explorer (Finder on Mac) and it will open in your browser.
+:::
+
+## Numbers need code
+
+::: {.lead}
+If a number appears in prose and no code produced it, it was predicted.
+:::
+
+::: {.prompt-box}
+::: {.box-title}
+Prompt
+:::
+Compute this in Python and show me the code and the output. Do not report a number you did not compute.
+:::
+
+The same rule applies to counts, percentages, dates, and anything summed across rows.
+
+## Verify claims
+
+::: {.cards .cards-2}
+::: {.card}
+[Ask what would falsify it]{.card-title}
+
+"What would have to be true for this to be wrong, and how would I check?"
+:::
+
+::: {.card .card-blue}
+[Make it show its source]{.card-title}
+
+The file, the row count, the line of code.
+:::
+:::
+
+## Generator–critic
+
+::: {.steps}
+1. Get the first answer.
+2. Start a fresh conversation and give it the answer without the reasoning that produced it.
+3. Ask it to find what is wrong with it.
+4. Take the objections back to the first conversation.
+:::
+
+The second conversation has no stake in the first answer.
+
+## Good enough prompting {.band-bottom}
+
+::: {.lead}
+Most 'prompt engineering' techniques from a few years ago are now either useless or actually counterproductive.  Don't tell it "you are an expert data scientist" or "think step by step."
+:::
+
+::: {.cards .cards-2}
+::: {.card}
+[Tell it what you want, not what to do]{.card-title}
+
+I want ... How can we do it?
+:::
+
+::: {.card .card-blue}
+[If something doesn't work]{.card-title}
+
+Try again.
+:::
+:::
+
+::: {.note}
+Treat AI as an infinitely patient colleague with a poor memory.
+:::
+
+## AI is a prediction machine, not a rational person
+
+Suppose an AI agent has told you in the path that Method A beats Method B for some task. You ask it to do the task.
+
+::: {.card .card-blue}
+
+[Do not assume it will use what it knows.]{.accent} If "A beats B" is not in the context window, and B appeared more often in its training data, it will probably use B.
+:::
+
+This is the value of "plan before you act."  Planning surfaces "A beats B," leading Claude to select A for the task.
+
+## Try it: planning {.plain-title}
+
+Three rigs, twenty wells, minimize lost production: [workover.md](../files/part2/workover.md){download="workover.md"}. At lab803 it is in `data/`.
+
+::: {.steps}
+1. Upload workover.md and ask: *Find the best routes for the rigs.*
+2. Start a new conversation (`/clear` in the Claude tab). Upload the file again and ask: *Plan how to do this and share your plan.* Read the plan, then ask it to proceed.
+:::
+
+::: {.note}
+Did it use the same method both times?
+:::
+
+## Try it: explain and critique {.plain-title}
+
+::: {.steps}
+1. Ask: *Write an HTML doc explaining what you did, step by step.*
+2. Start a new conversation. Tell it to read the HTML doc and ask: *Read this and critique the method.*
+:::
+
+# 7 · Permissions
+
+## What Claude asks before it acts
+
+| Mode | What it does |
+|---|---|
+| Manual | asks before the first use of each tool |
+| Plan | reads and explores, edits nothing |
+| Accept edits | file edits go through without asking |
+| Auto | approves on its own, with a check on each action |
+| Don't ask | refuses anything it would otherwise ask about |
+| Bypass | no prompts at all |
+
+::: {.note}
+Enforced by the program around the model, not by the model. A line in `CLAUDE.md` shapes what Claude tries to do; it does not change what is allowed.
+:::
+
+## Permissions in Claude Desktop {.plain-title}
+
+::: {.lead}
+The desktop app runs Claude Code, so the modes are the same and carry the same names.
+:::
+
+| | |
+|---|---|
+| What it can reach | the folders you connect to the conversation, and nothing else |
+| What it asks about | the first use of each tool, in Manual mode |
+| What "don't ask again" does | writes a rule that outlives the conversation |
+
+::: {.note}
+Granting a folder is the decision that matters. The mode decides how often you are asked; the folder decides what can be reached at all.
+:::
+
+## Permissions in your container {.band-bottom}
+
+Everything is allowed already, in `~/.claude/settings.json`:
+
+```json
+"permissions": {
+  "allow": ["Bash(*)", "Read(*)", "Write(*)", "Edit(*)",
+            "Glob(*)", "Grep(*)", "WebFetch(*)", "WebSearch(*)"],
+  "deny": []
+}
+```
+
+::: {.note}
+So nothing prompts you all week. That is a decision about this container — it holds your course files and is reachable only by you — not about how to run an agent on your own machine.
+:::
+
+
