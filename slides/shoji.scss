@@ -523,7 +523,7 @@ $col-gap: 20px;
   background: $pale;
   border-top: 4px solid $plum;
   // Cards carry most of the content in a text-heavy deck, and at 0.78em on
-  // shoji2's 28px root they were the smallest type on the slide -- smaller,
+  // the 28px root they were the smallest type on the slide -- smaller,
   // relative to the canvas, than shoji's own cards. 0.9em puts them back
   // within reach of that. Padding comes in slightly to pay for the height.
   padding: 0.6em 0.75em;
