@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Forward pass through a small network</title>
+<style>
+  :root {
+    --plum: #595460;
+    --blue: #6f8497;
+    --rule: #97a7b8;
+    --gray: #ebedeb;
+    --panel: #fbfbfa;
+    --ink: #3b3842;
+    --faint: #d7dbd9;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--panel);
+    color: var(--ink);
+    font-family: Meiryo, "Zen Kaku Gothic New", system-ui, -apple-system, sans-serif;
+  }
+  .wrap {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 26px;
+    padding: 2px 4px;
+  }
+  .diagram { flex: 0 0 500px; }
+  .side { flex: 0 0 460px; }
+
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--rule);
+    margin: 0 0 8px;
+  }
+  .caption {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: var(--rule);
+    line-height: 1.45;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .row label {
+    font-size: 15px;
+    width: 30px;
+    flex: 0 0 30px;
+  }
+  input[type=number] {
+    width: 74px;
+    padding: 4px 7px;
+    font: inherit;
+    font-size: 15px;
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 0;
+  }
+  input[type=number]:focus { outline: 2px solid var(--rule); outline-offset: 1px; }
+  .w-field { width: 54px; }
+
+  .seg { display: flex; gap: 0; }
+  .seg button {
+    font: inherit;
+    font-size: 14px;
+    padding: 5px 16px;
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid var(--rule);
+    cursor: pointer;
+  }
+  .seg button + button { border-left: 0; }
+  .seg button[aria-pressed=true] {
+    background: var(--plum);
+    border-color: var(--plum);
+    color: #fff;
+  }
+
+  .readout {
+    margin-top: 6px;
+    border-left: 4px solid var(--plum);
+    background: var(--gray);
+    padding: 12px 16px 14px;
+  }
+  .readout .who {
+    font-size: 12px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin: 0 0 10px;
+  }
+  .formula {
+    font-size: 15px;
+    line-height: 1.5;
+    margin: 0 0 10px;
+  }
+  .terms {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+  .z-line {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    font-size: 16px;
+  }
+  .z-line .val {
+    font-weight: 700;
+    color: var(--plum);
+    font-variant-numeric: tabular-nums;
+  }
+  .out-line {
+    margin-top: 16px;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  .out-line .lbl { font-size: 15px; }
+  .out-line .big {
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--plum);
+    letter-spacing: .02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  text { font-family: Meiryo, "Zen Kaku Gothic New", system-ui, sans-serif; }
+  .node { cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="diagram">
+    <svg id="svg" width="500" height="404" viewBox="0 0 500 404" role="img"
+         aria-label="A two-input, three-neuron, one-output network with the value at each node">
+      <defs>
+        <filter id="lab" x="-12%" y="-28%" width="124%" height="156%">
+          <feFlood flood-color="#fbfbfa"></feFlood>
+          <feComposite in="SourceGraphic"></feComposite>
+        </filter>
+      </defs>
+      <g id="edges"></g>
+      <g id="labels"></g>
+      <g id="nodes"></g>
+      <g id="heads"></g>
+    </svg>
+    <p class="caption">Click a neuron to see the arithmetic behind its value.</p>
+  </div>
+
+  <div class="side">
+    <p class="eyebrow">Inputs</p>
+    <div class="row">
+      <label for="x1">x&#8321;</label>
+      <input id="x1" type="number" step="0.1" value="1.2">
+      <label for="x2" style="margin-left:14px">x&#8322;</label>
+      <input id="x2" type="number" step="0.1" value="-0.8">
+    </div>
+
+    <p class="eyebrow">Activation</p>
+    <div class="row">
+      <span class="seg">
+        <button id="act-sig" aria-pressed="true">sigmoid</button>
+        <button id="act-relu" aria-pressed="false">ReLU</button>
+      </span>
+    </div>
+
+    <div class="readout">
+      <p class="who" id="who">Hidden neuron 1</p>
+      <p class="formula" id="formula"></p>
+      <div class="terms" id="terms"></div>
+      <div class="z-line">
+        <span>z =</span><span class="val" id="zval">0.00</span>
+        <span style="margin-left:auto" id="hlabel">h&#8321; =</span>
+        <span class="val" id="hval">0.00</span>
+      </div>
+      <div class="out-line">
+        <span class="lbl">network output &#375;</span>
+        <span class="big" id="yhat">0.00</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  var PLUM = "#595460", BLUE = "#6f8497", RULE = "#97a7b8", FAINT = "#d7dbd9", INK = "#3b3842";
+  var SUB = ["₁", "₂", "₃"];
+
+  // Geometry. Three layers across a 500x404 canvas.
+  var IX = 54, HX = 250, OX = 446, R = 26;
+  var IY = [156, 252], HY = [78, 202, 326], OY = 202;
+
+  // Starting parameters. Editable through the readout, one neuron at a time.
+  var W1 = [[0.5, 0.3], [-0.4, 0.6], [0.2, -0.3]];
+  var B1 = [0.1, -0.2, 0.3];
+  var W2 = [0.7, -0.5, 0.8];
+  var B2 = 0.2;
+
+  var relu = false;       // sigmoid by default
+  var sel = 0;            // 0,1,2 = hidden neuron; 3 = output neuron
+
+  var el = function (id) { return document.getElementById(id); };
+  var svgns = "http://www.w3.org/2000/svg";
+  function mk(tag, attrs) {
+    var n = document.createElementNS(svgns, tag);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    return n;
+  }
+  function num(v, d) { return (v < 0 ? "−" : "") + Math.abs(v).toFixed(d === undefined ? 2 : d); }
+
+  function act(z) { return relu ? Math.max(0, z) : 1 / (1 + Math.exp(-z)); }
+  function actName() { return relu ? "max(0, z)" : "σ(z)"; }
+
+  function state() {
+    var x = [parseFloat(el("x1").value), parseFloat(el("x2").value)];
+    if (x.some(isNaN)) x = [0, 0];
+    var zh = [], h = [];
+    for (var j = 0; j < 3; j++) {
+      zh[j] = B1[j] + W1[j][0] * x[0] + W1[j][1] * x[1];
+      h[j] = act(zh[j]);
+    }
+    var zo = B2 + W2[0] * h[0] + W2[1] * h[1] + W2[2] * h[2];
+    // The output neuron is a sigmoid whatever the hidden layer uses -- it is a
+    // probability, and ReLU there would let it run past 1.
+    var y = 1 / (1 + Math.exp(-zo));
+    return { x: x, zh: zh, h: h, zo: zo, y: y };
+  }
+
+  // ---- diagram ----------------------------------------------------------
+
+  function edge(x1, y1, x2, y2, on, color) {
+    return mk("line", {
+      x1: x1, y1: y1, x2: x2, y2: y2,
+      stroke: on ? color : FAINT,
+      "stroke-width": on ? 2.4 : 1.2
+    });
+  }
+
+  function weightLabel(x1, y1, x2, y2, t, color) {
+    var f = 0.42;
+    var g = mk("text", {
+      x: x1 + (x2 - x1) * f, y: y1 + (y2 - y1) * f - 7,
+      "font-size": 14, fill: color, "text-anchor": "middle", filter: "url(#lab)"
+    });
+    g.textContent = t;
+    return g;
+  }
+
+  function node(x, y, value, fill, on, id) {
+    var g = mk("g", { class: "node" });
+    g.appendChild(mk("circle", {
+      cx: x, cy: y, r: R, fill: fill,
+      stroke: on ? PLUM : "none", "stroke-width": on ? 3.5 : 0
+    }));
+    var t = mk("text", {
+      x: x, y: y, "font-size": 15, fill: "#fff", "font-weight": 700,
+      "text-anchor": "middle", "dominant-baseline": "central"
+    });
+    t.textContent = value;
+    g.appendChild(t);
+    if (id !== undefined) {
+      g.addEventListener("click", function () { sel = id; draw(); });
+    }
+    return g;
+  }
+
+  function draw() {
+    var s = state();
+    var E = el("edges"), L = el("labels"), N = el("nodes"), H = el("heads");
+    [E, L, N, H].forEach(function (g) { while (g.firstChild) g.removeChild(g.firstChild); });
+
+    // Layer captions.
+    [[IX, "inputs"], [HX, "hidden layer"], [OX, "output"]].forEach(function (p) {
+      var t = mk("text", {
+        x: p[0], y: 22, "font-size": 12, fill: RULE, "text-anchor": "middle",
+        "letter-spacing": "1.8"
+      });
+      t.textContent = p[1].toUpperCase();
+      H.appendChild(t);
+    });
+
+    // Input-to-hidden edges. Labels only on the selected neuron's own inputs.
+    for (var j = 0; j < 3; j++) {
+      for (var i = 0; i < 2; i++) {
+        var on = (sel === j);
+        E.appendChild(edge(IX + R, IY[i], HX - R, HY[j], on, BLUE));
+        if (on) L.appendChild(weightLabel(IX + R, IY[i], HX - R, HY[j], num(W1[j][i]), BLUE));
+      }
+    }
+
+    // Hidden-to-output edges.
+    for (j = 0; j < 3; j++) {
+      var onO = (sel === 3);
+      E.appendChild(edge(HX + R, HY[j], OX - R, OY, onO, BLUE));
+      if (onO) L.appendChild(weightLabel(HX + R, HY[j], OX - R, OY, num(W2[j]), BLUE));
+    }
+
+    for (var i2 = 0; i2 < 2; i2++) N.appendChild(node(IX, IY[i2], num(s.x[i2]), RULE, false));
+    for (j = 0; j < 3; j++) N.appendChild(node(HX, HY[j], num(s.h[j]), BLUE, sel === j, j));
+    N.appendChild(node(OX, OY, num(s.y), PLUM, sel === 3, 3));
+
+    readout(s);
+  }
+
+  // ---- readout ----------------------------------------------------------
+
+  function field(value, onchange) {
+    var inp = document.createElement("input");
+    inp.type = "number";
+    inp.step = "0.1";
+    inp.className = "w-field";
+    inp.value = value;
+    inp.addEventListener("input", function () {
+      var v = parseFloat(inp.value);
+      if (!isNaN(v)) { onchange(v); draw(); }
+    });
+    return inp;
+  }
+
+  function span(t) {
+    var s = document.createElement("span");
+    s.textContent = t;
+    return s;
+  }
+
+  function readout(s) {
+    var terms = el("terms");
+    while (terms.firstChild) terms.removeChild(terms.firstChild);
+
+    if (sel < 3) {
+      var j = sel;
+      el("who").textContent = "Hidden neuron " + (j + 1);
+      el("formula").textContent = "z = b + w₁x₁ + w₂x₂,   h" + SUB[j] + " = " + actName();
+
+      terms.appendChild(field(B1[j], function (v) { B1[j] = v; }));
+      terms.appendChild(span("+"));
+      terms.appendChild(field(W1[j][0], function (v) { W1[j][0] = v; }));
+      terms.appendChild(span("× " + num(s.x[0]) + "  +"));
+      terms.appendChild(field(W1[j][1], function (v) { W1[j][1] = v; }));
+      terms.appendChild(span("× " + num(s.x[1])));
+
+      el("zval").textContent = num(s.zh[j]);
+      el("hlabel").textContent = "h" + SUB[j] + " =";
+      el("hval").textContent = num(s.h[j], 3);
+    } else {
+      el("who").textContent = "Output neuron";
+      el("formula").textContent = "z = b + w₁h₁ + w₂h₂ + w₃h₃,   ŷ = σ(z)";
+
+      terms.appendChild(field(B2, function (v) { B2 = v; }));
+      for (var k = 0; k < 3; k++) {
+        terms.appendChild(span("+"));
+        terms.appendChild(field(W2[k], (function (kk) {
+          return function (v) { W2[kk] = v; };
+        })(k)));
+        terms.appendChild(span("× " + num(s.h[k])));
+      }
+
+      // The output value has its own line below, so the right-hand half of the
+      // z line would only repeat it.
+      el("zval").textContent = num(s.zo);
+      el("hlabel").textContent = "";
+      el("hval").textContent = "";
+    }
+
+    el("yhat").textContent = num(s.y, 3);
+  }
+
+  // ---- wiring -----------------------------------------------------------
+
+  ["x1", "x2"].forEach(function (id) { el(id).addEventListener("input", draw); });
+  el("act-sig").addEventListener("click", function () {
+    relu = false;
+    el("act-sig").setAttribute("aria-pressed", "true");
+    el("act-relu").setAttribute("aria-pressed", "false");
+    draw();
+  });
+  el("act-relu").addEventListener("click", function () {
+    relu = true;
+    el("act-sig").setAttribute("aria-pressed", "false");
+    el("act-relu").setAttribute("aria-pressed", "true");
+    draw();
+  });
+
+  draw();
+})();
+</script>
+</body>
+</html>

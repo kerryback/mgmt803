@@ -10,8 +10,10 @@ project:
     - files/part*/*.csv
     - files/part*/*.zip
     - files/part*/*.md
+    - files/part*/*.ipynb
     - index.html
     - slides/cosine.html
+    - slides/forward-pass.html
     - under-construction.html
     - breakouts.html
     - wheel.html
