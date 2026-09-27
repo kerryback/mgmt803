@@ -1,500 +1,675 @@
 [
   {
-    "objectID": "slides/part7.html#this-session",
-    "href": "slides/part7.html#this-session",
+    "objectID": "slides/part8.html#this-session",
+    "href": "slides/part8.html#this-session",
     "title": "MGMT 803, MBA@Rice, 2026",
     "section": "This session",
-    "text": "This session\n\nMulti-agent architectures\nSecurity risks\nMitigating risks"
+    "text": "This session\n\nInside a neural network\nTraining\nFine-tuning and LoRA"
   },
   {
-    "objectID": "slides/part7.html#multi-agent-teams",
-    "href": "slides/part7.html#multi-agent-teams",
+    "objectID": "slides/part8.html#one-neuron",
+    "href": "slides/part8.html#one-neuron",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Multi-agent teams",
-    "text": "Multi-agent teams\n\n“How did our Q3 revenue compare with what analysts expected for the industry?”\n\n\n\nOrchestrator\nThe one you chat with. Splits the question, then combines the two answers.\n\n\nData agent\nReaches the warehouse. Returns our Q3 revenue.\n\n\nResearch agent\nReaches the web. Returns the published industry estimates.\n\n\n\nCalling another agent is a tool use. The orchestrator’s model picks data_chat or web_chat the way a single agent picks run_python."
+    "section": "One neuron",
+    "text": "One neuron\n\nPart 1 described a neural network as a function with parameters.\n\nA neuron weights the numbers coming into it, adds a bias, and passes the result through an activation function.\n\\[z = b + w_1 x_1 + w_2 x_2 \\qquad\\qquad h = f(z)\\]\n\n\nWeights\n\\(w_1\\) and \\(w_2\\) set which inputs matter and how much. A negative weight subtracts.\n\n\nBias\n\\(b\\) shifts the sum. With ReLU it sets how large the weighted inputs have to be before the neuron produces anything at all."
   },
   {
-    "objectID": "slides/part7.html#the-tool-definition",
-    "href": "slides/part7.html#the-tool-definition",
+    "objectID": "slides/part8.html#two-activation-functions",
+    "href": "slides/part8.html#two-activation-functions",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "The tool definition",
-    "text": "The tool definition\nIf an agent is a tool, its definition answers the same three questions as any other tool definition:\n\n\nWhich agents can I call?\nThe names: data_chat and web_chat. The model cannot call anything else.\n\n\nWhat can I say to them?\nThe arguments. web_chat takes the user’s question only — nothing from the conversation, and so nothing from the data.\n\n\nWhat can they give back?\nThe return. Text, a table, a file — and whatever comes back enters the orchestrator’s context."
+    "section": "Two activation functions",
+    "text": "Two activation functions\n\n\nSigmoid\n\\[\\sigma(z) = \\frac{1}{1 + e^{-z}}\\]\nOutput between 0 and 1. Used on an output neuron when the answer is a probability.\n\nReLU\n\\[\\max(0,\\, z)\\]\nOutput 0, or the value itself. Used in hidden layers: cheaper, and the derivative does not shrink toward zero for large \\(z\\)."
   },
   {
-    "objectID": "slides/part7.html#what-the-split-buys",
-    "href": "slides/part7.html#what-the-split-buys",
+    "objectID": "slides/part8.html#why-the-activation-is-there",
+    "href": "slides/part8.html#why-the-activation-is-there",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "What the split buys",
-    "text": "What the split buys\n\n\nSeparate context windows\nEach agent reads only its own material. The orchestrator gets the answer, not the material behind it.\n\n\nOne definition, many callers\nThe research agent’s prompt, tools and examples are written once. Every orchestrator that needs research calls that agent instead of carrying its own copy of the instructions.\n\n\nA smaller model per job\nRetrieval can run on a cheaper model than the one writing the answer."
+    "section": "Why the activation is there",
+    "text": "Why the activation is there\n\n\nWithout it\nA weighted sum of weighted sums is another weighted sum. Stack a hundred linear layers and the whole network reduces to one linear function of the inputs.\n\n\nWith it\nEach layer bends the function. Depth then adds capacity instead of repeating what a single layer could already do."
   },
   {
-    "objectID": "slides/part7.html#what-else-it-changes",
-    "href": "slides/part7.html#what-else-it-changes",
+    "objectID": "slides/part8.html#a-small-network",
+    "href": "slides/part8.html#a-small-network",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "What else it changes",
-    "text": "What else it changes\n\n\nA shorter tool list\nA model choosing among four tools picks better than the same model choosing among forty.\n\n\nWork at the same time\nThe data lookup and the web search do not wait for each other.\n\n\nTested on its own\nYou can rewrite the research agent’s prompt and test it without retesting the orchestrator.\n\n\n\nNone of these is a security argument. The security use of the same architecture comes after the risks."
+    "section": "A small network",
+    "text": "A small network\nTwo inputs, three neurons in a hidden layer, one output. Every input connects to every neuron in the next layer.\n\n\n9 hidden layer: 3 biases and 3 × 2 weights\n\n\n4 output: 1 bias and 3 weights\n\n\n13 parameters to be chosen"
   },
   {
-    "objectID": "slides/part7.html#subagents-or-separate-agents",
-    "href": "slides/part7.html#subagents-or-separate-agents",
+    "objectID": "slides/part8.html#the-forward-pass",
+    "href": "slides/part8.html#the-forward-pass",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Subagents, or separate agents",
-    "text": "Subagents, or separate agents\n\n\nA subagent\nThe harness starts a second copy of the model with its own context window. It runs on your machine, under your harness, on your keys.\n\nA separate agent\nIts own process, its own key, its own MCP connections. The orchestrator reaches it the way it reaches any other tool.\n\nThe choice depends on whether the two halves need different credentials."
+    "section": "The forward pass",
+    "text": "The forward pass"
   },
   {
-    "objectID": "slides/part7.html#breakout-exercise",
-    "href": "slides/part7.html#breakout-exercise",
+    "objectID": "slides/part8.html#the-same-pass-in-code",
+    "href": "slides/part8.html#the-same-pass-in-code",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "The same pass in code",
+    "text": "The same pass in code\nW1 = np.array([[0.5, 0.3], [-0.4, 0.6], [0.2, -0.3]])   # 3 neurons x 2 inputs\nb1 = np.array([0.1, -0.2, 0.3])\nW2 = np.array([0.7, -0.5, 0.8])\nb2 = 0.2\n\nx = np.array([1.2, -0.8])\n\nh = sigmoid(W1 @ x + b1)      # hidden layer, 3 values\ny = sigmoid(W2 @ h + b2)      # output, 1 value\n\nW1 @ x is a matrix-vector product: one row per neuron, one multiply-add per weight. That product is the operation GPUs are built for."
+  },
+  {
+    "objectID": "slides/part8.html#the-same-arithmetic-at-scale",
+    "href": "slides/part8.html#the-same-arithmetic-at-scale",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "The same arithmetic at scale",
+    "text": "The same arithmetic at scale\n\n\n13 parameters in the network above\n\n\n1 billion Gemma 3 1B, which runs on a laptop\n\n\n100s of billions a frontier model\n\n\n\nThe arrangement differs: a transformer’s layers include attention, from Part 1, rather than a plain fully connected stack. Every unit in it still takes a weighted sum, adds a bias, and applies an activation."
+  },
+  {
+    "objectID": "slides/part8.html#what-training-chooses",
+    "href": "slides/part8.html#what-training-chooses",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "What training chooses",
+    "text": "What training chooses\n\n\nChosen by training\nEvery weight and every bias. The 13 numbers above, or the hundreds of billions in a frontier model.\n\n\nChosen by hand, before training\nHow many layers, how many neurons in each, which activation, how large a step to take."
+  },
+  {
+    "objectID": "slides/part8.html#the-loss",
+    "href": "slides/part8.html#the-loss",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "The loss",
+    "text": "The loss\nTraining needs one number to make smaller. For each example, compare what the network produced to the right answer.\n\n\n\n\n\n\n\n\nTask\nOutput layer\nLoss\n\n\n\n\nPredict a quantity\none neuron, no activation\nsquared error\n\n\nPredict a label\none neuron, sigmoid\ncross-entropy\n\n\nPredict one of many labels\none neuron per label, softmax\ncross-entropy\n\n\n\n\nA language model is the third row, with one label per token in the vocabulary. Next-token prediction is a classification problem with about 100,000 classes."
+  },
+  {
+    "objectID": "slides/part8.html#gradient-descent",
+    "href": "slides/part8.html#gradient-descent",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Gradient descent",
+    "text": "Gradient descent\n\n\nRun a batch of examples forward and compute the loss.\nFind the derivative of the loss with respect to every parameter.\nMove each parameter a small step against its derivative.\nRepeat.\n\n\n\nThe size of that step is the learning rate. The notebook later in this session uses 2e-4."
+  },
+  {
+    "objectID": "slides/part8.html#backpropagation",
+    "href": "slides/part8.html#backpropagation",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Backpropagation",
+    "text": "Backpropagation\n\nStep 2 is the one that needs an algorithm.\n\n\n\nOne parameter at a time\nNudge a weight, run the whole network forward again, see how the loss moved. With a billion parameters that is a billion forward passes for one step.\n\n\nBackpropagation\nApply the chain rule from the loss backward through the layers. One backward pass yields the derivative for every parameter, at roughly the cost of one forward pass."
+  },
+  {
+    "objectID": "slides/part8.html#held-out-data",
+    "href": "slides/part8.html#held-out-data",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Held-out data",
+    "text": "Held-out data\n\n\nTraining set\nThe examples the parameters are fitted to. Loss here keeps falling for as long as you keep training.\n\nTest set\nExamples held back and never fitted. Loss here stops falling, then rises, while training loss is still improving.\n\n\nWith enough parameters a network can fit its training examples exactly and still do no better than chance on new ones."
+  },
+  {
+    "objectID": "slides/part8.html#three-ways-to-change-what-a-model-does",
+    "href": "slides/part8.html#three-ways-to-change-what-a-model-does",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Three ways to change what a model does",
+    "text": "Three ways to change what a model does\n\n\n\n\n\n\n\n\n\nWhat changes\nUse when\n\n\n\n\nPrompting\nthe text sent with the request\nthe model can do the job and needs telling\n\n\nRetrieval\ndocuments put into the context, from Part 6\nit needs facts it was not trained on\n\n\nFine-tuning\nthe weights\nthe behavior has to change: a format, a style, a judgment call\n\n\n\n\nFine-tuning does not add knowledge reliably."
+  },
+  {
+    "objectID": "slides/part8.html#when-fine-tuning-is-worth-it",
+    "href": "slides/part8.html#when-fine-tuning-is-worth-it",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "When fine-tuning is worth it",
+    "text": "When fine-tuning is worth it\n\n\nA fixed output format\nA label, a JSON record, a field in another system. Prompting gets the format most of the time.\n\n\nMany examples, one narrow job\nThousands of labeled cases already exist, and the job will run millions of times.\n\n\nCost per call\nA small fine-tuned model can match a large prompted one on one narrow task, at a fraction of the cost per call."
+  },
+  {
+    "objectID": "slides/part8.html#distillation",
+    "href": "slides/part8.html#distillation",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Distillation",
+    "text": "Distillation\n\n\nRun a frontier model on your inputs and keep its answers.\nTreat those answers as labels.\nFine-tune a small open-weights model on them.\n\n\n\nPart 6 covered where this runs into a provider’s terms. Read them before doing it with a commercial model’s output."
+  },
+  {
+    "objectID": "slides/part8.html#full-fine-tuning-and-lora",
+    "href": "slides/part8.html#full-fine-tuning-and-lora",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Full fine-tuning and LoRA",
+    "text": "Full fine-tuning and LoRA\n\n\nFull fine-tuning\nUpdate every parameter. Needs GPU memory for the weights, their gradients and the optimizer state, and produces a complete copy of the model.\n\n\nLoRA\nFreeze the original weights. Train two small matrices per layer instead. In the notebook later in this session, that is under 0.1% of the model’s parameters.\n\n\n\nHu et al., 2021: low-rank adaptation."
+  },
+  {
+    "objectID": "slides/part8.html#the-weight-matrix",
+    "href": "slides/part8.html#the-weight-matrix",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "The weight matrix",
+    "text": "The weight matrix\n\n\n\n\n\nSix neurons feeding six neurons: 36 weights, one per connection. Full fine-tuning retrains all of them."
+  },
+  {
+    "objectID": "slides/part8.html#the-low-rank-path",
+    "href": "slides/part8.html#the-low-rank-path",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "The low-rank path",
+    "text": "The low-rank path\n\n\n\n\n\nThe 36 frozen connections are not drawn. The trained path runs through two neurons: rank 2."
+  },
+  {
+    "objectID": "slides/part8.html#lora-the-arithmetic",
+    "href": "slides/part8.html#lora-the-arithmetic",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "LoRA: the arithmetic",
+    "text": "LoRA: the arithmetic\n\\(A\\) compresses the input down to the rank and \\(B\\) expands it back up, so the product \\(BA\\) has the same shape as the original weight matrix \\(W\\) and can be added to it:\n\\[W' = W + BA\\]\n\nThere is no activation function in the adapter path, which is why \\(BA\\) is a matrix and the addition is possible. Once merged, the model has the architecture and the speed it had before."
+  },
+  {
+    "objectID": "slides/part8.html#at-real-scale",
+    "href": "slides/part8.html#at-real-scale",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "At real scale",
+    "text": "At real scale\nThe six-by-six picture is a diagram. A transformer’s layers are 4096 × 4096 and larger.\n\n\n16.8M parameters in one 4096 × 4096 layer\n\n\n131K trained by a rank-16 adapter on it\n\n\n128× fewer parameters to train\n\n\n\nThe adapter is also what you store and ship: a file of megabytes, where full fine-tuning leaves you a second copy of the whole model."
+  },
+  {
+    "objectID": "slides/part8.html#qlora",
+    "href": "slides/part8.html#qlora",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "QLoRA",
+    "text": "QLoRA\n\n\nThe base model, quantized\nWeights stored at 4 bits instead of 16. Gemma 3 1B goes from about 2 GB to about 800 MB.\n\n\nAdapters on top of it\nThe frozen weights are read at 4 bits; the small matrices train at full precision. A 70-billion-parameter model fits on one 48 GB GPU.\n\n\n\nDettmers et al., 2023. This is what puts fine-tuning on a free Colab T4, which has 16 GB."
+  },
+  {
+    "objectID": "slides/part8.html#hands-on-fine-tune-gemma-3-1b",
+    "href": "slides/part8.html#hands-on-fine-tune-gemma-3-1b",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Hands-on: fine-tune Gemma 3 1B",
+    "text": "Hands-on: fine-tune Gemma 3 1B\nGoogle Colab · free T4 GPU · about 15 minutes of training\n\n\nLoad Gemma 3 1B at 4 bits.\nAttach rank-16 adapters to the attention layers, q_proj and v_proj only.\nTrain on Financial PhraseBank: 2,264 news sentences that every annotator labeled the same way, positive, negative or neutral.\nRun three test sentences through the model before and after.\n\n\nOpen the notebook in Colab\n\nNeeds a Hugging Face account, a read token, and Google’s Gemma license accepted at huggingface.co/google/gemma-3-1b-it."
+  },
+  {
+    "objectID": "slides/part8.html#breakout-exercise",
+    "href": "slides/part8.html#breakout-exercise",
     "title": "MGMT 803, MBA@Rice, 2026",
     "section": "Breakout exercise",
-    "text": "Breakout exercise\n\n\nBuild an orchestrator whose only two tools are agents: your FRED agent, and a writing agent that produces a Word document.\nAsk for something that needs both: the last ten years of unemployment and inflation, and a one-page brief on them as a .docx.\nPrint which agent was called, with what arguments, and where the file landed.\n\n\nWork out the design with Claude. Settle what each agent is handed and what it returns before writing anything."
+    "text": "Breakout exercise\n\n\nRun the notebook as far as the baseline cell, and read what the base model says about the three test sentences.\nTrain, then compare the answers before and after.\nThe base model is about 2 GB and the saved adapter is 14 MB. Say what has to be on the serving machine for the fine-tuned model to answer, and what changes if you merge the adapter into the weights instead."
   },
   {
-    "objectID": "slides/part7.html#sending-data-to-a-provider",
-    "href": "slides/part7.html#sending-data-to-a-provider",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Sending data to a provider",
-    "text": "Sending data to a provider"
-  },
-  {
-    "objectID": "slides/part7.html#what-happens-to-what-you-send",
-    "href": "slides/part7.html#what-happens-to-what-you-send",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "What happens to what you send",
-    "text": "What happens to what you send\n\n\nIt can be trained on\nWith web search off, ask Claude what Apple’s total revenue was in 2020. It answers from the weights, not from a lookup. What goes into a model can come back out of it.\n\n\nIt is retained\nEven where nobody trains on it, copies sit on the provider’s disks for some window. A breach, a subpoena or an insider reaches them there, under somebody else’s security.\n\n\n\nApple’s revenue is public. The mechanism is the point: the figure is in the weights, not on a page it fetched."
-  },
-  {
-    "objectID": "slides/part7.html#what-regulations-require",
-    "href": "slides/part7.html#what-regulations-require",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "What regulations require",
-    "text": "What regulations require\n\n\nHIPAA\nSatisfactory assurances “must be documented through a written contract” meeting §164.504(e).\nA Business Associates Agreement (BAA) is required. 45 CFR 164.502(e).\n\nSEC Reg S-P\nWritten policies “reasonably designed to require oversight, including through due diligence and monitoring, of service providers.”\n17 CFR 248.30."
-  },
-  {
-    "objectID": "slides/part7.html#letting-it-act",
-    "href": "slides/part7.html#letting-it-act",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Letting it act",
-    "text": "Letting it act"
-  },
-  {
-    "objectID": "slides/part7.html#prompt-injection",
-    "href": "slides/part7.html#prompt-injection",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Prompt injection",
-    "text": "Prompt injection\n\nThe model cannot tell an instruction from a piece of content. Both arrive as text in the same conversation.\n\nText placed where the agent will read it — an email, a document, a web page, a spreadsheet cell — is read in the same way as text you typed. An attacker needs no credentials, only a way to get words in front of the model.\n\nOWASP has ranked this first among risks to LLM applications since 2025."
-  },
-  {
-    "objectID": "slides/part7.html#echoleak",
-    "href": "slides/part7.html#echoleak",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "EchoLeak",
-    "text": "EchoLeak\nCVE-2025-32711 · Microsoft 365 Copilot · June 2025\n\n\nAn attacker mails the victim a message containing instructions invisible to a human reader.\nThe victim asks Copilot to summarize their email. Copilot reads the hidden instructions.\nFollowing them, Copilot places confidential data inside a URL in its response.\nThe victim’s browser fetches that URL automatically.\nThe attacker reads the data out of their own server log.\n\n\nZero clicks by the victim beyond the summary request."
-  },
-  {
-    "objectID": "slides/part7.html#three-legs",
-    "href": "slides/part7.html#three-legs",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Three legs",
-    "text": "Three legs\n\n\nPrivate data\nSomething worth taking: client records, financials, an inbox.\n\n\nUntrusted content\nText an outsider can control: a web page, an email, an uploaded file.\n\n\nAn outbound channel\nAny way for text to leave: fetching a URL, sending mail, writing somewhere shared.\n\n\nAll three in one agent is the condition. Remove any one and the attack does not work."
-  },
-  {
-    "objectID": "slides/part7.html#training-and-retention-contractual-solutions",
-    "href": "slides/part7.html#training-and-retention-contractual-solutions",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Training and retention: contractual solutions",
-    "text": "Training and retention: contractual solutions\n\n\n\n\n\n\n\n\n\nWhat it adds\nEnough for\n\n\n\n\nOpt out of training\na setting, revocable, data still retained briefly\npersonal, non-sensitive work\n\n\nA signed data processing agreement\nliability, breach notice, audit rights, a subprocessor list, zero retention on request\nclient data, regulated data\n\n\nThat, plus a business associate agreement\nthe same, covering protected health information\npatient records\n\n\nAn enterprise agreement\nservice levels, support, single sign-on, indemnification, capacity\nscale and operations"
-  },
-  {
-    "objectID": "slides/part7.html#data-exfiltration-removing-a-leg",
-    "href": "slides/part7.html#data-exfiltration-removing-a-leg",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Data exfiltration: removing a leg",
-    "text": "Data exfiltration: removing a leg\n\n\n\n\n\n\n\n\nLeg\nHow you remove it\nWhat it costs\n\n\n\n\nPrivate data\nthe agent sees only what you hand it — Cowork cannot reach outside its project folder\nit cannot answer from data it never sees\n\n\nUntrusted content\nno web fetch, no reading files people upload, no general code execution\na narrow agent, and no run_python\n\n\nA way out\nan egress allowlist, and no tool that sends\nresults leave only when a person moves them\n\n\n\nAny of the three can go. Each takes capability with it, and which one you can afford to lose is the decision."
-  },
-  {
-    "objectID": "slides/part7.html#a-worked-example",
-    "href": "slides/part7.html#a-worked-example",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "A worked example",
-    "text": "A worked example"
-  },
-  {
-    "objectID": "slides/part7.html#three-agents",
-    "href": "slides/part7.html#three-agents",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Three agents",
-    "text": "Three agents\n\n\nOrchestrator\nThe one you chat with. Its only two tools are web_chat and data_chat. It holds no data and reaches nothing itself.\n\n\nWebbot\nWebSearch and WebFetch, running at Anthropic. It reads untrusted content and holds no private data.\n\n\nDatabot\nrun_python and the MCP data connectors, behind an egress proxy. It holds the private data and cannot reach the web."
-  },
-  {
-    "objectID": "slides/part7.html#the-architecture",
-    "href": "slides/part7.html#the-architecture",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "The architecture",
-    "text": "The architecture"
-  },
-  {
-    "objectID": "slides/part7.html#what-each-agent-may-be-told",
-    "href": "slides/part7.html#what-each-agent-may-be-told",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "What each agent may be told",
-    "text": "What each agent may be told\n\n\nweb_chat is locked\nIts tool definition says it sends the user’s verbatim prompt and nothing else. Nothing from the conversation, and so nothing from the data, can reach the agent that can reach the web.\n\ndata_chat is open\nThe model composes this prompt from the conversation. That is safe only because databot has no route out.\n\nThe argument is about the arguments: what a tool accepts decides what can leave through it."
-  },
-  {
-    "objectID": "slides/part7.html#four-containers-four-networks",
-    "href": "slides/part7.html#four-containers-four-networks",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Four containers, four networks",
-    "text": "Four containers, four networks\n\n\n\n\n\n\n\n\n\nNetworks\nWhat that allows\n\n\n\n\nOrchestrator\ncorporate, internalA, internalB\nserves the chat UI, talks to both agents\n\n\nWebbot\ninternalB, public\ntalks to the orchestrator, calls Anthropic\n\n\nDatabot\ninternalA\ntalks to the orchestrator and the proxy, nothing else\n\n\nSquid proxy\ninternalA, public\nthe only route out of the data half\n\n\n\n\nWebbot shares a network with the orchestrator, so the orchestrator’s endpoints must authenticate at the application, not only at an external gateway."
-  },
-  {
-    "objectID": "slides/part7.html#inside-the-data-half",
-    "href": "slides/part7.html#inside-the-data-half",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Inside the data half",
-    "text": "Inside the data half"
-  },
-  {
-    "objectID": "slides/part7.html#mechanical-guards",
-    "href": "slides/part7.html#mechanical-guards",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Mechanical guards",
-    "text": "Mechanical guards\n\n\nSanitize the exit\nEven with the legs split, a delivered file could carry a planted remote image — the EchoLeak pattern. Every file the orchestrator hands back is checked first for anything that auto-fetches an external URL.\n\n\nSafeguard memory\nMemory persists into every later conversation, so a planted instruction would reload forever. Every saved fact must be grounded in the user’s own words, not in tool results or fetched content."
-  },
-  {
-    "objectID": "slides/part5.html#this-session",
-    "href": "slides/part5.html#this-session",
+    "objectID": "slides/part6.html#this-session",
+    "href": "slides/part6.html#this-session",
     "title": "MGMT 803, MBA@Rice, 2026",
     "section": "This session",
-    "text": "This session\n\nAcademic Studio\nRunning apps and agents locally\nGit and GitHub\nDeploying apps and agents"
+    "text": "This session\n\nRetrieval augmented generation\nGemini Notebook\nRunning models locally"
   },
   {
-    "objectID": "slides/part5.html#what-it-is",
-    "href": "slides/part5.html#what-it-is",
+    "objectID": "slides/part6.html#structured-and-unstructured",
+    "href": "slides/part6.html#structured-and-unstructured",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "What it is",
-    "text": "What it is\n\nUnder the hood it is VSCodium, the open-source build of VS Code, simplified for getting work done.\n\nClaude Code opens on startup. A Claude menu sits in the menu bar, the other menus and toolbars are trimmed, and the Help menu is rebuilt around getting started.\n\nA paid Anthropic account — Pro, Max, or API — is required to use Claude Code in it. Type /login in the prompt window the first time."
+    "section": "Structured and unstructured",
+    "text": "Structured and unstructured\n\n\nStructured data\nRows, columns, joins.\n\nEverything else a firm holds\nContracts, mail, board papers, policies, reports, decks, notes.\n\n\n65% of data leaders call their structured data ready for AI. 39% say the same of the unstructured kind, which is most of the volume."
   },
   {
-    "objectID": "slides/part5.html#why-are-we-installing-it",
-    "href": "slides/part5.html#why-are-we-installing-it",
+    "objectID": "slides/part6.html#why-not-just-paste-it-in",
+    "href": "slides/part6.html#why-not-just-paste-it-in",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Why are we installing it?",
-    "text": "Why are we installing it?\n\nIt is an easy way (I hope) to install Python and key Python libraries.\nI expect you to get Claude accounts paid by Rice soon.\nYou do not need a paid Claude account for this course.\nBut, if you do have one, you can use Academic Studio instead of lab803."
+    "section": "Why not just paste it in",
+    "text": "Why not just paste it in\n\n\nIt was not trained on yours\nYour contracts were not on the public web. Nothing in the weights knows them.\n\n\nThe window is finite\nA million tokens is large and your document store is larger.\n\n\nYou pay for every turn\nInput is billed each turn. Pasting the corpus into every question bills the corpus every question."
   },
   {
-    "objectID": "slides/part5.html#what-comes-with-it",
-    "href": "slides/part5.html#what-comes-with-it",
+    "objectID": "slides/part6.html#four-steps",
+    "href": "slides/part6.html#four-steps",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "What comes with it",
-    "text": "What comes with it\n\n\nDocuments\nThe xlsx, docx, pptx and pdf skills, bundled and configured. LaTeX and Quarto for typeset output.\n\n\nA browser\nThe Playwright connector, set up for you. Claude can open pages, click through them, fill forms, and take screenshots.\n\n\nA toolchain\nPython and the scientific stack, Jupyter, R, Quarto, TinyTeX, Node.js.\n\n\n\nHelp → Run Setup asks which profile you are — faculty, or students and professionals — and installs the supporting programs in one click."
+    "section": "Four steps",
+    "text": "Four steps\n\n\nChunk. Split the documents into passages of a few hundred words.\nEmbed. Turn each passage into a vector, the same way tokens became vectors.\nRetrieve. Embed the question and find the handful of passages closest to it.\nPaste. Put those passages in the prompt, with the question.\n\n\n\nThe model never reads your corpus. It reads an excerpt that a similarity search chooses."
   },
   {
-    "objectID": "slides/part5.html#what-carries-over",
-    "href": "slides/part5.html#what-carries-over",
+    "objectID": "slides/part6.html#a-passage-becomes-a-vector",
+    "href": "slides/part6.html#a-passage-becomes-a-vector",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "What carries over",
-    "text": "What carries over\n\n\nOpen a folder, and your files and your conversation history stay with that project.\nSkills, connectors and CLAUDE.md files are shared with the Claude Code CLI and with the Code mode of Claude Desktop.\nConversation history is shared with the CLI.\n\n\n\nEvery Claude skill, connector and plugin works here."
+    "section": "A passage becomes a vector",
+    "text": "A passage becomes a vector\n\nAn embedding model reads a passage and returns a fixed-length list of numbers — 384, or 768, or 1,536, depending on the model.\n\nPassages about the same thing land near each other, whatever words they used. “Revenue fell in the third quarter” sits close to “Q3 sales were down”, and a keyword search for “revenue” finds only the first.\n\nThe similarity is the cosine between the question’s vector and the passage’s. No model is involved until the passages have already been chosen."
   },
   {
-    "objectID": "slides/part5.html#getting-it",
-    "href": "slides/part5.html#getting-it",
+    "objectID": "slides/part6.html#cosine-in-two-dimensions",
+    "href": "slides/part6.html#cosine-in-two-dimensions",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Getting it",
-    "text": "Getting it\n\n\n\nmacOS\nApple Silicon, M1 or later — it does not run on Intel Macs\n\n\nWindows\nx64, most machines\n\n\nWindows ARM\nSurface Pro and similar\n\n\n\nDownload from academic-studio.com. Every release is also on the GitHub releases page."
+    "section": "Cosine, in two dimensions",
+    "text": "Cosine, in two dimensions"
   },
   {
-    "objectID": "slides/part5.html#download-from-lab803",
-    "href": "slides/part5.html#download-from-lab803",
+    "objectID": "slides/part6.html#demo",
+    "href": "slides/part6.html#demo",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Download from lab803",
-    "text": "Download from lab803\n\n\nAsk Claude what to download. It knows which files the app needs and which are scratch.\nDownload them from the Files tab, into a folder on your own machine.\nOpen that folder in Academic Studio.\n\n\n\nYour keys are not in those files, and should not be. Set ANTHROPIC_API_KEY and OPENAI_API_KEY on your own machine, the same way you set them in the container."
+    "section": "Demo",
+    "text": "Demo\n\nFive documents for a fictional company: a returns policy, an August board memo, an employee handbook, a shipping service-level page, and September operations meeting notes.\n\n\nall-MiniLM-L6-v2 embeds and Qwen3-1.7B answers, on the laptop."
   },
   {
-    "objectID": "slides/part5.html#what-is-already-installed-and-what-is-not",
-    "href": "slides/part5.html#what-is-already-installed-and-what-is-not",
+    "objectID": "slides/part6.html#formerly-notebooklm",
+    "href": "slides/part6.html#formerly-notebooklm",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "What is already installed, and what is not",
-    "text": "What is already installed, and what is not\nRun Setup gives you Python, fastapi and uvicorn. Four libraries are not in it:\npython -m pip install anthropic openai claude-agent-sdk python-dotenv\n\nanthropic for the chatbot on your Anthropic key, openai for the OpenRouter version, claude-agent-sdk for the agent, and python-dotenv for the line that reads your keys out of env.txt. On macOS the command is python3 -m pip .... You can also just ask Claude to install them."
+    "section": "Formerly NotebookLM",
+    "text": "Formerly NotebookLM\n\nNotebookLM became Gemini Notebook in July, 2026. Same product, same notebooks, new address: notebook.google.com.\n\nYou give it sources. It answers from those sources and cites the passage it used. Nothing you upload is added to a public index."
   },
   {
-    "objectID": "slides/part5.html#run-it",
-    "href": "slides/part5.html#run-it",
+    "objectID": "slides/part6.html#what-goes-in-and-how-much",
+    "href": "slides/part6.html#what-goes-in-and-how-much",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Run it",
-    "text": "Run it\nWindows\npython -m uvicorn app:app --port 8000\nMac\npython3 -m uvicorn app:app --port 8000\nThen open http://127.0.0.1:8000 in a browser.\n\napp:app is the file and the FastAPI object inside it — explorer:app for explorer.py."
+    "section": "What goes in, and how much",
+    "text": "What goes in, and how much\n\n\nSources\nPDFs and files you upload, Google Docs and Slides, web pages, YouTube links, pasted text.\n\n\nCaps\n500,000 words or 200MB per source. No page limit.\n\n\n\n\n\n\nFree\nPlus\n\n\n\n\nNotebooks\n100\n200\n\n\nSources per notebook\n50\n100\n\n\nChats per day\n50\n200"
   },
   {
-    "objectID": "slides/part5.html#what-a-commit-is",
-    "href": "slides/part5.html#what-a-commit-is",
+    "objectID": "slides/part6.html#citations-in-the-answer",
+    "href": "slides/part6.html#citations-in-the-answer",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "What a commit is",
-    "text": "What a commit is\n\nA version control system tracks every change you make. A commit is a snapshot you can return to.\n\n\n\nInstall\nGit is on lab803 already, and on your laptop with Academic Studio. Claude Code installs it anywhere it is missing.\n\n\nCommits\nAsk it to commit, and the change is saved with a description of what it was.\n\n\nHistory\nAsk when something changed, what changed it, or what the file looked like three versions ago."
+    "section": "Citations in the answer",
+    "text": "Citations in the answer\n\n\nAsk a question. The answer arrives with a numbered marker after each claim.\nClick the marker. The source opens at the passage the claim came from.\nAsk something the sources do not cover, and it says they do not cover it."
   },
   {
-    "objectID": "slides/part5.html#try-it-commit-and-restore",
-    "href": "slides/part5.html#try-it-commit-and-restore",
+    "objectID": "slides/part6.html#outputs",
+    "href": "slides/part6.html#outputs",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Try it: commit and restore",
-    "text": "Try it: commit and restore\n\n\nIn lab803, tell Claude Code to create a new folder.\nUpload a file into that folder from the Files tab.\nTell Claude to initialize the folder as a Git repository and commit the file.\nDelete the file.\nAsk Claude to restore it.\n\n\n\nCommit changes regularly, so you can easily undo and roll back."
+    "section": "Outputs",
+    "text": "Outputs\nIn addition to chat, Gemini Notebook offers video (slide deck) overviews, audio overviews (podcast style), flash cards, and more."
   },
   {
-    "objectID": "slides/part5.html#github",
-    "href": "slides/part5.html#github",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "GitHub",
-    "text": "GitHub\n\nGitHub hosts Git repositories. The project lives in the cloud, backed up and shareable.\n\n\n\nPushing\nWith a free account, Claude Code pushes your repository to GitHub and pushes later commits when you ask. It uses the GitHub CLI.\n\nCollaboration\nOthers can clone it, propose changes, and open issues. Working alone, it is backup and deployment."
-  },
-  {
-    "objectID": "slides/part5.html#try-it-push-to-github",
-    "href": "slides/part5.html#try-it-push-to-github",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Try it: push to GitHub",
-    "text": "Try it: push to GitHub\n\n\nCreate a free account at github.com.\nSettings → Developer settings → Personal access tokens → Tokens (classic). Tick the box marked repo, generate, and copy it — GitHub shows it once.\nAdd a line GH_TOKEN= and the token to env.txt, and upload it to your container again from the Files tab.\nTell Claude the token is in env.txt, and to create a new GitHub repository and push the folder you committed earlier.\nOpen github.com/your-user-name and look at what arrived: the file, the commit, and the message Claude wrote."
-  },
-  {
-    "objectID": "slides/part5.html#before-you-push",
-    "href": "slides/part5.html#before-you-push",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Before you push",
-    "text": "Before you push\n\nIf you make your repository public, then anyone can read it.\n\n\n\nKeep out\nAPI keys, passwords, anything under a data agreement, and anything with a name in it. Tell Claude to list those files in a .gitignore, and Git will leave them out of every commit.\n\n\nRemember\nDeleting a file in a later commit does not remove it. It stays in the history."
-  },
-  {
-    "objectID": "slides/part5.html#github-pages",
-    "href": "slides/part5.html#github-pages",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "GitHub Pages",
-    "text": "GitHub Pages\n\nAny repository becomes a website. No server, no configuration, no cost (but it is available for free only if your repo is public).\n\n\n\nTell Claude to create a page for you (with whatever you want on it) named index.html.\nCommit and push again. Push the repository to GitHub.\nSettings → Pages, and set the source to the main branch, either its root or a docs/ folder.\nThe site is live at yourusername.github.io/repo-name/.\n\n\nOr ask Claude to turn it on\ngh api -X POST repos/{owner}/{repo}/pages -F 'source[branch]=main' -F 'source[path]=/'\n\nA custom domain costs about $15 a year and replaces the github.io address."
-  },
-  {
-    "objectID": "slides/part5.html#platform-as-a-service",
-    "href": "slides/part5.html#platform-as-a-service",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Platform as a service",
-    "text": "Platform as a service\n\nYou hand a host your repository. It builds the app, runs it, and puts it behind a public URL. There is no server for you to administer.\n\nRailway, Render, Koyeb, Fly and Heroku all do this. We use Koyeb, which deploys straight from a GitHub repository and has a free instance.\n\nThe free instance is one web service, 512 MB of memory, in Frankfurt or Washington. Koyeb asks for a credit card when you sign up, to stop abuse, and does not charge for it."
-  },
-  {
-    "objectID": "slides/part5.html#create-an-account-and-get-a-token",
-    "href": "slides/part5.html#create-an-account-and-get-a-token",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Create an account and get a token",
-    "text": "Create an account and get a token\n\n\nCreate an account at koyeb.com.\nIn the control panel, create an API access token. Koyeb shows it once, so copy it then.\nAdd a line KOYEB_TOKEN= and the token to env.txt, and upload it again from the Files tab.\nTell Claude your Koyeb token is in env.txt.\n\n\n\nThe Koyeb CLI is already installed in your container. From here on Claude can do the rest — creating the service, reading the logs, and giving you the URL."
-  },
-  {
-    "objectID": "slides/part5.html#breakout-exercise",
-    "href": "slides/part5.html#breakout-exercise",
+    "objectID": "slides/part6.html#breakout-exercise",
+    "href": "slides/part6.html#breakout-exercise",
     "title": "MGMT 803, MBA@Rice, 2026",
     "section": "Breakout exercise",
-    "text": "Breakout exercise\n\n\nPick an app, chatbot, or agent that you have created. Do not use one with a paid API key (so no Anthropic key).\n\nTell Claude you want to deploy the app on Koyeb and your Koyeb access token is in env.txt.\n\nIf Claude asks you to do anything, reply “Can you do that instead?” If needed, tell Claude that the Koyeb CLI is installed.\n\nWhen Claude says it is deployed, ask for the URL.\nOpen the URL on your laptop or phone."
+    "text": "Breakout exercise\n\n\nCreate a Gemini notebook from the slide decks for this course, and ask it questions.\nUpload the decks to lab803. Tell Claude you want a RAG chatbot built on them.\nHave Claude lay out the options for chunking, for the embedding model, and for the model that writes the answer. Decide each one with it.\nBuild it as a FastAPI app."
   },
   {
-    "objectID": "slides/part3.html#this-session",
-    "href": "slides/part3.html#this-session",
+    "objectID": "slides/part6.html#where-each-tier-stands-today",
+    "href": "slides/part6.html#where-each-tier-stands-today",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Where each tier stands today",
+    "text": "Where each tier stands today\n\nGPQA Diamond is near its ceiling, which compresses the gap: five months of lag is worth three points because there is nowhere left to go. Terminal-Bench is not near any ceiling, and there the same few months is most of the task."
+  },
+  {
+    "objectID": "slides/part6.html#not-every-job-needs-the-largest-model",
+    "href": "slides/part6.html#not-every-job-needs-the-largest-model",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Not every job needs the largest model",
+    "text": "Not every job needs the largest model\n\n\n\n\n\n\n\n\n\nWhere it runs\nWhat it suits\n\n\n\n\nA frontier model\nthe provider’s API\njudgment, long context, code\n\n\nA mid-size model\nthe same API, less per token\nclassification, extraction, routing\n\n\nA small open model\nyour own hardware\nhigh volume, or data that cannot leave\n\n\nA fine-tuned small model\nyour own hardware\none narrow task, done constantly\n\n\n\nThe price difference is negligible on a single question and decides the budget at a million classifications."
+  },
+  {
+    "objectID": "slides/part6.html#fine-tuning-by-distillation",
+    "href": "slides/part6.html#fine-tuning-by-distillation",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Fine tuning by distillation",
+    "text": "Fine tuning by distillation\n\nRun the frontier model on a few thousand examples of your task. Keep the inputs and its outputs. Train a small model on those pairs.\n\n\nThe small model does not become generally capable. It becomes capable at the one task you sampled, at a fraction of the cost per call, on hardware you control.\n\n\nIt is generally OK to do this, but perhaps not if you plan to compete with the frontier model. China’s distillation"
+  },
+  {
+    "objectID": "slides/part6.html#what-fits-on-hardware-you-own",
+    "href": "slides/part6.html#what-fits-on-hardware-you-own",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "What fits on hardware you own",
+    "text": "What fits on hardware you own\n\n\n\n\nMemory\nWhat runs at 4-bit\nOn disk\n\n\n\n\nA laptop, no GPU\n8 GB\n1B to 4B\nGemma 3 4B, 3.3 GB\n\n\nA laptop with a GPU\n16 GB\nup to 12B\nGemma 3 12B, 8.1 GB\n\n\nOne consumer GPU\n24 GB\nup to 32B\nQwen 3.8 27B, 17 GB\n\n\nDGX Spark\n128 GB unified\n70B class\n\n\n\nMac Studio\n256 GB unified\n235B class\n\n\n\n\nA model needs roughly half a gigabyte per billion parameters at 4-bit, plus room for the context window.\n\nCapacity decides whether it loads. Bandwidth decides how fast it answers: the Spark moves 273 GB/s, the Mac Studio 819 GB/s."
+  },
+  {
+    "objectID": "slides/part6.html#breakout-exercise-part-1",
+    "href": "slides/part6.html#breakout-exercise-part-1",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Breakout exercise part 1",
+    "text": "Breakout exercise part 1\n\n\nInstall Ollama: ollama.com/download.\nIn a terminal, type ollama run gemma4:e2b-it-qat. The download is 4.3 GB.\nAsk it something you asked a frontier model. Compare the two answers.\nType /bye to leave. Then run ollama run gemma3:1b, an 815 MB download from the previous generation, and ask the same question again.\n\n\n\nNothing you type leaves your machine. In a second terminal window, ollama ps shows what is loaded and how much memory it holds."
+  },
+  {
+    "objectID": "slides/part6.html#breakout-exercise-part-2",
+    "href": "slides/part6.html#breakout-exercise-part-2",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Breakout exercise part 2",
+    "text": "Breakout exercise part 2\n\nPart 1 creates a local chatbot. For a local agent, we need a harness.\n\n\n\nInstall OpenCode 1.18.0 or newer: opencode.ai/docs.\nPut orders.csv and order_details.csv in a new folder, with the opencode.json on the next slide.\nRun opencode in that folder, type /models, and choose Gemma 4 under Ollama.\nAsk: Merge orders.csv and order_details.csv on OrderID and save the result as orders_complete.csv.\nAsk: List the exact names of every tool you have.\nWrite down where it stopped being able to do the job.\n\n\n\nSame model as the exercise before, so nothing more to download. Gemma 4 supports function calling, and Python is already installed, so it has tools and something to run them with."
+  },
+  {
+    "objectID": "slides/part4.html#this-session",
+    "href": "slides/part4.html#this-session",
     "title": "MGMT 803, MBA@Rice, 2026",
     "section": "This session",
-    "text": "This session\n\nCLAUDE.md (AGENTS.md)\nHow it remembers you\nSKILL.md\nMCP connectors\nPlugins"
+    "text": "This session\n\nHow software works\nAPI calls\nBuild a chatbot\nBuild an agent"
   },
   {
-    "objectID": "slides/part3.html#two-kinds-of-instruction",
-    "href": "slides/part3.html#two-kinds-of-instruction",
+    "objectID": "slides/part4.html#frontend-and-backend",
+    "href": "slides/part4.html#frontend-and-backend",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Two kinds of instruction",
-    "text": "Two kinds of instruction\n\nWith no instructions of your own, a model answers everyone’s question the same way. Instructions are how that gets changed.\n\n\n\nThe provider’s\nThe system prompt ships with the product and is sent on every turn. It regulates behavior: what the assistant is, what it declines, how an answer is formatted.\nYou do not edit it.\n\n\nYours\nAdded on top. It customizes behavior: how you want work done, what your files hold, the conventions you follow.\nYou choose what it says and where it applies."
+    "section": "Frontend and backend",
+    "text": "Frontend and backend\n\n\nFrontend\nThe browser. HTML, CSS and JavaScript — it draws the page and collects the clicks.\n\nBackend\nA program on a server, listening continuously for requests. Yours will be Python.\n\n\nYou open a URL. The browser sends a request. The server sends back HTML, CSS and JavaScript. The browser interprets that and shows you a page.\n\n\nRight-click any page and choose View Page Source. That is the frontend code, exactly as the backend handed it over."
   },
   {
-    "objectID": "slides/part3.html#what-reaches-the-model-before-your-prompt",
-    "href": "slides/part3.html#what-reaches-the-model-before-your-prompt",
+    "objectID": "slides/part4.html#two-kinds-of-request",
+    "href": "slides/part4.html#two-kinds-of-request",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "What reaches the model before your prompt",
-    "text": "What reaches the model before your prompt\n\n\n\nPart\nWho sets it\nWhen it is sent\n\n\n\n\nSystem prompt\nthe provider\nevery turn\n\n\nTool definitions\nthe product, and what you connect\nevery turn\n\n\nCLAUDE.md\nyou\nevery turn\n\n\nA skill’s description\nyou\nevery turn, one line each\n\n\nA skill’s body\nyou\nonly when the description matches\n\n\n\n\nAnything sent on every turn costs money and latency, and takes up the model’s attention."
+    "section": "Two kinds of request",
+    "text": "Two kinds of request\n\n\n\n\n\n\n\n\n\nWhat it carries\nWhat the server does\n\n\n\n\nGET\na path, and parameters in the URL\nsends back a page, or data\n\n\nPOST\na body — a form, a ticker you typed\nwhatever it was written to do, then replies\n\n\n\n\nOpening a page is a GET. Clicking submit is usually a POST."
   },
   {
-    "objectID": "slides/part3.html#what-is-in-a-system-prompt",
-    "href": "slides/part3.html#what-is-in-a-system-prompt",
+    "objectID": "slides/part4.html#running-it-on-one-machine",
+    "href": "slides/part4.html#running-it-on-one-machine",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "What is in a system prompt",
-    "text": "What is in a system prompt\n\n\n\n\n\n\n\nIdentity\nwhat it is, who made it, what today’s date is\n\n\nFormat\nwhen to use markdown, how long an answer should run, when to use a list\n\n\nTools\nwhen to search the web, when to write code, when to make an artifact\n\n\nRefusals\nwhat it declines, and how\n\n\nCharacter\nwhat to do when it is uncertain, how much to hedge\n\n\n\n\nAnthropic publishes the ones in the Claude apps, dated and by model: platform.claude.com/docs/en/release-notes/system-prompts"
+    "section": "Running it on one machine",
+    "text": "Running it on one machine\n\nThe frontend and the backend can be the same computer — your container, or your own laptop with Python on it.\n\n\n\nlocalhost\n127.0.0.1 is the loopback address. The browser asks the machine it is already running on, and the request never reaches a network.\n\n\nPorts\nOne machine runs many programs listening at once. The port number tells the operating system which of them gets the request.\n\n\n\nYou write the app as a .py file. FastAPI is the usual Python library for one, and uvicorn starts it listening: uvicorn app:app --host 0.0.0.0 --port 8000."
   },
   {
-    "objectID": "slides/part3.html#claude.md-by-scope",
-    "href": "slides/part3.html#claude.md-by-scope",
+    "objectID": "slides/part4.html#build-something-interactive",
+    "href": "slides/part4.html#build-something-interactive",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "CLAUDE.md, by scope",
-    "text": "CLAUDE.md, by scope\nClaude Code reads every CLAUDE.md from the top of the filesystem down to the folder you started in, and puts them all in context:\n\n\n\n\n\n\n\n\nFile\nApplies to\n\n\n\n\n\n$HOME/.claude/CLAUDE.md\nevery folder you work in\nnobody\n\n\npath/folder/CLAUDE.md\nwork in that folder\nthe team, if you commit it\n\n\n\n\nThe closest file is read last. Keep each one under about 200 lines — all of them are in the context window before you type.\n\n\nOpenAI and Google call it AGENTS.me\nDesktop apps have analogous “instructions” settings"
+    "section": "Build something interactive",
+    "text": "Build something interactive\n\n\nAsk for a FastAPI app with one page and one input — a unit converter, a loan payment, anything with a number in and a number out.\nAsk Claude to run it, and open the View tab. Click Refresh.\nWatch the terminal while you use it. Opening the page logs a GET; submitting the form logs a POST."
   },
   {
-    "objectID": "slides/part3.html#a-digression-on-file-systems",
-    "href": "slides/part3.html#a-digression-on-file-systems",
+    "objectID": "slides/part4.html#single-page-html-apps",
+    "href": "slides/part4.html#single-page-html-apps",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "A digression on file systems",
-    "text": "A digression on file systems\nWindows File Explorer hides the actual filesystem locations of common folders. You can do the following to see where your home folder is.\n\nWindows: Start -&gt; Command Prompt. Then type cd $HOME and Enter and then pwd and Enter. That is your home directory.\nMac: Enter the same commands into the Terminal app.\nlab803: Terminal in left pane. Enter the same commands."
+    "section": "Single-page HTML apps",
+    "text": "Single-page HTML apps\n\nThere is an exception to the frontend/backend pattern.\nIf an app gets its data from browser input and does not need to reach outside, then we may not need a backend server. The code execution (JavaScript) can be done in the browser.\n\n\n\nAsk for the same app as a single-page HTML app.\n\nWhen it is complete, click Refresh in the File Explorer and you should see a new .html file.\nDownload the file.\nIn your File Explorer (Finder on Mac) — not in your browser — double-click the file. It should open in your browser. Test it."
   },
   {
-    "objectID": "slides/part3.html#what-belongs-in-a-claude.md",
-    "href": "slides/part3.html#what-belongs-in-a-claude.md",
+    "objectID": "slides/part4.html#artifacts",
+    "href": "slides/part4.html#artifacts",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "What belongs in a CLAUDE.md",
-    "text": "What belongs in a CLAUDE.md\n\n\nYes\n\nHow you want numbers handled\nWhat the folders hold\nConventions everything here follows\nAnything you have corrected twice\n\n\n\nNo\n\nSteps for one particular task\nAnything longer than a page\nBackground that can be looked up\nA tool you use once a month\n\n\n\n\nIn Claude Code, # at the start of a message appends a line to one of these files, and /memory opens them for editing."
+    "section": "Artifacts",
+    "text": "Artifacts\nClaude calls a single-page HTML app an artifact.\n\n\nIn Claude Desktop, choose Artifact in the left pane.\n\nChoose New. Prompt Claude to create the same app.\nYou should get options to deploy the app online or to download it."
   },
   {
-    "objectID": "slides/part3.html#explore",
-    "href": "slides/part3.html#explore",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Explore",
-    "text": "Explore\n\nIn lab803, enter this prompt: print the CLAUDE.md\nThen this prompt: add \"always answer like a pirate\" to the CLAUDE.md\nThen log out (top right corner), log back in, and ask anything.\nThen ask it to delete the “always answer like a pirate” from the CLAUDE.md, log out again, and log back in."
-  },
-  {
-    "objectID": "slides/part3.html#memory",
-    "href": "slides/part3.html#memory",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Memory",
-    "text": "Memory\n\n\nWhile you talk, it saves individual topics — not a transcript, and not a summary written when the conversation ends.\nThose topics arrive with the system prompt, ahead of your first message.\nNothing is searched and no tool runs. There is no sign of it in the conversation.\nEach project has its own memory. Topics from one do not reach another."
-  },
-  {
-    "objectID": "slides/part3.html#pushed-or-pulled",
-    "href": "slides/part3.html#pushed-or-pulled",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Pushed, or pulled",
-    "text": "Pushed, or pulled\n\n\nMemory\nSaved as you go and placed in the conversation without your asking. Whether it applies is decided before you type.\n\nChat search\nYou ask for it. It searches your past conversations, you see the tool run, and the answer cites the chat each piece came from.\n\n\nSettings → Memory lists the topics. Read, edit or delete any of them, pause it, or reset it. Say what to remember or forget in the chat and it applies to your next conversation. An incognito chat forms no memory."
-  },
-  {
-    "objectID": "slides/part3.html#a-skill-is-a-folder",
-    "href": "slides/part3.html#a-skill-is-a-folder",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "A skill is a folder",
-    "text": "A skill is a folder\nskill-name/\n  SKILL.md          the instructions\n  references/       longer material, read only when needed\n  scripts/          code the skill runs rather than regenerates\nSKILL.md opens with two lines of metadata (name and description) and then plain text.\n\nIn Claude Desktop: Choose Customize in left pane. Then Skills. Explore or Add."
-  },
-  {
-    "objectID": "slides/part3.html#the-same-file-in-other-agents",
-    "href": "slides/part3.html#the-same-file-in-other-agents",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "The same file in other agents",
-    "text": "The same file in other agents\n\nAnthropic wrote the format and released it as an open standard. The others adopted it rather than inventing their own.\n\n\n\n\nAgent\nWhere it looks\n\n\n\n\nClaude Code\n.claude/skills/\n\n\nCodex and ChatGPT\n.agents/skills/\n\n\nGemini CLI\n.gemini/skills/, or .agents/skills/\n\n\n\n\nSame file, same description-first loading. Put the folder in .agents/skills/ and both Codex and Gemini CLI find it."
-  },
-  {
-    "objectID": "slides/part3.html#creating-a-skill",
-    "href": "slides/part3.html#creating-a-skill",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Creating a skill",
-    "text": "Creating a skill\n\nWork with AI until you get what you want\nTell AI to create a skill so you can get the same thing the next time\nGive the skill a meaningful name.\nAs you use it and find things to add or modify, tell AI to edit the skill."
-  },
-  {
-    "objectID": "slides/part3.html#three-ways-to-invoke",
-    "href": "slides/part3.html#three-ways-to-invoke",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Three ways to invoke",
-    "text": "Three ways to invoke\n\n\n\nSlash command\n/skill-name\n\n\nBy name\n“use the … skill”\n\n\nAutomatically\n“build …”\n\n\n\nThe third only works when the skill description clearly applies."
-  },
-  {
-    "objectID": "slides/part3.html#anthropics-skill-repository",
-    "href": "slides/part3.html#anthropics-skill-repository",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Anthropic’s skill repository",
-    "text": "Anthropic’s skill repository\nhttps://github.com/anthropics/skills"
-  },
-  {
-    "objectID": "slides/part3.html#lab803",
-    "href": "slides/part3.html#lab803",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "lab803",
-    "text": "lab803\n\nEnter the prompt /skills\nYou will get a list of the installed skills\nAll are from Anthropic"
-  },
-  {
-    "objectID": "slides/part3.html#breakout-exercise",
-    "href": "slides/part3.html#breakout-exercise",
+    "objectID": "slides/part4.html#breakout-exercise",
+    "href": "slides/part4.html#breakout-exercise",
     "title": "MGMT 803, MBA@Rice, 2026",
     "section": "Breakout exercise",
-    "text": "Breakout exercise\n\nThe goal is to get Claude to always create PowerPoint decks following a template you choose. You can use one of your existing decks or choose a new template from any online source. Upload the deck to lab803.\nTell Claude to create a new deck using the style of the uploaded deck. Give Claude some content and tell it to build the deck from scratch rather than just editing the uploaded deck.\nDownload and view the deck. Instruct Claude on any changes you want. Rinse and repeat until you like the deck.\nTell Claude to write the steps needed to get the good deck in a a my-pptx skill so that Claude will always create decks in the template style."
+    "text": "Breakout exercise\nGet free accounts at Replit and Lovable and build the same app with their tools. Then try something more ambitious (you may run out of credits on the free tier)."
   },
   {
-    "objectID": "slides/part3.html#an-agent-reaching-a-service",
-    "href": "slides/part3.html#an-agent-reaching-a-service",
+    "objectID": "slides/part4.html#apis",
+    "href": "slides/part4.html#apis",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "An agent reaching a service",
-    "text": "An agent reaching a service\n\n\nUser\n\n\n↔︎\n\n\nHarness\n\n\n↔︎\n\n\nLLM\n\n\n↕\n\n\nData or Service"
+    "section": "APIs",
+    "text": "APIs\n\nAn API (application programming interface) is a feature of a software service that allows other services to talk to it\nFor example, if I want my website to accept payment by PayPal, then my website has to talk to PayPal’s API\nIf I want my program to send messages and get responses from an LLM, then my program has to talk to the LLM provider’s API"
   },
   {
-    "objectID": "slides/part3.html#an-mcp-server-is-a-bridge",
-    "href": "slides/part3.html#an-mcp-server-is-a-bridge",
+    "objectID": "slides/part4.html#an-api-call-in-python",
+    "href": "slides/part4.html#an-api-call-in-python",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "An MCP server is a bridge",
-    "text": "An MCP server is a bridge\n\n\nUser\n\n\n↔︎\n\n\nHarness\n\n\n↔︎\n\n\nLLM\n\n\n↕\n\n\nThe harness starts the serverand asks it what tools it has\n\n\nMCP Server\n\n\n↕\n\n\nThe server holds the credentialsand makes the actual calls\n\n\nData or Service"
+    "section": "An API call in Python",
+    "text": "An API call in Python\nimport anthropic\n\nclient = anthropic.Anthropic()          # reads ANTHROPIC_API_KEY\n\nSYSTEM = \"Classify the complaint: damage, delay, billing, or other. One word.\"\n\nresp = client.messages.create(\n    model=\"claude-sonnet-5\",\n    max_tokens=500,\n    system=SYSTEM,\n    messages=[{\"role\": \"user\", \"content\": \"The unit arrived cracked.\"}],\n)\n\nprint(resp.content[0].text)"
   },
   {
-    "objectID": "slides/part3.html#what-the-server-tells-the-harness",
-    "href": "slides/part3.html#what-the-server-tells-the-harness",
+    "objectID": "slides/part4.html#the-same-call-through-openrouter",
+    "href": "slides/part4.html#the-same-call-through-openrouter",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "What the server tells the harness",
-    "text": "What the server tells the harness\n\n\nHarness\n\n\n↔︎\n\n\nLLM\n\n\n↕\n\n\nGmail MCP server — tools it exposes\n\nsearch_threads — find threads matching a query\ncreate_draft — start a reply, unsent\nget_message — fetch one message\nupdate_draft — edit a draft\nlist_labels — list the labels on the account\nlabel_message — add or remove a label\n\n\n\n↕\n\n\nGmail — what the API exposes\n\nGET users/me/threads?q= — search\nPOST users/me/drafts — create draft\nGET users/me/messages/{id} — read\nPUT users/me/drafts/{id} — update draft\nGET users/me/labels — list labels\nPOST users/me/messages/{id}/modify — labels and state\n\n\n\nThe harness gets the tool descriptions from the server.\nIt sends that list to the LLM with every request.\nThe LLM answers with a tool name and arguments. The server turns that into an API call."
+    "section": "The same call through OpenRouter",
+    "text": "The same call through OpenRouter\nfrom openai import OpenAI\n\nclient = OpenAI(                        # reads OPENAI_API_KEY\n    base_url=\"https://openrouter.ai/api/v1\",\n)\nresp = client.chat.completions.create(\n    model=\"nvidia/nemotron-3.5-lightning:free\",\n    messages=[\n        {\"role\": \"system\", \"content\": SYSTEM},\n        {\"role\": \"user\", \"content\": \"The unit arrived cracked.\"},\n    ],\n)\nprint(resp.choices[0].message.content)\n\nThe system prompt is a message here, not a separate argument. A different library, a different response shape, and the model is a string you can change. Fifty free requests a day."
   },
   {
-    "objectID": "slides/part3.html#tools-from-mcp-servers",
-    "href": "slides/part3.html#tools-from-mcp-servers",
+    "objectID": "slides/part4.html#what-comes-back",
+    "href": "slides/part4.html#what-comes-back",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "What comes back",
+    "text": "What comes back\n\n\nAnthropic\n{\n  \"role\": \"assistant\",\n  \"content\": [\n    {\"type\": \"text\", \"text\": \"damage\"}\n  ],\n  \"stop_reason\": \"end_turn\",\n  \"usage\": {\"input_tokens\": 38,\n            \"output_tokens\": 4}\n}\n\nOpenRouter\n{\n  \"choices\": [\n    {\"message\": {\"role\": \"assistant\",\n                 \"content\": \"damage\"},\n     \"finish_reason\": \"stop\"}\n  ],\n  \"usage\": {\"prompt_tokens\": 38,\n            \"completion_tokens\": 4}\n}\n\n\nBoth carry the word damage. The envelope differs, which is why one prints resp.content[0].text and the other resp.choices[0].message.content. stop_reason and finish_reason are how the app knows whether the model finished or wants to use a tool."
+  },
+  {
+    "objectID": "slides/part4.html#get-two-keys",
+    "href": "slides/part4.html#get-two-keys",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Get two keys",
+    "text": "Get two keys\n\n\nAnthropic\nplatform.claude.com → API keys → Create key. Pay per token, so set a spending limit on it.\nStore it as ANTHROPIC_API_KEY.\n\nOpenRouter\nopenrouter.ai → Keys → Create key. Sign in with Google or create an account with username and password, no card. One key reaches every provider it carries.\nStore it as OPENAI_API_KEY. The OpenAI library looks for that name only.\n\n\nThe keys are only shown once. Copy each into a file called env.txt, one NAME=value per line, and upload it to your container from the Files tab. Then tell Claude: my keys are in env.txt."
+  },
+  {
+    "objectID": "slides/part4.html#fastapi-app-that-makes-api-calls",
+    "href": "slides/part4.html#fastapi-app-that-makes-api-calls",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "FastAPI app that makes API calls",
+    "text": "FastAPI app that makes API calls\n\nA chatbot is a software program that calls an LLM.\nWe can build one as a FastAPI app.\nThe app should have a user interface (prompt window).\nThe browser sends prompts to the backend as POST requests.\nThe backend makes an API call, gets a response, and replies to the browser."
+  },
+  {
+    "objectID": "slides/part4.html#what-does-it-need",
+    "href": "slides/part4.html#what-does-it-need",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "What does it need?",
+    "text": "What does it need?\n\nAn endpoint for the API call (Anthropic, OpenAI, OpenRouter, …)\nA model name\nA system prompt\nA loop to keep the message list\nA user interface\n\n\nWe need to tell Claude what provider we want (Anthropic, OpenAI, …), what model we want, and what the system prompt should be. Claude can do everything else."
+  },
+  {
+    "objectID": "slides/part4.html#breakout-exercise-1",
+    "href": "slides/part4.html#breakout-exercise-1",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Breakout exercise",
+    "text": "Breakout exercise\n\n\nBuild a chatbot on either key — Anthropic (ANTHROPIC_API_KEY) or OpenRouter (OPENAI_API_KEY), your choice.\nPut your name on it, where anyone using it can see.\nGive it a system prompt that makes it answer in a distinctive way (for example, talk like a pirate).\n\n\n\nYou can tell Claude to do these things. You are not expected to write the code yourself."
+  },
+  {
+    "objectID": "slides/part4.html#chatbot-vs-agent",
+    "href": "slides/part4.html#chatbot-vs-agent",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Chatbot vs agent",
+    "text": "Chatbot vs agent\n\n\nThe chatbot\nText in, text out. The app does the same thing with every reply it gets\n\n\nThe agent\nThe reply can be a request to run something. The app runs it, sends the result back, and asks the model what to do next\n\n\n\nAn agent is an app that takes actions at the discretion of a model."
+  },
+  {
+    "objectID": "slides/part4.html#an-agent-is-a-chatbot-with-tools",
+    "href": "slides/part4.html#an-agent-is-a-chatbot-with-tools",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "An agent is a chatbot with tools",
+    "text": "An agent is a chatbot with tools\n\n\nYou send a request. The harness also sends a list of tools and what each one does.\nThe model answers with text, or with a request to use a tool.\nThe harness runs the tool and puts the result back into the conversation.\nRepeat until the model answers with text and no tool call."
+  },
+  {
+    "objectID": "slides/part4.html#a-tool-is-a-description",
+    "href": "slides/part4.html#a-tool-is-a-description",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "A tool is a description",
+    "text": "A tool is a description\n{\n  \"tools\": [\n    {\"name\": \"query_northwind\",\n     \"description\": \"Run a read-only SELECT against Northwind. Returns CSV.\",\n     \"input_schema\": {\n       \"type\": \"object\",\n       \"properties\": {\"query\": {\"type\": \"string\"}},\n       \"required\": [\"query\"]}}\n  ]\n}\n\nSent in the same request, alongside messages. The description is what the model reads when deciding whether to call it."
+  },
+  {
+    "objectID": "slides/part4.html#the-reply-asks-for-the-tool",
+    "href": "slides/part4.html#the-reply-asks-for-the-tool",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "The reply asks for the tool",
+    "text": "The reply asks for the tool\n{\n  \"role\": \"assistant\",\n  \"content\": [\n    {\"type\": \"tool_use\",\n     \"id\": \"toolu_01A9pK\",\n     \"name\": \"query_northwind\",\n     \"input\": {\n       \"query\": \"SELECT Country, COUNT(*) FROM customers GROUP BY Country\"\n     }}\n  ],\n  \"stop_reason\": \"tool_use\"\n}\n\nYour code runs the query and calls again, with a tool_result block carrying the same id, and the whole conversation behind it."
+  },
+  {
+    "objectID": "slides/part4.html#three-kinds-of-tools",
+    "href": "slides/part4.html#three-kinds-of-tools",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Three kinds of tools",
+    "text": "Three kinds of tools\n\n\n\n\nWhere the code is\nExample\n\n\n\n\nBuilt in\nin the harness\nread a file, run a command, fetch a page\n\n\nYours\na function you wrote\nlook up a customer in your system\n\n\nSomeone else’s\nan MCP server\nthe Northwind database, EIA, FRED\n\n\n\nAll three arrive at the model the same way: a name, a description, and a parameter schema."
+  },
+  {
+    "objectID": "slides/part4.html#tools-from-an-agent-sdk",
+    "href": "slides/part4.html#tools-from-an-agent-sdk",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Tools from an agent SDK",
+    "text": "Tools from an agent SDK\n\nPre-built code for the harness, and a set of tools that come with it. The Claude Agent SDK, the OpenAI Agents SDK, LangChain.\n\nRead        Write       Edit\nGlob        Grep        Bash\nWebSearch   WebFetch    Task\n\nThe built-ins in the Claude Agent SDK. You choose which to include: tools=[] includes none, and naming a few includes only those. If we use the Claude Agent SDK, we get the Claude Code harness."
+  },
+  {
+    "objectID": "slides/part4.html#tools-from-mcp-servers",
+    "href": "slides/part4.html#tools-from-mcp-servers",
     "title": "MGMT 803, MBA@Rice, 2026",
     "section": "Tools from MCP servers",
     "text": "Tools from MCP servers\n\nTools written by somebody else, running on a server somebody else operates. Thousands of MCP servers exist already.\n\n\n\nWhat you add\nA URL, in the agent’s configuration\n\n\nWhat arrives\nA name, a description and an input schema for every tool the server publishes\n\n\nWhat stays there\nThe code, and the credential it uses to reach the service\n\n\n\nTo the model these are more entries in the same tool list. What differs is whose machine runs them."
   },
   {
-    "objectID": "slides/part3.html#example-googles-gmail-server",
-    "href": "slides/part3.html#example-googles-gmail-server",
+    "objectID": "slides/part4.html#custom-tools",
+    "href": "slides/part4.html#custom-tools",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Example: Google’s Gmail server",
-    "text": "Example: Google’s Gmail server\nsearch_threads     get_thread        get_message\ncreate_draft       list_drafts       list_labels\nlabel_thread       unlabel_thread\nlabel_message      unlabel_message\n\nTen tools, at https://gmailmcp.googleapis.com/mcp/v1. Published at developers.google.com/workspace/gmail/api/reference/mcp."
+    "section": "Custom tools",
+    "text": "Custom tools\n@tool(\n    \"add_two_numbers\",\n    \"Add two numbers and return the sum.\",\n    {\"a\": Annotated[float, \"The first number\"],\n     \"b\": Annotated[float, \"The second number\"]},\n)\nasync def add_two_numbers(args):\n    total = args[\"a\"] + args[\"b\"]\n    return {\"content\": [{\"type\": \"text\", \"text\": str(total)}]}\n\nA name, a description and typed arguments — the three parts every tool has — written as a Python function. The SDK turns the decorator into the JSON it sends the model."
   },
   {
-    "objectID": "slides/part3.html#example-anthropics-gmail-server",
-    "href": "slides/part3.html#example-anthropics-gmail-server",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Example: Anthropic’s Gmail server",
-    "text": "Example: Anthropic’s Gmail server\n\n\n\n\n\n\n\n\n\nGoogle\nAnthropic\n\n\n\n\nTools\n10\n29\n\n\nRead\nsearch_threads · get_thread · get_message\nthe same three\n\n\nDrafts\ncreate_draft\ncreate, get, update, delete\n\n\nSend\nnone\nsend_message · reply · forward\n\n\nRemove\nnone\ntrash_message · delete_draft\n\n\nLabels\napply and remove\nplus create, update, delete\n\n\n\n\nThe same account and the same API underneath. A different answer to what an agent may do with it."
-  },
-  {
-    "objectID": "slides/part3.html#example-mcp-servers",
-    "href": "slides/part3.html#example-mcp-servers",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Example MCP servers",
-    "text": "Example MCP servers\n\n\nWarehouses\nSnowflake, Databricks, BigQuery, MongoDB, dbt\n\n\nBusiness systems\nSalesforce, HubSpot, Workday, SAP, ServiceNow\n\n\nWork and code\nSlack, Notion, Linear, GitHub, Atlassian, Figma, Sentry\n\n\nMoney\nStripe, Shopify, PayPal, Plaid"
-  },
-  {
-    "objectID": "slides/part3.html#connecting-to-an-mcp-server",
-    "href": "slides/part3.html#connecting-to-an-mcp-server",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Connecting to an MCP server",
-    "text": "Connecting to an MCP server\n\n\nIn Claude Desktop\n\nChoose Customize from the left pane\nThen Connectors and Explore or Add\n\n\n\nIn lab803\n\nTell Claude to add the connection\nYou provide the URL, or Claude can search for it online\nClaude may say it can’t do it directly but then ask permission to use a terminal command. Allow.\nLog out and log in again.\n\n\n\n\nExample: fred.kerryback.com/mcp, the Federal Reserve’s economic data."
-  },
-  {
-    "objectID": "slides/part3.html#try-it",
-    "href": "slides/part3.html#try-it",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Try it",
-    "text": "Try it\nAsk Claude to get the US consumer price index from FRED, compute quarterly percent changes, and annualize them."
-  },
-  {
-    "objectID": "slides/part3.html#breakout-exercise-1",
-    "href": "slides/part3.html#breakout-exercise-1",
+    "objectID": "slides/part4.html#breakout-exercise-2",
+    "href": "slides/part4.html#breakout-exercise-2",
     "title": "MGMT 803, MBA@Rice, 2026",
     "section": "Breakout exercise",
-    "text": "Breakout exercise\nConnect to a Gmail MCP server either in a desktop app or on lab803. Create a new Gmail account if you don’t want to connect to your real one. Ask Claude to help connect. You can use any server (Anthropic, Google, …). Ask Claude how to disable any tools you don’t want. Then ask Claude to get your most recent messages. Ask Claude how to delete the connection if you don’t want to keep it. Ask Claude to write a summary of what was done."
+    "text": "Breakout exercise\n\n\nBuild an agent using the Claude Agent SDK and your Anthropic API key.\nGive it the FRED MCP server, fred.kerryback.com/mcp, as its only source of data.\nGive it a run_python tool.\nRun it and ask for something that needs data and python: for example, unemployment and inflation over the last ten years, on one chart.\nRepeat, but instead of using the Claude Agent SDK, tell Claude you want to use the OpenCode harness and your OpenRouter API key."
   },
   {
-    "objectID": "slides/part3.html#what-you-install",
-    "href": "slides/part3.html#what-you-install",
+    "objectID": "slides/part2.html#this-session",
+    "href": "slides/part2.html#this-session",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "What you install",
-    "text": "What you install\n\nA plugin is a folder somebody else published. Installing it adds their work to your Claude in one step.\n\n\n\nWhat it can carry\nSkills, slash commands, subagents, hooks, and MCP servers.\n\n\nWhat you get\nEvery file and script in it, without being told which ones to copy where."
+    "section": "This session",
+    "text": "This session\n\nDoing work with AI\nPrompting tips\nPermissions"
   },
   {
-    "objectID": "slides/part3.html#anthropics-plugin-marketplace",
-    "href": "slides/part3.html#anthropics-plugin-marketplace",
+    "objectID": "slides/part2.html#where-to-work",
+    "href": "slides/part2.html#where-to-work",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Anthropic’s plugin marketplace",
-    "text": "Anthropic’s plugin marketplace\nhttps://code.claude.com/docs/en/discover-plugins"
+    "section": "Where to work",
+    "text": "Where to work\n\n\nOnline chatbot\nIn a browser. Nothing to install.\n\n\nDesktop app or CLI\nInstalled on your computer. Works with files on your computer.\n\n\nlab803.kerryback.com\nA container on a server, with the software already installed."
   },
   {
-    "objectID": "slides/part3.html#try-it-1",
-    "href": "slides/part3.html#try-it-1",
+    "objectID": "slides/part2.html#lab803",
+    "href": "slides/part2.html#lab803",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Try it",
-    "text": "Try it\nGive Claude the following prompts\n/plugin marketplace add kerryback/skills\n/plugin install finance-data@kerryback\nThen ask Claude what was installed. Finally, ask Claude to compute monthly stock returns for Apple since the start of 2020 and to produce a histogram.\n\nYou should see Claude say “using the finance-data skill”"
+    "section": "lab803",
+    "text": "lab803\nSign in at lab803.kerryback.com with your NetID as the username and your Rice student ID (S followed by eight digits) as the password.\n\n\nA container\nEach of you has a container on a Linux server.\n\n\nClaude Code and Python\nBoth are installed in each container.\n\n\nSonnet 5\nClaude Code is connected to Sonnet 5."
+  },
+  {
+    "objectID": "slides/part2.html#workspace",
+    "href": "slides/part2.html#workspace",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Workspace",
+    "text": "Workspace\n\n\nRight panel\nClaude Code. The prompt window is at the bottom.\n\n\nLeft panel\nFiles (the default), Terminal, and View. Ignore Terminal and View for now.\n\n\nThree-dots menu in Files\nUpload from your laptop and download to your laptop."
+  },
+  {
+    "objectID": "slides/part2.html#important",
+    "href": "slides/part2.html#important",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Important",
+    "text": "Important\n\n\nRefresh\nClick Refresh, above the left panel, to see a new file in Files.\n\n\nNo Microsoft Office\nDouble-clicking a Word, PowerPoint, or Excel file will not open it. Office is not installed.\n\n\nDownload\nDownload Office files from the three-dots menu and open them on your laptop."
+  },
+  {
+    "objectID": "slides/part2.html#explore",
+    "href": "slides/part2.html#explore",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Explore",
+    "text": "Explore\n\n\nAsk\nAsk a question, anything. Type in the prompt window and press Enter.\n\n\nUpload\nUpload a Word doc and ask Claude to read it.\n\n\nDownload\nAsk Claude to create a Word doc, then download it and read it.\n\n\n\nAll that apply: I got signed on, I was able to ask questions, I was able to upload and download"
+  },
+  {
+    "objectID": "slides/part2.html#managing-claude",
+    "href": "slides/part2.html#managing-claude",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Managing Claude",
+    "text": "Managing Claude\n\n\n\n\n\n\n\nEsc\nstop what it is doing, and keep the conversation\n\n\nEsc twice\njump back to an earlier message and take a different path\n\n\nCtrl-C twice\nkill Claude Code outright\n\n\nclaude\nstart it again, in a new conversation\n\n\nUp arrow\nyour previous prompts\n\n\nShift-Tab\ncycle the permission mode\n\n\n\n\nEsc stops a wrong turn without throwing away the context you built. Two Ctrl-Cs are for when the process itself is stuck. In lab803, press Enter after that to reconnect."
+  },
+  {
+    "objectID": "slides/part2.html#resume-and-continue",
+    "href": "slides/part2.html#resume-and-continue",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Resume and continue",
+    "text": "Resume and continue\nEvery conversation is written to disk in your container as you go.\n\n\n\n\nWhat you get\n\n\n\n\nclaude\na new, empty conversation\n\n\nclaude --continue\nthe most recent one, where you left it\n\n\nclaude --resume\na list of your past conversations, to pick from\n\n\n\n\nSo the answer to a stuck terminal is always the same: two Ctrl-Cs, then claude --continue."
+  },
+  {
+    "objectID": "slides/part2.html#slash-commands",
+    "href": "slides/part2.html#slash-commands",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Slash commands",
+    "text": "Slash commands\nTyped into Claude, not into the shell.\n\n\n\n/clear\nwipe the conversation and start fresh without leaving\n\n\n/resume\nswitch to another conversation from inside this one\n\n\n/rename\nname this conversation so you recognize it in that list\n\n\n/help\neverything available\n\n\n\n\nA conversation that has wandered sends all of that back to the model on every turn — you pay for it, and it crowds out the question you asked."
+  },
+  {
+    "objectID": "slides/part2.html#a-few-more-worth-knowing",
+    "href": "slides/part2.html#a-few-more-worth-knowing",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "A few more worth knowing",
+    "text": "A few more worth knowing\n\n\n\n/context\nwhat is filling the context window right now\n\n\n/cost\nwhat this session has cost so far\n\n\n/model\nchange models mid-conversation\n\n\n/permissions\nwhat is allowed without asking\n\n\n/init\nwrite a starting CLAUDE.md for this folder\n\n\n/mcp · /plugin\nconnectors and plugins\n\n\n\n\nThree prefixes work without a slash: ! runs a shell command directly, @ points at a file, and # adds a line to memory."
+  },
+  {
+    "objectID": "slides/part2.html#managing-conversations",
+    "href": "slides/part2.html#managing-conversations",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Managing conversations",
+    "text": "Managing conversations\n\n\nStart a new conversation for a new task\nAI reads the entire conversation again each time you prompt. Irrelevant stuff consumes tokens and may be confusing.\n\n\nWhen a conversation gets very long\nTell AI to write a handoff document so you can start a fresh conversation.\n\n\n\nWhy start a new conversation for a new task? [Claude re-reads the whole conversation every time you prompt / Claude can only work on one task per conversation / Old conversations are deleted after a day] answer: Claude re-reads the whole conversation every time you prompt"
+  },
+  {
+    "objectID": "slides/part2.html#try-it-build-an-excel-workbook",
+    "href": "slides/part2.html#try-it-build-an-excel-workbook",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Try it: build an Excel workbook",
+    "text": "Try it: build an Excel workbook\n\nTell Claude: Build an Excel workbook containing a mortgage amortization table. Include a chart of the amount going to interest and the amount going to principal each month."
+  },
+  {
+    "objectID": "slides/part2.html#download-and-investigate",
+    "href": "slides/part2.html#download-and-investigate",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Download and investigate",
+    "text": "Download and investigate\n\nDownload the file, open it on your own machine.\n\n\n\nClick a payment cell. Formula, or a number?\nChange the rate to 12%. Does the chart move?\nChange the term to 15 years. Does the table shorten?\n\n\n\nIf any answer is no, say so in one sentence and ask Claude to fix that specifically.\n\n\nPick one: I was (was not) successful in building the Excel workbook."
+  },
+  {
+    "objectID": "slides/part2.html#ask-for-something-else",
+    "href": "slides/part2.html#ask-for-something-else",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Ask for something else",
+    "text": "Ask for something else\n\n\nAsk Claude to add a worksheet containing a plot of the monthly payment as a function of the interest rate.\nDownload and check."
+  },
+  {
+    "objectID": "slides/part2.html#breakout-exercise",
+    "href": "slides/part2.html#breakout-exercise",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Breakout exercise",
+    "text": "Breakout exercise\nIn lab803, the five Northwind spreadsheets are in data/. Elsewhere, download northwind.zip.\n\n\nAsk: Which countries generated the most revenue? Compute revenue as price times quantity.\nAsk: Create a bar chart of revenue by country for the top five countries.\nAsk: Create an Excel workbook containing the revenue table and the chart.\nAsk: Create a Word document containing a one-page summary with the table and the chart.\nAsk: Create a PowerPoint deck containing three slides: the question, the table, and the chart.\n\n\n\nAt lab803, use Refresh and then download files to view them."
+  },
+  {
+    "objectID": "slides/part2.html#claude-and-chatgpt-in-excel",
+    "href": "slides/part2.html#claude-and-chatgpt-in-excel",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Claude and ChatGPT in Excel",
+    "text": "Claude and ChatGPT in Excel\n\n\nClaude for Excel\nFrom Anthropic. Paid Claude plans: Pro, Max, Team, Enterprise.\nCites the cells behind its answers. Edits cells without breaking formulas. Builds pivot tables, sorts, and filters.\nAlso available for PowerPoint, Word, and Outlook.\n\nChatGPT for Excel\nFrom OpenAI. All ChatGPT plans. Also works in Google Sheets.\nBuilds sheets from a description, writes formulas, and sorts and updates tables.\nAsks before it edits the workbook."
+  },
+  {
+    "objectID": "slides/part2.html#plan",
+    "href": "slides/part2.html#plan",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Plan",
+    "text": "Plan\n\n\nPrompt\n\nThink about the best way to do this, formulate a plan, and tell me what your plan is."
+  },
+  {
+    "objectID": "slides/part2.html#afterwards",
+    "href": "slides/part2.html#afterwards",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Afterwards",
+    "text": "Afterwards\n\n\nPrompt\n\nExplain what you did step by step. Did you make any decisions that we have not discussed? Write this as an HTML doc.\n\n\n\nHTML is easy for AI to write and easy to read. Double-click an HTML file in File Explorer (Finder on Mac) and it will open in your browser."
+  },
+  {
+    "objectID": "slides/part2.html#numbers-need-code",
+    "href": "slides/part2.html#numbers-need-code",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Numbers need code",
+    "text": "Numbers need code\n\nIf a number appears in prose and no code produced it, it was predicted.\n\n\n\nPrompt\n\nCompute this in Python and show me the code and the output. Do not report a number you did not compute.\n\nThe same rule applies to counts, percentages, dates, and anything summed across rows."
+  },
+  {
+    "objectID": "slides/part2.html#verify-claims",
+    "href": "slides/part2.html#verify-claims",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Verify claims",
+    "text": "Verify claims\n\n\nAsk what would falsify it\n“What would have to be true for this to be wrong, and how would I check?”\n\n\nMake it show its source\nThe file, the row count, the line of code."
+  },
+  {
+    "objectID": "slides/part2.html#generatorcritic",
+    "href": "slides/part2.html#generatorcritic",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Generator–critic",
+    "text": "Generator–critic\n\n\nGet the first answer.\nStart a fresh conversation and give it the answer without the reasoning that produced it.\nAsk it to find what is wrong with it.\nTake the objections back to the first conversation.\n\n\nThe second conversation has no stake in the first answer."
+  },
+  {
+    "objectID": "slides/part2.html#good-enough-prompting",
+    "href": "slides/part2.html#good-enough-prompting",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Good enough prompting",
+    "text": "Good enough prompting\n\nMost ‘prompt engineering’ techniques from a few years ago are now either useless or actually counterproductive. Don’t tell it “you are an expert data scientist” or “think step by step.”\n\n\n\nTell it what you want, not what to do\nI want … How can we do it?\n\n\nIf something doesn’t work\nTry again.\n\n\n\nTreat AI as an infinitely patient colleague with a poor memory."
+  },
+  {
+    "objectID": "slides/part2.html#ai-is-a-prediction-machine-not-a-rational-person",
+    "href": "slides/part2.html#ai-is-a-prediction-machine-not-a-rational-person",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "AI is a prediction machine, not a rational person",
+    "text": "AI is a prediction machine, not a rational person\nSuppose an AI agent has told you in the path that Method A beats Method B for some task. You ask it to do the task.\n\nDo not assume it will use what it knows. If “A beats B” is not in the context window, and B appeared more often in its training data, it will probably use B.\n\nThis is the value of “plan before you act.” Planning surfaces “A beats B,” leading Claude to select A for the task."
+  },
+  {
+    "objectID": "slides/part2.html#try-it-planning",
+    "href": "slides/part2.html#try-it-planning",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Try it: planning",
+    "text": "Try it: planning\nThree rigs, twenty wells, minimize lost production: workover.md. At lab803 it is in data/.\n\n\nUpload workover.md and ask: Find the best routes for the rigs.\nStart a new conversation (/clear in the Claude tab). Upload the file again and ask: Plan how to do this and share your plan. Read the plan, then ask it to proceed.\n\n\n\nDid it use the same method both times?"
+  },
+  {
+    "objectID": "slides/part2.html#try-it-explain-and-critique",
+    "href": "slides/part2.html#try-it-explain-and-critique",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Try it: explain and critique",
+    "text": "Try it: explain and critique\n\n\nAsk: Write an HTML doc explaining what you did, step by step.\nStart a new conversation. Tell it to read the HTML doc and ask: Read this and critique the method."
+  },
+  {
+    "objectID": "slides/part2.html#what-claude-asks-before-it-acts",
+    "href": "slides/part2.html#what-claude-asks-before-it-acts",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "What Claude asks before it acts",
+    "text": "What Claude asks before it acts\n\n\n\nMode\nWhat it does\n\n\n\n\nManual\nasks before the first use of each tool\n\n\nPlan\nreads and explores, edits nothing\n\n\nAccept edits\nfile edits go through without asking\n\n\nAuto\napproves on its own, with a check on each action\n\n\nDon’t ask\nrefuses anything it would otherwise ask about\n\n\nBypass\nno prompts at all\n\n\n\n\nEnforced by the program around the model, not by the model. A line in CLAUDE.md shapes what Claude tries to do; it does not change what is allowed."
+  },
+  {
+    "objectID": "slides/part2.html#permissions-in-claude-desktop",
+    "href": "slides/part2.html#permissions-in-claude-desktop",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Permissions in Claude Desktop",
+    "text": "Permissions in Claude Desktop\n\nThe desktop app runs Claude Code, so the modes are the same and carry the same names.\n\n\n\n\n\n\n\n\nWhat it can reach\nthe folders you connect to the conversation, and nothing else\n\n\nWhat it asks about\nthe first use of each tool, in Manual mode\n\n\nWhat “don’t ask again” does\nwrites a rule that outlives the conversation\n\n\n\n\nGranting a folder is the decision that matters. The mode decides how often you are asked; the folder decides what can be reached at all."
+  },
+  {
+    "objectID": "slides/part2.html#permissions-in-your-container",
+    "href": "slides/part2.html#permissions-in-your-container",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Permissions in your container",
+    "text": "Permissions in your container\nEverything is allowed already, in ~/.claude/settings.json:\n\"permissions\": {\n  \"allow\": [\"Bash(*)\", \"Read(*)\", \"Write(*)\", \"Edit(*)\",\n            \"Glob(*)\", \"Grep(*)\", \"WebFetch(*)\", \"WebSearch(*)\"],\n  \"deny\": []\n}\n\nSo nothing prompts you all week. That is a decision about this container — it holds your course files and is reachable only by you — not about how to run an agent on your own machine."
+  },
+  {
+    "objectID": "syllabus.html",
+    "href": "syllabus.html",
+    "title": "MGMT 803: Gen AI for Business",
+    "section": "",
+    "text": "Instructor\nKerry Back\nJ. Howard Creekmore Professor of Finance and Professor of Economics\nkerryback@gmail.com\n\n\nMeeting Times and Locations\n\n\n\n\n\n\n\n\nDay\nTimes\nRoom\n\n\n\n\nThursday, September 24\n8:00 AM – 6:00 PM\nMcNair Hall 316\n\n\nFriday, September 25\n8:00 AM – 12:30 PM\nMcNair Hall 316\n\n\nSaturday, September 26\n8:00 AM – 6:00 PM\nMcNair Hall 317\n\n\nSunday, September 27\n8:00 AM – 12:30 PM\nMcNair Hall 317\n\n\n\n\n\nCourse Description\nGenerative AI moved into ordinary business work faster than any recent technology. McKinsey’s global survey found the share of organizations regularly using generative AI in at least one business function rose from roughly a third in 2023 to about two-thirds in early 2024, and to 71 percent by 2025. The Census Bureau’s Business Trends and Outlook Survey, which asks the narrower question of whether a firm used AI to produce a good or service in the past two weeks, put the national rate at 19.8 percent in May 2026, up from roughly 5 percent in late 2023 and about twice as high in information (39.7 percent) and in finance and insurance (33.9 percent). The gap between those two numbers is itself informative: many people are using these tools, and far fewer organizations have built anything durable around them.\nBusiness uses fall into a few broad categories. There is individual productivity — the drafting, summarizing, analysis, and coding that one person does faster with a model beside them. There is internal deployment — putting a model to work on the firm’s own documents and systems, in workflows that several people depend on. There are customer-facing applications, where the model talks to people outside the firm. And there is the reshaping of the product itself, where AI is what is being sold rather than what makes it. The categories differ less in the technology than in what goes wrong: a bad answer you catch yourself is a nuisance, a bad answer inside a workflow is a process failure, and a bad answer in front of a customer is a liability.\nThis course covers the first two. We start with individual productivity, because the judgment you need there — knowing what the model is doing, what it is good at, how it fails, and how to check it — is the same judgment every larger deployment rests on. We then move to work that outlives the session you did it in: writing a repeated task down so others can run it, connecting a model to data it was never trained on, generating the document or application someone else opens, and assembling an agent with a deliberately chosen list of things it can do. The course closes on the questions a firm has to answer before switching any of this on — where the data goes, what an outside document can talk the system into doing, and what it costs to run.\nThe course is hands-on throughout. You work in your own container on the course lab server, and you show what you built to the room.\n\n\nLearning Objectives\nBy the end of the course, you should be able to:\n\nWork fluently with generative AI in your own tasks — choosing the right tool for the job, directing it well, and verifying what it gives back, with a working understanding of how these models produce their answers and where that mechanism fails.\nTurn ad hoc use into something durable — a documented procedure, a connection to your own data, a deliverable someone else opens, or an agent with a defined job — that a colleague can run without you.\nEvaluate a proposed deployment on the terms a firm actually decides on: which model and where it runs, what data it touches, what it is permitted to do, and what it costs relative to what it saves.\n\n\n\nTopic Schedule\n\n\n\n\n\n\n\n\n\nPart\nTopics\n\n\n\n\n1\nIntro to models and agents\n1 How language models work\n2 Models and performance\n3 How agents work\n4 Computer use\n\n\n2\nWorking with AI\n5 Doing work with AI\n6 Prompting tips\n7 Permissions\n\n\n3\nStanding instructions and connectors\n8 CLAUDE.md (AGENTS.md)\n9 How it remembers you\n10 SKILL.md\n11 MCP connectors\n12 Plugins\n\n\n4\nBuilding agents\n13 How software works\n14 API calls\n15 Build a chatbot\n16 Build an agent\n\n\n5\nDeploying agents\n17 Academic Studio\n18 Running apps and agents locally\n19 Git and GitHub\n20 Deploying apps and agents\n\n\n6\nDocuments and local models\n21 Retrieval augmented generation\n22 Gemini Notebook\n23 Running models locally\n\n\n7\nAgent security\n24 Multi-agent architectures\n25 Security risks\n26 Mitigating risks\n\n\n\n\n\nGrading\nGrades will be based on in-class exercises, screen shares, and class participation.\n\n\nHonor Code\nThe Rice University honor code applies to all work in this course.\n\n\nDisability Accommodations\nAny student with a documented disability requiring accommodations in this course is encouraged to contact me outside of class. All discussions will remain confidential. Any adjustments or accommodations regarding assignments or the final exam must be made in advance. Students with disabilities should also contact Disability Support Services in the Allen Center."
   },
   {
     "objectID": "slides/part1.html#about-me",
@@ -770,507 +945,514 @@
     "text": "What the vendors warn about\n\n\nWeb pages can give orders\nText on a page can instruct the model. All three vendors warn about this prompt injection and say their defenses are not perfect.\n\n\nIt acts as you\nIt clicks with your accounts and sees whatever is on your screen. Anthropic advises against using it with financial, legal, or medical data.\n\n\nIt asks first\nPermission for each app, and confirmation before purchases, posts, and messages."
   },
   {
-    "objectID": "syllabus.html",
-    "href": "syllabus.html",
-    "title": "MGMT 803: Gen AI for Business",
-    "section": "",
-    "text": "Instructor\nKerry Back\nJ. Howard Creekmore Professor of Finance and Professor of Economics\nkerryback@gmail.com\n\n\nMeeting Times and Locations\n\n\n\n\n\n\n\n\nDay\nTimes\nRoom\n\n\n\n\nThursday, September 24\n8:00 AM – 6:00 PM\nMcNair Hall 316\n\n\nFriday, September 25\n8:00 AM – 12:30 PM\nMcNair Hall 316\n\n\nSaturday, September 26\n8:00 AM – 6:00 PM\nMcNair Hall 317\n\n\nSunday, September 27\n8:00 AM – 12:30 PM\nMcNair Hall 317\n\n\n\n\n\nCourse Description\nGenerative AI moved into ordinary business work faster than any recent technology. McKinsey’s global survey found the share of organizations regularly using generative AI in at least one business function rose from roughly a third in 2023 to about two-thirds in early 2024, and to 71 percent by 2025. The Census Bureau’s Business Trends and Outlook Survey, which asks the narrower question of whether a firm used AI to produce a good or service in the past two weeks, put the national rate at 19.8 percent in May 2026, up from roughly 5 percent in late 2023 and about twice as high in information (39.7 percent) and in finance and insurance (33.9 percent). The gap between those two numbers is itself informative: many people are using these tools, and far fewer organizations have built anything durable around them.\nBusiness uses fall into a few broad categories. There is individual productivity — the drafting, summarizing, analysis, and coding that one person does faster with a model beside them. There is internal deployment — putting a model to work on the firm’s own documents and systems, in workflows that several people depend on. There are customer-facing applications, where the model talks to people outside the firm. And there is the reshaping of the product itself, where AI is what is being sold rather than what makes it. The categories differ less in the technology than in what goes wrong: a bad answer you catch yourself is a nuisance, a bad answer inside a workflow is a process failure, and a bad answer in front of a customer is a liability.\nThis course covers the first two. We start with individual productivity, because the judgment you need there — knowing what the model is doing, what it is good at, how it fails, and how to check it — is the same judgment every larger deployment rests on. We then move to work that outlives the session you did it in: writing a repeated task down so others can run it, connecting a model to data it was never trained on, generating the document or application someone else opens, and assembling an agent with a deliberately chosen list of things it can do. The course closes on the questions a firm has to answer before switching any of this on — where the data goes, what an outside document can talk the system into doing, and what it costs to run.\nThe course is hands-on throughout. You work in your own container on the course lab server, and you show what you built to the room.\n\n\nLearning Objectives\nBy the end of the course, you should be able to:\n\nWork fluently with generative AI in your own tasks — choosing the right tool for the job, directing it well, and verifying what it gives back, with a working understanding of how these models produce their answers and where that mechanism fails.\nTurn ad hoc use into something durable — a documented procedure, a connection to your own data, a deliverable someone else opens, or an agent with a defined job — that a colleague can run without you.\nEvaluate a proposed deployment on the terms a firm actually decides on: which model and where it runs, what data it touches, what it is permitted to do, and what it costs relative to what it saves.\n\n\n\nTopic Schedule\n\n\n\n\n\n\n\n\n\nPart\nTopics\n\n\n\n\n1\nIntro to models and agents\n1 How language models work\n2 Models and performance\n3 How agents work\n4 Computer use\n\n\n2\nWorking with AI\n5 Doing work with AI\n6 Prompting tips\n7 Permissions\n\n\n3\nStanding instructions and connectors\n8 CLAUDE.md (AGENTS.md)\n9 How it remembers you\n10 SKILL.md\n11 MCP connectors\n12 Plugins\n\n\n4\nBuilding agents\n13 How software works\n14 API calls\n15 Build a chatbot\n16 Build an agent\n\n\n5\nDeploying agents\n17 Academic Studio\n18 Running apps and agents locally\n19 Git and GitHub\n20 Deploying apps and agents\n\n\n6\nDocuments and local models\n21 Retrieval augmented generation\n22 Gemini Notebook\n23 Running models locally\n\n\n7\nAgent security\n24 Multi-agent architectures\n25 Security risks\n26 Mitigating risks\n\n\n\n\n\nGrading\nGrades will be based on in-class exercises, screen shares, and class participation.\n\n\nHonor Code\nThe Rice University honor code applies to all work in this course.\n\n\nDisability Accommodations\nAny student with a documented disability requiring accommodations in this course is encouraged to contact me outside of class. All discussions will remain confidential. Any adjustments or accommodations regarding assignments or the final exam must be made in advance. Students with disabilities should also contact Disability Support Services in the Allen Center."
-  },
-  {
-    "objectID": "slides/part2.html#this-session",
-    "href": "slides/part2.html#this-session",
+    "objectID": "slides/part3.html#this-session",
+    "href": "slides/part3.html#this-session",
     "title": "MGMT 803, MBA@Rice, 2026",
     "section": "This session",
-    "text": "This session\n\nDoing work with AI\nPrompting tips\nPermissions"
+    "text": "This session\n\nCLAUDE.md (AGENTS.md)\nHow it remembers you\nSKILL.md\nMCP connectors\nPlugins"
   },
   {
-    "objectID": "slides/part2.html#where-to-work",
-    "href": "slides/part2.html#where-to-work",
+    "objectID": "slides/part3.html#two-kinds-of-instruction",
+    "href": "slides/part3.html#two-kinds-of-instruction",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Where to work",
-    "text": "Where to work\n\n\nOnline chatbot\nIn a browser. Nothing to install.\n\n\nDesktop app or CLI\nInstalled on your computer. Works with files on your computer.\n\n\nlab803.kerryback.com\nA container on a server, with the software already installed."
+    "section": "Two kinds of instruction",
+    "text": "Two kinds of instruction\n\nWith no instructions of your own, a model answers everyone’s question the same way. Instructions are how that gets changed.\n\n\n\nThe provider’s\nThe system prompt ships with the product and is sent on every turn. It regulates behavior: what the assistant is, what it declines, how an answer is formatted.\nYou do not edit it.\n\n\nYours\nAdded on top. It customizes behavior: how you want work done, what your files hold, the conventions you follow.\nYou choose what it says and where it applies."
   },
   {
-    "objectID": "slides/part2.html#lab803",
-    "href": "slides/part2.html#lab803",
+    "objectID": "slides/part3.html#what-reaches-the-model-before-your-prompt",
+    "href": "slides/part3.html#what-reaches-the-model-before-your-prompt",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "lab803",
-    "text": "lab803\nSign in at lab803.kerryback.com with your NetID as the username and your Rice student ID (S followed by eight digits) as the password.\n\n\nA container\nEach of you has a container on a Linux server.\n\n\nClaude Code and Python\nBoth are installed in each container.\n\n\nSonnet 5\nClaude Code is connected to Sonnet 5."
+    "section": "What reaches the model before your prompt",
+    "text": "What reaches the model before your prompt\n\n\n\nPart\nWho sets it\nWhen it is sent\n\n\n\n\nSystem prompt\nthe provider\nevery turn\n\n\nTool definitions\nthe product, and what you connect\nevery turn\n\n\nCLAUDE.md\nyou\nevery turn\n\n\nA skill’s description\nyou\nevery turn, one line each\n\n\nA skill’s body\nyou\nonly when the description matches\n\n\n\n\nAnything sent on every turn costs money and latency, and takes up the model’s attention."
   },
   {
-    "objectID": "slides/part2.html#workspace",
-    "href": "slides/part2.html#workspace",
+    "objectID": "slides/part3.html#what-is-in-a-system-prompt",
+    "href": "slides/part3.html#what-is-in-a-system-prompt",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Workspace",
-    "text": "Workspace\n\n\nRight panel\nClaude Code. The prompt window is at the bottom.\n\n\nLeft panel\nFiles (the default), Terminal, and View. Ignore Terminal and View for now.\n\n\nThree-dots menu in Files\nUpload from your laptop and download to your laptop."
+    "section": "What is in a system prompt",
+    "text": "What is in a system prompt\n\n\n\n\n\n\n\nIdentity\nwhat it is, who made it, what today’s date is\n\n\nFormat\nwhen to use markdown, how long an answer should run, when to use a list\n\n\nTools\nwhen to search the web, when to write code, when to make an artifact\n\n\nRefusals\nwhat it declines, and how\n\n\nCharacter\nwhat to do when it is uncertain, how much to hedge\n\n\n\n\nAnthropic publishes the ones in the Claude apps, dated and by model: platform.claude.com/docs/en/release-notes/system-prompts"
   },
   {
-    "objectID": "slides/part2.html#important",
-    "href": "slides/part2.html#important",
+    "objectID": "slides/part3.html#claude.md-by-scope",
+    "href": "slides/part3.html#claude.md-by-scope",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Important",
-    "text": "Important\n\n\nRefresh\nClick Refresh, above the left panel, to see a new file in Files.\n\n\nNo Microsoft Office\nDouble-clicking a Word, PowerPoint, or Excel file will not open it. Office is not installed.\n\n\nDownload\nDownload Office files from the three-dots menu and open them on your laptop."
+    "section": "CLAUDE.md, by scope",
+    "text": "CLAUDE.md, by scope\nClaude Code reads every CLAUDE.md from the top of the filesystem down to the folder you started in, and puts them all in context:\n\n\n\n\n\n\n\n\nFile\nApplies to\n\n\n\n\n\n$HOME/.claude/CLAUDE.md\nevery folder you work in\nnobody\n\n\npath/folder/CLAUDE.md\nwork in that folder\nthe team, if you commit it\n\n\n\n\nThe closest file is read last. Keep each one under about 200 lines — all of them are in the context window before you type.\n\n\nOpenAI and Google call it AGENTS.me\nDesktop apps have analogous “instructions” settings"
   },
   {
-    "objectID": "slides/part2.html#explore",
-    "href": "slides/part2.html#explore",
+    "objectID": "slides/part3.html#a-digression-on-file-systems",
+    "href": "slides/part3.html#a-digression-on-file-systems",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "A digression on file systems",
+    "text": "A digression on file systems\nWindows File Explorer hides the actual filesystem locations of common folders. You can do the following to see where your home folder is.\n\nWindows: Start -&gt; Command Prompt. Then type cd $HOME and Enter and then pwd and Enter. That is your home directory.\nMac: Enter the same commands into the Terminal app.\nlab803: Terminal in left pane. Enter the same commands."
+  },
+  {
+    "objectID": "slides/part3.html#what-belongs-in-a-claude.md",
+    "href": "slides/part3.html#what-belongs-in-a-claude.md",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "What belongs in a CLAUDE.md",
+    "text": "What belongs in a CLAUDE.md\n\n\nYes\n\nHow you want numbers handled\nWhat the folders hold\nConventions everything here follows\nAnything you have corrected twice\n\n\n\nNo\n\nSteps for one particular task\nAnything longer than a page\nBackground that can be looked up\nA tool you use once a month\n\n\n\n\nIn Claude Code, # at the start of a message appends a line to one of these files, and /memory opens them for editing."
+  },
+  {
+    "objectID": "slides/part3.html#explore",
+    "href": "slides/part3.html#explore",
     "title": "MGMT 803, MBA@Rice, 2026",
     "section": "Explore",
-    "text": "Explore\n\n\nAsk\nAsk a question, anything. Type in the prompt window and press Enter.\n\n\nUpload\nUpload a Word doc and ask Claude to read it.\n\n\nDownload\nAsk Claude to create a Word doc, then download it and read it.\n\n\n\nAll that apply: I got signed on, I was able to ask questions, I was able to upload and download"
+    "text": "Explore\n\nIn lab803, enter this prompt: print the CLAUDE.md\nThen this prompt: add \"always answer like a pirate\" to the CLAUDE.md\nThen log out (top right corner), log back in, and ask anything.\nThen ask it to delete the “always answer like a pirate” from the CLAUDE.md, log out again, and log back in."
   },
   {
-    "objectID": "slides/part2.html#managing-claude",
-    "href": "slides/part2.html#managing-claude",
+    "objectID": "slides/part3.html#memory",
+    "href": "slides/part3.html#memory",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Managing Claude",
-    "text": "Managing Claude\n\n\n\n\n\n\n\nEsc\nstop what it is doing, and keep the conversation\n\n\nEsc twice\njump back to an earlier message and take a different path\n\n\nCtrl-C twice\nkill Claude Code outright\n\n\nclaude\nstart it again, in a new conversation\n\n\nUp arrow\nyour previous prompts\n\n\nShift-Tab\ncycle the permission mode\n\n\n\n\nEsc stops a wrong turn without throwing away the context you built. Two Ctrl-Cs are for when the process itself is stuck. In lab803, press Enter after that to reconnect."
+    "section": "Memory",
+    "text": "Memory\n\n\nWhile you talk, it saves individual topics — not a transcript, and not a summary written when the conversation ends.\nThose topics arrive with the system prompt, ahead of your first message.\nNothing is searched and no tool runs. There is no sign of it in the conversation.\nEach project has its own memory. Topics from one do not reach another."
   },
   {
-    "objectID": "slides/part2.html#resume-and-continue",
-    "href": "slides/part2.html#resume-and-continue",
+    "objectID": "slides/part3.html#pushed-or-pulled",
+    "href": "slides/part3.html#pushed-or-pulled",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Resume and continue",
-    "text": "Resume and continue\nEvery conversation is written to disk in your container as you go.\n\n\n\n\nWhat you get\n\n\n\n\nclaude\na new, empty conversation\n\n\nclaude --continue\nthe most recent one, where you left it\n\n\nclaude --resume\na list of your past conversations, to pick from\n\n\n\n\nSo the answer to a stuck terminal is always the same: two Ctrl-Cs, then claude --continue."
+    "section": "Pushed, or pulled",
+    "text": "Pushed, or pulled\n\n\nMemory\nSaved as you go and placed in the conversation without your asking. Whether it applies is decided before you type.\n\nChat search\nYou ask for it. It searches your past conversations, you see the tool run, and the answer cites the chat each piece came from.\n\n\nSettings → Memory lists the topics. Read, edit or delete any of them, pause it, or reset it. Say what to remember or forget in the chat and it applies to your next conversation. An incognito chat forms no memory."
   },
   {
-    "objectID": "slides/part2.html#slash-commands",
-    "href": "slides/part2.html#slash-commands",
+    "objectID": "slides/part3.html#a-skill-is-a-folder",
+    "href": "slides/part3.html#a-skill-is-a-folder",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Slash commands",
-    "text": "Slash commands\nTyped into Claude, not into the shell.\n\n\n\n/clear\nwipe the conversation and start fresh without leaving\n\n\n/resume\nswitch to another conversation from inside this one\n\n\n/rename\nname this conversation so you recognize it in that list\n\n\n/help\neverything available\n\n\n\n\nA conversation that has wandered sends all of that back to the model on every turn — you pay for it, and it crowds out the question you asked."
+    "section": "A skill is a folder",
+    "text": "A skill is a folder\nskill-name/\n  SKILL.md          the instructions\n  references/       longer material, read only when needed\n  scripts/          code the skill runs rather than regenerates\nSKILL.md opens with two lines of metadata (name and description) and then plain text.\n\nIn Claude Desktop: Choose Customize in left pane. Then Skills. Explore or Add."
   },
   {
-    "objectID": "slides/part2.html#a-few-more-worth-knowing",
-    "href": "slides/part2.html#a-few-more-worth-knowing",
+    "objectID": "slides/part3.html#the-same-file-in-other-agents",
+    "href": "slides/part3.html#the-same-file-in-other-agents",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "A few more worth knowing",
-    "text": "A few more worth knowing\n\n\n\n/context\nwhat is filling the context window right now\n\n\n/cost\nwhat this session has cost so far\n\n\n/model\nchange models mid-conversation\n\n\n/permissions\nwhat is allowed without asking\n\n\n/init\nwrite a starting CLAUDE.md for this folder\n\n\n/mcp · /plugin\nconnectors and plugins\n\n\n\n\nThree prefixes work without a slash: ! runs a shell command directly, @ points at a file, and # adds a line to memory."
+    "section": "The same file in other agents",
+    "text": "The same file in other agents\n\nAnthropic wrote the format and released it as an open standard. The others adopted it rather than inventing their own.\n\n\n\n\nAgent\nWhere it looks\n\n\n\n\nClaude Code\n.claude/skills/\n\n\nCodex and ChatGPT\n.agents/skills/\n\n\nGemini CLI\n.gemini/skills/, or .agents/skills/\n\n\n\n\nSame file, same description-first loading. Put the folder in .agents/skills/ and both Codex and Gemini CLI find it."
   },
   {
-    "objectID": "slides/part2.html#managing-conversations",
-    "href": "slides/part2.html#managing-conversations",
+    "objectID": "slides/part3.html#creating-a-skill",
+    "href": "slides/part3.html#creating-a-skill",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Managing conversations",
-    "text": "Managing conversations\n\n\nStart a new conversation for a new task\nAI reads the entire conversation again each time you prompt. Irrelevant stuff consumes tokens and may be confusing.\n\n\nWhen a conversation gets very long\nTell AI to write a handoff document so you can start a fresh conversation.\n\n\n\nWhy start a new conversation for a new task? [Claude re-reads the whole conversation every time you prompt / Claude can only work on one task per conversation / Old conversations are deleted after a day] answer: Claude re-reads the whole conversation every time you prompt"
+    "section": "Creating a skill",
+    "text": "Creating a skill\n\nWork with AI until you get what you want\nTell AI to create a skill so you can get the same thing the next time\nGive the skill a meaningful name.\nAs you use it and find things to add or modify, tell AI to edit the skill."
   },
   {
-    "objectID": "slides/part2.html#try-it-build-an-excel-workbook",
-    "href": "slides/part2.html#try-it-build-an-excel-workbook",
+    "objectID": "slides/part3.html#three-ways-to-invoke",
+    "href": "slides/part3.html#three-ways-to-invoke",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Try it: build an Excel workbook",
-    "text": "Try it: build an Excel workbook\n\nTell Claude: Build an Excel workbook containing a mortgage amortization table. Include a chart of the amount going to interest and the amount going to principal each month."
+    "section": "Three ways to invoke",
+    "text": "Three ways to invoke\n\n\n\nSlash command\n/skill-name\n\n\nBy name\n“use the … skill”\n\n\nAutomatically\n“build …”\n\n\n\nThe third only works when the skill description clearly applies."
   },
   {
-    "objectID": "slides/part2.html#download-and-investigate",
-    "href": "slides/part2.html#download-and-investigate",
+    "objectID": "slides/part3.html#anthropics-skill-repository",
+    "href": "slides/part3.html#anthropics-skill-repository",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Download and investigate",
-    "text": "Download and investigate\n\nDownload the file, open it on your own machine.\n\n\n\nClick a payment cell. Formula, or a number?\nChange the rate to 12%. Does the chart move?\nChange the term to 15 years. Does the table shorten?\n\n\n\nIf any answer is no, say so in one sentence and ask Claude to fix that specifically.\n\n\nPick one: I was (was not) successful in building the Excel workbook."
+    "section": "Anthropic’s skill repository",
+    "text": "Anthropic’s skill repository\nhttps://github.com/anthropics/skills"
   },
   {
-    "objectID": "slides/part2.html#ask-for-something-else",
-    "href": "slides/part2.html#ask-for-something-else",
+    "objectID": "slides/part3.html#lab803",
+    "href": "slides/part3.html#lab803",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Ask for something else",
-    "text": "Ask for something else\n\n\nAsk Claude to add a worksheet containing a plot of the monthly payment as a function of the interest rate.\nDownload and check."
+    "section": "lab803",
+    "text": "lab803\n\nEnter the prompt /skills\nYou will get a list of the installed skills\nAll are from Anthropic"
   },
   {
-    "objectID": "slides/part2.html#breakout-exercise",
-    "href": "slides/part2.html#breakout-exercise",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Breakout exercise",
-    "text": "Breakout exercise\nIn lab803, the five Northwind spreadsheets are in data/. Elsewhere, download northwind.zip.\n\n\nAsk: Which countries generated the most revenue? Compute revenue as price times quantity.\nAsk: Create a bar chart of revenue by country for the top five countries.\nAsk: Create an Excel workbook containing the revenue table and the chart.\nAsk: Create a Word document containing a one-page summary with the table and the chart.\nAsk: Create a PowerPoint deck containing three slides: the question, the table, and the chart.\n\n\n\nAt lab803, use Refresh and then download files to view them."
-  },
-  {
-    "objectID": "slides/part2.html#claude-and-chatgpt-in-excel",
-    "href": "slides/part2.html#claude-and-chatgpt-in-excel",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Claude and ChatGPT in Excel",
-    "text": "Claude and ChatGPT in Excel\n\n\nClaude for Excel\nFrom Anthropic. Paid Claude plans: Pro, Max, Team, Enterprise.\nCites the cells behind its answers. Edits cells without breaking formulas. Builds pivot tables, sorts, and filters.\nAlso available for PowerPoint, Word, and Outlook.\n\nChatGPT for Excel\nFrom OpenAI. All ChatGPT plans. Also works in Google Sheets.\nBuilds sheets from a description, writes formulas, and sorts and updates tables.\nAsks before it edits the workbook."
-  },
-  {
-    "objectID": "slides/part2.html#plan",
-    "href": "slides/part2.html#plan",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Plan",
-    "text": "Plan\n\n\nPrompt\n\nThink about the best way to do this, formulate a plan, and tell me what your plan is."
-  },
-  {
-    "objectID": "slides/part2.html#afterwards",
-    "href": "slides/part2.html#afterwards",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Afterwards",
-    "text": "Afterwards\n\n\nPrompt\n\nExplain what you did step by step. Did you make any decisions that we have not discussed? Write this as an HTML doc.\n\n\n\nHTML is easy for AI to write and easy to read. Double-click an HTML file in File Explorer (Finder on Mac) and it will open in your browser."
-  },
-  {
-    "objectID": "slides/part2.html#numbers-need-code",
-    "href": "slides/part2.html#numbers-need-code",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Numbers need code",
-    "text": "Numbers need code\n\nIf a number appears in prose and no code produced it, it was predicted.\n\n\n\nPrompt\n\nCompute this in Python and show me the code and the output. Do not report a number you did not compute.\n\nThe same rule applies to counts, percentages, dates, and anything summed across rows."
-  },
-  {
-    "objectID": "slides/part2.html#verify-claims",
-    "href": "slides/part2.html#verify-claims",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Verify claims",
-    "text": "Verify claims\n\n\nAsk what would falsify it\n“What would have to be true for this to be wrong, and how would I check?”\n\n\nMake it show its source\nThe file, the row count, the line of code."
-  },
-  {
-    "objectID": "slides/part2.html#generatorcritic",
-    "href": "slides/part2.html#generatorcritic",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Generator–critic",
-    "text": "Generator–critic\n\n\nGet the first answer.\nStart a fresh conversation and give it the answer without the reasoning that produced it.\nAsk it to find what is wrong with it.\nTake the objections back to the first conversation.\n\n\nThe second conversation has no stake in the first answer."
-  },
-  {
-    "objectID": "slides/part2.html#good-enough-prompting",
-    "href": "slides/part2.html#good-enough-prompting",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Good enough prompting",
-    "text": "Good enough prompting\n\nMost ‘prompt engineering’ techniques from a few years ago are now either useless or actually counterproductive. Don’t tell it “you are an expert data scientist” or “think step by step.”\n\n\n\nTell it what you want, not what to do\nI want … How can we do it?\n\n\nIf something doesn’t work\nTry again.\n\n\n\nTreat AI as an infinitely patient colleague with a poor memory."
-  },
-  {
-    "objectID": "slides/part2.html#ai-is-a-prediction-machine-not-a-rational-person",
-    "href": "slides/part2.html#ai-is-a-prediction-machine-not-a-rational-person",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "AI is a prediction machine, not a rational person",
-    "text": "AI is a prediction machine, not a rational person\nSuppose an AI agent has told you in the path that Method A beats Method B for some task. You ask it to do the task.\n\nDo not assume it will use what it knows. If “A beats B” is not in the context window, and B appeared more often in its training data, it will probably use B.\n\nThis is the value of “plan before you act.” Planning surfaces “A beats B,” leading Claude to select A for the task."
-  },
-  {
-    "objectID": "slides/part2.html#try-it-planning",
-    "href": "slides/part2.html#try-it-planning",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Try it: planning",
-    "text": "Try it: planning\nThree rigs, twenty wells, minimize lost production: workover.md. At lab803 it is in data/.\n\n\nUpload workover.md and ask: Find the best routes for the rigs.\nStart a new conversation (/clear in the Claude tab). Upload the file again and ask: Plan how to do this and share your plan. Read the plan, then ask it to proceed.\n\n\n\nDid it use the same method both times?"
-  },
-  {
-    "objectID": "slides/part2.html#try-it-explain-and-critique",
-    "href": "slides/part2.html#try-it-explain-and-critique",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Try it: explain and critique",
-    "text": "Try it: explain and critique\n\n\nAsk: Write an HTML doc explaining what you did, step by step.\nStart a new conversation. Tell it to read the HTML doc and ask: Read this and critique the method."
-  },
-  {
-    "objectID": "slides/part2.html#what-claude-asks-before-it-acts",
-    "href": "slides/part2.html#what-claude-asks-before-it-acts",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "What Claude asks before it acts",
-    "text": "What Claude asks before it acts\n\n\n\nMode\nWhat it does\n\n\n\n\nManual\nasks before the first use of each tool\n\n\nPlan\nreads and explores, edits nothing\n\n\nAccept edits\nfile edits go through without asking\n\n\nAuto\napproves on its own, with a check on each action\n\n\nDon’t ask\nrefuses anything it would otherwise ask about\n\n\nBypass\nno prompts at all\n\n\n\n\nEnforced by the program around the model, not by the model. A line in CLAUDE.md shapes what Claude tries to do; it does not change what is allowed."
-  },
-  {
-    "objectID": "slides/part2.html#permissions-in-claude-desktop",
-    "href": "slides/part2.html#permissions-in-claude-desktop",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Permissions in Claude Desktop",
-    "text": "Permissions in Claude Desktop\n\nThe desktop app runs Claude Code, so the modes are the same and carry the same names.\n\n\n\n\n\n\n\n\nWhat it can reach\nthe folders you connect to the conversation, and nothing else\n\n\nWhat it asks about\nthe first use of each tool, in Manual mode\n\n\nWhat “don’t ask again” does\nwrites a rule that outlives the conversation\n\n\n\n\nGranting a folder is the decision that matters. The mode decides how often you are asked; the folder decides what can be reached at all."
-  },
-  {
-    "objectID": "slides/part2.html#permissions-in-your-container",
-    "href": "slides/part2.html#permissions-in-your-container",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Permissions in your container",
-    "text": "Permissions in your container\nEverything is allowed already, in ~/.claude/settings.json:\n\"permissions\": {\n  \"allow\": [\"Bash(*)\", \"Read(*)\", \"Write(*)\", \"Edit(*)\",\n            \"Glob(*)\", \"Grep(*)\", \"WebFetch(*)\", \"WebSearch(*)\"],\n  \"deny\": []\n}\n\nSo nothing prompts you all week. That is a decision about this container — it holds your course files and is reachable only by you — not about how to run an agent on your own machine."
-  },
-  {
-    "objectID": "slides/part4.html#this-session",
-    "href": "slides/part4.html#this-session",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "This session",
-    "text": "This session\n\nHow software works\nAPI calls\nBuild a chatbot\nBuild an agent"
-  },
-  {
-    "objectID": "slides/part4.html#frontend-and-backend",
-    "href": "slides/part4.html#frontend-and-backend",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Frontend and backend",
-    "text": "Frontend and backend\n\n\nFrontend\nThe browser. HTML, CSS and JavaScript — it draws the page and collects the clicks.\n\nBackend\nA program on a server, listening continuously for requests. Yours will be Python.\n\n\nYou open a URL. The browser sends a request. The server sends back HTML, CSS and JavaScript. The browser interprets that and shows you a page.\n\n\nRight-click any page and choose View Page Source. That is the frontend code, exactly as the backend handed it over."
-  },
-  {
-    "objectID": "slides/part4.html#two-kinds-of-request",
-    "href": "slides/part4.html#two-kinds-of-request",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Two kinds of request",
-    "text": "Two kinds of request\n\n\n\n\n\n\n\n\n\nWhat it carries\nWhat the server does\n\n\n\n\nGET\na path, and parameters in the URL\nsends back a page, or data\n\n\nPOST\na body — a form, a ticker you typed\nwhatever it was written to do, then replies\n\n\n\n\nOpening a page is a GET. Clicking submit is usually a POST."
-  },
-  {
-    "objectID": "slides/part4.html#running-it-on-one-machine",
-    "href": "slides/part4.html#running-it-on-one-machine",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Running it on one machine",
-    "text": "Running it on one machine\n\nThe frontend and the backend can be the same computer — your container, or your own laptop with Python on it.\n\n\n\nlocalhost\n127.0.0.1 is the loopback address. The browser asks the machine it is already running on, and the request never reaches a network.\n\n\nPorts\nOne machine runs many programs listening at once. The port number tells the operating system which of them gets the request.\n\n\n\nYou write the app as a .py file. FastAPI is the usual Python library for one, and uvicorn starts it listening: uvicorn app:app --host 0.0.0.0 --port 8000."
-  },
-  {
-    "objectID": "slides/part4.html#build-something-interactive",
-    "href": "slides/part4.html#build-something-interactive",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Build something interactive",
-    "text": "Build something interactive\n\n\nAsk for a FastAPI app with one page and one input — a unit converter, a loan payment, anything with a number in and a number out.\nAsk Claude to run it, and open the View tab. Click Refresh.\nWatch the terminal while you use it. Opening the page logs a GET; submitting the form logs a POST."
-  },
-  {
-    "objectID": "slides/part4.html#single-page-html-apps",
-    "href": "slides/part4.html#single-page-html-apps",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Single-page HTML apps",
-    "text": "Single-page HTML apps\n\nThere is an exception to the frontend/backend pattern.\nIf an app gets its data from browser input and does not need to reach outside, then we may not need a backend server. The code execution (JavaScript) can be done in the browser.\n\n\n\nAsk for the same app as a single-page HTML app.\n\nWhen it is complete, click Refresh in the File Explorer and you should see a new .html file.\nDownload the file.\nIn your File Explorer (Finder on Mac) — not in your browser — double-click the file. It should open in your browser. Test it."
-  },
-  {
-    "objectID": "slides/part4.html#artifacts",
-    "href": "slides/part4.html#artifacts",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Artifacts",
-    "text": "Artifacts\nClaude calls a single-page HTML app an artifact.\n\n\nIn Claude Desktop, choose Artifact in the left pane.\n\nChoose New. Prompt Claude to create the same app.\nYou should get options to deploy the app online or to download it."
-  },
-  {
-    "objectID": "slides/part4.html#breakout-exercise",
-    "href": "slides/part4.html#breakout-exercise",
+    "objectID": "slides/part3.html#breakout-exercise",
+    "href": "slides/part3.html#breakout-exercise",
     "title": "MGMT 803, MBA@Rice, 2026",
     "section": "Breakout exercise",
-    "text": "Breakout exercise\nGet free accounts at Replit and Lovable and build the same app with their tools. Then try something more ambitious (you may run out of credits on the free tier)."
+    "text": "Breakout exercise\n\nThe goal is to get Claude to always create PowerPoint decks following a template you choose. You can use one of your existing decks or choose a new template from any online source. Upload the deck to lab803.\nTell Claude to create a new deck using the style of the uploaded deck. Give Claude some content and tell it to build the deck from scratch rather than just editing the uploaded deck.\nDownload and view the deck. Instruct Claude on any changes you want. Rinse and repeat until you like the deck.\nTell Claude to write the steps needed to get the good deck in a a my-pptx skill so that Claude will always create decks in the template style."
   },
   {
-    "objectID": "slides/part4.html#apis",
-    "href": "slides/part4.html#apis",
+    "objectID": "slides/part3.html#an-agent-reaching-a-service",
+    "href": "slides/part3.html#an-agent-reaching-a-service",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "APIs",
-    "text": "APIs\n\nAn API (application programming interface) is a feature of a software service that allows other services to talk to it\nFor example, if I want my website to accept payment by PayPal, then my website has to talk to PayPal’s API\nIf I want my program to send messages and get responses from an LLM, then my program has to talk to the LLM provider’s API"
+    "section": "An agent reaching a service",
+    "text": "An agent reaching a service\n\n\nUser\n\n\n↔︎\n\n\nHarness\n\n\n↔︎\n\n\nLLM\n\n\n↕\n\n\nData or Service"
   },
   {
-    "objectID": "slides/part4.html#an-api-call-in-python",
-    "href": "slides/part4.html#an-api-call-in-python",
+    "objectID": "slides/part3.html#an-mcp-server-is-a-bridge",
+    "href": "slides/part3.html#an-mcp-server-is-a-bridge",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "An API call in Python",
-    "text": "An API call in Python\nimport anthropic\n\nclient = anthropic.Anthropic()          # reads ANTHROPIC_API_KEY\n\nSYSTEM = \"Classify the complaint: damage, delay, billing, or other. One word.\"\n\nresp = client.messages.create(\n    model=\"claude-sonnet-5\",\n    max_tokens=500,\n    system=SYSTEM,\n    messages=[{\"role\": \"user\", \"content\": \"The unit arrived cracked.\"}],\n)\n\nprint(resp.content[0].text)"
+    "section": "An MCP server is a bridge",
+    "text": "An MCP server is a bridge\n\n\nUser\n\n\n↔︎\n\n\nHarness\n\n\n↔︎\n\n\nLLM\n\n\n↕\n\n\nThe harness starts the serverand asks it what tools it has\n\n\nMCP Server\n\n\n↕\n\n\nThe server holds the credentialsand makes the actual calls\n\n\nData or Service"
   },
   {
-    "objectID": "slides/part4.html#the-same-call-through-openrouter",
-    "href": "slides/part4.html#the-same-call-through-openrouter",
+    "objectID": "slides/part3.html#what-the-server-tells-the-harness",
+    "href": "slides/part3.html#what-the-server-tells-the-harness",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "The same call through OpenRouter",
-    "text": "The same call through OpenRouter\nfrom openai import OpenAI\n\nclient = OpenAI(                        # reads OPENAI_API_KEY\n    base_url=\"https://openrouter.ai/api/v1\",\n)\nresp = client.chat.completions.create(\n    model=\"nvidia/nemotron-3.5-lightning:free\",\n    messages=[\n        {\"role\": \"system\", \"content\": SYSTEM},\n        {\"role\": \"user\", \"content\": \"The unit arrived cracked.\"},\n    ],\n)\nprint(resp.choices[0].message.content)\n\nThe system prompt is a message here, not a separate argument. A different library, a different response shape, and the model is a string you can change. Fifty free requests a day."
+    "section": "What the server tells the harness",
+    "text": "What the server tells the harness\n\n\nHarness\n\n\n↔︎\n\n\nLLM\n\n\n↕\n\n\nGmail MCP server — tools it exposes\n\nsearch_threads — find threads matching a query\ncreate_draft — start a reply, unsent\nget_message — fetch one message\nupdate_draft — edit a draft\nlist_labels — list the labels on the account\nlabel_message — add or remove a label\n\n\n\n↕\n\n\nGmail — what the API exposes\n\nGET users/me/threads?q= — search\nPOST users/me/drafts — create draft\nGET users/me/messages/{id} — read\nPUT users/me/drafts/{id} — update draft\nGET users/me/labels — list labels\nPOST users/me/messages/{id}/modify — labels and state\n\n\n\nThe harness gets the tool descriptions from the server.\nIt sends that list to the LLM with every request.\nThe LLM answers with a tool name and arguments. The server turns that into an API call."
   },
   {
-    "objectID": "slides/part4.html#what-comes-back",
-    "href": "slides/part4.html#what-comes-back",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "What comes back",
-    "text": "What comes back\n\n\nAnthropic\n{\n  \"role\": \"assistant\",\n  \"content\": [\n    {\"type\": \"text\", \"text\": \"damage\"}\n  ],\n  \"stop_reason\": \"end_turn\",\n  \"usage\": {\"input_tokens\": 38,\n            \"output_tokens\": 4}\n}\n\nOpenRouter\n{\n  \"choices\": [\n    {\"message\": {\"role\": \"assistant\",\n                 \"content\": \"damage\"},\n     \"finish_reason\": \"stop\"}\n  ],\n  \"usage\": {\"prompt_tokens\": 38,\n            \"completion_tokens\": 4}\n}\n\n\nBoth carry the word damage. The envelope differs, which is why one prints resp.content[0].text and the other resp.choices[0].message.content. stop_reason and finish_reason are how the app knows whether the model finished or wants to use a tool."
-  },
-  {
-    "objectID": "slides/part4.html#get-two-keys",
-    "href": "slides/part4.html#get-two-keys",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Get two keys",
-    "text": "Get two keys\n\n\nAnthropic\nplatform.claude.com → API keys → Create key. Pay per token, so set a spending limit on it.\nStore it as ANTHROPIC_API_KEY.\n\nOpenRouter\nopenrouter.ai → Keys → Create key. Sign in with Google or create an account with username and password, no card. One key reaches every provider it carries.\nStore it as OPENAI_API_KEY. The OpenAI library looks for that name only.\n\n\nThe keys are only shown once. Copy each into a file called env.txt, one NAME=value per line, and upload it to your container from the Files tab. Then tell Claude: my keys are in env.txt."
-  },
-  {
-    "objectID": "slides/part4.html#fastapi-app-that-makes-api-calls",
-    "href": "slides/part4.html#fastapi-app-that-makes-api-calls",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "FastAPI app that makes API calls",
-    "text": "FastAPI app that makes API calls\n\nA chatbot is a software program that calls an LLM.\nWe can build one as a FastAPI app.\nThe app should have a user interface (prompt window).\nThe browser sends prompts to the backend as POST requests.\nThe backend makes an API call, gets a response, and replies to the browser."
-  },
-  {
-    "objectID": "slides/part4.html#what-does-it-need",
-    "href": "slides/part4.html#what-does-it-need",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "What does it need?",
-    "text": "What does it need?\n\nAn endpoint for the API call (Anthropic, OpenAI, OpenRouter, …)\nA model name\nA system prompt\nA loop to keep the message list\nA user interface\n\n\nWe need to tell Claude what provider we want (Anthropic, OpenAI, …), what model we want, and what the system prompt should be. Claude can do everything else."
-  },
-  {
-    "objectID": "slides/part4.html#breakout-exercise-1",
-    "href": "slides/part4.html#breakout-exercise-1",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Breakout exercise",
-    "text": "Breakout exercise\n\n\nBuild a chatbot on either key — Anthropic (ANTHROPIC_API_KEY) or OpenRouter (OPENAI_API_KEY), your choice.\nPut your name on it, where anyone using it can see.\nGive it a system prompt that makes it answer in a distinctive way (for example, talk like a pirate).\n\n\n\nYou can tell Claude to do these things. You are not expected to write the code yourself."
-  },
-  {
-    "objectID": "slides/part4.html#chatbot-vs-agent",
-    "href": "slides/part4.html#chatbot-vs-agent",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Chatbot vs agent",
-    "text": "Chatbot vs agent\n\n\nThe chatbot\nText in, text out. The app does the same thing with every reply it gets\n\n\nThe agent\nThe reply can be a request to run something. The app runs it, sends the result back, and asks the model what to do next\n\n\n\nAn agent is an app that takes actions at the discretion of a model."
-  },
-  {
-    "objectID": "slides/part4.html#an-agent-is-a-chatbot-with-tools",
-    "href": "slides/part4.html#an-agent-is-a-chatbot-with-tools",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "An agent is a chatbot with tools",
-    "text": "An agent is a chatbot with tools\n\n\nYou send a request. The harness also sends a list of tools and what each one does.\nThe model answers with text, or with a request to use a tool.\nThe harness runs the tool and puts the result back into the conversation.\nRepeat until the model answers with text and no tool call."
-  },
-  {
-    "objectID": "slides/part4.html#a-tool-is-a-description",
-    "href": "slides/part4.html#a-tool-is-a-description",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "A tool is a description",
-    "text": "A tool is a description\n{\n  \"tools\": [\n    {\"name\": \"query_northwind\",\n     \"description\": \"Run a read-only SELECT against Northwind. Returns CSV.\",\n     \"input_schema\": {\n       \"type\": \"object\",\n       \"properties\": {\"query\": {\"type\": \"string\"}},\n       \"required\": [\"query\"]}}\n  ]\n}\n\nSent in the same request, alongside messages. The description is what the model reads when deciding whether to call it."
-  },
-  {
-    "objectID": "slides/part4.html#the-reply-asks-for-the-tool",
-    "href": "slides/part4.html#the-reply-asks-for-the-tool",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "The reply asks for the tool",
-    "text": "The reply asks for the tool\n{\n  \"role\": \"assistant\",\n  \"content\": [\n    {\"type\": \"tool_use\",\n     \"id\": \"toolu_01A9pK\",\n     \"name\": \"query_northwind\",\n     \"input\": {\n       \"query\": \"SELECT Country, COUNT(*) FROM customers GROUP BY Country\"\n     }}\n  ],\n  \"stop_reason\": \"tool_use\"\n}\n\nYour code runs the query and calls again, with a tool_result block carrying the same id, and the whole conversation behind it."
-  },
-  {
-    "objectID": "slides/part4.html#three-kinds-of-tools",
-    "href": "slides/part4.html#three-kinds-of-tools",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Three kinds of tools",
-    "text": "Three kinds of tools\n\n\n\n\nWhere the code is\nExample\n\n\n\n\nBuilt in\nin the harness\nread a file, run a command, fetch a page\n\n\nYours\na function you wrote\nlook up a customer in your system\n\n\nSomeone else’s\nan MCP server\nthe Northwind database, EIA, FRED\n\n\n\nAll three arrive at the model the same way: a name, a description, and a parameter schema."
-  },
-  {
-    "objectID": "slides/part4.html#tools-from-an-agent-sdk",
-    "href": "slides/part4.html#tools-from-an-agent-sdk",
-    "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Tools from an agent SDK",
-    "text": "Tools from an agent SDK\n\nPre-built code for the harness, and a set of tools that come with it. The Claude Agent SDK, the OpenAI Agents SDK, LangChain.\n\nRead        Write       Edit\nGlob        Grep        Bash\nWebSearch   WebFetch    Task\n\nThe built-ins in the Claude Agent SDK. You choose which to include: tools=[] includes none, and naming a few includes only those. If we use the Claude Agent SDK, we get the Claude Code harness."
-  },
-  {
-    "objectID": "slides/part4.html#tools-from-mcp-servers",
-    "href": "slides/part4.html#tools-from-mcp-servers",
+    "objectID": "slides/part3.html#tools-from-mcp-servers",
+    "href": "slides/part3.html#tools-from-mcp-servers",
     "title": "MGMT 803, MBA@Rice, 2026",
     "section": "Tools from MCP servers",
     "text": "Tools from MCP servers\n\nTools written by somebody else, running on a server somebody else operates. Thousands of MCP servers exist already.\n\n\n\nWhat you add\nA URL, in the agent’s configuration\n\n\nWhat arrives\nA name, a description and an input schema for every tool the server publishes\n\n\nWhat stays there\nThe code, and the credential it uses to reach the service\n\n\n\nTo the model these are more entries in the same tool list. What differs is whose machine runs them."
   },
   {
-    "objectID": "slides/part4.html#custom-tools",
-    "href": "slides/part4.html#custom-tools",
+    "objectID": "slides/part3.html#example-googles-gmail-server",
+    "href": "slides/part3.html#example-googles-gmail-server",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Custom tools",
-    "text": "Custom tools\n@tool(\n    \"add_two_numbers\",\n    \"Add two numbers and return the sum.\",\n    {\"a\": Annotated[float, \"The first number\"],\n     \"b\": Annotated[float, \"The second number\"]},\n)\nasync def add_two_numbers(args):\n    total = args[\"a\"] + args[\"b\"]\n    return {\"content\": [{\"type\": \"text\", \"text\": str(total)}]}\n\nA name, a description and typed arguments — the three parts every tool has — written as a Python function. The SDK turns the decorator into the JSON it sends the model."
+    "section": "Example: Google’s Gmail server",
+    "text": "Example: Google’s Gmail server\nsearch_threads     get_thread        get_message\ncreate_draft       list_drafts       list_labels\nlabel_thread       unlabel_thread\nlabel_message      unlabel_message\n\nTen tools, at https://gmailmcp.googleapis.com/mcp/v1. Published at developers.google.com/workspace/gmail/api/reference/mcp."
   },
   {
-    "objectID": "slides/part4.html#breakout-exercise-2",
-    "href": "slides/part4.html#breakout-exercise-2",
+    "objectID": "slides/part3.html#example-anthropics-gmail-server",
+    "href": "slides/part3.html#example-anthropics-gmail-server",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Example: Anthropic’s Gmail server",
+    "text": "Example: Anthropic’s Gmail server\n\n\n\n\n\n\n\n\n\nGoogle\nAnthropic\n\n\n\n\nTools\n10\n29\n\n\nRead\nsearch_threads · get_thread · get_message\nthe same three\n\n\nDrafts\ncreate_draft\ncreate, get, update, delete\n\n\nSend\nnone\nsend_message · reply · forward\n\n\nRemove\nnone\ntrash_message · delete_draft\n\n\nLabels\napply and remove\nplus create, update, delete\n\n\n\n\nThe same account and the same API underneath. A different answer to what an agent may do with it."
+  },
+  {
+    "objectID": "slides/part3.html#example-mcp-servers",
+    "href": "slides/part3.html#example-mcp-servers",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Example MCP servers",
+    "text": "Example MCP servers\n\n\nWarehouses\nSnowflake, Databricks, BigQuery, MongoDB, dbt\n\n\nBusiness systems\nSalesforce, HubSpot, Workday, SAP, ServiceNow\n\n\nWork and code\nSlack, Notion, Linear, GitHub, Atlassian, Figma, Sentry\n\n\nMoney\nStripe, Shopify, PayPal, Plaid"
+  },
+  {
+    "objectID": "slides/part3.html#connecting-to-an-mcp-server",
+    "href": "slides/part3.html#connecting-to-an-mcp-server",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Connecting to an MCP server",
+    "text": "Connecting to an MCP server\n\n\nIn Claude Desktop\n\nChoose Customize from the left pane\nThen Connectors and Explore or Add\n\n\n\nIn lab803\n\nTell Claude to add the connection\nYou provide the URL, or Claude can search for it online\nClaude may say it can’t do it directly but then ask permission to use a terminal command. Allow.\nLog out and log in again.\n\n\n\n\nExample: fred.kerryback.com/mcp, the Federal Reserve’s economic data."
+  },
+  {
+    "objectID": "slides/part3.html#try-it",
+    "href": "slides/part3.html#try-it",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Try it",
+    "text": "Try it\nAsk Claude to get the US consumer price index from FRED, compute quarterly percent changes, and annualize them."
+  },
+  {
+    "objectID": "slides/part3.html#breakout-exercise-1",
+    "href": "slides/part3.html#breakout-exercise-1",
     "title": "MGMT 803, MBA@Rice, 2026",
     "section": "Breakout exercise",
-    "text": "Breakout exercise\n\n\nBuild an agent using the Claude Agent SDK and your Anthropic API key.\nGive it the FRED MCP server, fred.kerryback.com/mcp, as its only source of data.\nGive it a run_python tool.\nRun it and ask for something that needs data and python: for example, unemployment and inflation over the last ten years, on one chart.\nRepeat, but instead of using the Claude Agent SDK, tell Claude you want to use the OpenCode harness and your OpenRouter API key."
+    "text": "Breakout exercise\nConnect to a Gmail MCP server either in a desktop app or on lab803. Create a new Gmail account if you don’t want to connect to your real one. Ask Claude to help connect. You can use any server (Anthropic, Google, …). Ask Claude how to disable any tools you don’t want. Then ask Claude to get your most recent messages. Ask Claude how to delete the connection if you don’t want to keep it. Ask Claude to write a summary of what was done."
   },
   {
-    "objectID": "slides/part6.html#this-session",
-    "href": "slides/part6.html#this-session",
+    "objectID": "slides/part3.html#what-you-install",
+    "href": "slides/part3.html#what-you-install",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "What you install",
+    "text": "What you install\n\nA plugin is a folder somebody else published. Installing it adds their work to your Claude in one step.\n\n\n\nWhat it can carry\nSkills, slash commands, subagents, hooks, and MCP servers.\n\n\nWhat you get\nEvery file and script in it, without being told which ones to copy where."
+  },
+  {
+    "objectID": "slides/part3.html#anthropics-plugin-marketplace",
+    "href": "slides/part3.html#anthropics-plugin-marketplace",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Anthropic’s plugin marketplace",
+    "text": "Anthropic’s plugin marketplace\nhttps://code.claude.com/docs/en/discover-plugins"
+  },
+  {
+    "objectID": "slides/part3.html#try-it-1",
+    "href": "slides/part3.html#try-it-1",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Try it",
+    "text": "Try it\nGive Claude the following prompts\n/plugin marketplace add kerryback/skills\n/plugin install finance-data@kerryback\nThen ask Claude what was installed. Finally, ask Claude to compute monthly stock returns for Apple since the start of 2020 and to produce a histogram.\n\nYou should see Claude say “using the finance-data skill”"
+  },
+  {
+    "objectID": "slides/part5.html#this-session",
+    "href": "slides/part5.html#this-session",
     "title": "MGMT 803, MBA@Rice, 2026",
     "section": "This session",
-    "text": "This session\n\nRetrieval augmented generation\nGemini Notebook\nRunning models locally"
+    "text": "This session\n\nAcademic Studio\nRunning apps and agents locally\nGit and GitHub\nDeploying apps and agents"
   },
   {
-    "objectID": "slides/part6.html#structured-and-unstructured",
-    "href": "slides/part6.html#structured-and-unstructured",
+    "objectID": "slides/part5.html#what-it-is",
+    "href": "slides/part5.html#what-it-is",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Structured and unstructured",
-    "text": "Structured and unstructured\n\n\nStructured data\nRows, columns, joins.\n\nEverything else a firm holds\nContracts, mail, board papers, policies, reports, decks, notes.\n\n\n65% of data leaders call their structured data ready for AI. 39% say the same of the unstructured kind, which is most of the volume."
+    "section": "What it is",
+    "text": "What it is\n\nUnder the hood it is VSCodium, the open-source build of VS Code, simplified for getting work done.\n\nClaude Code opens on startup. A Claude menu sits in the menu bar, the other menus and toolbars are trimmed, and the Help menu is rebuilt around getting started.\n\nA paid Anthropic account — Pro, Max, or API — is required to use Claude Code in it. Type /login in the prompt window the first time."
   },
   {
-    "objectID": "slides/part6.html#why-not-just-paste-it-in",
-    "href": "slides/part6.html#why-not-just-paste-it-in",
+    "objectID": "slides/part5.html#why-are-we-installing-it",
+    "href": "slides/part5.html#why-are-we-installing-it",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Why not just paste it in",
-    "text": "Why not just paste it in\n\n\nIt was not trained on yours\nYour contracts were not on the public web. Nothing in the weights knows them.\n\n\nThe window is finite\nA million tokens is large and your document store is larger.\n\n\nYou pay for every turn\nInput is billed each turn. Pasting the corpus into every question bills the corpus every question."
+    "section": "Why are we installing it?",
+    "text": "Why are we installing it?\n\nIt is an easy way (I hope) to install Python and key Python libraries.\nI expect you to get Claude accounts paid by Rice soon.\nYou do not need a paid Claude account for this course.\nBut, if you do have one, you can use Academic Studio instead of lab803."
   },
   {
-    "objectID": "slides/part6.html#four-steps",
-    "href": "slides/part6.html#four-steps",
+    "objectID": "slides/part5.html#what-comes-with-it",
+    "href": "slides/part5.html#what-comes-with-it",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Four steps",
-    "text": "Four steps\n\n\nChunk. Split the documents into passages of a few hundred words.\nEmbed. Turn each passage into a vector, the same way tokens became vectors.\nRetrieve. Embed the question and find the handful of passages closest to it.\nPaste. Put those passages in the prompt, with the question.\n\n\n\nThe model never reads your corpus. It reads an excerpt that a similarity search chooses."
+    "section": "What comes with it",
+    "text": "What comes with it\n\n\nDocuments\nThe xlsx, docx, pptx and pdf skills, bundled and configured. LaTeX and Quarto for typeset output.\n\n\nA browser\nThe Playwright connector, set up for you. Claude can open pages, click through them, fill forms, and take screenshots.\n\n\nA toolchain\nPython and the scientific stack, Jupyter, R, Quarto, TinyTeX, Node.js.\n\n\n\nHelp → Run Setup asks which profile you are — faculty, or students and professionals — and installs the supporting programs in one click."
   },
   {
-    "objectID": "slides/part6.html#a-passage-becomes-a-vector",
-    "href": "slides/part6.html#a-passage-becomes-a-vector",
+    "objectID": "slides/part5.html#what-carries-over",
+    "href": "slides/part5.html#what-carries-over",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "A passage becomes a vector",
-    "text": "A passage becomes a vector\n\nAn embedding model reads a passage and returns a fixed-length list of numbers — 384, or 768, or 1,536, depending on the model.\n\nPassages about the same thing land near each other, whatever words they used. “Revenue fell in the third quarter” sits close to “Q3 sales were down”, and a keyword search for “revenue” finds only the first.\n\nThe similarity is the cosine between the question’s vector and the passage’s. No model is involved until the passages have already been chosen."
+    "section": "What carries over",
+    "text": "What carries over\n\n\nOpen a folder, and your files and your conversation history stay with that project.\nSkills, connectors and CLAUDE.md files are shared with the Claude Code CLI and with the Code mode of Claude Desktop.\nConversation history is shared with the CLI.\n\n\n\nEvery Claude skill, connector and plugin works here."
   },
   {
-    "objectID": "slides/part6.html#cosine-in-two-dimensions",
-    "href": "slides/part6.html#cosine-in-two-dimensions",
+    "objectID": "slides/part5.html#getting-it",
+    "href": "slides/part5.html#getting-it",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Cosine, in two dimensions",
-    "text": "Cosine, in two dimensions"
+    "section": "Getting it",
+    "text": "Getting it\n\n\n\nmacOS\nApple Silicon, M1 or later — it does not run on Intel Macs\n\n\nWindows\nx64, most machines\n\n\nWindows ARM\nSurface Pro and similar\n\n\n\nDownload from academic-studio.com. Every release is also on the GitHub releases page."
   },
   {
-    "objectID": "slides/part6.html#demo",
-    "href": "slides/part6.html#demo",
+    "objectID": "slides/part5.html#download-from-lab803",
+    "href": "slides/part5.html#download-from-lab803",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Demo",
-    "text": "Demo\n\nFive documents for a fictional company: a returns policy, an August board memo, an employee handbook, a shipping service-level page, and September operations meeting notes.\n\n\nall-MiniLM-L6-v2 embeds and Qwen3-1.7B answers, on the laptop."
+    "section": "Download from lab803",
+    "text": "Download from lab803\n\n\nAsk Claude what to download. It knows which files the app needs and which are scratch.\nDownload them from the Files tab, into a folder on your own machine.\nOpen that folder in Academic Studio.\n\n\n\nYour keys are not in those files, and should not be. Set ANTHROPIC_API_KEY and OPENAI_API_KEY on your own machine, the same way you set them in the container."
   },
   {
-    "objectID": "slides/part6.html#formerly-notebooklm",
-    "href": "slides/part6.html#formerly-notebooklm",
+    "objectID": "slides/part5.html#what-is-already-installed-and-what-is-not",
+    "href": "slides/part5.html#what-is-already-installed-and-what-is-not",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Formerly NotebookLM",
-    "text": "Formerly NotebookLM\n\nNotebookLM became Gemini Notebook in July, 2026. Same product, same notebooks, new address: notebook.google.com.\n\nYou give it sources. It answers from those sources and cites the passage it used. Nothing you upload is added to a public index."
+    "section": "What is already installed, and what is not",
+    "text": "What is already installed, and what is not\nRun Setup gives you Python, fastapi and uvicorn. Four libraries are not in it:\npython -m pip install anthropic openai claude-agent-sdk python-dotenv\n\nanthropic for the chatbot on your Anthropic key, openai for the OpenRouter version, claude-agent-sdk for the agent, and python-dotenv for the line that reads your keys out of env.txt. On macOS the command is python3 -m pip .... You can also just ask Claude to install them."
   },
   {
-    "objectID": "slides/part6.html#what-goes-in-and-how-much",
-    "href": "slides/part6.html#what-goes-in-and-how-much",
+    "objectID": "slides/part5.html#run-it",
+    "href": "slides/part5.html#run-it",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "What goes in, and how much",
-    "text": "What goes in, and how much\n\n\nSources\nPDFs and files you upload, Google Docs and Slides, web pages, YouTube links, pasted text.\n\n\nCaps\n500,000 words or 200MB per source. No page limit.\n\n\n\n\n\n\nFree\nPlus\n\n\n\n\nNotebooks\n100\n200\n\n\nSources per notebook\n50\n100\n\n\nChats per day\n50\n200"
+    "section": "Run it",
+    "text": "Run it\nWindows\npython -m uvicorn app:app --port 8000\nMac\npython3 -m uvicorn app:app --port 8000\nThen open http://127.0.0.1:8000 in a browser.\n\napp:app is the file and the FastAPI object inside it — explorer:app for explorer.py."
   },
   {
-    "objectID": "slides/part6.html#citations-in-the-answer",
-    "href": "slides/part6.html#citations-in-the-answer",
+    "objectID": "slides/part5.html#what-a-commit-is",
+    "href": "slides/part5.html#what-a-commit-is",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Citations in the answer",
-    "text": "Citations in the answer\n\n\nAsk a question. The answer arrives with a numbered marker after each claim.\nClick the marker. The source opens at the passage the claim came from.\nAsk something the sources do not cover, and it says they do not cover it."
+    "section": "What a commit is",
+    "text": "What a commit is\n\nA version control system tracks every change you make. A commit is a snapshot you can return to.\n\n\n\nInstall\nGit is on lab803 already, and on your laptop with Academic Studio. Claude Code installs it anywhere it is missing.\n\n\nCommits\nAsk it to commit, and the change is saved with a description of what it was.\n\n\nHistory\nAsk when something changed, what changed it, or what the file looked like three versions ago."
   },
   {
-    "objectID": "slides/part6.html#outputs",
-    "href": "slides/part6.html#outputs",
+    "objectID": "slides/part5.html#try-it-commit-and-restore",
+    "href": "slides/part5.html#try-it-commit-and-restore",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Outputs",
-    "text": "Outputs\nIn addition to chat, Gemini Notebook offers video (slide deck) overviews, audio overviews (podcast style), flash cards, and more."
+    "section": "Try it: commit and restore",
+    "text": "Try it: commit and restore\n\n\nIn lab803, tell Claude Code to create a new folder.\nUpload a file into that folder from the Files tab.\nTell Claude to initialize the folder as a Git repository and commit the file.\nDelete the file.\nAsk Claude to restore it.\n\n\n\nCommit changes regularly, so you can easily undo and roll back."
   },
   {
-    "objectID": "slides/part6.html#breakout-exercise",
-    "href": "slides/part6.html#breakout-exercise",
+    "objectID": "slides/part5.html#github",
+    "href": "slides/part5.html#github",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "GitHub",
+    "text": "GitHub\n\nGitHub hosts Git repositories. The project lives in the cloud, backed up and shareable.\n\n\n\nPushing\nWith a free account, Claude Code pushes your repository to GitHub and pushes later commits when you ask. It uses the GitHub CLI.\n\nCollaboration\nOthers can clone it, propose changes, and open issues. Working alone, it is backup and deployment."
+  },
+  {
+    "objectID": "slides/part5.html#try-it-push-to-github",
+    "href": "slides/part5.html#try-it-push-to-github",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Try it: push to GitHub",
+    "text": "Try it: push to GitHub\n\n\nCreate a free account at github.com.\nSettings → Developer settings → Personal access tokens → Tokens (classic). Tick the box marked repo, generate, and copy it — GitHub shows it once.\nAdd a line GH_TOKEN= and the token to env.txt, and upload it to your container again from the Files tab.\nTell Claude the token is in env.txt, and to create a new GitHub repository and push the folder you committed earlier.\nOpen github.com/your-user-name and look at what arrived: the file, the commit, and the message Claude wrote."
+  },
+  {
+    "objectID": "slides/part5.html#before-you-push",
+    "href": "slides/part5.html#before-you-push",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Before you push",
+    "text": "Before you push\n\nIf you make your repository public, then anyone can read it.\n\n\n\nKeep out\nAPI keys, passwords, anything under a data agreement, and anything with a name in it. Tell Claude to list those files in a .gitignore, and Git will leave them out of every commit.\n\n\nRemember\nDeleting a file in a later commit does not remove it. It stays in the history."
+  },
+  {
+    "objectID": "slides/part5.html#github-pages",
+    "href": "slides/part5.html#github-pages",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "GitHub Pages",
+    "text": "GitHub Pages\n\nAny repository becomes a website. No server, no configuration, no cost (but it is available for free only if your repo is public).\n\n\n\nTell Claude to create a page for you (with whatever you want on it) named index.html.\nCommit and push again. Push the repository to GitHub.\nSettings → Pages, and set the source to the main branch, either its root or a docs/ folder.\nThe site is live at yourusername.github.io/repo-name/.\n\n\nOr ask Claude to turn it on\ngh api -X POST repos/{owner}/{repo}/pages -F 'source[branch]=main' -F 'source[path]=/'\n\nA custom domain costs about $15 a year and replaces the github.io address."
+  },
+  {
+    "objectID": "slides/part5.html#platform-as-a-service",
+    "href": "slides/part5.html#platform-as-a-service",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Platform as a service",
+    "text": "Platform as a service\n\nYou hand a host your repository. It builds the app, runs it, and puts it behind a public URL. There is no server for you to administer.\n\nRailway, Render, Koyeb, Fly and Heroku all do this. We use Koyeb, which deploys straight from a GitHub repository and has a free instance.\n\nThe free instance is one web service, 512 MB of memory, in Frankfurt or Washington. Koyeb asks for a credit card when you sign up, to stop abuse, and does not charge for it."
+  },
+  {
+    "objectID": "slides/part5.html#create-an-account-and-get-a-token",
+    "href": "slides/part5.html#create-an-account-and-get-a-token",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Create an account and get a token",
+    "text": "Create an account and get a token\n\n\nCreate an account at koyeb.com.\nIn the control panel, create an API access token. Koyeb shows it once, so copy it then.\nAdd a line KOYEB_TOKEN= and the token to env.txt, and upload it again from the Files tab.\nTell Claude your Koyeb token is in env.txt.\n\n\n\nThe Koyeb CLI is already installed in your container. From here on Claude can do the rest — creating the service, reading the logs, and giving you the URL."
+  },
+  {
+    "objectID": "slides/part5.html#breakout-exercise",
+    "href": "slides/part5.html#breakout-exercise",
     "title": "MGMT 803, MBA@Rice, 2026",
     "section": "Breakout exercise",
-    "text": "Breakout exercise\n\n\nCreate a Gemini notebook from the slide decks for this course, and ask it questions.\nUpload the decks to lab803. Tell Claude you want a RAG chatbot built on them.\nHave Claude lay out the options for chunking, for the embedding model, and for the model that writes the answer. Decide each one with it.\nBuild it as a FastAPI app."
+    "text": "Breakout exercise\n\n\nPick an app, chatbot, or agent that you have created. Do not use one with a paid API key (so no Anthropic key).\n\nTell Claude you want to deploy the app on Koyeb and your Koyeb access token is in env.txt.\n\nIf Claude asks you to do anything, reply “Can you do that instead?” If needed, tell Claude that the Koyeb CLI is installed.\n\nWhen Claude says it is deployed, ask for the URL.\nOpen the URL on your laptop or phone."
   },
   {
-    "objectID": "slides/part6.html#where-each-tier-stands-today",
-    "href": "slides/part6.html#where-each-tier-stands-today",
+    "objectID": "slides/part7.html#this-session",
+    "href": "slides/part7.html#this-session",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Where each tier stands today",
-    "text": "Where each tier stands today\n\nGPQA Diamond is near its ceiling, which compresses the gap: five months of lag is worth three points because there is nowhere left to go. Terminal-Bench is not near any ceiling, and there the same few months is most of the task."
+    "section": "This session",
+    "text": "This session\n\nMulti-agent architectures\nSecurity risks\nMitigating risks"
   },
   {
-    "objectID": "slides/part6.html#not-every-job-needs-the-largest-model",
-    "href": "slides/part6.html#not-every-job-needs-the-largest-model",
+    "objectID": "slides/part7.html#why-more-than-one-agent",
+    "href": "slides/part7.html#why-more-than-one-agent",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Not every job needs the largest model",
-    "text": "Not every job needs the largest model\n\n\n\n\n\n\n\n\n\nWhere it runs\nWhat it suits\n\n\n\n\nA frontier model\nthe provider’s API\njudgment, long context, code\n\n\nA mid-size model\nthe same API, less per token\nclassification, extraction, routing\n\n\nA small open model\nyour own hardware\nhigh volume, or data that cannot leave\n\n\nA fine-tuned small model\nyour own hardware\none narrow task, done constantly\n\n\n\nThe price difference is negligible on a single question and decides the budget at a million classifications."
+    "section": "Why more than one agent",
+    "text": "Why more than one agent\n\n\nSeparate context windows\nEach agent reads only its own material. The orchestrator gets the answer, not the material behind it.\n\n\nOne definition, many callers\nAn agent’s prompt, tools and examples are written once. Every orchestrator that needs that job done calls it instead of carrying its own copy of the instructions.\n\n\nA smaller model per job\nRetrieval can run on a cheaper model than the one writing the answer.\n\n\n\nMitigating security risks is another motivation. We’ll come back to that."
   },
   {
-    "objectID": "slides/part6.html#fine-tuning-by-distillation",
-    "href": "slides/part6.html#fine-tuning-by-distillation",
+    "objectID": "slides/part7.html#what-else-it-changes",
+    "href": "slides/part7.html#what-else-it-changes",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Fine tuning by distillation",
-    "text": "Fine tuning by distillation\n\nRun the frontier model on a few thousand examples of your task. Keep the inputs and its outputs. Train a small model on those pairs.\n\n\nThe small model does not become generally capable. It becomes capable at the one task you sampled, at a fraction of the cost per call, on hardware you control.\n\n\nIt is generally OK to do this, but perhaps not if you plan to compete with the frontier model. China’s distillation"
+    "section": "What else it changes",
+    "text": "What else it changes\n\n\nA shorter tool list\nA model choosing among four tools picks better than the same model choosing among forty.\n\n\nWork at the same time\nTwo agents working on different parts of the question do not wait for each other.\n\n\nTested on its own\nYou can rewrite one agent’s prompt and test it without retesting the orchestrator."
   },
   {
-    "objectID": "slides/part6.html#what-fits-on-hardware-you-own",
-    "href": "slides/part6.html#what-fits-on-hardware-you-own",
+    "objectID": "slides/part7.html#how-they-talk-to-each-other",
+    "href": "slides/part7.html#how-they-talk-to-each-other",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "What fits on hardware you own",
-    "text": "What fits on hardware you own\n\n\n\n\nMemory\nWhat runs at 4-bit\nOn disk\n\n\n\n\nA laptop, no GPU\n8 GB\n1B to 4B\nGemma 3 4B, 3.3 GB\n\n\nA laptop with a GPU\n16 GB\nup to 12B\nGemma 3 12B, 8.1 GB\n\n\nOne consumer GPU\n24 GB\nup to 32B\nQwen 3.8 27B, 17 GB\n\n\nDGX Spark\n128 GB unified\n70B class\n\n\n\nMac Studio\n256 GB unified\n235B class\n\n\n\n\nA model needs roughly half a gigabyte per billion parameters at 4-bit, plus room for the context window.\n\nCapacity decides whether it loads. Bandwidth decides how fast it answers: the Spark moves 273 GB/s, the Mac Studio 819 GB/s."
+    "section": "How they talk to each other",
+    "text": "How they talk to each other"
   },
   {
-    "objectID": "slides/part6.html#breakout-exercise-part-1",
-    "href": "slides/part6.html#breakout-exercise-part-1",
+    "objectID": "slides/part7.html#giving-the-agent-an-api",
+    "href": "slides/part7.html#giving-the-agent-an-api",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Breakout exercise part 1",
-    "text": "Breakout exercise part 1\n\n\nInstall Ollama: ollama.com/download.\nIn a terminal, type ollama run gemma4:e2b-it-qat. The download is 4.3 GB.\nAsk it something you asked a frontier model. Compare the two answers.\nType /bye to leave. Then run ollama run gemma3:1b, an 815 MB download from the previous generation, and ask the same question again.\n\n\n\nNothing you type leaves your machine. In a second terminal window, ollama ps shows what is loaded and how much memory it holds."
+    "section": "Giving the agent an API",
+    "text": "Giving the agent an API\n\nAny chatbot is served by a backend. Add an endpoint to it — e.g., chatbot.com/prompt — that receives a question, sends it to an LLM and returns the answer as plain text — and any program that can fetch a URL can now use the chatbot.\nI added an endpoint (API) to a FRED agent, like we looked at earlier and launched it on my machine with uvicorn."
   },
   {
-    "objectID": "slides/part6.html#breakout-exercise-part-2",
-    "href": "slides/part6.html#breakout-exercise-part-2",
+    "objectID": "slides/part7.html#example-three-agent-team",
+    "href": "slides/part7.html#example-three-agent-team",
     "title": "MGMT 803, MBA@Rice, 2026",
-    "section": "Breakout exercise part 2",
-    "text": "Breakout exercise part 2\n\nPart 1 creates a local chatbot. For a local agent, we need a harness.\n\n\n\nInstall OpenCode 1.18.0 or newer: opencode.ai/docs.\nPut orders.csv and order_details.csv in a new folder, with the opencode.json on the next slide.\nRun opencode in that folder, type /models, and choose Gemma 4 under Ollama.\nAsk: Merge orders.csv and order_details.csv on OrderID and save the result as orders_complete.csv.\nAsk: List the exact names of every tool you have.\nWrite down where it stopped being able to do the job.\n\n\n\nSame model as the exercise before, so nothing more to download. Gemma 4 supports function calling, and Python is already installed, so it has tools and something to run them with."
+    "section": "Example: three-agent team",
+    "text": "Example: three-agent team\nAn example of a three-agent team:\n\n\nOrchestrator\nThe one you chat with. Splits the question, then combines the two answers.\n\n\nData agent\nReaches the data warehouse. Returns data and analysis.\n\n\nWeb agent\nReaches the web. Returns information."
+  },
+  {
+    "objectID": "slides/part7.html#how-do-we-build-this",
+    "href": "slides/part7.html#how-do-we-build-this",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "How do we build this?",
+    "text": "How do we build this?\n\nOrchestrator is an agent with a chatbot interface and two tools: call_web_agent, and call_data_agent\nData agent has tools for getting data and run_python for analysis. It exposes an API.\nWeb agent has web_fetch and web_search. It exposes an API."
+  },
+  {
+    "objectID": "slides/part7.html#breakout-exercise",
+    "href": "slides/part7.html#breakout-exercise",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Breakout exercise",
+    "text": "Breakout exercise\n\n\nCreate a FastAPI Northwind data agent connected to the MCP server https://northwind-mcp.kerryback.com/mcp. It has an API and a run_python tool.\nCreate a FastAPI web agent with web_search and web_fetch. It has an API.\nCreate a FastAPI orchestrator agent that has call_web_agent and call_data_agent tools. It has a user interface with a prompt window.\n\n\nWork out the details with Claude. Tell Claude what you want and plan with it."
+  },
+  {
+    "objectID": "slides/part7.html#sending-data-to-a-provider",
+    "href": "slides/part7.html#sending-data-to-a-provider",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Sending data to a provider",
+    "text": "Sending data to a provider"
+  },
+  {
+    "objectID": "slides/part7.html#what-happens-to-what-you-send",
+    "href": "slides/part7.html#what-happens-to-what-you-send",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "What happens to what you send",
+    "text": "What happens to what you send\n\n\nIt can be trained on\nWith web search off, ask Claude what Apple’s total revenue was in 2020. It answers from the weights, not from a lookup. What goes into a model can come back out of it.\n\n\nIt is retained\nEven where nobody trains on it, copies sit on the provider’s disks for some window. A breach, a subpoena or an insider reaches them there, under somebody else’s security.\n\n\n\nApple’s revenue is public. The mechanism is the point: the figure is in the weights, not on a page it fetched."
+  },
+  {
+    "objectID": "slides/part7.html#what-regulations-require",
+    "href": "slides/part7.html#what-regulations-require",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "What regulations require",
+    "text": "What regulations require\n\n\nHIPAA\nSatisfactory assurances “must be documented through a written contract” meeting §164.504(e).\nA Business Associates Agreement (BAA) is required. 45 CFR 164.502(e).\n\nSEC Reg S-P\nWritten policies “reasonably designed to require oversight, including through due diligence and monitoring, of service providers.”\n17 CFR 248.30."
+  },
+  {
+    "objectID": "slides/part7.html#letting-it-act",
+    "href": "slides/part7.html#letting-it-act",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Letting it act",
+    "text": "Letting it act"
+  },
+  {
+    "objectID": "slides/part7.html#prompt-injection",
+    "href": "slides/part7.html#prompt-injection",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Prompt injection",
+    "text": "Prompt injection\n\nThe model cannot tell an instruction from a piece of content. Both arrive as text in the same conversation.\n\nText placed where the agent will read it — an email, a document, a web page, a spreadsheet cell — is read in the same way as text you typed. An attacker needs no credentials, only a way to get words in front of the model.\n\nOWASP has ranked this first among risks to LLM applications since 2025."
+  },
+  {
+    "objectID": "slides/part7.html#echoleak",
+    "href": "slides/part7.html#echoleak",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "EchoLeak",
+    "text": "EchoLeak\nCVE-2025-32711 · Microsoft 365 Copilot · June 2025\n\n\nAn attacker mails the victim a message containing instructions invisible to a human reader.\nThe victim asks Copilot to summarize their email. Copilot reads the hidden instructions.\nFollowing them, Copilot places confidential data inside a URL in its response.\nThe victim’s browser fetches that URL automatically.\nThe attacker reads the data out of their own server log.\n\n\nZero clicks by the victim beyond the summary request."
+  },
+  {
+    "objectID": "slides/part7.html#three-legs",
+    "href": "slides/part7.html#three-legs",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Three legs",
+    "text": "Three legs\n\n\nPrivate data\nSomething worth taking: client records, financials, an inbox.\n\n\nUntrusted content\nText an outsider can control: a web page, an email, an uploaded file.\n\n\nAn outbound channel\nAny way for text to leave: fetching a URL, sending mail, writing somewhere shared.\n\n\nAll three in one agent is the condition. Remove any one and the attack does not work."
+  },
+  {
+    "objectID": "slides/part7.html#training-and-retention-contractual-solutions",
+    "href": "slides/part7.html#training-and-retention-contractual-solutions",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Training and retention: contractual solutions",
+    "text": "Training and retention: contractual solutions\n\n\n\n\n\n\n\n\n\nWhat it adds\nEnough for\n\n\n\n\nOpt out of training\na setting, revocable, data still retained briefly\npersonal, non-sensitive work\n\n\nA signed data processing agreement\nliability, breach notice, audit rights, a subprocessor list, zero retention on request\nclient data, regulated data\n\n\nThat, plus a business associate agreement\nthe same, covering protected health information\npatient records\n\n\nAn enterprise agreement\nservice levels, support, single sign-on, indemnification, capacity\nscale and operations"
+  },
+  {
+    "objectID": "slides/part7.html#data-exfiltration-removing-a-leg",
+    "href": "slides/part7.html#data-exfiltration-removing-a-leg",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Data exfiltration: removing a leg",
+    "text": "Data exfiltration: removing a leg\n\n\n\n\n\n\n\n\nLeg\nHow you remove it\nWhat it costs\n\n\n\n\nPrivate data\nthe agent sees only what you hand it — Cowork cannot reach outside its project folder\nit cannot answer from data it never sees\n\n\nUntrusted content\nno web fetch, no reading files people upload, no general code execution\na narrow agent, and no run_python\n\n\nA way out\nan egress allowlist, and no tool that sends\nresults leave only when a person moves them\n\n\n\nAny of the three can go. Each takes capability with it, and which one you can afford to lose is the decision."
+  },
+  {
+    "objectID": "slides/part7.html#a-worked-example",
+    "href": "slides/part7.html#a-worked-example",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "A worked example",
+    "text": "A worked example"
+  },
+  {
+    "objectID": "slides/part7.html#three-agents",
+    "href": "slides/part7.html#three-agents",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Three agents",
+    "text": "Three agents\n\n\nOrchestrator\nThe one you chat with. Its only two tools are web_chat and data_chat. It holds no data and reaches nothing itself.\n\n\nWebbot\nWebSearch and WebFetch, running at Anthropic. It reads untrusted content and holds no private data.\n\n\nDatabot\nrun_python and the MCP data connectors, behind an egress proxy. It holds the private data and cannot reach the web."
+  },
+  {
+    "objectID": "slides/part7.html#the-architecture",
+    "href": "slides/part7.html#the-architecture",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "The architecture",
+    "text": "The architecture"
+  },
+  {
+    "objectID": "slides/part7.html#what-each-agent-may-be-told",
+    "href": "slides/part7.html#what-each-agent-may-be-told",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "What each agent may be told",
+    "text": "What each agent may be told\n\n\nweb_chat is locked\nIts tool definition says it sends the user’s verbatim prompt and nothing else. Nothing from the conversation, and so nothing from the data, can reach the agent that can reach the web.\n\ndata_chat is open\nThe model composes this prompt from the conversation. That is safe only because databot has no route out.\n\nThe argument is about the arguments: what a tool accepts decides what can leave through it."
+  },
+  {
+    "objectID": "slides/part7.html#four-containers-four-networks",
+    "href": "slides/part7.html#four-containers-four-networks",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Four containers, four networks",
+    "text": "Four containers, four networks\n\n\n\n\n\n\n\n\n\nNetworks\nWhat that allows\n\n\n\n\nOrchestrator\ncorporate, internalA, internalB\nserves the chat UI, talks to both agents\n\n\nWebbot\ninternalB, public\ntalks to the orchestrator, calls Anthropic\n\n\nDatabot\ninternalA\ntalks to the orchestrator and the proxy, nothing else\n\n\nSquid proxy\ninternalA, public\nthe only route out of the data half\n\n\n\n\nWebbot shares a network with the orchestrator, so the orchestrator’s endpoints must authenticate at the application, not only at an external gateway."
+  },
+  {
+    "objectID": "slides/part7.html#inside-the-data-half",
+    "href": "slides/part7.html#inside-the-data-half",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Inside the data half",
+    "text": "Inside the data half"
+  },
+  {
+    "objectID": "slides/part7.html#mechanical-guards",
+    "href": "slides/part7.html#mechanical-guards",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Mechanical guards",
+    "text": "Mechanical guards\n\n\nSanitize the exit\nEven with the legs split, a delivered file could carry a planted remote image — the EchoLeak pattern. Every file the orchestrator hands back is checked first for anything that auto-fetches an external URL.\n\n\nSafeguard memory\nMemory persists into every later conversation, so a planted instruction would reload forever. Every saved fact must be grounded in the user’s own words, not in tool results or fetched content."
+  },
+  {
+    "objectID": "slides/part7.html#breakout-exercise-1",
+    "href": "slides/part7.html#breakout-exercise-1",
+    "title": "MGMT 803, MBA@Rice, 2026",
+    "section": "Breakout exercise",
+    "text": "Breakout exercise\nGo back to the orchestrator you built this morning and apply the architecture above to it.\n\n\nLock the web agent’s tool definition so it can be handed the user’s own words and nothing else.\nGet a page in front of the web agent that tells it to ask for more than it was sent, and read what your orchestrator passed on.\nSay which of the three legs you removed, and what the fix does not cover.\n\n\n\nThe model obeys the page every time. Whether that matters is a property of the architecture, not of the model."
   }
 ]

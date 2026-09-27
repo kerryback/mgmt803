@@ -155,49 +155,8 @@ Kerry Back<br>J. Howard Creekmore Professor of Finance
 <h1>24 · Multi-agent architectures</h1>
 
 </section>
-<section id="multi-agent-teams" class="slide level2">
-<h2>Multi-agent teams</h2>
-<div class="lead">
-<p>“How did our Q3 revenue compare with what analysts expected for the industry?”</p>
-</div>
-<div class="cards cards-3">
-<div class="card">
-<p><span class="card-title">Orchestrator</span></p>
-<p>The one you chat with. Splits the question, then combines the two answers.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">Data agent</span></p>
-<p>Reaches the warehouse. Returns our Q3 revenue.</p>
-</div>
-<div class="card card-sand">
-<p><span class="card-title">Research agent</span></p>
-<p>Reaches the web. Returns the published industry estimates.</p>
-</div>
-</div>
-<div class="note">
-<p>Calling another agent is a tool use. The orchestrator’s model picks <code>data_chat</code> or <code>web_chat</code> the way a single agent picks <code>run_python</code>.</p>
-</div>
-</section>
-<section id="the-tool-definition" class="slide level2 plain-title">
-<h2>The tool definition</h2>
-<p>If an agent is a tool, its definition answers the same three questions as any other tool definition:</p>
-<div class="cards cards-3">
-<div class="card">
-<p><span class="card-title">Which agents can I call?</span></p>
-<p>The names: <code>data_chat</code> and <code>web_chat</code>. The model cannot call anything else.</p>
-</div>
-<div class="card card-blue">
-<p><span class="card-title">What can I say to them?</span></p>
-<p>The arguments. <code>web_chat</code> takes the user’s question only — nothing from the conversation, and so nothing from the data.</p>
-</div>
-<div class="card card-sand">
-<p><span class="card-title">What can they give back?</span></p>
-<p>The return. Text, a table, a file — and whatever comes back enters the orchestrator’s context.</p>
-</div>
-</div>
-</section>
-<section id="what-the-split-buys" class="slide level2">
-<h2>What the split buys</h2>
+<section id="why-more-than-one-agent" class="slide level2">
+<h2>Why more than one agent</h2>
 <div class="cards cards-3">
 <div class="card">
 <p><span class="card-title">Separate context windows</span></p>
@@ -205,12 +164,15 @@ Kerry Back<br>J. Howard Creekmore Professor of Finance
 </div>
 <div class="card card-blue">
 <p><span class="card-title">One definition, many callers</span></p>
-<p>The research agent’s prompt, tools and examples are written once. Every orchestrator that needs research calls that agent instead of carrying its own copy of the instructions.</p>
+<p>An agent’s prompt, tools and examples are written once. Every orchestrator that needs that job done calls it instead of carrying its own copy of the instructions.</p>
 </div>
 <div class="card card-sand">
 <p><span class="card-title">A smaller model per job</span></p>
 <p>Retrieval can run on a cheaper model than the one writing the answer.</p>
 </div>
+</div>
+<div class="note">
+<p>Mitigating security risks is another motivation. We’ll come back to that.</p>
 </div>
 </section>
 <section id="what-else-it-changes" class="slide level2">
@@ -222,39 +184,60 @@ Kerry Back<br>J. Howard Creekmore Professor of Finance
 </div>
 <div class="card card-blue">
 <p><span class="card-title">Work at the same time</span></p>
-<p>The data lookup and the web search do not wait for each other.</p>
+<p>Two agents working on different parts of the question do not wait for each other.</p>
 </div>
 <div class="card card-sand">
 <p><span class="card-title">Tested on its own</span></p>
-<p>You can rewrite the research agent’s prompt and test it without retesting the orchestrator.</p>
+<p>You can rewrite one agent’s prompt and test it without retesting the orchestrator.</p>
 </div>
-</div>
-<div class="note">
-<p>None of these is a security argument. The security use of the same architecture comes after the risks.</p>
 </div>
 </section>
-<section id="subagents-or-separate-agents" class="slide level2 compare">
-<h2>Subagents, or separate agents</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span class="eyebrow">A subagent</span></p>
-<p>The harness starts a second copy of the model with its own context window. It runs on your machine, under your harness, on your keys.</p>
-</div><div class="column" style="width:50%;">
-<p><span class="eyebrow">A separate agent</span></p>
-<p>Its own process, its own key, its own MCP connections. The orchestrator reaches it the way it reaches any other tool.</p>
-</div></div>
-<p>The choice depends on whether the two halves need different credentials.</p>
+<section id="how-they-talk-to-each-other" class="slide level2 divider">
+<h2>How they talk to each other</h2>
+</section>
+<section id="giving-the-agent-an-api" class="slide level2 plain-title">
+<h2>Giving the agent an API</h2>
+<ul>
+<li><p>Any chatbot is served by a backend. Add an endpoint to it — e.g., <code>chatbot.com/prompt</code> — that receives a question, sends it to an LLM and returns the answer as plain text — and any program that can fetch a URL can now use the chatbot.</p></li>
+<li><p>I added an endpoint (API) to a FRED agent, like we looked at earlier and launched it on my machine with uvicorn.</p></li>
+</ul>
+</section>
+<section id="example-three-agent-team" class="slide level2">
+<h2>Example: three-agent team</h2>
+<p>An example of a three-agent team:</p>
+<div class="cards cards-3">
+<div class="card">
+<p><span class="card-title">Orchestrator</span></p>
+<p>The one you chat with. Splits the question, then combines the two answers.</p>
+</div>
+<div class="card card-blue">
+<p><span class="card-title">Data agent</span></p>
+<p>Reaches the data warehouse. Returns data and analysis.</p>
+</div>
+<div class="card card-sand">
+<p><span class="card-title">Web agent</span></p>
+<p>Reaches the web. Returns information.</p>
+</div>
+</div>
+</section>
+<section id="how-do-we-build-this" class="slide level2">
+<h2>How do we build this?</h2>
+<ul>
+<li>Orchestrator is an agent with a chatbot interface and two tools: call_web_agent, and call_data_agent</li>
+<li>Data agent has tools for getting data and run_python for analysis. It exposes an API.</li>
+<li>Web agent has web_fetch and web_search. It exposes an API.</li>
+</ul>
 </section>
 <section id="breakout-exercise" class="slide level2 plain-title">
 <h2>Breakout exercise</h2>
 <div class="steps">
 <ol type="1">
-<li>Build an orchestrator whose only two tools are agents: your FRED agent, and a writing agent that produces a Word document.</li>
-<li>Ask for something that needs both: the last ten years of unemployment and inflation, and a one-page brief on them as a .docx.</li>
-<li>Print which agent was called, with what arguments, and where the file landed.</li>
+<li>Create a FastAPI Northwind data agent connected to the MCP server <code>https://northwind-mcp.kerryback.com/mcp</code>. It has an API and a run_python tool.</li>
+<li>Create a FastAPI web agent with web_search and web_fetch. It has an API.</li>
+<li>Create a FastAPI orchestrator agent that has call_web_agent and call_data_agent tools. It has a user interface with a prompt window.</li>
 </ol>
 </div>
-<p>Work out the design with Claude. Settle what each agent is handed and what it returns before writing anything.</p>
+<p>Work out the details with Claude. Tell Claude what you want and plan with it.</p>
 </section></section>
 <section>
 <section id="security-risks" class="title-slide slide level1 center">
@@ -518,6 +501,20 @@ Kerry Back<br>J. Howard Creekmore Professor of Finance
 <p><span class="card-title">Safeguard memory</span></p>
 <p>Memory persists into every later conversation, so a planted instruction would reload forever. Every saved fact must be grounded in the user’s own words, not in tool results or fetched content.</p>
 </div>
+</div>
+</section>
+<section id="breakout-exercise-1" class="slide level2 plain-title">
+<h2>Breakout exercise</h2>
+<p>Go back to the orchestrator you built this morning and apply the architecture above to it.</p>
+<div class="steps">
+<ol type="1">
+<li>Lock the web agent’s tool definition so it can be handed the user’s own words and nothing else.</li>
+<li>Get a page in front of the web agent that tells it to ask for more than it was sent, and read what your orchestrator passed on.</li>
+<li>Say which of the three legs you removed, and what the fix does not cover.</li>
+</ol>
+</div>
+<div class="note">
+<p>The model obeys the page every time. Whether that matters is a property of the architecture, not of the model.</p>
 </div>
 
 
